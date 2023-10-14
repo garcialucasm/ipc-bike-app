@@ -1,9 +1,5 @@
-import { BikesRequested } from "./../models/BikeModel";
-import {
-  bikeEmptyForTest,
-  bikeSmall,
-  bikeStandard,
-} from "../models/dataTesting";
+import { BikesRequested } from "../models/bike.model";
+import { bikeEmptyForTest, bikeSmall, bikeStandard } from "../dataTesting";
 
 export class BikeService {
   static async bikeAvailability() {
@@ -15,7 +11,7 @@ export class BikeService {
         standardBikesAvailable,
       };
     } catch (error) {
-      //   console.error(error.message);
+      console.error(error);
       return {
         smallBikesAvailable: 0,
         standardBikesAvailable: 0,
@@ -29,18 +25,18 @@ export class BikeService {
   ) {
     try {
       const smallBikesRequested: BikesRequested[] = [
-        { bikesRequested: [bikeSmall[2]] },
+        { ArrayOfBikes: [bikeSmall[2]] },
       ]; //some code in mysql to query in bike database for size==="small" && status==="available" && getSmallBikesOrderedByUsage(numberSmallBikesRequested)
-      const standardBikesRequested: BikesRequested[] = [{ bikesRequested: [] }]; //some code in mysql to query in bike database for size==="small" && status==="available" && getSmallBikesOrderedByUsage(numberStandardBikesRequested)
+      const standardBikesRequested: BikesRequested[] = [{ ArrayOfBikes: [] }]; //some code in mysql to query in bike database for size==="small" && status==="available" && getSmallBikesOrderedByUsage(numberStandardBikesRequested)
       let bikesRequested: BikesRequested[] = [];
-      if (Object.keys(smallBikesRequested).length > 1) {
+      if (Object.keys(smallBikesRequested).length > 0) {
         bikesRequested.push(...smallBikesRequested);
-      } else if (Object.keys(standardBikesRequested).length > 1) {
+      } else if (Object.keys(standardBikesRequested).length > 0) {
         bikesRequested.push(...standardBikesRequested);
       }
       return bikesRequested;
     } catch (error) {
-      //   console.error(error.message);
+      console.error(error);
       return {
         smallBikesRequested: [],
         standardBikesRequested: [],

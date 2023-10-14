@@ -1,4 +1,5 @@
-import { User } from "./../models/UserModel";
+import { BikesRequested } from "../models/bike.model";
+import { User } from "../models/user.model";
 import { BikeService } from "./BikeService";
 
 export class BookingService {
@@ -60,10 +61,11 @@ export class BookingService {
             numberSmallBikesRequested,
             numberStandardBikesRequested
           );
+          console.log("Bikes Chosen: " + bikesChosen);
 
           //Check if there isn't user overbooking
           const userAuthorized = await BookingService.checkOverbooking(
-            user.name
+            user.Name
           );
           const isBookingConfirmed = await BookingService.requestBooking(
             true, // correct me isBikeAvailable
@@ -74,7 +76,7 @@ export class BookingService {
 
           if (isBookingConfirmed) {
             console.log("Booking confirmed");
-            console.log("User: " + user.name);
+            console.log("User: " + user.Name);
             console.log("Bike number: " + bikesChosen);
             return true;
           } else {
@@ -82,7 +84,7 @@ export class BookingService {
             return false;
           }
         } catch (error) {
-          //   console.error(error.message);
+          console.error(error);
           return false;
         }
       } else {
@@ -90,7 +92,7 @@ export class BookingService {
         return false;
       }
     } catch (error) {
-      //   console.error(error.message);
+      console.error(error);
       return false;
     }
   }
@@ -100,7 +102,7 @@ export class BookingService {
       const userAuthorized = await true; //correct me checkIfUserIsOverbooked(user) some code to check if user has an opened book and then return true or false
       return userAuthorized;
     } catch (error) {
-      //  console.error(error.message);
+      console.error(error);
       return false;
     }
   }
@@ -134,7 +136,7 @@ export class BookingService {
         return false;
       }
     } catch (error) {
-      //   console.error(error.message);
+      console.error(error);
       return false;
     }
   }
@@ -160,7 +162,7 @@ export class BookingService {
       const bookingCreated = dbBookingUpdated && dbBikeUpdated && dbUserUpdated;
       return bookingCreated;
     } catch (error) {
-      //   console.error(error.message);
+      console.error(error);
       return false;
     }
   }

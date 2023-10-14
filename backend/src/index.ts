@@ -2,7 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import { BookingService } from "./services/BookingService";
-import { user } from "./models/dataTesting";
+import { user } from "./dataTesting";
 
 const app = express();
 app.use(cors());
