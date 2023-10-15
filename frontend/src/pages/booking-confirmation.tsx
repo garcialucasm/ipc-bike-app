@@ -1,7 +1,7 @@
 import ConfirmationBox from "@/components/box/ConfirmationBox";
 import React, { useState } from "react";
 import Button from "@/components/button/Button";
-import Header from "@/components/header/Header";
+import HeaderTemp from "@/components/header/HeaderTemp";
 
 function submitBooking() {
   return;
@@ -10,7 +10,7 @@ function submitBooking() {
 function BookingConfirmation() {
   return (
     <div className="container">
-      <Header />
+      <HeaderTemp heading="Booking" />
       <h1>Confirm Booking</h1>
       <ConfirmationBox />
 

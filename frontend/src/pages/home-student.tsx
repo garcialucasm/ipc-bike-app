@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Header from "@/components/header/Header";
 import Button from "@/components/button/Button";
 import InputStudentData from "@/components/input/InputStudentData";
+import HeaderTemp from "@/components/header/HeaderTemp";
 // import InputStudentSize from "@/components/input/InputStudentSize";
 
 function HomeStudent() {
@@ -21,13 +21,14 @@ function HomeStudent() {
 
   return (
     <div className="container">
-      <Header />
-      <h1>IPC Alumni - Bike Booking</h1>
+      <HeaderTemp heading="Booking" />
       {/*Ternary Operator*/}
       {bikeSizeSelected == "" ? (
         <div className="container">
-          <h2>Availability Container</h2>
-          <h5>Select the size:</h5>
+          <div className="border ">
+            <h2>Availability Container</h2>
+          </div>
+            <h5>Select the size:</h5>
           <div>
             <Button
               type="submit"

@@ -1,17 +1,19 @@
-import Header from "@/components/header/Header";
+import HeaderTemp from "@/components/header/HeaderTemp";
 import Link from "next/link";
 
 export default function Book() {
   return (
     <div className="container">
-      <Header />
-      <h1>IPC Alumni - Bike Booking</h1>
-      <h2>Booking for:</h2>
+      <HeaderTemp heading="Booking for:" />
       <div className="disable-link">
-        <Link href="/home-teacher" >Teacher (waiting)</Link>
+        <Link href="/home-professor">
+          <div className="button">Professor</div>
+        </Link>
       </div>
       <div>
-        <Link href="/home-student">Student</Link>
+        <Link href="/home-student">
+          <div className="button">Student</div>
+        </Link>
       </div>
     </div>
   );

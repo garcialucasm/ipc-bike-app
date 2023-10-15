@@ -11,7 +11,7 @@ const Button: React.FC<Props> = ({ onClick, type, name, textInside }) => {
   return (
     // bootstrap classes
     <button
-      className="btn btn-primary m-2"
+      className="button"
       onClick={onClick}
       type={type}
       name={name}
