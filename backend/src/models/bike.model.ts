@@ -5,11 +5,12 @@ enum BikeStatus {
 
 interface Bike {
   ID?: number;
-  Numbering?: string;
+  Numbering?: number;
   Size?: string;
   CurrentStatus?: BikeStatus;
-  CreatedAt?: string;
-  UpdatedAt?: string;
+  CreatedAt?: Date;
+  UpdatedAt?: Date;
+  DeltedAt?: Date;
   IsActive?: boolean;
 }
 

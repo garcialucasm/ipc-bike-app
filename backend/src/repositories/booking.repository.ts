@@ -1,6 +1,6 @@
 import { Booking, BookingStatus } from "../models/booking.model";
 
-interface IBookingRepository {
+export default interface IBookingRepository {
   save(booking: Booking) : Promise<Booking>;
   update(booking: Booking) : Promise<Booking>;
   findById(bookingId : number) : Promise<Booking>;

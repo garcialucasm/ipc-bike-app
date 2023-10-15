@@ -1,6 +1,6 @@
 import {User, UserStatus, UserType} from "../models/user.model";
 
-interface IUserRepository { 
+export default interface IUserRepository { 
   save(user: User) : Promise<User>;
   update(user: User) : Promise<User>;
   delete(user: User) : Promise<User>;
