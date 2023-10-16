@@ -51,11 +51,11 @@ export default class MockBikeRepository implements IBikeRepository {
       return bike;
     }
 
-    async findAll(searchCriteria: { Size?: string | undefined; Status?: BikeStatus | undefined; }): Promise<Bike[]> {
-
-       let result = Array.from(this.bikes.values())
-          .filter(bike => searchCriteria.Size? searchCriteria.Size == bike.Size : true)
-          .filter(bike => searchCriteria.Status? searchCriteria.Status == bike.CurrentStatus : true)
+    async findAll(searchCriteria: { size?: string | undefined; status?: BikeStatus | undefined; numbering?: number }): Promise<Bike[]> {
+      let result = Array.from(this.bikes.values())
+        .filter(bike => searchCriteria.size? searchCriteria.size == bike.Size : true)
+        .filter(bike => searchCriteria.status? searchCriteria.status == bike.CurrentStatus : true)
+        .filter(bike => searchCriteria.numbering? searchCriteria.numbering == bike.Numbering : true)
 
         return result;
     } 

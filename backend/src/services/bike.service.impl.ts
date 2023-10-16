@@ -19,19 +19,20 @@ export default class BikeService implements IBikeService {
     ])
   }
 
-  async createBike(Numbering: number, Size: string) : Promise<Bike> {
+  async createBike(numbering: number, size: string) : Promise<Bike> {
 
-    let bikes = await this.bikeRepository.findAll({Numbering: Numbering})
+    let bikes = await this.bikeRepository.findAll({numbering: numbering})
     
     if (bikes.length) {
       throw new Error("Numbering already exist")
     }
 
     let bike: Bike = {
-      Numbering: Numbering,
-      Size: Size,
+      Numbering: numbering,
+      Size: size,
       CreatedAt: new Date(),
-      IsActive: true
+      IsActive: true,
+      CurrentStatus: BikeStatus.FREE
     }
 
     return await this.bikeRepository.save(bike)
@@ -57,7 +58,7 @@ export default class BikeService implements IBikeService {
 
 
   async findAllAvailable(): Promise<Bike[]> {
-    return await this.bikeRepository.findAll({Status: BikeStatus.FREE})
+    return await this.bikeRepository.findAll({status: BikeStatus.FREE})
   }
 
 }

@@ -129,7 +129,7 @@ describe("test change bike status", async () => {
 
 
 describe("find all available bikes",async () => {
-  before(async () => {
+  beforeEach(async () => {
     bikeService.createBike(1, "small")    
     let bike1 = await bikeService.createBike(2, "big")
     let bike2 = await bikeService.createBike(3, "small")    
@@ -144,6 +144,8 @@ describe("find all available bikes",async () => {
 
   it("returns only free bikes", async () => {
     let bikes = await bikeService.findAllAvailable()
+
+    assert.equal(2, bikes.length)
 
     bikes.forEach((bike) => {
       assert.equal(BikeStatus.FREE, bike.CurrentStatus)
