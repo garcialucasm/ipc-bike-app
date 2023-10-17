@@ -41,10 +41,11 @@ export default class MockUserRepository implements IUserRepository {
 
 
     async findById(userId: number): Promise<User> {
-      let user = this.users.get(userId);
+      console.log(this.users)
+      let user = this.users.get(userId)
 
       if (user == undefined)
-        throw Error();
+        throw Error(`couldn't find user with id ${userId}`)
 
       return user;
     }

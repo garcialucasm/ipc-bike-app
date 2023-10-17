@@ -14,7 +14,7 @@ export default class BookingService implements IBookingService {
         this.bikeService = bikeService;
     }
 
-    bookABike(userName: string, bikeSize: string): Promise<Booking> {
+    createStudentBooking(userName: string, bikeSize: string): Promise<Booking> {
         throw new Error("Method not implemented.");
     }
     approve(bookingId: number): Promise<Booking> {
@@ -23,7 +23,7 @@ export default class BookingService implements IBookingService {
     returnBike(bookingId: number): Promise<Booking> {
         throw new Error("Method not implemented.");
     }
-    cancel(booking: number): Promise<Booking> {
+    cancel(bookingId: number): Promise<Booking> {
         throw new Error("Method not implemented.");
     }
     listAllOpened(): Promise<Booking[]> {

@@ -5,5 +5,5 @@ export default interface IUserRepository {
   update(user: User) : Promise<User>;
   delete(userId: number) : Promise<User>;
   findById(userId: number) : Promise<User>;
-  findAll(searchCriteria: {name?: String, term?: String}) : Promise<User[]>
+  findAll(searchCriteria: {name?: string, term?: string, room?: string}) : Promise<User[]>
 }

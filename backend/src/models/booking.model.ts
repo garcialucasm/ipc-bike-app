@@ -6,7 +6,7 @@ enum BookingStatus {
   BOOKED, 
   DELIVERED,
   RETURNED, 
-  EXPIRED
+  CANCELED
 }
 
 

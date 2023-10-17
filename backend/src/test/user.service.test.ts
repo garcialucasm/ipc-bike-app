@@ -1,28 +1,36 @@
 import assert from 'assert';
 import IUserService from '../services/user.service'; // Update this path
 import { User, UserStatus, UserType } from '../models/user.model'; // Update this path
+import IUserRepository from '../repositories/user.repository';
+import MockUserRepository from './user.fixtures';
+import UserService from '../services/user.service.impl';
 
 let userService: IUserService;
+let userRepository: IUserRepository
 
 beforeEach(() => {
-  // Initialize userService before each test
+  userRepository = new MockUserRepository()
+  userService = new UserService(userRepository)
 });
 
 describe('for a new user', () => {
 
+  const userName = 'testuser'
+  const term = 'spring'
+  const room = 'A101'
+
   it('should create it', async () => {
-    const userName = 'testuser'
-    const term = 'spring'
-    const room = 'A101'
     const user = await userService.getOrCreate(userName, room, term)
     assert.strictEqual(user.Name, userName)
     assert.strictEqual(user.Term, term)
   })
 
   it('should find user by id', async () => {
-    const userId = 1
-    const user = await userService.findById(userId)
-    assert.strictEqual(user.ID, userId)
+
+    const user = await userService.getOrCreate(userName, term, room)
+    assert.ok(user.ID)
+    const found = await userService.findById(user.ID)
+    assert.strictEqual(user, found)
   })
 
 });
@@ -49,16 +57,19 @@ describe("changing user status", async () => {
   })
 
   it('from BOOKED to INUSE is ok', async () => {
+    user.Status = UserStatus.BOOKED
     const updatedUser = await userService.changeStatus(user, UserStatus.INUSE)
     assert.strictEqual(updatedUser.Status, UserStatus.INUSE)
   })
 
   it('from INUSE to FREE is ok', async () => {
+    user.Status = UserStatus.INUSE
     const updatedUser = await userService.changeStatus(user, UserStatus.FREE)
     assert.strictEqual(updatedUser.Status, UserStatus.FREE)
   })
 
   it('from INUSE to BOOKED should throw an error', async () => {
+    user.Status = UserStatus.INUSE
     try {
       const updatedUser = await userService.changeStatus(user, UserStatus.FREE)
       assert.fail('Should throw an error')
