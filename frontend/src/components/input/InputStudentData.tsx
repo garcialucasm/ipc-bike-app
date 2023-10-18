@@ -6,9 +6,9 @@ function InputStudentData() {
   return (
     <div>
       <form className="form">
-        <h2>Student Name</h2>
+        <h4>Student Name</h4>
         <Input type="text" placeholder="Name" />
-        <h2>Room Number</h2>
+        <h4>Room Number</h4>
         <Input type="text" placeholder="Room number" />
         <div>
           <Link href="/booking-confirmation">

@@ -6,14 +6,14 @@ import AvailabilityContainer from "@/components/availability/AvailabilityContain
 
 let isLoggedIn: boolean = true;
 
-export default function Page() {
+export default function HomeKeyKeeper() {
   return (
     <>
       {isLoggedIn ? (
         <div className="container center-content">
           <div className="center-content">
             <Head title="IPC Alumni Bike" />
-            <HeaderTemp heading="IPC Alumni Bike " />
+            <HeaderTemp heading="Home - Key Keeper" />
             <AvailabilityContainer />
             <Link href="/home-single-booking">
               <div className="button">Single Booking</div>
@@ -23,9 +23,14 @@ export default function Page() {
                 <div className="button-disable">🚧 Group Booking 🚧</div>
               </Link>
             </div>
-            <div>
-              <Link href="/home-keykeeper">
-                <div className="button">Key Keeper - Manage Bookings</div>
+            <div className="disable-link">
+              <Link href="/manage-bookings">
+                <div className="button-disable">🚧 Manage Bookings 🚧</div>
+              </Link>
+            </div>
+            <div className="disable-link">
+              <Link href="/return-bike">
+                <div className="button-disable">🚧 Return Bike 🚧</div>
               </Link>
             </div>
           </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Button from "@/components/button/Button";
 import InputStudentData from "@/components/input/InputStudentData";
 import HeaderTemp from "@/components/header/HeaderTemp";
+import AvailabilityContainer from "@/components/availability/AvailabilityContainer";
 // import InputStudentSize from "@/components/input/InputStudentSize";
 
 function HomeStudent() {
@@ -20,15 +21,13 @@ function HomeStudent() {
   }, [bikeSizeSelected]);
 
   return (
-    <div className="container">
-      <HeaderTemp heading="Booking" />
+    <div className="container center-content">
+      <HeaderTemp heading="Home - Single Booking" />
+      <AvailabilityContainer />
       {/*Ternary Operator*/}
       {bikeSizeSelected == "" ? (
         <div className="container">
-          <div className="border ">
-            <h2>Availability Container</h2>
-          </div>
-            <h5>Select the size:</h5>
+          <h2>Select the size:</h2>
           <div>
             <Button
               type="submit"
@@ -36,6 +35,8 @@ function HomeStudent() {
               textInside="Standard"
               onClick={() => setStandardSize()}
             />
+          </div>
+          <div>
             <Button
               type="submit"
               name="small"
