@@ -30,7 +30,8 @@ export default class UserService implements IUserService {
         Term: term,
         Room: room,
         Type: UserType.STUDENT,
-        Status: UserStatus.FREE
+        Status: UserStatus.FREE,
+        IsActive: true
       }
       user = await this.userRepository.save(user)
     }
@@ -44,8 +45,6 @@ export default class UserService implements IUserService {
 
   async changeStatus(user: User, status: UserStatus): Promise<User> {
     const transitions = this.userStatusTransitions.get(user.Status)
-    console.log(user.Status)
-    console.log(transitions)
     if (transitions?.includes(status)){
       user.Status = status;
       return await this.userRepository.update(user)

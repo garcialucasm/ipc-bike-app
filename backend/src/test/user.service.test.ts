@@ -23,6 +23,7 @@ describe('for a new user', () => {
     const user = await userService.getOrCreate(userName, room, term)
     assert.strictEqual(user.Name, userName)
     assert.strictEqual(user.Term, term)
+    assert.ok(user.IsActive)
   })
 
   it('should find user by id', async () => {

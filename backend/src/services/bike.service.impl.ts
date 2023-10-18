@@ -57,8 +57,8 @@ export default class BikeService implements IBikeService {
   }
 
 
-  async findAllAvailable(): Promise<Bike[]> {
-    return await this.bikeRepository.findAll({status: BikeStatus.FREE})
+  async findAllAvailable(size?: string): Promise<Bike[]> {
+    return await this.bikeRepository.findAll({status: BikeStatus.FREE, size: size})
   }
 
 }

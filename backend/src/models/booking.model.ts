@@ -14,7 +14,7 @@ interface Booking {
   ID?: number;
   User: User;
   Bike: Bike[];
-  State: BookingStatus;
+  Status: BookingStatus;
   CreatedAt?: Date;
   ConfirmedAt?: Date;
   ReturnedAt?: Date,
