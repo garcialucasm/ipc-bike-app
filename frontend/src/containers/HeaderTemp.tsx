@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Navbar from "./Navbar";
+import Navbar from "../containers/Navbar";
 
 type HeadingProps = {
   heading: string;
@@ -8,7 +8,7 @@ type HeadingProps = {
 function HeaderTemp({ heading }: HeadingProps) {
   return (
     <div className="center-content">
-      <Navbar />
+      {/* <Navbar /> */}
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Image
           src="/ipc-alumni-logo.png"

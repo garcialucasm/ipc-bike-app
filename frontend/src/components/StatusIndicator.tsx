@@ -1,4 +1,4 @@
-function Status() {
+function StatusIndicator() {
   var inUse = true;
 
   const decorationIsAvailable = { color: "gray" };
@@ -6,4 +6,4 @@ function Status() {
   return <div style={inUse && decorationIsAvailable}>Bike X</div>;
 }
 
-export default Status;
+export default StatusIndicator;

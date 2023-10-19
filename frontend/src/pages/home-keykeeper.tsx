@@ -1,8 +1,8 @@
-import Head from "@/components/header/Head";
+import Head from "@/containers/Head";
 import Link from "next/link";
 import Login from "./login";
-import HeaderTemp from "@/components/header/HeaderTemp";
-import AvailabilityContainer from "@/components/availability/AvailabilityContainer";
+import HeaderTemp from "@/containers/HeaderTemp";
+import AvailabilityContainer from "@/containers/AvailabilityContainer";
 
 let isLoggedIn: boolean = true;
 
@@ -15,11 +15,11 @@ export default function HomeKeyKeeper() {
             <Head title="IPC Alumni Bike" />
             <HeaderTemp heading="Home - Key Keeper" />
             <AvailabilityContainer />
-            <Link href="/home-single-booking">
+            <Link href="/single-booking">
               <div className="button">Single Booking</div>
             </Link>
             <div className="disable-link">
-              <Link href="/home-group-booking">
+              <Link href="/group-booking">
                 <div className="button-disable">🚧 Group Booking 🚧</div>
               </Link>
             </div>

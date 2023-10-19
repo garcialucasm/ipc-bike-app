@@ -1,6 +1,6 @@
 function AvailabilityContainer() {
   return (
-    <div className="availability-container">
+    <div className="infobox-container">
       <h2>Availability Container</h2>
       <div>Info about bikes available and in use</div>
     </div>
