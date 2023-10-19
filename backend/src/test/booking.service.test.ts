@@ -12,6 +12,8 @@ import RandomBikeChooser from '../services/random.bike.chooser'
 import BookingService from '../services/booking.service.impl'
 import IBookingRepository from '../repositories/booking.repository'
 import MockBookingRepository from './booking.fixtures'
+import { UserStatus } from '../models/user.model'
+import { BikeStatus } from '../models/bike.model'
 
 let bookingRepository: IBookingRepository
 let bikeService: IBikeService
@@ -19,7 +21,7 @@ let bikeChooser: IBikeChooser
 let userService: IUserService
 let bookingService: IBookingService
 
-beforeEach(() => {
+before(() => {
   // Initialize bookingService before each test
   // Assuming you have a concrete implementation of IBookingService called BookingService
   bookingRepository = new MockBookingRepository()
@@ -29,21 +31,25 @@ beforeEach(() => {
 
   bookingService = new BookingService(bookingRepository, bikeService, bikeChooser, userService, "term")
 })
+
 describe('For a valid user', () => {
-
-
-  beforeEach(async () => {
+  before(async () => {
     await bikeService.createBike(1, 'medium')
   })
 
+  const userName = 'testuser'
+  const bikeSize = 'medium'
+  const room = 'A101'
+  let booking: Booking
+
   it('should create a student booking', async () => {
-    const userName = 'testuser'
-    const bikeSize = 'medium'
-    const room = 'A101'
-    const booking = await bookingService.createStudentBooking(userName, room, bikeSize)
+    booking = await bookingService.createStudentBooking(userName, room, bikeSize)
+    
     assert.strictEqual(booking.User.Name, userName)
     assert.strictEqual(booking.Bike[0].Size, bikeSize)
     assert.strictEqual(booking.Status, BookingStatus.BOOKED)
+    assert.equal(booking.User.Status, UserStatus.BOOKED)
+    assert.equal(booking.Bike[0].CurrentStatus, BikeStatus.BOOKED)
   })
 
   it('should approve a booking')
