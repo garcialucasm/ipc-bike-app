@@ -1,8 +1,15 @@
-function Infobox() {
+import React from "react";
+import { BookingType } from "@/types/BookingType";
+
+function Infobox(props: { bookingData: BookingType }) {
+  const { firstName, lastName, roomNumber } = props.bookingData.bookingUserData;
+  const fullName = firstName + " " + lastName;
   return (
     <div className="infobox-container">
-      <h2>Bike xx</h2>
-      <p>Info about confirmation Booking: Name, room, etc</p>
+      <h2>{fullName}</h2>
+      <h4>Room Number: {roomNumber}</h4>
+
+      <p>Info about confirmation Booking...</p>
     </div>
   );
 }

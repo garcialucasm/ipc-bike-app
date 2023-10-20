@@ -1,11 +1,16 @@
-import { BikeSize } from "@/types/BikeSize";
+import { BikeSize } from "@/types/BikeType";
 import Button from "../components/Button";
+import Link from "next/link";
 
-function InputStudentSize(props: { onSizeSelection: (arg0: any) => void }) {
+function InputStudentSize(props: {
+  onSizeSelection: (arg0: any) => void;
+  onNavigation: (buttonValue: string) => void;
+}) {
   function handleClick(event: { target: any } | undefined) {
     const { value } = event?.target;
     const bikeSizeClicked = value;
-    props.onSizeSelection({ size: bikeSizeClicked });
+    props.onSizeSelection({ selectedSize: bikeSizeClicked });
+    props.onNavigation("go-to-input-student-data");
   }
   return (
     <>
@@ -28,6 +33,11 @@ function InputStudentSize(props: { onSizeSelection: (arg0: any) => void }) {
             textInside="Small"
             value={BikeSize.SMALL}
           />
+        </div>
+        <div>
+          <Link href="/">
+            <div className="button-return">Return</div>
+          </Link>
         </div>
       </div>
     </>

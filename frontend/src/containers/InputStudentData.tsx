@@ -1,33 +1,73 @@
+import React, { useState, useEffect } from "react";
 import Button from "../components/Button";
-import Link from "next/link";
+import InputLabel from "@/components/InputLabel";
 
-function InputStudentData(props: { onDataValidation: (arg0: any) => void }) {
-  // Check if the data is valid and save it temporarily
-  function handleBookingData(event: { target: any } | undefined) {
-    const { name } = event?.target;
-    const confirmationUserData = name;
-    props.onDataValidation({ name: confirmationUserData });
+function InputStudentData(props: {
+  onDataValidation: (arg0: any) => void;
+  onNavigation: (buttonValue: string) => void;
+}) {
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    roomNumber: "",
+  });
+
+  // Get user's data entry (first name, last name, room number) when input is changed
+  function handleUserDataChange(event: { target: any }) {
+    const { value, name } = event.target;
+    setUserData((prevValue): any => {
+      return { ...prevValue, [name]: value };
+    });
+    props.onDataValidation({
+      value: { userDataTyped: userData },
+    });
   }
+
+  useEffect(() => {
+    console.log("userData changed:", userData);
+  }, [userData]);
 
   return (
     <div>
-      <h4>Name</h4>
-      <input type="text" placeholder={"Name"} />
-      <h4>Room Number</h4>
-      <input type="text" placeholder={"Room Number"} />
+      <InputLabel text="First Name" />
+      <input
+        name="firstName"
+        onChange={handleUserDataChange}
+        type="text"
+        placeholder={"First Name"}
+        value={userData.firstName}
+      />
+      <InputLabel text="Last Name" />
+      <input
+        name="lastName"
+        onChange={handleUserDataChange}
+        type="text"
+        placeholder={"Last Name"}
+        value={userData.lastName}
+      />
+      <InputLabel text="Room Number" />
+      <input
+        name="roomNumber"
+        onChange={handleUserDataChange}
+        type="text"
+        placeholder={"Room Number"}
+        value={userData.roomNumber}
+      />
       <div>
         <Button
-          onClick={handleBookingData}
+          onClick={() => props.onNavigation("go-to-pre-booking-confirmation")}
           type="submit"
-          name="pre-booking-confirmation"
+          name="submit-button"
+          value="go-to-pre-booking-confirmation"
           textInside="Next"
         />
       </div>
       <div>
         <Button
-          onClick={handleBookingData}
+          onClick={() => props.onNavigation("return-to-size-selection")}
           type="submit"
-          name="return-to-size-selection"
+          name="return"
+          value="return-to-size-selection"
           textInside="Return"
           customClasses="button-return"
         />
