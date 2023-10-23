@@ -19,8 +19,8 @@ function HomeStudent() {
   // Creating state for bikeSizeSelected
   const [bikeSizeSelected, setBikeSize] = useState(BikeSize.NONE);
 
-  // Creating state for userDataTyped in InputStudentData
-  const [userDataTyped, setUserDataTyped] = useState<UserData>({
+  // Creating state for enteredUserData in InputStudentData
+  const [enteredUserData, setEnteredUserData] = useState<UserData>({
     firstName: "",
     lastName: "",
     roomNumber: "",
@@ -39,7 +39,7 @@ function HomeStudent() {
   // Creating state to check if isUserDataValid and then submit booking
   const [isUserDataValid, setIsUserDataValid] = useState(false);
 
-  // Statements to control navegation
+  // Statements to control navegation (next & return buttons)
   const handleNavigation = (buttonValue: string) => {
     if (buttonValue === "go-to-input-student-data") {
       setShowInputBikeSize(false);
@@ -69,32 +69,24 @@ function HomeStudent() {
     setBikeSize(bikeSizeSelected);
   }
 
-  // Getting User Data from the inputStudentData
-  // Option to go to Pre Booking Confirmation or Return to select Bike Size
-  function handleUserData(event: { value: any | undefined }) {
-    const { userDataTyped } = event.value;
-    const { firstName, lastName, roomNumber } = userDataTyped;
-    const userData = {
-      firstName: firstName,
-      lastName: lastName,
-      roomNumber: roomNumber,
-    };
-    setUserDataTyped(userData);
-    // Create a function to validate user data input
+  // Correct me
+  // Create a function to validate user data input
+  function checkEnteredUserData() {
     setIsUserDataValid(true);
-    setBookingData((prevBookingData) => ({
-      ...prevBookingData,
-      bookingUserData: userData,
-    }));
   }
 
   // Update Booking data after both states change
   useEffect(() => {
+    setBookingData((prevBookingData) => ({
+      ...prevBookingData,
+      bookingUserData: enteredUserData,
+    }));
     setBookingData({
       bookingBikeSize: bikeSizeSelected,
-      bookingUserData: userDataTyped,
+      bookingUserData: enteredUserData,
     });
-  }, [bikeSizeSelected, isUserDataValid, userDataTyped]);
+    checkEnteredUserData();
+  }, [bikeSizeSelected, isUserDataValid, enteredUserData]);
 
   // Option to confirm Booking or Return to user data input
   function handleBookingConfirmation(event: { name: any }) {
@@ -130,8 +122,8 @@ function HomeStudent() {
     console.log("isUserDataValid changed:", isUserDataValid);
   }, [isUserDataValid]);
   useEffect(() => {
-    console.log("userDataTyped changed:", userDataTyped);
-  }, [userDataTyped]);
+    console.log("enteredUserData changed:", enteredUserData);
+  }, [enteredUserData]);
 
   return (
     <div className="container center-content">
@@ -148,8 +140,9 @@ function HomeStudent() {
       )}
       {showInputStudentData && (
         <InputStudentData
-          onDataValidation={handleUserData}
           onNavigation={handleNavigation}
+          sendUserDataState={enteredUserData}
+          sendSetUserDataState={setEnteredUserData}
         />
       )}
       {showBookingPreConfirmation && (

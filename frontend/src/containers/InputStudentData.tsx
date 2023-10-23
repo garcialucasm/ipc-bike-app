@@ -1,32 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Button from "../components/Button";
 import InputLabel from "@/components/InputLabel";
+import { UserData } from "@/types/UserType";
 
 function InputStudentData(props: {
-  onDataValidation: (arg0: any) => void;
   onNavigation: (buttonValue: string) => void;
+  sendUserDataState: UserData;
+  sendSetUserDataState: (
+    arg0: (prevValues: UserData) => {
+      firstName: string;
+      lastName: string;
+      roomNumber: string;
+    }
+  ) => void;
 }) {
-  const [userData, setUserData] = useState({
-    firstName: "",
-    lastName: "",
-    roomNumber: "",
-  });
-
   // Get user's data entry (first name, last name, room number) when input is changed
-  function handleUserDataChange(event: { target: any }) {
+  function handleUserDataChange(event: {
+    target: { value: any; name: string };
+  }) {
     const { value, name } = event.target;
-    setUserData((prevValue): any => {
-      return { ...prevValue, [name]: value };
-    });
-    props.onDataValidation({
-      value: { userDataTyped: userData },
-    });
+    props.sendSetUserDataState((prevValues: UserData) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+    console.log(event.target);
   }
-
-  useEffect(() => {
-    console.log("userData changed:", userData);
-  }, [userData]);
-
   return (
     <div>
       <InputLabel text="First Name" />
@@ -35,7 +33,7 @@ function InputStudentData(props: {
         onChange={handleUserDataChange}
         type="text"
         placeholder={"First Name"}
-        value={userData.firstName}
+        value={props.sendUserDataState.firstName}
       />
       <InputLabel text="Last Name" />
       <input
@@ -43,7 +41,7 @@ function InputStudentData(props: {
         onChange={handleUserDataChange}
         type="text"
         placeholder={"Last Name"}
-        value={userData.lastName}
+        value={props.sendUserDataState.lastName}
       />
       <InputLabel text="Room Number" />
       <input
@@ -51,7 +49,7 @@ function InputStudentData(props: {
         onChange={handleUserDataChange}
         type="text"
         placeholder={"Room Number"}
-        value={userData.roomNumber}
+        value={props.sendUserDataState.roomNumber}
       />
       <div>
         <Button
