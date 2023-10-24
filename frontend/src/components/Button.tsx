@@ -18,7 +18,6 @@ const Button: React.FC<Props> = ({
   customClasses,
 }) => {
   return (
-    // bootstrap classes
     <button
       className={`button ${customClasses}`}
       onClick={onClick}

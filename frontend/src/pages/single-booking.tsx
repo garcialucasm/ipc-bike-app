@@ -1,20 +1,21 @@
 import React, { useState, useEffect, use } from "react";
 import HeaderTemp from "@/containers/HeaderTemp";
-import InputStudentSize from "@/containers/InputStudentBikeSize";
+import InputStudentBikeSize from "@/containers/InputStudentBikeSize";
 import InputStudentData from "@/containers/InputStudentData";
-import BookingConfirmation from "@/containers/BookingPreConfirmation";
+import PreBookingConfirmation from "@/containers/PreBookingConfirmation";
+import BookingConfirmed from "@/containers/BookingConfirmed";
 import { BikeSize } from "@/types/BikeType";
 import { UserData } from "@/types/UserType";
 import { BookingType } from "@/types/BookingType";
+import { SingleBookingSection } from "@/types/NavigationSections";
 import AvailabilityContainer from "@/containers/AvailabilityContainer";
 import Infobox from "@/containers/Infobox";
 
 function HomeStudent() {
   // Creating states for show of hide components
-  const [showInputBikeSize, setShowInputBikeSize] = useState(true);
-  const [showInputStudentData, setShowInputStudentData] = useState(false);
-  const [showBookingPreConfirmation, setShowBookingPreConfirmation] =
-    useState(false);
+  const [currentSection, setCurrentSection] = useState<SingleBookingSection>(
+    SingleBookingSection.SelectBikeSize
+  );
 
   // Creating state for bikeSizeSelected
   const [bikeSizeSelected, setBikeSize] = useState(BikeSize.NONE);
@@ -39,28 +40,10 @@ function HomeStudent() {
   // Creating state to check if isUserDataValid and then submit booking
   const [isUserDataValid, setIsUserDataValid] = useState(false);
 
-  // Statements to control navegation (next & return buttons)
-  const handleNavigation = (buttonValue: string) => {
-    if (buttonValue === "go-to-input-student-data") {
-      setShowInputBikeSize(false);
-      setShowInputStudentData(true);
-      setShowBookingPreConfirmation(false);
-    } else if (
-      buttonValue === "go-to-pre-booking-confirmation" &&
-      isUserDataValid
-    ) {
-      setShowInputBikeSize(false);
-      setShowInputStudentData(false);
-      setShowBookingPreConfirmation(true);
-    } else if (buttonValue === "return-to-size-selection") {
-      setShowInputBikeSize(true);
-      setShowInputStudentData(false);
-      setShowBookingPreConfirmation(false);
-    } else if (buttonValue === "return-to-user-data-input") {
-      setShowInputBikeSize(false);
-      setShowInputStudentData(true);
-      setShowBookingPreConfirmation(false);
-    }
+  // Statements to control navegation (next, submit & return buttons)
+  const handleNavigation = (event: { buttonValue: SingleBookingSection }) => {
+    const valueButtonClicked: SingleBookingSection = event.buttonValue;
+    setCurrentSection(valueButtonClicked);
   };
 
   // Update bikeSizeSelected
@@ -75,7 +58,7 @@ function HomeStudent() {
     setIsUserDataValid(true);
   }
 
-  // Update Booking data after both states change
+  // Update bookingData after states [bikeSizeSelected, isUserDataValid or enteredUserDataboth] change
   useEffect(() => {
     setBookingData((prevBookingData) => ({
       ...prevBookingData,
@@ -85,13 +68,19 @@ function HomeStudent() {
       bookingBikeSize: bikeSizeSelected,
       bookingUserData: enteredUserData,
     });
+    // Correct me
+    // Choose a strategic location to leave this function call (checkEnteredUserData)
     checkEnteredUserData();
   }, [bikeSizeSelected, isUserDataValid, enteredUserData]);
 
+  // Correct me
   // Option to confirm Booking or Return to user data input
-  function handleBookingConfirmation(event: { name: any }) {
-    const buttonOnConfirmation = event.name;
-    if (buttonOnConfirmation === "submit-booking") {
+  function handleBookingConfirmation(event: { value: SingleBookingSection }) {
+    console.log(`event: ${event.value}`);
+    console.log(event.value === SingleBookingSection.BookingConfirmed);
+    // Temp - Submit confirmation
+    const buttonOnConfirmation = event.value;
+    if (buttonOnConfirmation == SingleBookingSection.BookingConfirmed) {
       alert(
         buttonOnConfirmation +
           "\n" +
@@ -108,7 +97,7 @@ function HomeStudent() {
           "\n"
       );
       //function to submit data
-    } else if (buttonOnConfirmation === "return-to-user-data-input") {
+    } else if (buttonOnConfirmation === SingleBookingSection.InputUserData) {
       setIsUserDataValid(false);
     }
   }
@@ -129,29 +118,36 @@ function HomeStudent() {
     <div className="container center-content">
       <HeaderTemp heading="Single Booking" />
 
-      {showInputBikeSize && (
+      {currentSection === SingleBookingSection.SelectBikeSize && (
         <>
           <AvailabilityContainer />
-          <InputStudentSize
-            onSizeSelection={handleBikeSize}
+          <InputStudentBikeSize
             onNavigation={handleNavigation}
+            onSizeSelection={handleBikeSize}
           />
         </>
       )}
-      {showInputStudentData && (
+      {currentSection === SingleBookingSection.InputUserData && (
         <InputStudentData
           onNavigation={handleNavigation}
           sendUserDataState={enteredUserData}
           sendSetUserDataState={setEnteredUserData}
         />
       )}
-      {showBookingPreConfirmation && (
+      {currentSection === SingleBookingSection.PreBookingConfirmation && (
         <>
           <Infobox bookingData={bookingData} />
-          <BookingConfirmation
-            onConfirmation={handleBookingConfirmation}
+          <PreBookingConfirmation
             onNavigation={handleNavigation}
+            onConfirmation={handleBookingConfirmation}
           />
+        </>
+      )}
+      {currentSection === SingleBookingSection.BookingConfirmed && (
+        <>
+          <h3>✔️ Booking Confirmed</h3>
+          <Infobox bookingData={bookingData} />
+          <BookingConfirmed onNavigation={handleNavigation} />
         </>
       )}
     </div>

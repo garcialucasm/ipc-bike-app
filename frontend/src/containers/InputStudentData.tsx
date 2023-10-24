@@ -2,12 +2,15 @@ import React from "react";
 import Button from "../components/Button";
 import InputLabel from "@/components/InputLabel";
 import { UserData } from "@/types/UserType";
+import { SingleBookingSection } from "@/types/NavigationSections";
 
 function InputStudentData(props: {
-  onNavigation: (buttonValue: string) => void;
+  onNavigation: (navigationButton: {
+    buttonValue: SingleBookingSection;
+  }) => void;
   sendUserDataState: UserData;
   sendSetUserDataState: (
-    arg0: (prevValues: UserData) => {
+    userDataState: (prevValues: UserData) => {
       firstName: string;
       lastName: string;
       roomNumber: string;
@@ -25,6 +28,15 @@ function InputStudentData(props: {
     }));
     console.log(event.target);
   }
+
+  function handleClick(event: { target: any } | undefined) {
+    const { value } = event?.target;
+    const buttonClicked: SingleBookingSection = parseInt(value, 10);
+    console.log(typeof buttonClicked);
+    console.log(buttonClicked);
+    props.onNavigation({ buttonValue: buttonClicked });
+  }
+
   return (
     <div>
       <InputLabel text="First Name" />
@@ -53,19 +65,19 @@ function InputStudentData(props: {
       />
       <div>
         <Button
-          onClick={() => props.onNavigation("go-to-pre-booking-confirmation")}
+          onClick={handleClick}
           type="submit"
-          name="submit-button"
-          value="go-to-pre-booking-confirmation"
+          name="next"
+          value={SingleBookingSection.PreBookingConfirmation}
           textInside="Next"
         />
       </div>
       <div>
         <Button
-          onClick={() => props.onNavigation("return-to-size-selection")}
+          onClick={handleClick}
           type="submit"
           name="return"
-          value="return-to-size-selection"
+          value={SingleBookingSection.SelectBikeSize}
           textInside="Return"
           customClasses="button-return"
         />

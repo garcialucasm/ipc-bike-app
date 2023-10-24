@@ -1,16 +1,20 @@
 import { BikeSize } from "@/types/BikeType";
 import Button from "../components/Button";
 import Link from "next/link";
+import { SingleBookingSection } from "@/types/NavigationSections";
 
-function InputStudentSize(props: {
-  onSizeSelection: (arg0: any) => void;
-  onNavigation: (buttonValue: string) => void;
+function InputStudentBikeSize(props: {
+  onSizeSelection: (bikeSizeButton: { selectedSize: BikeSize }) => void;
+  onNavigation: (navigationButton: {
+    buttonValue: SingleBookingSection;
+  }) => void;
 }) {
   function handleClick(event: { target: any } | undefined) {
     const { value } = event?.target;
     const bikeSizeClicked = value;
+    console.log(SingleBookingSection.InputUserData);
     props.onSizeSelection({ selectedSize: bikeSizeClicked });
-    props.onNavigation("go-to-input-student-data");
+    props.onNavigation({ buttonValue: SingleBookingSection.InputUserData });
   }
   return (
     <>
@@ -44,4 +48,4 @@ function InputStudentSize(props: {
   );
 }
 
-export default InputStudentSize;
+export default InputStudentBikeSize;
