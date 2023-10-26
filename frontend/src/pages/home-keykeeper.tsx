@@ -23,16 +23,17 @@ export default function HomeKeyKeeper() {
                 <div className="button-disable">🚧 Group Booking 🚧</div>
               </Link>
             </div>
-            <div className="disable-link">
-              <Link href="/manage-bookings">
-                <div className="button-disable">🚧 Manage Bookings 🚧</div>
-              </Link>
-            </div>
+            <Link href="/manage-bookings">
+              <div className="button">Manage Bookings</div>
+            </Link>
             <div className="disable-link">
               <Link href="/return-bike">
                 <div className="button-disable">🚧 Return Bike 🚧</div>
               </Link>
             </div>
+            <Link href="/">
+              <div className="button-return">Return</div>
+            </Link>
           </div>
         </div>
       ) : (

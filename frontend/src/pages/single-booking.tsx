@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import HeaderTemp from "@/containers/HeaderTemp";
 import InputStudentBikeSize from "@/containers/InputStudentBikeSize";
 import InputStudentData from "@/containers/InputStudentData";
@@ -11,7 +11,7 @@ import { SingleBookingSection } from "@/types/NavigationSections";
 import AvailabilityContainer from "@/containers/AvailabilityContainer";
 import Infobox from "@/containers/Infobox";
 
-function HomeStudent() {
+function HomeSingleBooking() {
   // Creating states for show of hide components
   const [currentSection, setCurrentSection] = useState<SingleBookingSection>(
     SingleBookingSection.SelectBikeSize
@@ -154,4 +154,4 @@ function HomeStudent() {
   );
 }
 
-export default HomeStudent;
+export default HomeSingleBooking;
