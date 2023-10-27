@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import HeaderTemp from "@/containers/HeaderTemp";
-import AvailabilityContainer from "@/containers/AvailabilityContainer";
-import BookingsOverview from "@/containers/BookingsOverview";
+import HeaderTemp from "@/components/organisms/HeaderTemp";
+import AvailabilityContainer from "@/components/organisms/AvailabilityContainer";
+import BookingsOverview from "@/components/organisms/BookingsOverview";
 import { ManageBookingSection } from "@/types/NavigationSections";
-import PreHandoverConfirmation from "@/containers/PreHandoverConfirmation";
+import PreHandoverConfirmation from "@/components/templates/PreHandoverConfirmation";
 
 function ManageBookings() {
   // Creating states for show of hide components

@@ -1,8 +1,8 @@
-import Head from "@/containers/Head";
+import Head from "@/components/atoms/Head";
 import Link from "next/link";
 import Login from "./login";
-import HeaderTemp from "@/containers/HeaderTemp";
-import AvailabilityContainer from "@/containers/AvailabilityContainer";
+import HeaderTemp from "@/components/organisms/HeaderTemp";
+import AvailabilityContainer from "@/components/organisms/AvailabilityContainer";
 
 let isLoggedIn: boolean = true;
 

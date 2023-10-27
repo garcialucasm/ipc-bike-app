@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "@/components/Button";
+import Button from "@/components/atoms/Button";
 import { ManageBookingSection } from "@/types/NavigationSections";
 
 function PreHandoverConfirmation(props: {

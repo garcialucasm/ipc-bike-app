@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import HeaderTemp from "@/containers/HeaderTemp";
-import InputStudentBikeSize from "@/containers/InputStudentBikeSize";
-import InputStudentData from "@/containers/InputStudentData";
-import PreBookingConfirmation from "@/containers/PreBookingConfirmation";
-import BookingConfirmed from "@/containers/BookingConfirmed";
+import HeaderTemp from "@/components/organisms/HeaderTemp";
+import InputStudentBikeSize from "@/components/templates/InputStudentBikeSize";
+import InputStudentData from "@/components/templates/InputStudentData";
+import PreBookingConfirmation from "@/components/templates/PreBookingConfirmation";
+import BookingConfirmed from "@/components/templates/BookingConfirmed";
 import { BikeSize } from "@/types/BikeType";
 import { UserData } from "@/types/UserType";
 import { BookingType } from "@/types/BookingType";
 import { SingleBookingSection } from "@/types/NavigationSections";
-import AvailabilityContainer from "@/containers/AvailabilityContainer";
-import Infobox from "@/containers/Infobox";
 
 function HomeSingleBooking() {
   // Creating states for show of hide components
@@ -119,13 +117,10 @@ function HomeSingleBooking() {
       <HeaderTemp heading="Single Booking" />
 
       {currentSection === SingleBookingSection.SelectBikeSize && (
-        <>
-          <AvailabilityContainer />
-          <InputStudentBikeSize
-            onNavigation={handleNavigation}
-            onSizeSelection={handleBikeSize}
-          />
-        </>
+        <InputStudentBikeSize
+          onNavigation={handleNavigation}
+          onSizeSelection={handleBikeSize}
+        />
       )}
       {currentSection === SingleBookingSection.InputUserData && (
         <InputStudentData
@@ -135,20 +130,17 @@ function HomeSingleBooking() {
         />
       )}
       {currentSection === SingleBookingSection.PreBookingConfirmation && (
-        <>
-          <Infobox bookingData={bookingData} />
-          <PreBookingConfirmation
-            onNavigation={handleNavigation}
-            onConfirmation={handleBookingConfirmation}
-          />
-        </>
+        <PreBookingConfirmation
+          onNavigation={handleNavigation}
+          onConfirmation={handleBookingConfirmation}
+          bookingData={bookingData}
+        />
       )}
       {currentSection === SingleBookingSection.BookingConfirmed && (
-        <>
-          <h3>✔️ Booking Confirmed</h3>
-          <Infobox bookingData={bookingData} />
-          <BookingConfirmed onNavigation={handleNavigation} />
-        </>
+        <BookingConfirmed
+          onNavigation={handleNavigation}
+          bookingData={bookingData}
+        />
       )}
     </div>
   );

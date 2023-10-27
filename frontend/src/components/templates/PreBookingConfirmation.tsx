@@ -1,13 +1,17 @@
 import React from "react";
-import Button from "@/components/Button";
+import Button from "@/components/atoms/Button";
 import { SingleBookingSection } from "@/types/NavigationSections";
+import Infobox from "../organisms/Infobox";
+import { BookingType } from "@/types/BookingType";
 
 function PreBookingConfirmation(props: {
   onConfirmation: (submitButton: { value: SingleBookingSection }) => void;
   onNavigation: (navigationButton: {
     buttonValue: SingleBookingSection;
   }) => void;
+  bookingData: BookingType;
 }) {
+  const bookingData = props.bookingData;
   function handleClick(event: { target: any } | undefined) {
     const { name, value } = event?.target;
     console.log(`name: ${name} value: ${value}`);
@@ -17,6 +21,7 @@ function PreBookingConfirmation(props: {
   }
   return (
     <div className="container">
+      <Infobox bookingData={bookingData} />
       <div>
         <Button
           onClick={handleClick}
