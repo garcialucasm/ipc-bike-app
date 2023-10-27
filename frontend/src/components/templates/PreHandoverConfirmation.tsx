@@ -16,7 +16,7 @@ function PreHandoverConfirmation(props: {
     props.onNavigation({ buttonValue: buttonClicked });
   }
   return (
-    <div className="container">
+    <div>
       <div>
         <Button
           onClick={handleClick}
@@ -25,8 +25,6 @@ function PreHandoverConfirmation(props: {
           textInside="Confirm Handover"
           value={ManageBookingSection.HandoverConfirmed}
         />
-      </div>
-      <div>
         <Button
           onClick={handleClick}
           type="submit"
@@ -34,8 +32,6 @@ function PreHandoverConfirmation(props: {
           textInside="Confirm Handover"
           value={ManageBookingSection.HandoverRefused}
         />
-      </div>
-      <div>
         <Button
           onClick={handleClick}
           type="submit"

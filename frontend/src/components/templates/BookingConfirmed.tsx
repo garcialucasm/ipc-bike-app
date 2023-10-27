@@ -10,7 +10,7 @@ function BookingConfirmed(props: {
 }) {
   const bookingData = props.bookingData;
   return (
-    <div className="container">
+    <div>
       <h3>✔️ Booking Confirmed</h3>
       <Infobox bookingData={bookingData} />
       <Link href="/">

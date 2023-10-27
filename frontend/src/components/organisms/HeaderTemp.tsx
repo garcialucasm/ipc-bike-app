@@ -7,9 +7,9 @@ type HeadingProps = {
 
 function HeaderTemp({ heading }: HeadingProps) {
   return (
-    <div className="center-content">
+    <div className="center-content py-5">
       {/* <Navbar /> */}
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div className="py-5">
         <Image
           src="/ipc-alumni-logo.png"
           width={587 / 2}
@@ -17,7 +17,7 @@ function HeaderTemp({ heading }: HeadingProps) {
           alt="IPC Alumni Logo"
         />
       </div>
-      <h1>{heading}</h1>
+      <div className="text-2xl font-bold">{heading}</div>
     </div>
   );
 }

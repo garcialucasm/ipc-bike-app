@@ -20,7 +20,7 @@ function PreBookingConfirmation(props: {
     props.onNavigation({ buttonValue: buttonClicked });
   }
   return (
-    <div className="container">
+    <div>
       <Infobox bookingData={bookingData} />
       <div>
         <Button

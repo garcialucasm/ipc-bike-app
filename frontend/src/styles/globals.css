@@ -1,5 +1,5 @@
-/* @tailwind base; */
-/* @tailwind components; */
+@tailwind base;
+@tailwind components;
 @tailwind utilities;
 
 html,
@@ -9,7 +9,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   line-height: 1.6;
-  /* font-size: 18px; */
+  font-size: 18px;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -26,10 +26,6 @@ body {
 img {
   max-width: 100%;
   display: block;
-}
-
-.container {
-  text-align: center;
 }
 
 .disable-link {
@@ -80,7 +76,7 @@ a:hover {
   margin: 5px;
   display: inline-block;
   padding: 10px 20px;
-  background-color: #616161; 
+  background-color: #616161;
   color: #ffffff;
   border: none;
   border-radius: 4px;

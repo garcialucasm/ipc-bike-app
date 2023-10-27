@@ -25,7 +25,7 @@ function ManageBookings() {
   }
 
   return (
-    <div className="container center-content">
+    <div className="center-content">
       <HeaderTemp heading="Manage Bookings" />
 
       {currentSection === ManageBookingSection.BookingsOverview && (

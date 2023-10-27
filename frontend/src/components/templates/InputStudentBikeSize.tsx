@@ -2,6 +2,7 @@ import { BikeSize } from "@/types/BikeType";
 import Button from "../atoms/Button";
 import Link from "next/link";
 import { SingleBookingSection } from "@/types/NavigationSections";
+import AvailabilityContainer from "../organisms/AvailabilityContainer";
 
 function InputStudentBikeSize(props: {
   onSizeSelection: (bikeSizeButton: { selectedSize: BikeSize }) => void;
@@ -18,8 +19,9 @@ function InputStudentBikeSize(props: {
   }
   return (
     <>
-      <div className="container">
-        <h2>Select the size:</h2>
+      <div className="flex-col items-center ">
+        <AvailabilityContainer/>
+        <div>Select the size:</div>
         <div>
           <Button
             onClick={handleClick}

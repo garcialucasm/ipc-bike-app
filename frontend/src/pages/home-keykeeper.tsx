@@ -10,7 +10,7 @@ export default function HomeKeyKeeper() {
   return (
     <>
       {isLoggedIn ? (
-        <div className="container center-content">
+        <div className="center-content">
           <div className="center-content">
             <Head title="IPC Alumni Bike" />
             <HeaderTemp heading="Home - Key Keeper" />

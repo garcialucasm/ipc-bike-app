@@ -35,10 +35,10 @@ function HomeSingleBooking() {
     },
   });
 
-  // Creating state to check if isUserDataValid and then submit booking
+  // Creating state to check if isUserDataValid and only then submit booking
   const [isUserDataValid, setIsUserDataValid] = useState(false);
 
-  // Statements to control navegation (next, submit & return buttons)
+  // Statements to control navigation (next, submit & return buttons)
   const handleNavigation = (event: { buttonValue: SingleBookingSection }) => {
     const valueButtonClicked: SingleBookingSection = event.buttonValue;
     setCurrentSection(valueButtonClicked);
@@ -113,7 +113,7 @@ function HomeSingleBooking() {
   }, [enteredUserData]);
 
   return (
-    <div className="container center-content">
+    <div className="center-content">
       <HeaderTemp heading="Single Booking" />
 
       {currentSection === SingleBookingSection.SelectBikeSize && (
