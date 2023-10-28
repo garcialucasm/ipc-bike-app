@@ -1,11 +1,11 @@
 
-import {Bike} from "./bike.model";
-import {User} from "./user.model";
+import { Bike } from "./bike.model";
+import { User } from "./user.model";
 
 enum BookingStatus {
-  BOOKED, 
-  DELIVERED,
-  RETURNED, 
+  BOOKED,
+  HANDOVER,
+  RETURNED,
   CANCELED
 }
 
