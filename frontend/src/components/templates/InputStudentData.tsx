@@ -1,6 +1,6 @@
 import React from "react";
-import Button from "../components/Button";
-import InputLabel from "@/components/InputLabel";
+import Button from "../atoms/Button";
+import InputLabel from "@/components/atoms/InputLabel";
 import { UserData } from "@/types/UserType";
 import { SingleBookingSection } from "@/types/NavigationSections";
 

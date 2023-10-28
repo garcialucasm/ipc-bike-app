@@ -1,17 +1,15 @@
-import React, { useState, useEffect, use } from "react";
-import HeaderTemp from "@/containers/HeaderTemp";
-import InputStudentBikeSize from "@/containers/InputStudentBikeSize";
-import InputStudentData from "@/containers/InputStudentData";
-import PreBookingConfirmation from "@/containers/PreBookingConfirmation";
-import BookingConfirmed from "@/containers/BookingConfirmed";
+import React, { useState, useEffect } from "react";
+import HeaderTemp from "@/components/organisms/HeaderTemp";
+import InputStudentBikeSize from "@/components/templates/InputStudentBikeSize";
+import InputStudentData from "@/components/templates/InputStudentData";
+import PreBookingConfirmation from "@/components/templates/PreBookingConfirmation";
+import BookingConfirmed from "@/components/templates/BookingConfirmed";
 import { BikeSize } from "@/types/BikeType";
 import { UserData } from "@/types/UserType";
 import { BookingType } from "@/types/BookingType";
 import { SingleBookingSection } from "@/types/NavigationSections";
-import AvailabilityContainer from "@/containers/AvailabilityContainer";
-import Infobox from "@/containers/Infobox";
 
-function HomeStudent() {
+function HomeSingleBooking() {
   // Creating states for show of hide components
   const [currentSection, setCurrentSection] = useState<SingleBookingSection>(
     SingleBookingSection.SelectBikeSize
@@ -37,10 +35,10 @@ function HomeStudent() {
     },
   });
 
-  // Creating state to check if isUserDataValid and then submit booking
+  // Creating state to check if isUserDataValid and only then submit booking
   const [isUserDataValid, setIsUserDataValid] = useState(false);
 
-  // Statements to control navegation (next, submit & return buttons)
+  // Statements to control navigation (next, submit & return buttons)
   const handleNavigation = (event: { buttonValue: SingleBookingSection }) => {
     const valueButtonClicked: SingleBookingSection = event.buttonValue;
     setCurrentSection(valueButtonClicked);
@@ -115,17 +113,14 @@ function HomeStudent() {
   }, [enteredUserData]);
 
   return (
-    <div className="container center-content">
+    <div className="center-content">
       <HeaderTemp heading="Single Booking" />
 
       {currentSection === SingleBookingSection.SelectBikeSize && (
-        <>
-          <AvailabilityContainer />
-          <InputStudentBikeSize
-            onNavigation={handleNavigation}
-            onSizeSelection={handleBikeSize}
-          />
-        </>
+        <InputStudentBikeSize
+          onNavigation={handleNavigation}
+          onSizeSelection={handleBikeSize}
+        />
       )}
       {currentSection === SingleBookingSection.InputUserData && (
         <InputStudentData
@@ -135,23 +130,20 @@ function HomeStudent() {
         />
       )}
       {currentSection === SingleBookingSection.PreBookingConfirmation && (
-        <>
-          <Infobox bookingData={bookingData} />
-          <PreBookingConfirmation
-            onNavigation={handleNavigation}
-            onConfirmation={handleBookingConfirmation}
-          />
-        </>
+        <PreBookingConfirmation
+          onNavigation={handleNavigation}
+          onConfirmation={handleBookingConfirmation}
+          bookingData={bookingData}
+        />
       )}
       {currentSection === SingleBookingSection.BookingConfirmed && (
-        <>
-          <h3>✔️ Booking Confirmed</h3>
-          <Infobox bookingData={bookingData} />
-          <BookingConfirmed onNavigation={handleNavigation} />
-        </>
+        <BookingConfirmed
+          onNavigation={handleNavigation}
+          bookingData={bookingData}
+        />
       )}
     </div>
   );
 }
 
-export default HomeStudent;
+export default HomeSingleBooking;

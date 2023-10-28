@@ -1,17 +1,18 @@
 import React from "react";
 import { SingleBookingSection } from "@/types/NavigationSections";
 import Link from "next/link";
+import Infobox from "../organisms/Infobox";
+import { BookingType } from "@/types/BookingType";
 
 function BookingConfirmed(props: {
   onNavigation: (navigationButton: any) => void;
+  bookingData: BookingType;
 }) {
-  function handleClick(event: { target: any } | undefined) {
-    const { value } = event?.target;
-    const buttonClicked: SingleBookingSection = parseInt(value, 10);
-    props.onNavigation({ buttonValue: buttonClicked });
-  }
+  const bookingData = props.bookingData;
   return (
-    <div className="container">
+    <div>
+      <h3>✔️ Booking Confirmed</h3>
+      <Infobox bookingData={bookingData} />
       <Link href="/">
         <div className="button-return">Go to Main Page</div>
       </Link>
