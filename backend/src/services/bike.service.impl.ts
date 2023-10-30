@@ -4,7 +4,7 @@ import IBikeService from "./bike.service";
 
 export default class BikeService implements IBikeService {
 
-  bikeRepository: IBikeRepository;
+   bikeRepository: IBikeRepository;
 
   validBikeStatusTransitions: Map<BikeStatus, BikeStatus[]>
 
