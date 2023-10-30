@@ -1,10 +1,10 @@
 
 enum BikeStatus {
-  BOOKED = "booked",
-  INUSE = "inUse",
-  DISABLED = "disabled",
-  FREE = "free"
-}
+  BOOKED = "BOOKED", 
+  INUSE = "INUSE",
+  DISABLED = "DISABLED",
+  FREE = "FREE"
+} 
 
 interface Bike {
   ID?: number;

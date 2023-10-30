@@ -15,7 +15,7 @@ export default class UserService implements IUserService {
       [UserStatus.INUSE, [UserStatus.FREE]]
     ])
   }
-
+ 
   async getOrCreate(userName: string, room: string, term: string): Promise<User> {
     const users = await this.userRepository.findAll({name: userName, term: term, room: room})
     let user: User 
