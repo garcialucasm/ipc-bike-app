@@ -60,7 +60,7 @@ export default class BookingService implements IBookingService {
   private validateUserForBooking(user: User) {
     // TODO consider if this should be in another component, and if we should create customized errors
     if (!user.IsActive)
-      throw new Error("User is inacative")
+      throw new Error("User is inactive")
     if (user.Status === UserStatus.BOOKED)
       throw new Error("User has already booked a bike")
     if (user.Status === UserStatus.INUSE)
@@ -72,19 +72,37 @@ export default class BookingService implements IBookingService {
 
   async approve(bookingId: number): Promise<Booking> {
     let booking: Booking = await this.bookingRepository.findById(bookingId)
+    if (booking.Status !== BookingStatus.BOOKED)
+      throw new Error("Booking not allowed by Current Booking Status");
 
-    booking.Status = BookingStatus.HANDOVER
+    if (booking.Bike[0].CurrentStatus !== BikeStatus.BOOKED)
+      throw new Error("Booking not allowed by Bike Status");
+
+    if (booking.User.Status !== UserStatus.BOOKED)
+      throw new Error("Booking not allowed by User Status");
+
+    booking.Status = BookingStatus.HANDEDOVER
     booking.User = await this.userService.changeStatus(booking.User, UserStatus.INUSE)
     booking.Bike[0] = await this.bikeService.changeStatus(booking.Bike[0], BikeStatus.INUSE)
+    let updatedBooking = await this.bookingRepository.update(booking)
+    return updatedBooking
+  }
+  async returnBike(bookingId: number): Promise<Booking> {
+    let booking: Booking = await this.bookingRepository.findById(bookingId)
+    booking.Status = BookingStatus.RETURNED
+    booking.User = await this.userService.changeStatus(booking.User, UserStatus.FREE)
+    booking.Bike[0] = await this.bikeService.changeStatus(booking.Bike[0], BikeStatus.FREE)
     let updatedBooking = await this.bookingRepository.update(booking)
 
     return updatedBooking
   }
-  returnBike(bookingId: number): Promise<Booking> {
-    throw new Error("Method not implemented.");
-  }
-  cancel(bookingId: number): Promise<Booking> {
-    throw new Error("Method not implemented.");
+  async cancel(bookingId: number): Promise<Booking> {
+    let booking: Booking = await this.bookingRepository.findById(bookingId)
+    booking.Status = BookingStatus.CANCELED
+    booking.User = await this.userService.changeStatus(booking.User, UserStatus.FREE)
+    booking.Bike[0] = await this.bikeService.changeStatus(booking.Bike[0], BikeStatus.FREE)
+    let updatedBooking = await this.bookingRepository.update(booking)
+    return updatedBooking
   }
   listAllOpened(): Promise<Booking[]> {
     throw new Error("Method not implemented.");

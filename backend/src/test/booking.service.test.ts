@@ -21,11 +21,13 @@ let bikeChooser: IBikeChooser
 let userService: IUserService
 let bookingService: IBookingService
 
-const userName = 'testuser'
-const userName2 = 'testuser2'
+const userName = 'testUser'
+const userName2 = 'testUser2'
+const userName3 = 'testUser3'
 const bikeSize = 'medium'
 const room = 'A101'
 let booking: Booking
+let booking2: Booking
 
 before(() => {
   // Initialize bookingService before each test
@@ -45,7 +47,6 @@ describe('For a valid user', () => {
 
   it('should create a student booking', async () => {
     booking = await bookingService.createSingleBooking(userName, room, bikeSize)
-
     assert.strictEqual(booking.User.Name, userName)
     assert.strictEqual(booking.Bike[0].Size, bikeSize)
     assert.strictEqual(booking.Status, BookingStatus.BOOKED)
@@ -58,22 +59,73 @@ describe('For an opened booking', () => {
   before(async () => {
     await bikeService.createBike(2, bikeSize)
     booking = await bookingService.createSingleBooking(userName2, room, bikeSize)
+    await bikeService.createBike(3, bikeSize)
+    booking2 = await bookingService.createSingleBooking(userName3, room, bikeSize)
   })
 
   it('should approve a booking', async () => {
     assert.ok(booking.ID)
-    const handover = await bookingService.approve(booking.ID)
-    assert.equal(handover.Status, BookingStatus.HANDOVER)
-    assert.equal(handover.User.Status, UserStatus.INUSE)
-    assert.equal(handover.Bike[0].CurrentStatus, BikeStatus.INUSE)
+    booking = await bookingService.approve(booking.ID)
+    assert.equal(booking.Status, BookingStatus.HANDEDOVER)
+    assert.equal(booking.User.Status, UserStatus.INUSE)
+    assert.equal(booking.Bike[0].CurrentStatus, BikeStatus.INUSE)
   })
 
+  it('should not approve a booking with (booking, user or bike) in a state other than booked', async () => {
+    // Booking state
+    try {
+      assert.ok(booking.ID)
+      await bookingService.approve(booking.ID)
+      assert.fail("something went wrong with the booking status during approval ")
+    } catch (error: any) {
+      assert.equal(error.message, "Booking not allowed by Current Booking Status")
+    }
+
+    // Bike state
+    try {
+      assert.ok(booking.ID)
+      booking.Status = BookingStatus.BOOKED
+      await bookingService.approve(booking.ID)
+      assert.fail("something went wrong with the bike status during approval ")
+    } catch (error: any) {
+      assert.equal(error.message, "Booking not allowed by Bike Status")
+    }
+
+    // User state
+    try {
+      assert.ok(booking.ID)
+      booking.Status = BookingStatus.BOOKED
+      booking.Bike[0].CurrentStatus = BikeStatus.BOOKED
+      await bookingService.approve(booking.ID)
+      assert.fail("something went wrong with the User status during approval ")
+    } catch (error: any) {
+      assert.equal(error.message, "Booking not allowed by User Status")
+    }
+  })
+
+  it('should return a bike', async () => {
+    assert.ok(booking.ID)
+    booking = await bookingService.returnBike(booking.ID)
+    assert.equal(booking.Status, BookingStatus.RETURNED)
+    assert.equal(booking.User.Status, UserStatus.FREE)
+    assert.equal(booking.Bike[0].CurrentStatus, BikeStatus.FREE)
+  })
+  {
+
+    it('should cancel a booking', async () => {
+      assert.ok(booking2.ID)
+      booking2 = await bookingService.approve(booking2.ID)
+      assert.ok(booking2.ID)
+      booking2 = await bookingService.cancel(booking2.ID)
+      assert.equal(booking2.Status, BookingStatus.CANCELED)
+      assert.equal(booking2.Bike[0].CurrentStatus, BikeStatus.FREE)
+      assert.equal(booking2.User.Status, UserStatus.FREE)
+    })
+  }
 })
 
-describe('title', () => {
-  it('should return a bike')
 
-  it('should cancel a booking')
+describe('title', () => {
 
   it('should list all opened bookings')
 

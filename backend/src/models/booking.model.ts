@@ -3,10 +3,10 @@ import { Bike } from "./bike.model";
 import { User } from "./user.model";
 
 enum BookingStatus {
-  BOOKED,
-  HANDOVER,
-  RETURNED,
-  CANCELED
+  BOOKED = "booked",
+  HANDEDOVER = "handedOver",
+  RETURNED = "returned",
+  CANCELED = "canceled"
 }
 
 
