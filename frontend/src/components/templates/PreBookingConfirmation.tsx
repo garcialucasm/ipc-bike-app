@@ -27,19 +27,21 @@ function PreBookingConfirmation(props: {
           onClick={handleClick}
           type="submit"
           name="submit-booking"
-          textInside="Confirm Booking"
           value={SingleBookingSection.BookingConfirmed}
-        />
+        >
+          <span>Confirm Booking</span>
+        </Button>
       </div>
       <div>
         <Button
           onClick={handleClick}
           type="submit"
           name="return"
-          textInside="Return"
           value={SingleBookingSection.InputUserData}
-          customClasses="button-return"
-        />
+          className="button-return"
+        >
+          <span>Return</span>
+        </Button>
       </div>
     </div>
   );

@@ -1,33 +1,13 @@
 import React from "react";
 
-interface Props {
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  type: "button" | "submit" | "reset" | undefined;
-  name: string;
-  value?: any;
-  textInside: string;
-  customClasses?: string;
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode;
 }
 
-const Button: React.FC<Props> = ({
-  onClick,
-  type,
-  name,
-  value,
-  textInside,
-  customClasses,
-}) => {
+export default function Button({ children, ...attributes }: Props) {
   return (
-    <button
-      className={`button ${customClasses}`}
-      onClick={onClick}
-      type={type}
-      name={name}
-      value={value}
-    >
-      {textInside}
+    <button type="button" className="button" {...attributes}>
+      {children}
     </button>
   );
-};
-
-export default Button;
+}

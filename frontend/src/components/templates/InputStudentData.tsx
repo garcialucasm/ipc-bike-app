@@ -66,21 +66,21 @@ function InputStudentData(props: {
       <div>
         <Button
           onClick={handleClick}
-          type="submit"
           name="next"
           value={SingleBookingSection.PreBookingConfirmation}
-          textInside="Next"
-        />
+        >
+          Next
+        </Button>
       </div>
       <div>
         <Button
           onClick={handleClick}
-          type="submit"
           name="return"
           value={SingleBookingSection.SelectBikeSize}
-          textInside="Return"
-          customClasses="button-return"
-        />
+          className="button-return"
+        >
+          Return
+        </Button>
       </div>
     </div>
   );

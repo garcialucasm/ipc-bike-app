@@ -20,25 +20,21 @@ function InputStudentBikeSize(props: {
   return (
     <>
       <div className="flex-col items-center ">
-        <AvailabilityContainer/>
+        <AvailabilityContainer />
         <div>Select the size:</div>
         <div>
           <Button
             onClick={handleClick}
-            type="submit"
             name="bikeSize"
-            textInside="Standard"
             value={BikeSize.STANDARD}
-          />
+          >
+            <span>Standard</span>
+          </Button>
         </div>
         <div>
-          <Button
-            onClick={handleClick}
-            type="submit"
-            name="bikeSize"
-            textInside="Small"
-            value={BikeSize.SMALL}
-          />
+          <Button onClick={handleClick} name="bikeSize" value={BikeSize.SMALL}>
+            <span>Small</span>
+          </Button>
         </div>
         <div>
           <Link href="/">
