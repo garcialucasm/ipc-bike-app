@@ -7,15 +7,14 @@ import AvailabilityContainer from "../organisms/AvailabilityContainer";
 function InputStudentBikeSize(props: {
   onSizeSelection: (bikeSizeButton: { selectedSize: BikeSize }) => void;
   onNavigation: (navigationButton: {
-    buttonValue: SingleBookingSection;
+    buttonName: SingleBookingSection;
   }) => void;
 }) {
-  function handleClick(event: { target: any } | undefined) {
-    const { value } = event?.target;
-    const bikeSizeClicked = value;
-    console.log(SingleBookingSection.InputUserData);
+  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+    const { name } = event.currentTarget;
+    const bikeSizeClicked: BikeSize = BikeSize[name as BikeSize];
     props.onSizeSelection({ selectedSize: bikeSizeClicked });
-    props.onNavigation({ buttonValue: SingleBookingSection.InputUserData });
+    props.onNavigation({ buttonName: SingleBookingSection.goToInputUserData });
   }
   return (
     <>
@@ -23,16 +22,12 @@ function InputStudentBikeSize(props: {
         <AvailabilityContainer />
         <div>Select the size:</div>
         <div>
-          <Button
-            onClick={handleClick}
-            name="bikeSize"
-            value={BikeSize.STANDARD}
-          >
+          <Button onClick={handleClick} name={BikeSize.STANDARD}>
             <span>Standard</span>
           </Button>
         </div>
         <div>
-          <Button onClick={handleClick} name="bikeSize" value={BikeSize.SMALL}>
+          <Button onClick={handleClick} name={BikeSize.SMALL}>
             <span>Small</span>
           </Button>
         </div>

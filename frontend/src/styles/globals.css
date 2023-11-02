@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-primary: #385E9D;
+  --color-primary-dark: #222331;
+  --color-secondary: #FA4616;
+  --color-tertiary: #BCBCBC;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #385E9D;
+    --color-primary-dark: #222331;
+    --color-secondary: #FA4616;
+    --color-tertiary: #BCBCBC;
+  }
+} */
 html,
 body {
   padding: 0;
@@ -117,17 +132,3 @@ input[type="text"] {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
   font-size: 16px; /* Set the font size */
 }
-
-/* :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-} */
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-} */

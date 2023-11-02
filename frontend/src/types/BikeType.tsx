@@ -1,5 +1,5 @@
 export enum BikeSize {
-  NONE = "none",
-  SMALL = "small",
-  STANDARD = "standard",
+  NONE = "NONE",
+  SMALL = "SMALL",
+  STANDARD = "STANDARD",
 }

@@ -5,19 +5,18 @@ import Infobox from "../organisms/Infobox";
 import { BookingType } from "@/types/BookingType";
 
 function PreBookingConfirmation(props: {
-  onConfirmation: (submitButton: { value: SingleBookingSection }) => void;
   onNavigation: (navigationButton: {
-    buttonValue: SingleBookingSection;
+    buttonName: SingleBookingSection;
   }) => void;
   bookingData: BookingType;
 }) {
   const bookingData = props.bookingData;
-  function handleClick(event: { target: any } | undefined) {
-    const { name, value } = event?.target;
-    console.log(`name: ${name} value: ${value}`);
-    const buttonClicked: SingleBookingSection = parseInt(value, 10);
-    props.onConfirmation({ value: value });
-    props.onNavigation({ buttonValue: buttonClicked });
+
+  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+    const { name } = event.currentTarget;
+    const buttonClicked: SingleBookingSection =
+      SingleBookingSection[name as SingleBookingSection];
+    props.onNavigation({ buttonName: buttonClicked });
   }
   return (
     <div>
@@ -25,9 +24,7 @@ function PreBookingConfirmation(props: {
       <div>
         <Button
           onClick={handleClick}
-          type="submit"
-          name="submit-booking"
-          value={SingleBookingSection.BookingConfirmed}
+          name={SingleBookingSection.goToBookingConfirmationStatus}
         >
           <span>Confirm Booking</span>
         </Button>
@@ -35,9 +32,7 @@ function PreBookingConfirmation(props: {
       <div>
         <Button
           onClick={handleClick}
-          type="submit"
-          name="return"
-          value={SingleBookingSection.InputUserData}
+          name={SingleBookingSection.goToInputUserData}
           className="button-return"
         >
           <span>Return</span>

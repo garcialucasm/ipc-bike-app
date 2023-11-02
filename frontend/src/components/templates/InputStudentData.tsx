@@ -6,7 +6,7 @@ import { SingleBookingSection } from "@/types/NavigationSections";
 
 function InputStudentData(props: {
   onNavigation: (navigationButton: {
-    buttonValue: SingleBookingSection;
+    buttonName: SingleBookingSection;
   }) => void;
   sendUserDataState: UserData;
   sendSetUserDataState: (
@@ -29,12 +29,11 @@ function InputStudentData(props: {
     console.log(event.target);
   }
 
-  function handleClick(event: { target: any } | undefined) {
-    const { value } = event?.target;
-    const buttonClicked: SingleBookingSection = parseInt(value, 10);
-    console.log(typeof buttonClicked);
-    console.log(buttonClicked);
-    props.onNavigation({ buttonValue: buttonClicked });
+  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+    const { name } = event.currentTarget;
+    const buttonClicked: SingleBookingSection =
+      SingleBookingSection[name as SingleBookingSection];
+    props.onNavigation({ buttonName: buttonClicked });
   }
 
   return (
@@ -66,8 +65,7 @@ function InputStudentData(props: {
       <div>
         <Button
           onClick={handleClick}
-          name="next"
-          value={SingleBookingSection.PreBookingConfirmation}
+          name={SingleBookingSection.goToPreBookingConfirmation}
         >
           Next
         </Button>
@@ -75,8 +73,7 @@ function InputStudentData(props: {
       <div>
         <Button
           onClick={handleClick}
-          name="return"
-          value={SingleBookingSection.SelectBikeSize}
+          name={SingleBookingSection.goToSelectBikeSize}
           className="button-return"
         >
           Return

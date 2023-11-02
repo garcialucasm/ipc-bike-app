@@ -9,16 +9,17 @@ import PreHandoverConfirmation from "@/components/templates/PreHandoverConfirmat
 function ManageBookings() {
   // Creating states for show of hide components
   const [currentSection, setCurrentSection] = useState<ManageBookingSection>(
-    ManageBookingSection.BookingsOverview
+    ManageBookingSection.goToBookingsOverview
   );
 
   // Statements to control navegation (next, submit & return buttons)
-  const handleNavigation = (event: { buttonValue: ManageBookingSection }) => {
-    const valueButtonClicked: ManageBookingSection = event.buttonValue;
-    setCurrentSection(valueButtonClicked);
+  const handleNavigation = (event: { buttonName: ManageBookingSection }) => {
+    const buttonClicked: ManageBookingSection =
+      ManageBookingSection[event.buttonName as ManageBookingSection];
+    setCurrentSection(buttonClicked);
   };
 
-  // Correct me
+  // TODO
   // Option to confirm/refuse Booking or Return to BookingsOverview
   function handleBookingConfirmation(event: { value: ManageBookingSection }) {
     return;
@@ -27,7 +28,7 @@ function ManageBookings() {
   return (
     <div className="center-content">
       <HeaderTemp heading="Manage Bookings" />
-      {currentSection === ManageBookingSection.BookingsOverview && (
+      {currentSection === ManageBookingSection.goToBookingsOverview && (
         <>
           <AvailabilityContainer />
           <BookingsOverview />
@@ -36,12 +37,9 @@ function ManageBookings() {
           </Link>
         </>
       )}
-      {currentSection === ManageBookingSection.PreHandoverConfirmation && (
+      {currentSection === ManageBookingSection.goToPreHandoverConfirmation && (
         <>
-          <PreHandoverConfirmation
-            onNavigation={handleNavigation}
-            onConfirmation={handleBookingConfirmation}
-          />
+          <PreHandoverConfirmation onNavigation={handleNavigation} />
         </>
       )}
     </div>

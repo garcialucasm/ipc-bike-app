@@ -4,7 +4,7 @@ import Link from "next/link";
 import Infobox from "../organisms/Infobox";
 import { BookingType } from "@/types/BookingType";
 
-function BookingConfirmed(props: {
+function goToBookingConfirmationStatus(props: {
   onNavigation: (navigationButton: any) => void;
   bookingData: BookingType;
 }) {
@@ -20,4 +20,4 @@ function BookingConfirmed(props: {
   );
 }
 
-export default BookingConfirmed;
+export default goToBookingConfirmationStatus;
