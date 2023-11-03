@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 :root {
-  --color-primary: #385E9D;
+  --color-primary: #385e9d;
   --color-primary-dark: #222331;
-  --color-secondary: #FA4616;
-  --color-tertiary: #BCBCBC;
+  --color-secondary: #fa4616;
+  --color-tertiary: #bcbcbc;
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -67,7 +67,6 @@ a:hover {
 .infobox-container {
   width: 300px;
   margin: 10px;
-  background-color: #f0f0f0;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;

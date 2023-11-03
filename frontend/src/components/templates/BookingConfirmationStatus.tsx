@@ -1,5 +1,4 @@
 import React from "react";
-import { SingleBookingSection } from "@/types/NavigationSections";
 import Link from "next/link";
 import Infobox from "../organisms/Infobox";
 import { BookingType } from "@/types/BookingType";
