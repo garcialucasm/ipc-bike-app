@@ -41,7 +41,7 @@ function HomeSingleBooking() {
   // Statements to control navigation (next, submit & return buttons)
   const handleNavigation = (event: { buttonName: SingleBookingSection }) => {
     const buttonClicked: SingleBookingSection =
-      SingleBookingSection[event.buttonName as SingleBookingSection];
+      event.buttonName as SingleBookingSection;
     setCurrentSection(buttonClicked);
     if (buttonClicked === SingleBookingSection.goToBookingConfirmationStatus) {
       handleBookingConfirmation();

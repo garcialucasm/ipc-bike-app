@@ -24,8 +24,7 @@ const data = [
 function BookingsOverview() {
   return (
     <>
-      <div className="infobox-container">
-        <h2>Bookings Overview</h2>
+      <div className="w-64 my-5">
         <div>
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left">
@@ -34,6 +33,7 @@ function BookingsOverview() {
                   <th>ID</th>
                   <th>User</th>
                   <th>Bike</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -44,6 +44,9 @@ function BookingsOverview() {
                     </td>
                     <td>{item.user}</td>
                     <td>{item.bike}</td>
+                    <td>
+                      <a href="">...</a>
+                    </td>
                   </tr>
                 ))}
               </tbody>

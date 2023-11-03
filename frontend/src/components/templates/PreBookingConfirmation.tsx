@@ -14,8 +14,7 @@ function PreBookingConfirmation(props: {
 
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     const { name } = event.currentTarget;
-    const buttonClicked: SingleBookingSection =
-      SingleBookingSection[name as SingleBookingSection];
+    const buttonClicked: SingleBookingSection = name as SingleBookingSection;
     props.onNavigation({ buttonName: buttonClicked });
   }
   return (

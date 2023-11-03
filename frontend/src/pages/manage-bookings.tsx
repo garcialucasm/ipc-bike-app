@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import HeaderTemp from "@/components/organisms/HeaderTemp";
-import AvailabilityContainer from "@/components/organisms/AvailabilityContainer";
+import AvailabilityContainer, {
+  AvailabilityConfig,
+} from "@/components/organisms/AvailabilityContainer";
 import BookingsOverview from "@/components/organisms/BookingsOverview";
 import { ManageBookingSection } from "@/types/NavigationSections";
 import PreHandoverConfirmation from "@/components/templates/PreHandoverConfirmation";
+
+const availabilityShowSelection = AvailabilityConfig.ManageBookings;
 
 function ManageBookings() {
   // Creating states for show of hide components
@@ -15,7 +19,7 @@ function ManageBookings() {
   // Statements to control navegation (next, submit & return buttons)
   const handleNavigation = (event: { buttonName: ManageBookingSection }) => {
     const buttonClicked: ManageBookingSection =
-      ManageBookingSection[event.buttonName as ManageBookingSection];
+      event.buttonName as ManageBookingSection;
     setCurrentSection(buttonClicked);
   };
 
@@ -30,7 +34,9 @@ function ManageBookings() {
       <HeaderTemp heading="Manage Bookings" />
       {currentSection === ManageBookingSection.goToBookingsOverview && (
         <>
-          <AvailabilityContainer />
+          <AvailabilityContainer
+            availabilitySelection={availabilityShowSelection}
+          />
           <BookingsOverview />
           <Link href="/home-keykeeper">
             <div className="button-return">Return</div>

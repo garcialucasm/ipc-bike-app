@@ -2,9 +2,13 @@ import Head from "@/components/atoms/Head";
 import Link from "next/link";
 import Login from "./login";
 import HeaderTemp from "@/components/organisms/HeaderTemp";
-import AvailabilityContainer from "@/components/organisms/AvailabilityContainer";
+import AvailabilityContainer, {
+  AvailabilityConfig,
+} from "@/components/organisms/AvailabilityContainer";
 
 let isLoggedIn: boolean = true;
+
+const availabilityShowSelection = AvailabilityConfig.HomeKeyKeeper;
 
 export default function HomeKeyKeeper() {
   return (
@@ -14,7 +18,9 @@ export default function HomeKeyKeeper() {
           <div className="center-content">
             <Head title="IPC Alumni Bike" />
             <HeaderTemp heading="Home - Key Keeper" />
-            <AvailabilityContainer />
+            <AvailabilityContainer
+              availabilitySelection={availabilityShowSelection}
+            />
             <Link href="/single-booking">
               <div className="button">Single Booking</div>
             </Link>

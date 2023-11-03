@@ -9,8 +9,7 @@ function PreHandoverConfirmation(props: {
 }) {
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     const { name } = event.currentTarget;
-    const buttonClicked: ManageBookingSection =
-      ManageBookingSection[name as ManageBookingSection];
+    const buttonClicked: ManageBookingSection = name as ManageBookingSection;
     props.onNavigation({ buttonName: buttonClicked });
   }
   return (
