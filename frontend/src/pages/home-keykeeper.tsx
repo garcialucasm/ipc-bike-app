@@ -14,32 +14,39 @@ export default function HomeKeyKeeper() {
   return (
     <>
       {isLoggedIn ? (
-        <div className="center-content">
-          <div className="center-content">
-            <Head title="IPC Alumni Bike" />
+        <div className="flex flex-col items-center text-center h-screen">
+          <div className="card-layout flex flex-col items-center">
             <HeaderTemp heading="Home - Key Keeper" />
-            <AvailabilityContainer
-              availabilitySelection={availabilityShowSelection}
-            />
-            <Link href="/single-booking">
-              <div className="button">Single Booking</div>
-            </Link>
-            <div className="disable-link">
-              <Link href="/group-booking">
-                <div className="button-disable">🚧 Group Booking 🚧</div>
-              </Link>
+            <div className="w-11/12 flex flex-col">
+              <div className="flex flex-col items-center">
+                <Head title="IPC Alumni Bike" />
+                <AvailabilityContainer
+                  availabilitySelection={availabilityShowSelection}
+                />
+              </div>
+              <div className="flex flex-col items-center">
+                <div className="w-full">
+                  <Link href="/single-booking">
+                    <div className="btn-primary">Single Booking</div>
+                  </Link>
+                </div>
+                <div className="w-full disable-link ">
+                  <Link href="/group-booking">
+                    <div className="btn-disable">🚧 Group Booking 🚧</div>
+                  </Link>
+                </div>
+                <div className="w-full">
+                  <Link href="/manage-bookings">
+                    <div className="btn-primary">Manage Bookings</div>
+                  </Link>
+                </div>
+                <div className="w-full">
+                  <Link href="/">
+                    <div className="btn-return">Return</div>
+                  </Link>
+                </div>
+              </div>
             </div>
-            <Link href="/manage-bookings">
-              <div className="button">Manage Bookings</div>
-            </Link>
-            <div className="disable-link">
-              <Link href="/return-bike">
-                <div className="button-disable">🚧 Return Bike 🚧</div>
-              </Link>
-            </div>
-            <Link href="/">
-              <div className="button-return">Return</div>
-            </Link>
           </div>
         </div>
       ) : (

@@ -10,6 +10,7 @@ const config: Config = {
     extend: {
       colors: {
         'color-primary': 'var(--color-primary)',
+        'color-primary-hover': 'var(--color-primary-hover)',
         'color-primary-dark': 'var(--color-primary-dark)',
         // 'color-primary-light': '',
         'color-secondary': 'var(--color-secondary)',

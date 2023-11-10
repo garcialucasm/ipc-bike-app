@@ -13,7 +13,7 @@ const availabilityShowSelection = AvailabilityConfig.ManageBookings;
 function ManageBookings() {
   // Creating states for show of hide components
   const [currentSection, setCurrentSection] = useState<ManageBookingSection>(
-    ManageBookingSection.goToBookingsOverview
+    ManageBookingSection.bookingsOverview
   );
 
   // Statements to control navegation (next, submit & return buttons)
@@ -30,24 +30,28 @@ function ManageBookings() {
   }
 
   return (
-    <div className="center-content">
-      <HeaderTemp heading="Manage Bookings" />
-      {currentSection === ManageBookingSection.goToBookingsOverview && (
-        <>
-          <AvailabilityContainer
-            availabilitySelection={availabilityShowSelection}
-          />
-          <BookingsOverview />
-          <Link href="/home-keykeeper">
-            <div className="button-return">Return</div>
-          </Link>
-        </>
-      )}
-      {currentSection === ManageBookingSection.goToPreHandoverConfirmation && (
-        <>
-          <PreHandoverConfirmation onNavigation={handleNavigation} />
-        </>
-      )}
+    <div className="flex flex-col items-center text-center h-screen">
+      <div className="card-layout flex flex-col items-center">
+        <HeaderTemp heading="Manage Bookings" />
+        <div className="w-11/12 flex flex-col items-center">
+          {currentSection === ManageBookingSection.bookingsOverview && (
+            <>
+              <AvailabilityContainer
+                availabilitySelection={availabilityShowSelection}
+              />
+              <BookingsOverview />
+              <Link href="/home-keykeeper">
+                <div className="btn-return">Return</div>
+              </Link>
+            </>
+          )}
+          {currentSection === ManageBookingSection.preHandoverConfirmation && (
+            <>
+              <PreHandoverConfirmation onNavigation={handleNavigation} />
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

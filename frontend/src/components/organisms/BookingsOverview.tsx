@@ -24,11 +24,11 @@ const data = [
 function BookingsOverview() {
   return (
     <>
-      <div className="w-64 my-5">
+      <div className="w-full my-5">
         <div>
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+              <thead className="text-xs text-gray-700 uppercase bg-white">
                 <tr>
                   <th>ID</th>
                   <th>User</th>

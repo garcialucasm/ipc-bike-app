@@ -12,9 +12,9 @@ enum StatusColorClass {
 }
 enum AnimationStatusClass {
   NONE = "",
-  FREE = "scale-125 opacity-20",
-  INUSE = "animate-ping opacity-30",
-  BOOKED = "animate-ping opacity-30",
+  FREE = "scale-150 opacity-[.1]",
+  INUSE = "animate-ping opacity-25",
+  BOOKED = "animate-ping",
 }
 
 function getStatusColor(status: BookingStatus | UserStatus | BikeStatus) {

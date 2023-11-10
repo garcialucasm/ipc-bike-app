@@ -17,19 +17,19 @@ function PreHandoverConfirmation(props: {
       <div>
         <Button
           onClick={handleClick}
-          name={ManageBookingSection.goToHandoverConfirmationStatus}
+          name={ManageBookingSection.handoverConfirmationStatus}
         >
           <span>Confirm Booking</span>
         </Button>
         <Button
           onClick={handleClick}
-          name={ManageBookingSection.goToHandoverConfirmationStatus}
+          name={ManageBookingSection.handoverConfirmationStatus}
         >
           <span>Cancel</span>
         </Button>
         <Button
           onClick={handleClick}
-          name={ManageBookingSection.goToBookingsOverview}
+          name={ManageBookingSection.bookingsOverview}
         >
           <span>Cancel</span>
         </Button>

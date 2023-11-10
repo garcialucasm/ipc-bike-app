@@ -6,7 +6,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 export default function Button({ children, ...attributes }: Props) {
   return (
-    <button type="button" className="button" {...attributes}>
+    <button type="button" className="btn-primary" {...attributes}>
       {children}
     </button>
   );

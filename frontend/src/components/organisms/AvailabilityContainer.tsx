@@ -1,4 +1,4 @@
-import { BikeStatus } from "@/types/BikeType";
+import { BikeSize, BikeStatus } from "@/types/BikeType";
 import AvailabilityLabel from "../molecules/AvailabilityLabel";
 
 export const AvailabilityConfig = {
@@ -43,7 +43,8 @@ function AvailabilityContainer(props: {
   };
 }) {
   //TODO get the number of bikes for each BikeStatus
-  const bikeCountFree = 11;
+  const bikeCountFreeStandardSize = 8;
+  const bikeCountFreeSmallSize = 3;
   const bikeCountBooked = 5;
   const bikeCountInUse = 8;
   const bikeCountDisabled = 1;
@@ -51,42 +52,43 @@ function AvailabilityContainer(props: {
   const { ShowFreeBikes, ShowBookedBikes, ShowInUseBikes, ShowDisabledBikes } =
     props.availabilitySelection;
 
-  const statusList = [
-    {
-      show: ShowFreeBikes,
-      bikeStatus: BikeStatus.FREE,
-    },
-    { show: ShowBookedBikes, bikeStatus: BikeStatus.BOOKED },
-    { show: ShowInUseBikes, bikeStatus: BikeStatus.INUSE },
-    { show: ShowDisabledBikes, bikeStatus: BikeStatus.DISABLED },
-  ];
   return (
     <>
-      <div className="infobox-container">
-        {ShowFreeBikes && (
-          <AvailabilityLabel
-            selectedStatus={BikeStatus.FREE}
-            bikeCount={bikeCountFree}
-          />
-        )}
-        {ShowBookedBikes && (
-          <AvailabilityLabel
-            selectedStatus={BikeStatus.BOOKED}
-            bikeCount={bikeCountBooked}
-          />
-        )}
-        {ShowInUseBikes && (
-          <AvailabilityLabel
-            selectedStatus={BikeStatus.INUSE}
-            bikeCount={bikeCountInUse}
-          />
-        )}
-        {ShowDisabledBikes && (
-          <AvailabilityLabel
-            selectedStatus={BikeStatus.DISABLED}
-            bikeCount={bikeCountDisabled}
-          />
-        )}
+      <div className="flex flex-col items-center card-layout-availability">
+        <div>
+          {ShowFreeBikes && (
+            <AvailabilityLabel
+              selectedStatus={BikeStatus.FREE}
+              bikeSize={BikeSize.STANDARD}
+              bikeCount={bikeCountFreeStandardSize}
+            />
+          )}
+          {ShowFreeBikes && (
+            <AvailabilityLabel
+              selectedStatus={BikeStatus.FREE}
+              bikeSize={BikeSize.SMALL}
+              bikeCount={bikeCountFreeSmallSize}
+            />
+          )}
+          {ShowBookedBikes && (
+            <AvailabilityLabel
+              selectedStatus={BikeStatus.BOOKED}
+              bikeCount={bikeCountBooked}
+            />
+          )}
+          {ShowInUseBikes && (
+            <AvailabilityLabel
+              selectedStatus={BikeStatus.INUSE}
+              bikeCount={bikeCountInUse}
+            />
+          )}
+          {ShowDisabledBikes && (
+            <AvailabilityLabel
+              selectedStatus={BikeStatus.DISABLED}
+              bikeCount={bikeCountDisabled}
+            />
+          )}
+        </div>
       </div>
     </>
   );

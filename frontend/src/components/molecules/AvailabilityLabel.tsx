@@ -1,15 +1,22 @@
-import { BikeStatus } from "@/types/BikeType";
+import { BikeSize, BikeStatus } from "@/types/BikeType";
 import StatusIndicator from "../atoms/StatusIndicator";
 
 function AvailabilityLabel(props: {
   selectedStatus: BikeStatus;
+  bikeSize?: BikeSize;
   bikeCount: number;
 }) {
   const selectedStatus = props.selectedStatus;
+  const bikeSize = props.bikeSize;
   const bikeCount = props.bikeCount;
   let textLabel: string;
-  if (selectedStatus === BikeStatus.FREE) {
-    textLabel = "available";
+  if (selectedStatus === BikeStatus.FREE && bikeSize === BikeSize.STANDARD) {
+    textLabel = "standard available";
+  } else if (
+    selectedStatus === BikeStatus.FREE &&
+    bikeSize === BikeSize.SMALL
+  ) {
+    textLabel = "small available";
   } else if (selectedStatus === BikeStatus.BOOKED) {
     textLabel = "to confirm";
   } else if (selectedStatus === BikeStatus.INUSE) {

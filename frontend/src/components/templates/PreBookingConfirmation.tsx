@@ -23,7 +23,7 @@ function PreBookingConfirmation(props: {
       <div>
         <Button
           onClick={handleClick}
-          name={SingleBookingSection.goToBookingConfirmationStatus}
+          name={SingleBookingSection.bookingConfirmationStatus}
         >
           <span>Confirm Booking</span>
         </Button>
@@ -31,8 +31,8 @@ function PreBookingConfirmation(props: {
       <div>
         <Button
           onClick={handleClick}
-          name={SingleBookingSection.goToInputUserData}
-          className="button-return"
+          name={SingleBookingSection.inputUserData}
+          className="btn-return"
         >
           <span>Return</span>
         </Button>

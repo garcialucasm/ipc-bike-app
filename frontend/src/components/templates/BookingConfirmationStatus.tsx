@@ -13,7 +13,7 @@ function goToBookingConfirmationStatus(props: {
       <h3>✔️ Booking Confirmed</h3>
       <Infobox bookingData={bookingData} />
       <Link href="/">
-        <div className="button-return">Go to Main Page</div>
+        <div className="btn-return">Go to Main Page</div>
       </Link>
     </div>
   );
