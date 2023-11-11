@@ -3,7 +3,7 @@ import { User, UserStatus, UserType } from "../models/user.model";
 import IUserRepository from "./user.repository";
 import { createWhereClausule } from "./sql.util";
 
-class UserRepository implements IUserRepository {
+export default class UserRepository implements IUserRepository {
 
   client: Client
 

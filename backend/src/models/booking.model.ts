@@ -3,23 +3,29 @@ import { Bike } from "./bike.model";
 import { User } from "./user.model";
 
 enum BookingStatus {
-  BOOKED = "booked",
-  HANDEDOVER = "handedOver",
-  RETURNED = "returned",
-  CANCELED = "canceled"
+  BOOKED = "BOOKED", 
+  DELIVERED = "DELIVERED",
+  RETURNED = "RETURNED", 
+  CANCELED = "CANCELED"
 }
 
+enum BookingType {
+  SINGLE = "SINGLE", 
+  GROUP = "GROUP",
+  CLASSROOM = "CLASSROOM"
+}
 
 interface Booking {
   ID?: number;
   User: User;
   Bike: Bike[];
   Status: BookingStatus;
+  Type: BookingType;
   CreatedAt?: Date;
   ConfirmedAt?: Date;
-  ReturnedAt?: Date,
-  ReturnedCondition: string,
+  ReturnedAt?: Date
+  ReturnedCondition: string
   Notes?: string
 }
 
-export { BookingStatus, Booking };
+export { BookingStatus, BookingType, Booking };
