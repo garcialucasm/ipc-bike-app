@@ -39,6 +39,7 @@ create table "booking" (
   "id" serial primary key,
   "user_id" int not null,
   "status" varchar(20) not null,
+  "type" varchar(20) not null, 
   "returned_condition" varchar(255),
   "notes" varchar(255),
   "created_at" timestamp,
