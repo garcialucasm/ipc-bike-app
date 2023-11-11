@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontSize: {
+        xxs: '0.5rem',
+      },
       colors: {
         'color-primary': 'var(--color-primary)',
         'color-primary-hover': 'var(--color-primary-hover)',

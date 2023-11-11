@@ -18,25 +18,21 @@ function PreBookingConfirmation(props: {
     props.onNavigation({ buttonName: buttonClicked });
   }
   return (
-    <div>
+    <div className="flex flex-col items-center w-11/12">
       <Infobox bookingData={bookingData} />
-      <div>
-        <Button
-          onClick={handleClick}
-          name={SingleBookingSection.bookingConfirmationStatus}
-        >
-          <span>Confirm Booking</span>
-        </Button>
-      </div>
-      <div>
-        <Button
-          onClick={handleClick}
-          name={SingleBookingSection.inputUserData}
-          className="btn-return"
-        >
-          <span>Return</span>
-        </Button>
-      </div>
+      <Button
+        onClick={handleClick}
+        name={SingleBookingSection.bookingConfirmationStatus}
+      >
+        <span>Confirm Booking</span>
+      </Button>
+      <Button
+        onClick={handleClick}
+        name={SingleBookingSection.inputUserData}
+        className="btn-return"
+      >
+        <span>Return</span>
+      </Button>
     </div>
   );
 }

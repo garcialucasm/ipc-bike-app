@@ -54,7 +54,7 @@ function AvailabilityContainer(props: {
 
   return (
     <>
-      <div className="flex flex-col items-center card-layout-availability">
+      <div className="flex flex-col items-center container-webapp-availability">
         <div>
           {ShowFreeBikes && (
             <AvailabilityLabel

@@ -19,13 +19,13 @@ function HeaderTemp({ heading }: HeadingProps) {
             alt=""
           />
         </div>
-        <div className="w-full flex text-xs/[17px] py-3">
-          <div className="flex items-center border rounded-full text-white py-1 px-2 mx-1 hover:bg-blue-700">
+        <div className="w-full flex text-xxs/[12px] md:text-xs/[17px] py-3">
+          <div className="flex items-center border rounded-full text-white py-1 px-1 md:mx-1 hover:bg-blue-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              height="36"
+              height="24"
               viewBox="0 -960 960 960"
-              width="36"
+              width="24"
             >
               <path
                 fill="currentColor"
@@ -34,12 +34,12 @@ function HeaderTemp({ heading }: HeadingProps) {
             </svg>
             <span className="pr-2">Home</span>
           </div>
-          <div className="flex items-center rounded-full text-white py-1 px-2 mx-1 hover:bg-blue-700">
+          <div className="flex items-center rounded-full text-white py-1 px-1 md:mx-1 hover:bg-blue-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              height="36"
+              height="24"
               viewBox="0 -960 960 960"
-              width="36"
+              width="24"
             >
               <path
                 fill="currentColor"
@@ -52,12 +52,12 @@ function HeaderTemp({ heading }: HeadingProps) {
               Booking
             </span>
           </div>
-          <div className="flex items-center rounded-full text-white py-1 px-2 mx-1 hover:bg-blue-700">
+          <div className="flex items-center rounded-full text-white py-1 px-1 md:mx-1 hover:bg-blue-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              height="36"
+              height="24"
               viewBox="0 -960 960 960"
-              width="36"
+              width="24"
             >
               <path
                 fill="currentColor"
@@ -70,12 +70,12 @@ function HeaderTemp({ heading }: HeadingProps) {
               Booking
             </span>
           </div>
-          <div className="flex items-center rounded-full text-white px-1 hover:bg-blue-700">
+          <div className="flex items-center rounded-full text-white px-1 md:mx-1 hover:bg-blue-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              height="36"
+              height="24"
               viewBox="0 -960 960 960"
-              width="36"
+              width="24"
             >
               <path
                 fill="currentColor"

@@ -15,7 +15,7 @@ export default function HomeKeyKeeper() {
     <>
       {isLoggedIn ? (
         <div className="flex flex-col items-center text-center h-screen">
-          <div className="card-layout flex flex-col items-center">
+          <div className="container-webapp flex flex-col items-center">
             <HeaderTemp heading="Home - Key Keeper" />
             <div className="w-11/12 flex flex-col">
               <div className="flex flex-col items-center">

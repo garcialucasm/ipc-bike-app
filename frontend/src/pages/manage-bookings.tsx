@@ -31,7 +31,7 @@ function ManageBookings() {
 
   return (
     <div className="flex flex-col items-center text-center h-screen">
-      <div className="card-layout flex flex-col items-center">
+      <div className="container-webapp flex flex-col items-center">
         <HeaderTemp heading="Manage Bookings" />
         <div className="w-11/12 flex flex-col items-center">
           {currentSection === ManageBookingSection.bookingsOverview && (
@@ -40,9 +40,11 @@ function ManageBookings() {
                 availabilitySelection={availabilityShowSelection}
               />
               <BookingsOverview />
-              <Link href="/home-keykeeper">
-                <div className="btn-return">Return</div>
-              </Link>
+              <div className="w-full">
+                <Link href="/home-keykeeper">
+                  <div className="btn-return">Return</div>
+                </Link>
+              </div>
             </>
           )}
           {currentSection === ManageBookingSection.preHandoverConfirmation && (

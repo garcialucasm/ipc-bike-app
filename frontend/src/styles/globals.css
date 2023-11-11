@@ -13,13 +13,13 @@
   .btn-disable {
     @apply my-2 py-2 px-4 w-full bg-gray-300 text-gray-200 font-semibold rounded-full shadow-md hover:bg-color-tertiary focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
   }
-  .card-layout {
-    @apply min-w-min w-full lg:w-11/12 max-w-xl bg-gray-50 rounded-b-xl p-0 shadow background-transparent;
+  .container-webapp {
+    @apply w-full lg:w-11/12 max-w-xl rounded-xl h-5/6 min-h-full bg-white shadow-xl;
   }
-  .card-layout-secondary {
+  .card-webapp {
     @apply bg-white border border-gray-200 rounded-xl shadow;
   }
-  .card-layout-availability {
+  .container-webapp-availability {
     @apply w-full m-6 p-6 bg-white border border-gray-200 rounded-xl shadow;
   }
   .input-text {
@@ -57,12 +57,6 @@ body {
   line-height: 1.6;
   font-size: 18px;
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
 }
 
 .background-mesh {
@@ -70,10 +64,10 @@ body {
   background-image: radial-gradient(
       at 26% 49%,
       hsla(0, 0%, 100%, 1) 0px,
-      transparent 50%
+      transparent 80%
     ),
-    radial-gradient(at 51% 18%, hsla(105, 0%, 100%, 0.63) 0px, transparent 50%),
-    radial-gradient(at 75% 31%, hsla(208, 59%, 70%, 0.52) 0px, transparent 50%),
+    radial-gradient(at 51% 18%, hsla(105, 0%, 100%, 0.63) 0px, transparent 70%),
+    radial-gradient(at 75% 31%, hsla(208, 59%, 70%, 0.52) 0px, transparent 20%),
     radial-gradient(at 48% 46%, hsla(198, 62%, 63%, 0.98) 0px, transparent 50%),
     radial-gradient(at 10% 51%, hsla(256, 0%, 100%, 0.76) 0px, transparent 50%),
     radial-gradient(at 27% 18%, hsla(208, 100%, 71%, 0.87) 0px, transparent 50%),
@@ -114,13 +108,4 @@ a {
 
 a:hover {
   text-decoration: none;
-}
-
-.infobox-container {
-  width: 300px;
-  margin: 10px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

@@ -122,7 +122,7 @@ function HomeSingleBooking() {
   return (
     <>
       <div className="flex flex-col items-center text-center">
-        <div className="flex flex-col items-center card-layout">
+        <div className="flex flex-col items-center container-webapp">
           <HeaderTemp heading="Single Booking" />
           <Stepper currentSection={currentSection} />
           {currentSection === SingleBookingSection.selectBikeSize && (
