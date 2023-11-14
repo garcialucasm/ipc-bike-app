@@ -5,42 +5,34 @@ import Infobox from "../organisms/Infobox";
 import { BookingType } from "@/types/BookingType";
 
 function PreBookingConfirmation(props: {
-  onConfirmation: (submitButton: { value: SingleBookingSection }) => void;
   onNavigation: (navigationButton: {
-    buttonValue: SingleBookingSection;
+    buttonName: SingleBookingSection;
   }) => void;
   bookingData: BookingType;
 }) {
   const bookingData = props.bookingData;
-  function handleClick(event: { target: any } | undefined) {
-    const { name, value } = event?.target;
-    console.log(`name: ${name} value: ${value}`);
-    const buttonClicked: SingleBookingSection = parseInt(value, 10);
-    props.onConfirmation({ value: value });
-    props.onNavigation({ buttonValue: buttonClicked });
+
+  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+    const { name } = event.currentTarget;
+    const buttonClicked: SingleBookingSection = name as SingleBookingSection;
+    props.onNavigation({ buttonName: buttonClicked });
   }
   return (
-    <div>
+    <div className="flex flex-col items-center w-11/12">
       <Infobox bookingData={bookingData} />
-      <div>
-        <Button
-          onClick={handleClick}
-          type="submit"
-          name="submit-booking"
-          textInside="Confirm Booking"
-          value={SingleBookingSection.BookingConfirmed}
-        />
-      </div>
-      <div>
-        <Button
-          onClick={handleClick}
-          type="submit"
-          name="return"
-          textInside="Return"
-          value={SingleBookingSection.InputUserData}
-          customClasses="button-return"
-        />
-      </div>
+      <Button
+        onClick={handleClick}
+        name={SingleBookingSection.bookingConfirmationStatus} className="btn-primary"
+      >
+        <span>Confirm Booking</span>
+      </Button>
+      <Button
+        onClick={handleClick}
+        name={SingleBookingSection.inputUserData}
+        className="btn-return"
+      >
+        <span>Return</span>
+      </Button>
     </div>
   );
 }

@@ -1,39 +1,37 @@
 import Head from "@/components/atoms/Head";
 import Link from "next/link";
 import Login from "./login";
-import HeaderTemp from "@/components/organisms/HeaderTemp";
-import AvailabilityContainer from "@/components/organisms/AvailabilityContainer";
+import HeaderWebApp from "@/components/organisms/HeaderWebApp";
+import AvailabilityContainer, {
+  AvailabilityConfig,
+} from "@/components/organisms/AvailabilityContainer";
+import { MenuNavigation } from "@/types/NavigationSections";
+import BookingsOverview from "@/components/organisms/BookingsOverview";
 
 let isLoggedIn: boolean = true;
+
+const availabilityShowSelection = AvailabilityConfig.HomeKeyKeeper;
 
 export default function HomeKeyKeeper() {
   return (
     <>
       {isLoggedIn ? (
-        <div className="center-content">
-          <div className="center-content">
-            <Head title="IPC Alumni Bike" />
-            <HeaderTemp heading="Home - Key Keeper" />
-            <AvailabilityContainer />
-            <Link href="/single-booking">
-              <div className="button">Single Booking</div>
-            </Link>
-            <div className="disable-link">
-              <Link href="/group-booking">
-                <div className="button-disable">🚧 Group Booking 🚧</div>
-              </Link>
+        <div className="flex flex-col items-center text-center min-h-screen">
+          <div className="container-webapp flex flex-col items-center">
+            <HeaderWebApp
+              headingTitle={"Welcome, Lorem Ipsum"}
+              headingSubTitle="Lorem ipsum is placeholder text commonly used"
+              currentPage={MenuNavigation.homePage}
+            />
+            <div className="w-11/12 flex flex-col">
+              <div className="flex flex-col items-center">
+                <Head title="IPC Alumni Bike" />
+                <AvailabilityContainer
+                  availabilitySelection={availabilityShowSelection}
+                />
+                <BookingsOverview />
+              </div>
             </div>
-            <Link href="/manage-bookings">
-              <div className="button">Manage Bookings</div>
-            </Link>
-            <div className="disable-link">
-              <Link href="/return-bike">
-                <div className="button-disable">🚧 Return Bike 🚧</div>
-              </Link>
-            </div>
-            <Link href="/">
-              <div className="button-return">Return</div>
-            </Link>
           </div>
         </div>
       ) : (

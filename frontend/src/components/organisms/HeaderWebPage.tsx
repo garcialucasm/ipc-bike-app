@@ -10,7 +10,7 @@ const navigation = [
   { name: "More info", href: "#" },
 ];
 
-export default function HeaderWeb() {
+export default function HeaderWebPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -21,7 +21,7 @@ export default function HeaderWeb() {
       >
         <div className="flex lg:flex-1">
           <a href="#" className="-m-1.5 p-1.5">
-            <span className="sr-only">Your Company</span>
+            <span className="sr-only">IPC Alumni</span>
             <Image
               src="/alumni-logo.png"
               className="h-14 w-auto"
