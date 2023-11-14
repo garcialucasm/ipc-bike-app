@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 // import Image from 'next/image';
 
-function Navbar() {
+function NavbarWebPage() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -54,4 +54,4 @@ function Navbar() {
     </>
   );
 }
-export default Navbar;
+export default NavbarWebPage;

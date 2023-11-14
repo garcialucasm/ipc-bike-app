@@ -1,70 +1,50 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { SingleBookingSection } from "@/types/NavigationSections";
 
+interface StepConfig {
+  stepOne: boolean;
+  stepTwo: boolean;
+  stepThree: boolean;
+}
+
 function ProgressStepsBar(props: { currentSection: SingleBookingSection }) {
-  const currentSection = props.currentSection as SingleBookingSection;
-  
-  const [currentStep, setCurrentStep] = useState({
-    stepOne: {
-      icon: "bg-white text-white",
-      bar: "after:border-white",
-    },
-    stepTwo: {
-      icon: "bg-white text-white",
-      bar: "after:border-white",
-    },
-    stepThree: {
-      icon: "bg-white text-white",
-      bar: "after:border-white",
-    },
-  });
+  const { currentSection } = props;
 
-  useEffect(() => {
-    const stepIsDone = {
-      icon: "bg-blue-600 text-white",
-      bar: "after:border-blue-500",
+  const currentStep = React.useMemo(() => {
+    const stepOneConfig: StepConfig = {
+      stepOne: false,
+      stepTwo: false,
+      stepThree: false,
     };
-    const stepIsWaiting = {
-      icon: "bg-gray-200 text-gray-500",
-      bar: "after:border-gray-200",
+    const stepTwoConfig: StepConfig = {
+      stepOne: true,
+      stepTwo: false,
+      stepThree: false,
     };
-
-    const stepOneConfig = {
-      stepOne: stepIsWaiting,
-      stepTwo: stepIsWaiting,
-      stepThree: stepIsWaiting,
+    const stepThreeConfig: StepConfig = {
+      stepOne: true,
+      stepTwo: true,
+      stepThree: false,
     };
-    const stepTwoConfig = {
-      stepOne: stepIsDone,
-      stepTwo: stepIsWaiting,
-      stepThree: stepIsWaiting,
+    const stepFinalConfig: StepConfig = {
+      stepOne: true,
+      stepTwo: true,
+      stepThree: true,
     };
-    const stepThreeConfig = {
-      stepOne: stepIsDone,
-      stepTwo: stepIsDone,
-      stepThree: stepIsWaiting,
-    };
-    const stepFinalConfig = {
-      stepOne: stepIsDone,
-      stepTwo: stepIsDone,
-      stepThree: stepIsDone,
-    };
-    try {
-      if (currentSection === SingleBookingSection.selectBikeSize) {
-        setCurrentStep(stepOneConfig);
-      } else if (currentSection === SingleBookingSection.inputUserData) {
-        setCurrentStep(stepTwoConfig);
-      } else if (
-        currentSection === SingleBookingSection.preBookingConfirmation
-      ) {
-        setCurrentStep(stepThreeConfig);
-      } else if (
-        currentSection === SingleBookingSection.bookingConfirmationStatus
-      ) {
-        setCurrentStep(stepFinalConfig);
-      }
-    } catch (error) {
-      console.log(error);
+    switch (currentSection) {
+      case SingleBookingSection.selectBikeSize:
+        return stepOneConfig;
+      case SingleBookingSection.inputUserData:
+        return stepTwoConfig;
+      case SingleBookingSection.preBookingConfirmation:
+        return stepThreeConfig;
+      case SingleBookingSection.bookingConfirmationStatus:
+        return stepFinalConfig;
+      default:
+        // Log an error or handle the unknown section
+        console.error(`Unknown section: ${currentSection}`);
+        // Return a default step or handle as appropriate
+        return stepOneConfig;
     }
   }, [currentSection]);
 
@@ -72,10 +52,19 @@ function ProgressStepsBar(props: { currentSection: SingleBookingSection }) {
     <>
       <ol className="flex items-center w-11/12 py-5">
         <li
-          className={`flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-4 after:inline-block ${currentStep.stepOne.bar}`}
+          className={`flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-4 after:inline-block
+          ${
+            currentStep.stepOne
+              ? "stepper-is-done-bar"
+              : "stepper-is-waiting-bar"
+          }`}
         >
           <span
-            className={`flex items-center justify-center w-10 h-10 rounded-full lg:h-12 lg:w-12 shrink-0 ${currentStep.stepOne.icon}`}
+            className={`flex items-center justify-center w-10 h-10 rounded-full lg:h-12 lg:w-12 shrink-0 ${
+              currentStep.stepOne
+                ? "stepper-is-done-icon"
+                : "stepper-is-waiting-icon"
+            }`}
           >
             <svg
               className="w-3.5 h-3.5 lg:w-4 lg:h-4 "
@@ -95,10 +84,18 @@ function ProgressStepsBar(props: { currentSection: SingleBookingSection }) {
           </span>
         </li>
         <li
-          className={`flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-4 after:inline-block ${currentStep.stepTwo.bar}`}
+          className={`flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-4 after:inline-block ${
+            currentStep.stepTwo
+              ? "stepper-is-done-bar"
+              : "stepper-is-waiting-bar"
+          }`}
         >
           <span
-            className={`flex items-center justify-center w-10 h-10 rounded-full lg:h-12 lg:w-12 shrink-0 ${currentStep.stepTwo.icon}`}
+            className={`flex items-center justify-center w-10 h-10 rounded-full lg:h-12 lg:w-12 shrink-0 ${
+              currentStep.stepTwo
+                ? "stepper-is-done-icon"
+                : "stepper-is-waiting-icon"
+            }`}
           >
             <svg
               className="w-4 h-4 lg:w-5 lg:h-5"
@@ -113,7 +110,11 @@ function ProgressStepsBar(props: { currentSection: SingleBookingSection }) {
         </li>
         <li className="flex items-center w-auto">
           <span
-            className={`flex items-center justify-center w-10 h-10 rounded-full lg:h-12 lg:w-12 shrink-0 ${currentStep.stepThree.icon}`}
+            className={`flex items-center justify-center w-10 h-10 rounded-full lg:h-12 lg:w-12 shrink-0 ${
+              currentStep.stepThree
+                ? "stepper-is-done-icon"
+                : "stepper-is-waiting-icon"
+            }`}
           >
             <svg
               className="w-4 h-4 lg:w-5 lg:h-5"

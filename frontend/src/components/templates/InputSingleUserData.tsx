@@ -69,6 +69,7 @@ function InputStudentData(props: {
           <Button
             onClick={handleClick}
             name={SingleBookingSection.preBookingConfirmation}
+            className="btn-primary"
           >
             Next
           </Button>

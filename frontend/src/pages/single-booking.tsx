@@ -6,9 +6,12 @@ import BookingConfirmationStatus from "@/components/templates/BookingConfirmatio
 import { BikeSize } from "@/types/BikeType";
 import { UserData } from "@/types/UserType";
 import { BookingType } from "@/types/BookingType";
-import { SingleBookingSection } from "@/types/NavigationSections";
+import {
+  MenuNavigation,
+  SingleBookingSection,
+} from "@/types/NavigationSections";
 import Stepper from "@/components/organisms/Stepper";
-import HeaderTemp from "@/components/organisms/HeaderTemp";
+import HeaderWebApp from "@/components/organisms/HeaderWebApp";
 
 function HomeSingleBooking() {
   // Creating states for show of hide components
@@ -121,9 +124,13 @@ function HomeSingleBooking() {
 
   return (
     <>
-      <div className="flex flex-col items-center text-center">
-        <div className="flex flex-col items-center container-webapp">
-          <HeaderTemp heading="Single Booking" />
+      <div className="flex flex-col items-center text-center min-h-screen">
+        <div className="container-webapp flex flex-col items-center">
+          <HeaderWebApp
+            headingTitle={"Single Booking"}
+            headingSubTitle="Select the type of bike, confirm the details, and book."
+            currentPage={MenuNavigation.singleBooking}
+          />
           <Stepper currentSection={currentSection} />
           {currentSection === SingleBookingSection.selectBikeSize && (
             <InputSingleBikeSize

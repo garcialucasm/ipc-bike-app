@@ -10,7 +10,7 @@ const navigation = [
   { name: "More info", href: "#" },
 ];
 
-export default function HeaderWeb() {
+export default function HeaderWebPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (

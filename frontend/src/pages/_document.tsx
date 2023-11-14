@@ -6,7 +6,7 @@ export default function Document() {
     <Html>
       <Head />
       <body>
-        <BackgroundMesh />
+        {/* <BackgroundMesh /> */}
         <Main />
         <NextScript />
       </body>

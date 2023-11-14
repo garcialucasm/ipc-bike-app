@@ -17,7 +17,7 @@ function goToBookingConfirmationStatus(props: {
         <Button className="btn-primary">
           <span>See instructions</span>
         </Button>
-        <Link href="/">
+        <Link href="/home-keykeeper">
           <div className="btn-return">Go to Main Page</div>
         </Link>
       </div>

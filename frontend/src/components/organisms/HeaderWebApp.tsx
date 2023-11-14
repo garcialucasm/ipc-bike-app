@@ -1,31 +1,48 @@
-import Image from "next/image";
-import Navbar from "./Navbar";
+import Link from "next/link";
+import { MenuNavigation } from "@/types/NavigationSections";
+import NavbarWebApp from "../molecules/NavbarWebApp";
+import React from "react";
 
-type HeadingProps = {
-  heading: string;
-};
+function HeaderWebApp(props: {
+  headingTitle: string;
+  headingSubTitle: string;
+  currentPage: MenuNavigation;
+}) {
+  const currentPage: MenuNavigation = props.currentPage;
+  const currentMenuPage = React.useMemo(() => {
+    switch (currentPage) {
+      case MenuNavigation.homePage:
+        return MenuNavigation.homePage;
+      case MenuNavigation.singleBooking:
+        return MenuNavigation.singleBooking;
+      case MenuNavigation.groupBooking:
+        return MenuNavigation.groupBooking;
+      default:
+        // Log an error or handle the unknown section
+        console.error(`Unknown section: ${currentPage}`);
+        // Return a default step or handle as appropriate
+        return;
+    }
+  }, [currentPage]);
 
-function HeaderTemp({ heading }: HeadingProps) {
   return (
-    <div className="flex flex-col items-center w-full rounded-b-xl py-3 text-white bg-blue-800">
+    <div className="flex flex-col items-center w-full rounded-b-xl text-white bg-blue-800">
       <div className="flex flex-col items-start w-11/12">
-        <div className="py-3">
-          <span className="sr-only">IPC Alumni</span>
-          <Image
-            src="/logo-ipc-white.png"
-            className="h-6 w-auto"
-            width={300}
-            height={399}
-            alt=""
-          />
-        </div>
-        <div className="w-full flex text-xxs/[12px] md:text-xs/[17px] py-3">
-          <div className="flex items-center border rounded-full text-white py-1 px-1 md:mx-1 hover:bg-blue-700">
+        <NavbarWebApp />
+        <div className="w-full flex text-xxs md:text-xs">
+          <Link
+            href="/home-keykeeper"
+            className={`flex items-center header-menu-items ${
+              currentMenuPage == MenuNavigation.homePage
+                ? "header-menu-item-current-page"
+                : ""
+            }`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              height="24"
+              height="28"
               viewBox="0 -960 960 960"
-              width="24"
+              width="28"
             >
               <path
                 fill="currentColor"
@@ -33,17 +50,24 @@ function HeaderTemp({ heading }: HeadingProps) {
               />
             </svg>
             <span className="pr-2">Home</span>
-          </div>
-          <div className="flex items-center rounded-full text-white py-1 px-1 md:mx-1 hover:bg-blue-700">
+          </Link>
+          <Link
+            href="/single-booking"
+            className={`flex items-center header-menu-items ${
+              currentMenuPage == MenuNavigation.singleBooking
+                ? "header-menu-item-current-page"
+                : ""
+            }`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              height="24"
+              height="28"
               viewBox="0 -960 960 960"
-              width="24"
+              width="28"
             >
               <path
                 fill="currentColor"
-                d="M480-492.309q-57.749 0-98.874-41.124-41.125-41.125-41.125-98.874 0-57.75 41.125-98.874 41.125-41.125 98.874-41.125 57.749 0 98.874 41.125 41.125 41.124 41.125 98.874 0 57.749-41.125 98.874-41.125 41.124-98.874 41.124ZM180.001-187.694v-88.922q0-29.384 15.962-54.422 15.961-25.038 42.653-38.5 59.308-29.077 119.654-43.615T480-427.691q61.384 0 121.73 14.538 60.346 14.538 119.654 43.615 26.692 13.462 42.653 38.5 15.962 25.038 15.962 54.422v88.922H180.001ZM240-247.693h480v-28.923q0-12.154-7.039-22.5-7.038-10.346-19.115-16.885-51.692-25.461-105.418-38.577Q534.702-367.693 480-367.693t-108.428 13.115q-53.726 13.116-105.418 38.577-12.077 6.539-19.115 16.885Q240-288.77 240-276.616v28.923Zm240-304.614q33 0 56.5-23.5t23.5-56.5q0-33-23.5-56.5t-56.5-23.5q-33 0-56.5 23.5t-23.5 56.5q0 33 23.5 56.5t56.5 23.5Zm0-80Zm0 384.614Z"
+                d="M732.308-410.001v-127.307H605v-45.384h127.308v-127.307h45.383v127.307h127.308v45.384H777.691v127.307h-45.383ZM360-492.924q-57.749 0-95.22-37.471t-37.471-95.412q0-57.942 37.471-95.221 37.471-37.278 95.22-37.278t95.22 37.278q37.471 37.279 37.471 95.221 0 57.941-37.471 95.412-37.471 37.471-95.22 37.471ZM60.002-187.694v-75.922q0-30 15.96-55.038 15.962-25.038 45.501-37.884 68.845-30.308 125.044-43.423 56.2-13.115 113.308-13.115 57.108 0 113.185 13.115 56.076 13.115 124.922 43.423 29.538 13.846 45.807 38.384 16.27 24.538 16.27 54.538v75.922H60.001Zm45.383-45.384h509.23v-30.538q0-15.615-9.577-29.923-9.577-14.308-26.116-22.462-64.076-29.923-113.34-40.807Q416.318-367.693 360-367.693q-56.318 0-106.082 10.885-49.764 10.884-113.456 40.807-16.923 8.154-26 22.462-9.077 14.308-9.077 29.923v30.538ZM360-538.307q37.461 0 62.384-24.924 24.923-24.923 24.923-62.384t-24.923-62.384Q397.461-712.922 360-712.922t-62.384 24.923q-24.923 24.923-24.923 62.384t24.923 62.384q24.923 24.924 62.384 24.924Zm0-87.308Zm0 392.537Z"
               />
             </svg>
             <span className="pr-2">
@@ -51,13 +75,16 @@ function HeaderTemp({ heading }: HeadingProps) {
               <br />
               Booking
             </span>
-          </div>
-          <div className="flex items-center rounded-full text-white py-1 px-1 md:mx-1 hover:bg-blue-700">
+          </Link>
+          <Link
+            href="/group-booking"
+            className="flex items-center header-menu-items"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              height="24"
+              height="28"
               viewBox="0 -960 960 960"
-              width="24"
+              width="28"
             >
               <path
                 fill="currentColor"
@@ -69,13 +96,13 @@ function HeaderTemp({ heading }: HeadingProps) {
               <br />
               Booking
             </span>
-          </div>
-          <div className="flex items-center rounded-full text-white px-1 md:mx-1 hover:bg-blue-700">
+          </Link>
+          <Link href="/" className="flex items-center header-menu-items">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              height="24"
+              height="28"
               viewBox="0 -960 960 960"
-              width="24"
+              width="28"
             >
               <path
                 fill="currentColor"
@@ -86,12 +113,13 @@ function HeaderTemp({ heading }: HeadingProps) {
               Become
               <br />a member
             </span>
-          </div>
+          </Link>
         </div>
-        <div className="text-3xl">{heading}</div>
+        <div className="text-2xl text-left font-extrabold pt-8">{props.headingTitle}</div>
+        <div className="text-md text-left pb-3">{props.headingSubTitle}</div>
       </div>
     </div>
   );
 }
 
-export default HeaderTemp;
+export default HeaderWebApp;

@@ -17,3 +17,16 @@ export enum ReturnBookingSection {
   preReturnConfirmation = "preReturnConfirmation",
   returnConfirmationStatus = "returnConfirmationStatus",
 }
+
+export enum MenuNavigation {
+  homePage = "homePage",
+  singleBooking = "singleBooking",
+  groupBooking = "groupBooking",
+}
+
+export enum MenuOptions {
+  profile = "profile",
+  inventory = "inventory",
+  stats = "stats",
+  signOut = "signOut",
+}

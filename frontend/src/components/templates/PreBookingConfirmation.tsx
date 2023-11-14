@@ -22,7 +22,7 @@ function PreBookingConfirmation(props: {
       <Infobox bookingData={bookingData} />
       <Button
         onClick={handleClick}
-        name={SingleBookingSection.bookingConfirmationStatus}
+        name={SingleBookingSection.bookingConfirmationStatus} className="btn-primary"
       >
         <span>Confirm Booking</span>
       </Button>

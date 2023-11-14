@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import HeaderTemp from "@/components/organisms/HeaderTemp";
+import HeaderWebApp from "@/components/organisms/HeaderWebApp";
 import AvailabilityContainer, {
   AvailabilityConfig,
 } from "@/components/organisms/AvailabilityContainer";
 import BookingsOverview from "@/components/organisms/BookingsOverview";
-import { ManageBookingSection } from "@/types/NavigationSections";
+import { ManageBookingSection, MenuNavigation } from "@/types/NavigationSections";
 import PreHandoverConfirmation from "@/components/templates/PreHandoverConfirmation";
 
 const availabilityShowSelection = AvailabilityConfig.ManageBookings;
@@ -32,19 +32,18 @@ function ManageBookings() {
   return (
     <div className="flex flex-col items-center text-center h-screen">
       <div className="container-webapp flex flex-col items-center">
-        <HeaderTemp heading="Manage Bookings" />
+        <HeaderWebApp
+          headingTitle={"Welcome, Lorem Ipsum"}
+          headingSubTitle="Lorem ipsum is placeholder text commonly used"
+          currentPage={MenuNavigation.homePage}
+        />
         <div className="w-11/12 flex flex-col items-center">
           {currentSection === ManageBookingSection.bookingsOverview && (
             <>
               <AvailabilityContainer
                 availabilitySelection={availabilityShowSelection}
               />
-              <BookingsOverview />
-              <div className="w-full">
-                <Link href="/home-keykeeper">
-                  <div className="btn-return">Return</div>
-                </Link>
-              </div>
+              
             </>
           )}
           {currentSection === ManageBookingSection.preHandoverConfirmation && (
