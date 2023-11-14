@@ -66,9 +66,9 @@ function StatusIndicator(props: {
   const { statusColorClass, animationStatusClass } = statusColor;
   return (
     <>
-      <span className="relative flex h-2.5 w-2.5 m-2 ">
+      <span className="relative flex h-2.5 w-2.5 m-2">
         <span
-          className={`absolute inline-flex h-full w-full rounded-full opacity-50  ${statusColorClass} ${animationStatusClass}`}
+          className={`absolute inline-flex h-full w-full rounded-full opacity-50 ${statusColorClass} ${animationStatusClass}`}
         ></span>
         <span
           className={`relative inline-flex rounded-full h-2.5 w-2.5 ${statusColorClass}`}

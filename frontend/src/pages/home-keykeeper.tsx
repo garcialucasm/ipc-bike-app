@@ -16,7 +16,7 @@ export default function HomeKeyKeeper() {
   return (
     <>
       {isLoggedIn ? (
-        <div className="flex flex-col items-center text-center min-h-screen">
+        <div className="flex flex-col items-center text-center h-full">
           <div className="container-webapp flex flex-col items-center">
             <HeaderWebApp
               headingTitle={"Welcome, Lorem Ipsum"}

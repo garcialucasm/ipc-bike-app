@@ -26,13 +26,13 @@ function HeaderWebApp(props: {
   }, [currentPage]);
 
   return (
-    <div className="flex flex-col items-center w-full rounded-b-xl text-white bg-blue-800">
+    <div className="flex flex-col items-center w-full rounded-b-xl text-white bg-blue-800 py-2">
       <div className="flex flex-col items-start w-11/12">
         <NavbarWebApp />
-        <div className="w-full flex text-xxs md:text-xs">
+        <div className="overflow-x-auto w-full flex text-xxs md:text-xs">
           <Link
             href="/home-keykeeper"
-            className={`flex items-center header-menu-items ${
+            className={`flex items-center header-menu-items ms-0 ${
               currentMenuPage == MenuNavigation.homePage
                 ? "header-menu-item-current-page"
                 : ""
@@ -115,7 +115,9 @@ function HeaderWebApp(props: {
             </span>
           </Link>
         </div>
-        <div className="text-2xl text-left font-extrabold pt-8">{props.headingTitle}</div>
+        <div className="text-2xl text-left font-extrabold pt-8">
+          {props.headingTitle}
+        </div>
         <div className="text-md text-left pb-3">{props.headingSubTitle}</div>
       </div>
     </div>

@@ -2,7 +2,7 @@ import React from "react";
 import { BikeAvailability, BikeSize } from "@/types/BikeType";
 import Image from "next/image";
 
-function BikeTypeContainer(props: { bikeCountFree: BikeAvailability }) {
+function BikeChooserContainer(props: { bikeCountFree: BikeAvailability }) {
   const { bikeSize: bikeType, countFree } = props.bikeCountFree;
   let bikeSelectedImage: string;
   let bikeSelectedCountFree: number;
@@ -56,4 +56,4 @@ function BikeTypeContainer(props: { bikeCountFree: BikeAvailability }) {
   );
 }
 
-export default BikeTypeContainer;
+export default BikeChooserContainer;
