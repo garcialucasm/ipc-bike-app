@@ -8,7 +8,7 @@ export default interface IBookingService {
    * @param userName 
    * @param bikeSize 
    */
-  createStudentBooking(userName: string, room: string, bikeSize: string) : Promise<Booking>;
+  createSingleBooking(userName: string, room: string, bikeSize: string) : Promise<Booking>;
 
   /**
    * Given a bookingId, if it's in a BOOKED state, move it to DELIVERED state,

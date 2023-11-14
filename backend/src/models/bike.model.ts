@@ -1,7 +1,10 @@
 
 enum BikeStatus {
-  BOOKED, INUSE, DISABLED, FREE
-} 
+  BOOKED = "booked",
+  INUSE = "inUse",
+  DISABLED = "disabled",
+  FREE = "free"
+}
 
 interface Bike {
   ID?: number;
@@ -14,4 +17,4 @@ interface Bike {
   DeltedAt?: Date;
 }
 
-export {BikeStatus, Bike}
+export { BikeStatus, Bike }
