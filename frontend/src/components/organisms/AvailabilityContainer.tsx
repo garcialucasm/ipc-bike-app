@@ -18,7 +18,7 @@ export const AvailabilityConfig = {
     ShowFreeBikes: true,
     ShowBookedBikes: true,
     ShowInUseBikes: true,
-    ShowDisabledBikes: true,
+    ShowDisabledBikes: false,
   },
   ManageBookings: {
     ShowFreeBikes: false,

@@ -64,11 +64,9 @@ function AvailabilityCard(props: {
             <StatusIndicator
               status={selectedStatus}
               isStatic={false}
-              height="h-3"
-              width="w-3"
             />
           </span>
-          <span className="text-center text-2xl drop-shadow-md">
+          <span className="text-center text-2xl pe-1 drop-shadow-md">
             {bikeCount}
           </span>
 
