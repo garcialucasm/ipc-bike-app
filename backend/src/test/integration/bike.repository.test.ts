@@ -21,12 +21,12 @@ after("close db connection", async () => {
   await client.end()
 })
 
-describe('IBikeRepository Integration Tests', async() => {
+describe('IBikeRepository Integration Tests', () => {
     let bikeRepository: IBikeRepository;
 
-    cleanupDb(client)
 
     before(async () => {
+        cleanupDb(client)
         bikeRepository = new BikeRepository(client); 
         await bikeRepository.save({Numbering: 1, Size: "medium", CurrentStatus: BikeStatus.FREE, IsActive: true})
         await bikeRepository.save({Numbering: 2, Size: "small", CurrentStatus: BikeStatus.INUSE, IsActive: true})
