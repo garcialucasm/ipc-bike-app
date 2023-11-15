@@ -57,7 +57,7 @@ function AvailabilityCard(props: {
   return (
     <>
       <div
-        className={`w-full flex flex-col rounded-xl font-semibold bg-gradient-to-tr from-slate-50 via-slate-100 to-slate-50 border shadow-md ${cardTextColorByStatus}`}
+        className={`w-full flex flex-col rounded-xl font-semibold bg-gradient-to-tr from-slate-50 via-slate-100 to-slate-50 border shadow-sm ${cardTextColorByStatus}`}
       >
         <div className="flex items-center h-full">
           <span>
@@ -68,6 +68,10 @@ function AvailabilityCard(props: {
               width="w-3"
             />
           </span>
+          <span className="text-center text-2xl drop-shadow-md">
+            {bikeCount}
+          </span>
+
           <span className="text-slate-400 text-xs">{textLabel}</span>
         </div>
         <div className="w-full flex justify-center items-center py-2">
@@ -107,13 +111,9 @@ function AvailabilityCard(props: {
             )}
           </div>
         </div>
-        <div
-          className={`{flex w-full px-3 pb-1 items-center justify-center rounded-b-xl text-slate-100 ${cardColorByStatus}`}
-        >
-          <div className="w-full text-center text-2xl drop-shadow-md">
-            {bikeCount}
-          </div>
-        </div>
+        {/* <div
+          className={`{flex w-full pb-1 items-center justify-center rounded-b-xl text-slate-100 ${cardColorByStatus}`}
+        ></div> */}
       </div>
     </>
   );

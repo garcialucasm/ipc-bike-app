@@ -53,8 +53,10 @@ function AvailabilityContainer(props: {
 
   return (
     <>
-      <div className="w-full flex flex-col items-center bg-white
-      ">
+      <div
+        className="overflow-x-auto w-full flex flex-col items-center bg-white
+      "
+      >
         <div className="overflow-x-clip flex w-full gap-3">
           {ShowFreeBikes && (
             <AvailabilityCard
