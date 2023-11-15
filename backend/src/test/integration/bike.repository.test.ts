@@ -3,6 +3,7 @@ import { Client } from 'pg'
 import IBikeRepository from '../../repositories/bike.repository'
 import { Bike, BikeStatus } from '../../models/bike.model' 
 import BikeRepository from '../../repositories/bike.repository.impl'
+import cleanupDb from './database.util'
 
 const client = new Client({
   user: process.env.TEST_USER,
@@ -22,6 +23,8 @@ after("close db connection", async () => {
 
 describe('IBikeRepository Integration Tests', async() => {
     let bikeRepository: IBikeRepository;
+
+    cleanupDb(client)
 
     before(async () => {
         bikeRepository = new BikeRepository(client); 

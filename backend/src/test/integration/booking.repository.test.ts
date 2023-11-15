@@ -8,8 +8,9 @@ import { Booking, BookingType, BookingStatus } from '../../models/booking.model'
 import BikeRepository from '../../repositories/bike.repository.impl'
 import BookingRepository from '../../repositories/booking.repository.impl'
 import UserRepository from '../../repositories/user.repository.impl'
-import { UserStatus, UserType } from '../../models/user.model'
-import { BikeStatus } from '../../models/bike.model'
+import { User, UserStatus, UserType } from '../../models/user.model'
+import { Bike, BikeStatus } from '../../models/bike.model'
+import cleanupDb from './database.util'
 
 const client = new Client({
   user: process.env.TEST_USER,
@@ -27,27 +28,34 @@ after("close db connection", async () => {
   await client.end()
 })
 
-describe('IBookingRepository Integration Te', async() => {
+describe('IBookingRepository Integration Test', () => {
     let bookingRepository: IBookingRepository
     let bikeRepository: IBikeRepository
     let userRepository: IUserRepository
    
-    
-    bikeRepository = new BikeRepository(client) 
-    const bike1 = await bikeRepository.save({Numbering: 1, Size: "medium", 
-                                      CurrentStatus: BikeStatus.FREE, IsActive: true})
-    const bike2 = await bikeRepository.save({Numbering: 2, Size: "small", 
-                                      CurrentStatus: BikeStatus.INUSE, IsActive: true})
-    const bike3 = await bikeRepository.save({Numbering: 3, Size: "small", 
-                                      CurrentStatus: BikeStatus.BOOKED, IsActive: true})
+    let bike1: Bike, bike2: Bike, bike3: Bike
+    let user1: User, user2: User
 
-    userRepository = new UserRepository(client)
-    const user1 = await userRepository.save({Name: 'user1', Room: '101', Term: 'spring 2023', 
-                                      Type: UserType.STUDENT, Status: UserStatus.FREE})
-    const user2 = await userRepository.save({Name: 'user2', Room: '202', Term: 'spring 2023', 
-                                      Type: UserType.STUDENT, Status: UserStatus.INUSE})
+    cleanupDb(client)
 
-    bookingRepository = new BookingRepository(client)
+    before(async() => {
+        bikeRepository = new BikeRepository(client) 
+
+        bike1 = await bikeRepository.save({Numbering: 11, Size: "medium", 
+                                               CurrentStatus: BikeStatus.FREE, IsActive: true})
+        bike2 = await bikeRepository.save({Numbering: 12, Size: "small", 
+                                               CurrentStatus: BikeStatus.INUSE, IsActive: true})
+        bike3 = await bikeRepository.save({Numbering: 13, Size: "small", 
+                                                CurrentStatus: BikeStatus.BOOKED, IsActive: true})
+
+        userRepository = new UserRepository(client)
+        user1 = await userRepository.save({Name: 'user1', Room: '101', Term: 'spring 2023', 
+                                                Type: UserType.STUDENT, Status: UserStatus.FREE, IsActive: true})
+        user2 = await userRepository.save({Name: 'user2', Room: '202', Term: 'spring 2023', 
+                                                Type: UserType.STUDENT, Status: UserStatus.FREE, IsActive: true})
+
+        bookingRepository = new BookingRepository(client)
+    })
 
     let savedSingleBooking: Booking, savedGroupBooking: Booking 
 

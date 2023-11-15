@@ -1,3 +1,4 @@
+import { Client } from "pg"
 import { Booking } from "../models/booking.model"
 import IBookingRepository from "./booking.repository"
 import { bookingFromRow } from "./mappings"
@@ -7,8 +8,8 @@ export default class BookingRepository implements IBookingRepository {
 
     client: Client
 
-    insertStmt: string = `insert into booking(user_id, status, type, created_at) 
-            values ($1, $2, $3, $4) returning *`
+    insertStmt: string = 'INSERT INTO "booking" ("user_id", "status", "type", "created_at")' +  
+            ' VALUES ($1, $2, $3, $4) RETURNING id' 
 
     insertBookingBikesStmt: string = `insert into booking_bike(booking_id, bike_id)
             values ($1, $2)`
@@ -35,6 +36,10 @@ export default class BookingRepository implements IBookingRepository {
     }
 
     async save(booking: Booking): Promise<Booking> {
+
+        if (!booking.User.ID)
+            throw new Error('Invalid user ID')
+
         let result = await this.client.query(this.insertStmt,
             [booking.User.ID, booking.Status, booking.Type, booking.CreatedAt])
 

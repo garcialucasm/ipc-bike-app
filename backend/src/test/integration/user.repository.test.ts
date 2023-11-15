@@ -3,6 +3,7 @@ import { Client } from 'pg'
 import IUserRepository from '../../repositories/user.repository'
 import { User, UserStatus, UserType } from '../../models/user.model' 
 import UserRepository from '../../repositories/user.repository.impl'
+import cleanupDb from './database.util'
 
 const client = new Client({
   user: process.env.TEST_USER,
@@ -20,10 +21,12 @@ after("close db connection", async () => {
   await client.end()
 })
 
-describe('IUserRepository Integration Tests', async() => {
+describe('IUserRepository Integration Tests', () => {
     let userRepository: IUserRepository;
 
+
     before(async () => {
+        cleanupDb(client)
         userRepository = new UserRepository(client); 
         await userRepository.save({Name: 'user1' ,Room: '101', Term: 'spring 2020', Type: UserType.STUDENT, Status: UserStatus.FREE, IsActive: true})
         await userRepository.save({Name: 'user2' ,Room: '102', Term: 'spring 2020', Type: UserType.STUDENT, Status: UserStatus.FREE, IsActive: true})

@@ -48,13 +48,13 @@ function bikeFromRow(row: any) : Bike {
 
 function userFromRow(row: any) : User {
   return {
-    ID: 1,
-    Name: "",
-    Room: "",
-    Type: UserType.STUDENT,
-    Term: "",
-    Status: UserStatus.FREE,
-    IsActive: true,
+    ID: Number.parseInt(row['id']),
+    Name: row['name'],
+    Room: row['room'],
+    Type: row['type'] ? UserType[ row['type'] as keyof typeof UserType] : UserType.STUDENT,
+    Term: row['term'],
+    Status: row['status'] ? UserStatus[row['status'] as keyof typeof UserStatus] : UserStatus.FREE,
+    IsActive: row['is_active'] ? new Boolean(row['is_active']).valueOf() : false,
     CreatedAt: row['created_at'] ? new Date(row['created_at']) : undefined,
     UpdatedAt: row['updated_at'] ? new Date(row['updated_at']) : undefined,
     DeletedAt: row['deleted_at'] ? new Date(row['deleted_at']) : undefined
