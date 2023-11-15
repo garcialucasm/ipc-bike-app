@@ -37,7 +37,7 @@ function InputStudentData(props: {
 
   return (
     <>
-      <div className="w-11/12 flex flex-col text-start h-full">
+      <div className="w-11/12 flex flex-col text-start">
         <InputLabel text="First Name" />
         <input
           name="firstName"

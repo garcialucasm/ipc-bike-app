@@ -31,10 +31,10 @@ function InputStudentBikeSize(props: {
   return (
     <>
       <div className="w-11/12 flex flex-col items-center">
-        <h3 className="w-full mb-5 text-lg text-start font-medium text-gray-900">
+        <h3 className="w-full mb-5 text-lg text-start font-medium text-slate-900">
           Select the bike type
         </h3>
-        <ul className="w-full mb-5 border border-gray-200 shadow-lg rounded-xl">
+        <ul className="w-full mb-5 border border-slate-200 shadow-lg rounded-xl">
           <div>
             <BikeChooserContainer
               bikeCountFree={{
@@ -43,7 +43,7 @@ function InputStudentBikeSize(props: {
               }}
             />
           </div>
-          <div className="flex justify-around bg-gradient-to-b from-white from-40% via-gray-200 via-60% to-gray-200 border-b-4 rounded-b-xl">
+          <div className="flex justify-around bg-gradient-to-b from-white from-40% via-slate-200 via-60% to-slate-200 border-b-4 rounded-b-xl">
             <li className="w-full">
               <input
                 type="radio"

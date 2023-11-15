@@ -87,7 +87,7 @@ function HomeSingleBooking() {
     // Temp - Submit confirmation
     const buttonOnConfirmation = SingleBookingSection.bookingConfirmationStatus;
     if (
-      buttonOnConfirmation == SingleBookingSection.bookingConfirmationStatus
+      buttonOnConfirmation === SingleBookingSection.bookingConfirmationStatus
     ) {
       alert(
         buttonOnConfirmation +
@@ -124,8 +124,8 @@ function HomeSingleBooking() {
 
   return (
     <>
-      <div className="flex flex-col items-center text-center h-full">
-        <div className="container-webapp flex flex-col items-center">
+      <div className="flex flex-col items-center text-center mb-3">
+        <div className="container-webapp flex flex-col items-center pb-6">
           <HeaderWebApp
             headingTitle={"Single Booking"}
             headingSubTitle="Select the type of bike, confirm the details, and book."

@@ -36,7 +36,7 @@ function BikeChooserContainer(props: { bikeCountFree: BikeAvailability }) {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="w-full text-xs text-gray-400 px-3 py-2">
+      <div className="w-full text-xs text-slate-400 px-3 py-2">
         <span
           className={`relative inline-flex rounded-full h-2 w-2 bg-green-500`}
         ></span>
@@ -49,7 +49,7 @@ function BikeChooserContainer(props: { bikeCountFree: BikeAvailability }) {
         height={399}
         alt=""
       />
-      <div className="w-full pb-4 text-xs text-gray-500">
+      <div className="w-full pb-4 text-xs text-slate-500">
         {bikeSelectedRecomendation}
       </div>
     </div>

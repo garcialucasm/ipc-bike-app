@@ -7,21 +7,19 @@
     @apply my-2 py-2 px-4 w-full bg-blue-800 text-white font-semibold rounded-full shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
   }
   .btn-return {
-    @apply my-2 py-2 px-4 w-full bg-white border  border-gray-200 text-color-primary font-semibold rounded-full shadow-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 focus:z-10;
+    @apply my-2 py-2 px-4 w-full bg-white border  border-slate-200 text-color-primary font-semibold rounded-full shadow-md hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 focus:z-10;
   }
 
   .btn-disable {
-    @apply my-2 py-2 px-4 w-full bg-gray-300 text-gray-200 font-semibold rounded-full shadow-md hover:bg-color-tertiary focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+    @apply my-2 py-2 px-4 w-full bg-slate-300 text-slate-200 font-semibold rounded-full shadow-md hover:bg-color-tertiary focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
   }
   .container-webapp {
-    @apply w-full lg:w-11/12 max-w-xl rounded-xl h-full bg-white shadow-xl;
+    @apply w-full h-full lg:w-11/12 max-w-xl rounded-xl  bg-white shadow-xl;
   }
   .card-webapp {
-    @apply bg-white border border-gray-200 rounded-xl shadow;
+    @apply bg-white h-full border border-slate-200 rounded-xl shadow;
   }
-  .container-webapp-availability {
-    @apply w-full m-6 p-6 bg-white border border-gray-200 rounded-xl shadow;
-  }
+
   .input-text {
     @apply mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
     focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
@@ -43,13 +41,13 @@
     @apply after:border-blue-500;
   }
   .stepper-is-waiting-icon {
-    @apply bg-gray-300 text-white;
+    @apply bg-slate-300 text-white;
   }
   .stepper-is-waiting-bar {
-    @apply after:border-gray-300;
+    @apply after:border-slate-300;
   }
   .bike-type-chooser-item {
-    @apply text-gray-500 rounded-lg cursor-pointer bg-gray-200 font-bold peer-checked:font-black peer-checked:bg-white peer-checked:rounded-b-xl peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-blue-500 hover:bg-gray-100;
+    @apply text-slate-500 rounded-lg cursor-pointer bg-slate-200 font-bold peer-checked:font-black peer-checked:bg-white peer-checked:rounded-b-xl peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-blue-500 hover:bg-slate-100;
   }
 }
 
@@ -74,6 +72,7 @@ html,
 body {
   padding: 0;
   margin: 0;
+  height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   line-height: 1.6;
@@ -97,7 +96,7 @@ body {
     radial-gradient(at 97% 96%, hsla(0, 0%, 100%, 0.55) 0px, transparent 50%),
     radial-gradient(at 85% 76%, hsla(206, 80%, 76%, 0.76) 0px, transparent 0%);
   width: 100%;
-  height: 100vh;
+  height: 100%;
 }
 .background-transparent {
   background-color: rgba(
