@@ -48,7 +48,7 @@ function BookingsOverview() {
       <div className="w-full">
         <div className="relative overflow-x-auto shadow-md sm:rounded-xl">
           <table className="w-full text-sm text-left rtl:text-right text-slate-500">
-            <thead className="text-xs text-slate-700 uppercase bg-slate-50">
+            <thead className="text-xs text-slate-700 uppercase bg-slate-100">
               <tr>
                 <th scope="col" className="ps-2 md:ps-6 py-3">
                   <span className="relative flex h-2.5 w-2.5 m-2"></span>

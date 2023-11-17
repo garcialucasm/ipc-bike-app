@@ -4,17 +4,17 @@ import { UserStatus } from "@/types/UserType";
 import React from "react";
 
 enum StatusColorClass {
-  GREEN = " bg-emerald-500 ",
-  YELLOW = " bg-amber-500 ",
-  RED = " bg-rose-500 ",
-  GRAY = " bg-slate-300 ",
-  WHITE = " bg-white-500 ",
+  GREEN = "bg-emerald-500",
+  YELLOW = "bg-amber-500",
+  RED = "bg-rose-500",
+  GRAY = "bg-slate-300",
+  WHITE = "bg-white-500",
 }
 enum AnimationStatusClass {
   NONE = "",
-  FREE = " scale-150 opacity-[.1] ",
-  INUSE = " animate-ping opacity-25 ",
-  BOOKED = " animate-ping ",
+  FREE = "scale-150 opacity-[.1]",
+  INUSE = "animate-ping opacity-25",
+  BOOKED = "animate-ping",
 }
 
 function getStatusColor(status: BookingStatus | UserStatus | BikeStatus) {
@@ -66,25 +66,26 @@ function StatusIndicator(props: {
   width?: string;
 }) {
   const statusColor = getStatusColor(props.status);
-  const isStatic = props.isStatic;
+  const { isStatic } = props;
+  console.log(isStatic);
   const { height, width } = props;
   const { statusColorClass, animationStatusClass } = statusColor;
   return (
     <>
       <span
-        className={`relative flex ${height ?? " h-2.5 "} ${
-          width ?? " w-2.5 "
+        className={`relative flex ${height ?? "h-2.5"} ${
+          width ?? "w-2.5 "
         } m-2`}
       >
         <span
-          className={`absolute inline-flex w-full rounded-full opacity-50 ${statusColorClass} ${
-            isStatic ?? animationStatusClass
+          className={`absolute inline-flex w-full h-full rounded-full opacity-50 ${statusColorClass} ${
+            isStatic ? "" : animationStatusClass
           }`}
         ></span>
         <span
-          className={`relative inline-flex rounded-full ${
-            height ?? " h-2.5 "
-          } ${width ?? " w-2.5 "} ${statusColorClass}`}
+          className={`relative inline-flex rounded-full ${height ?? "h-2.5"} ${
+            width ?? "w-2.5 "
+          } ${statusColorClass}`}
         ></span>
       </span>
     </>

@@ -27,7 +27,7 @@ export function IconSvgBikeStandard(props: {
   );
 }
 
-// bike with clock icon
+// bike booked icon
 export function IconSvgBikeBooked(props: {
   height: string;
   width: string;
@@ -78,7 +78,7 @@ export function IconSvgBikeBooked(props: {
   );
 }
 
-// bike with clock icon
+// bike booked icon 2
 export function IconSvgBikeBooked2(props: {
   height: string;
   width: string;
@@ -114,7 +114,7 @@ export function IconSvgBikeBooked2(props: {
   );
 }
 
-// bike with clock icon
+// bike in use icon
 export function IconSvgBikeInUse(props: {
   height: string;
   width: string;
@@ -156,7 +156,7 @@ export function IconSvgBikeInUse(props: {
     </>
   );
 }
-// bike with clock icon
+// bike maintenance icon
 export function IconSvgBikeDisabled(props: {
   height: string;
   width: string;

@@ -17,7 +17,7 @@ function AvailabilityCard(props: {
   const bikeSize = props.bikeSize;
   const bikeCount = props.bikeCount;
   let cardTextColorByStatus = "bg-slate-200 text-slate-600";
-  let cardColorByStatus = "bg-slate-600";
+  let cardColorByStatus = "border border-s-2";
   let textLabel: string;
   if (selectedStatus === BikeStatus.FREE) {
     textLabel = "available";
@@ -34,19 +34,19 @@ function AvailabilityCard(props: {
   switch (selectedStatus) {
     case BikeStatus.FREE:
       cardTextColorByStatus = "text-emerald-600 border-slate-200";
-      cardColorByStatus = "bg-gradient-to-br from-emerald-500 to-emerald-800";
+      cardColorByStatus = "bg-emerald-600";
       break;
     case BikeStatus.BOOKED:
       cardTextColorByStatus = "text-amber-600 border-slate-200";
-      cardColorByStatus = "bg-gradient-to-br from-amber-500 to-amber-800";
+      cardColorByStatus = "bg-amber-600";
       break;
     case BikeStatus.INUSE:
       cardTextColorByStatus = "text-rose-600 border-slate-200";
-      cardColorByStatus = "bg-gradient-to-br from-rose-500 to-rose-800";
+      cardColorByStatus = "bg-rose-600";
       break;
     case BikeStatus.DISABLED:
       cardTextColorByStatus = "text-slate-600 border-slate-200";
-      cardColorByStatus = "bg-gradient-to-br from-slate-500 to-slate-800";
+      cardColorByStatus = "bg-slate-600";
       break;
 
     default:
@@ -57,24 +57,16 @@ function AvailabilityCard(props: {
   return (
     <>
       <div
-        className={`w-full flex flex-col rounded-xl font-semibold bg-gradient-to-tr from-slate-50 via-slate-100 to-slate-50 border shadow-sm ${cardTextColorByStatus}`}
+        className={`overflow-hidden w-full flex flex-col rounded-lg font-semibold bg-gradient-to-tr from-slate-100 via-slate-100 to-slate-50 shadow-md m-1 pb-1 ${cardTextColorByStatus}`}
       >
-        <div className="flex items-center h-full">
-          <span>
-            <StatusIndicator
-              status={selectedStatus}
-              isStatic={false}
-            />
-          </span>
-          <span className="text-center text-2xl pe-1 drop-shadow-md">
-            {bikeCount}
-          </span>
+        <span className={`h-1.5 ${cardColorByStatus}`}></span>
 
-          <span className="text-slate-400 text-xs">{textLabel}</span>
-        </div>
         <div className="w-full flex justify-center items-center py-2">
-          <div className="text-slate-500">
-            {selectedStatus === BikeStatus.FREE && (
+          <div className="">
+            <span className="text-center text-3xl drop-shadow-md">
+              {bikeCount}
+            </span>
+            {/* {selectedStatus === BikeStatus.FREE && (
               <IconSvgBikeStandard
                 height="90"
                 width="90"
@@ -86,9 +78,9 @@ function AvailabilityCard(props: {
                 height="80"
                 width="80"
                 fillColor1="fill-amber-600"
-                fillColor2="fill-blue-600"
-                fillColor3="fill-amber-600"
-                fillColor4="fill-amber-600"
+                fillColor2="fill-amber-600"
+                fillColor3="fill-slate-400"
+                fillColor4="fill-slate-400"
               />
             )}
             {selectedStatus === BikeStatus.INUSE && (
@@ -106,8 +98,15 @@ function AvailabilityCard(props: {
                 fillColor1="fill-slate-500"
                 fillColor2="fill-slate-600"
               />
-            )}
+            )} */}
           </div>
+        </div>
+        <div className="flex items-center justify-center">
+          <span>
+            <StatusIndicator status={selectedStatus} isStatic={true} />
+          </span>
+
+          <span className="text-slate-400 text-xs">{textLabel}</span>
         </div>
         {/* <div
           className={`{flex w-full pb-1 items-center justify-center rounded-b-xl text-slate-100 ${cardColorByStatus}`}
