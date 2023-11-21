@@ -26,7 +26,7 @@ function NavbarWebApp() {
         <div className="block">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="flex flex-grow items-center ps-3 py-2 rounded text-white hover:text-blue-300 "
+            className="flex flex-grow items-center ps-3 py-2 rounded text-white hover:text-blue-300"
           >
             <svg
               className={`fill-current h-5 w-5 ${isOpen ? "hidden" : "block"}`}

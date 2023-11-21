@@ -31,9 +31,9 @@ function InputStudentBikeSize(props: {
   return (
     <>
       <div className="w-11/12 flex flex-col items-center">
-        <h3 className="w-full mb-5 text-lg text-start font-medium text-slate-900">
+        <div className="instruction-label">
           Select the bike type
-        </h3>
+        </div>
         <ul className="w-full mb-5 border border-slate-200 shadow-lg rounded-xl">
           <div>
             <BikeChooserContainer

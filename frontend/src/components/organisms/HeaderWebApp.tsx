@@ -11,8 +11,8 @@ function HeaderWebApp(props: {
   const currentPage: MenuNavigation = props.currentPage;
   const currentMenuPage = React.useMemo(() => {
     switch (currentPage) {
-      case MenuNavigation.homePage:
-        return MenuNavigation.homePage;
+      case MenuNavigation.homePageApp:
+        return MenuNavigation.homePageApp;
       case MenuNavigation.singleBooking:
         return MenuNavigation.singleBooking;
       case MenuNavigation.groupBooking:
@@ -26,14 +26,14 @@ function HeaderWebApp(props: {
   }, [currentPage]);
 
   return (
-    <div className="flex flex-col items-center w-full rounded-b-xl text-white bg-blue-800 py-2">
+    <div className="flex flex-col items-center w-full rounded-b-2xl text-white bg-gradient-to-tr from-blue-800 via-blue-800 to-blue-600 py-2">
       <div className="flex flex-col items-start w-11/12">
         <NavbarWebApp />
         <div className="overflow-x-auto w-full flex text-xxs md:text-xs text-left">
           <Link
             href="/home-keykeeper"
             className={`flex items-center header-menu-items ms-0 ${
-              currentMenuPage == MenuNavigation.homePage
+              currentMenuPage == MenuNavigation.homePageApp
                 ? "header-menu-item-current-page"
                 : ""
             }`}
@@ -115,10 +115,10 @@ function HeaderWebApp(props: {
             </span>
           </Link>
         </div>
-        <div className="text-2xl text-left font-extrabold pt-8">
+        <div className="text-xl text-left font-black pt-8 tracking-tight">
           {props.headingTitle}
         </div>
-        <div className="text-md text-left pb-3">{props.headingSubTitle}</div>
+        <div className="text-left pb-3 text-sm tracking-wider">{props.headingSubTitle}</div>
       </div>
     </div>
   );

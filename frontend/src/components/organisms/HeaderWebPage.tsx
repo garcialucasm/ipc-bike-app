@@ -4,9 +4,12 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 
 const navigation = [
-  { name: "Book a Bike", href: "#" },
-  { name: "About IPC", href: "#" },
-  { name: "About Alumni", href: "#" },
+  { name: "Book a Bike", href: "/login" },
+  { name: "About IPC", href: "https://ipc.dk/" },
+  {
+    name: "About Alumni",
+    href: "https://ipc.dk/about/ipc-community/international-peoples-college-alumni-global-community/",
+  },
   { name: "More info", href: "#" },
 ];
 
@@ -54,7 +57,7 @@ export default function HeaderWebPage() {
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <a
-            href="/home-keykeeper"
+            href="/login"
             className="text-sm font-semibold leading-6 text-slate-900"
           >
             Log in <span aria-hidden="true">&rarr;</span>

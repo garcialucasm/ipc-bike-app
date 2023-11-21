@@ -57,57 +57,58 @@ function AvailabilityCard(props: {
   return (
     <>
       <div
-        className={`overflow-hidden w-full flex flex-col rounded-lg font-semibold bg-gradient-to-tr from-slate-100 via-slate-100 to-slate-50 shadow-md m-1 pb-1 ${cardTextColorByStatus}`}
+        className={`overflow-hidden w-full flex flex-col justify-between rounded-lg font-semibold border-t border-r border-l border-slate-100 bg-gradient-to-tr from-slate-100 via-slate-100 to-slate-50 shadow-md m-1 ${cardTextColorByStatus}`}
       >
-        <span className={`h-1.5 ${cardColorByStatus}`}></span>
-
-        <div className="w-full flex justify-center items-center py-2">
-          <div className="">
-            <span className="text-center text-3xl drop-shadow-md">
-              {bikeCount}
-            </span>
-            {/* {selectedStatus === BikeStatus.FREE && (
+        <span>
+          <StatusIndicator
+            status={selectedStatus}
+            isStatic={false}
+            height="h-3"
+            width="w-3"
+          />
+        </span>
+        <div className="flex items-center justify-center p-2">
+          <div className="border-2 border-slate-500 rounded-full p-3 shadow-inner">
+            {selectedStatus === BikeStatus.FREE && (
               <IconSvgBikeStandard
-                height="90"
-                width="90"
-                fillColor="fill-emerald-600"
+                height="48"
+                width="48"
+                fillColor="fill-slate-600"
               />
             )}
             {selectedStatus === BikeStatus.BOOKED && (
               <IconSvgBikeBooked
-                height="80"
-                width="80"
-                fillColor1="fill-amber-600"
-                fillColor2="fill-amber-600"
+                height="48"
+                width="48"
+                fillColor1="fill-slate-600"
+                fillColor2="fill-slate-600"
                 fillColor3="fill-slate-400"
                 fillColor4="fill-slate-400"
               />
             )}
             {selectedStatus === BikeStatus.INUSE && (
               <IconSvgBikeInUse
-                height="80"
-                width="80"
-                fillColor1="fill-rose-600"
+                height="48"
+                width="48"
+                fillColor1="fill-slate-600"
                 fillColor2="fill-slate-400"
               />
             )}
             {selectedStatus === BikeStatus.DISABLED && (
               <IconSvgBikeDisabled
-                height="80"
-                width="80"
+                height="48"
+                width="48"
                 fillColor1="fill-slate-500"
                 fillColor2="fill-slate-600"
               />
-            )} */}
+            )}
           </div>
         </div>
-        <div className="flex items-center justify-center">
-          <span>
-            <StatusIndicator status={selectedStatus} isStatic={true} />
-          </span>
-
-          <span className="text-slate-400 text-xs">{textLabel}</span>
-        </div>
+        <span className="text-left text-4xl pb-2 px-2">
+          {bikeCount}
+          <span className="text-slate-500 text-xs px-1">{textLabel}</span>
+        </span>
+        <span className={`h-1 ${cardColorByStatus}`}></span>
         {/* <div
           className={`{flex w-full pb-1 items-center justify-center rounded-b-xl text-slate-100 ${cardColorByStatus}`}
         ></div> */}

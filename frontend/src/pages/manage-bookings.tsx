@@ -35,7 +35,7 @@ function ManageBookings() {
         <HeaderWebApp
           headingTitle={"Welcome, Lorem Ipsum"}
           headingSubTitle="Lorem ipsum is placeholder text commonly used"
-          currentPage={MenuNavigation.homePage}
+          currentPage={MenuNavigation.homePageApp}
         />
         <div className="w-11/12  flex flex-col items-center">
           {currentSection === ManageBookingSection.bookingsOverview && (

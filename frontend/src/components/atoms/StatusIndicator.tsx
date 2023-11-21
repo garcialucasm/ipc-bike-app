@@ -67,7 +67,6 @@ function StatusIndicator(props: {
 }) {
   const statusColor = getStatusColor(props.status);
   const { isStatic } = props;
-  console.log(isStatic);
   const { height, width } = props;
   const { statusColorClass, animationStatusClass } = statusColor;
   return (
@@ -84,7 +83,7 @@ function StatusIndicator(props: {
         ></span>
         <span
           className={`relative inline-flex rounded-full ${height ?? "h-2.5"} ${
-            width ?? "w-2.5 "
+            width ?? "w-2.5"
           } ${statusColorClass}`}
         ></span>
       </span>

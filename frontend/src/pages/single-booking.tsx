@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import InputSingleBikeSize from "@/components/templates/InputSingleBikeSize";
 import InputSingleUserData from "@/components/templates/InputSingleUserData";
 import PreBookingConfirmation from "@/components/templates/PreBookingConfirmation";
-import BookingConfirmationStatus from "@/components/templates/BookingConfirmationStatus";
+import BookingConfirmed from "@/components/templates/BookingConfirmed";
 import { BikeSize } from "@/types/BikeType";
 import { UserData } from "@/types/UserType";
-import { BookingType } from "@/types/BookingType";
+import { BookingStatus, BookingType } from "@/types/BookingType";
 import {
   MenuNavigation,
   SingleBookingSection,
@@ -22,6 +22,11 @@ function HomeSingleBooking() {
   // Creating state for bikeSizeSelected
   const [bikeSizeSelected, setBikeSize] = useState(BikeSize.NONE);
 
+  // Creating state for currentBookingStatus
+  const [currentBookingStatus, setCurrentBookingStatus] = useState(
+    BookingStatus.FREE
+  );
+
   // Creating state for enteredUserData in InputStudentData
   const [enteredUserData, setEnteredUserData] = useState<UserData>({
     firstName: "",
@@ -37,6 +42,7 @@ function HomeSingleBooking() {
       lastName: "",
       roomNumber: "",
     },
+    bookingStatus: BookingStatus.FREE,
   });
 
   // Creating state to check if isUserDataValid and only then submit booking
@@ -74,17 +80,24 @@ function HomeSingleBooking() {
     setBookingData({
       bookingBikeSize: bikeSizeSelected,
       bookingUserData: enteredUserData,
+      bookingStatus: currentBookingStatus,
     });
 
     // TODO
     // Choose a strategic location to leave this function call (checkEnteredUserData)
     checkEnteredUserData();
-  }, [bikeSizeSelected, isUserDataValid, enteredUserData]);
+  }, [
+    bikeSizeSelected,
+    isUserDataValid,
+    enteredUserData,
+    currentBookingStatus,
+  ]);
 
   // TODO
   // Option to confirm Booking or Return to user data input
   function handleBookingConfirmation() {
     // Temp - Submit confirmation
+    setCurrentBookingStatus(BookingStatus.BOOKED);
     const buttonOnConfirmation = SingleBookingSection.bookingConfirmationStatus;
     if (
       buttonOnConfirmation === SingleBookingSection.bookingConfirmationStatus
@@ -154,7 +167,7 @@ function HomeSingleBooking() {
           )}
           {currentSection ===
             SingleBookingSection.bookingConfirmationStatus && (
-            <BookingConfirmationStatus
+            <BookingConfirmed
               onNavigation={handleNavigation}
               bookingData={bookingData}
             />

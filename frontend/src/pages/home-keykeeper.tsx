@@ -20,9 +20,9 @@ export default function HomeKeyKeeper() {
           <div className="container-webapp flex flex-col items-center pb-6">
             <div className="w-full mb-3">
               <HeaderWebApp
-                headingTitle={"Welcome, Lorem Ipsum"}
-                headingSubTitle="Lorem ipsum is placeholder text commonly used"
-                currentPage={MenuNavigation.homePage}
+                headingTitle={"Alumni Bike"}
+                headingSubTitle="Book, Ride, Explore: All for Free"
+                currentPage={MenuNavigation.homePageApp}
               />
             </div>
             <div className="w-11/12 flex flex-col">
