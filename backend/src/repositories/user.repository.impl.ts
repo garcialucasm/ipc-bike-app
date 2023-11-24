@@ -79,7 +79,8 @@ export default class UserRepository implements IUserRepository {
     let query: string = this.findAllStmt
 
     query += createWhereClausule(searchCriteria)
-
+    console.log(query)
+    console.log(Object.values(searchCriteria))
     let result = await this.client.query(query, Object.values(searchCriteria))
 
     return result.rows.map(row => userFromRow(row))

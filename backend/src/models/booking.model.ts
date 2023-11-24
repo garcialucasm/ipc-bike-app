@@ -19,6 +19,7 @@ interface Booking {
   ID?: number;
   User: User;
   Bike: Bike[];
+  BikeCount: number;
   Status: BookingStatus;
   Type: BookingType;
   CreatedAt?: Date;

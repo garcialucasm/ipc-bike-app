@@ -20,109 +20,119 @@ const client = new Client({
   port: 5432,
 })
 
-before("initalize db connection", async () => {
-  await client.connect()
-})
+describe('IBookingRepository Integration Test', function() {
+  let bookingRepository: IBookingRepository
+  let bikeRepository: IBikeRepository
+  let userRepository: IUserRepository
 
-after("close db connection", async () => {
-  await client.end()
-})
+  let bike1: Bike, bike2: Bike, bike3: Bike
+  let user1: User, user2: User
 
-describe('IBookingRepository Integration Test', () => {
-    let bookingRepository: IBookingRepository
-    let bikeRepository: IBikeRepository
-    let userRepository: IUserRepository
-   
-    let bike1: Bike, bike2: Bike, bike3: Bike
-    let user1: User, user2: User
 
-    cleanupDb(client)
+  before(async function() {
+    await client.connect()
 
-    before(async() => {
-        bikeRepository = new BikeRepository(client) 
+    bikeRepository = new BikeRepository(client) 
 
-        bike1 = await bikeRepository.save({Numbering: 11, Size: "medium", 
-                                               CurrentStatus: BikeStatus.FREE, IsActive: true})
-        bike2 = await bikeRepository.save({Numbering: 12, Size: "small", 
-                                               CurrentStatus: BikeStatus.INUSE, IsActive: true})
-        bike3 = await bikeRepository.save({Numbering: 13, Size: "small", 
-                                                CurrentStatus: BikeStatus.BOOKED, IsActive: true})
+    bike1 = await bikeRepository.save({Numbering: 11, Size: "medium", 
+                                      CurrentStatus: BikeStatus.FREE, IsActive: true})
+    bike2 = await bikeRepository.save({Numbering: 12, Size: "small", 
+                                      CurrentStatus: BikeStatus.INUSE, IsActive: true})
+    bike3 = await bikeRepository.save({Numbering: 13, Size: "small", 
+                                      CurrentStatus: BikeStatus.BOOKED, IsActive: true})
+    userRepository = new UserRepository(client)
+    user1 = await userRepository.save({Name: 'user1', Room: '101', Term: 'spring 2023', 
+                                      Type: UserType.STUDENT, Status: UserStatus.FREE, IsActive: true})
+    user2 = await userRepository.save({Name: 'user2', Room: '202', Term: 'spring 2023', 
+                                      Type: UserType.STUDENT, Status: UserStatus.FREE, IsActive: true})
 
-        userRepository = new UserRepository(client)
-        user1 = await userRepository.save({Name: 'user1', Room: '101', Term: 'spring 2023', 
-                                                Type: UserType.STUDENT, Status: UserStatus.FREE, IsActive: true})
-        user2 = await userRepository.save({Name: 'user2', Room: '202', Term: 'spring 2023', 
-                                                Type: UserType.STUDENT, Status: UserStatus.FREE, IsActive: true})
+    bookingRepository = new BookingRepository(client)
+  })
 
-        bookingRepository = new BookingRepository(client)
+  after(async function() {
+    await cleanupDb(client)
+    client.end()
+  })
+
+  let savedSingleBooking: Booking, savedGroupBooking: Booking 
+
+  it('should save a booking to the database', function() {
+    const booking: Booking = {
+      Bike: [bike1],
+      BikeCount: 1,
+      User: user1,
+      Status: BookingStatus.BOOKED,
+      Type: BookingType.SINGLE,
+      ReturnedCondition: "", 
+    }
+
+    return bookingRepository.save(booking).then(singleBooking => {
+      savedSingleBooking = singleBooking
+      assert.strictEqual(savedSingleBooking.Bike[0], bike1)
+      assert.strictEqual(savedSingleBooking.User, user1)
+      assert.strictEqual(savedSingleBooking.Status, BookingStatus.BOOKED)
+      assert.strictEqual(savedSingleBooking.Type, BookingType.SINGLE)
+      assert.ok(savedSingleBooking.ID)
     })
+  })
 
-    let savedSingleBooking: Booking, savedGroupBooking: Booking 
+  it('should save a group booking', function() {
+    const groupBooking: Booking = {
+      Bike: [bike2, bike3],
+      BikeCount: 2, 
+      User: user2, 
+      Status: BookingStatus.RETURNED,
+      Type: BookingType.GROUP,
+      ReturnedCondition: "good",
+    }
 
-    it('should save a booking to the database', async () => {
-        const booking: Booking = {
-          Bike: [bike1], 
-          User: user1,
-          Status: BookingStatus.BOOKED,
-          Type: BookingType.SINGLE,
-          ReturnedCondition: "", 
-        }
-
-        savedSingleBooking = await bookingRepository.save(booking)
-        assert.strictEqual(savedSingleBooking.Bike[0], bike1)
-        assert.strictEqual(savedSingleBooking.User, user1)
-        assert.strictEqual(savedSingleBooking.Status, BookingStatus.BOOKED)
-        assert.strictEqual(savedSingleBooking.Type, BookingType.SINGLE)
-        assert.ok(savedSingleBooking.ID)
-
-        const groupBooking: Booking = {
-          Bike: [bike2, bike3],
-          User: user2, 
-          Status: BookingStatus.RETURNED,
-          Type: BookingType.GROUP,
-          ReturnedCondition: "good",
-        }
-
-        savedGroupBooking = await bookingRepository.save(groupBooking)
-        assert.strictEqual(savedGroupBooking.Bike.length, 2)
-        assert.strictEqual(savedGroupBooking.User, user2)
-        assert.strictEqual(savedSingleBooking.Status, BookingStatus.RETURNED);
-        assert.strictEqual(savedSingleBooking.Type, BookingType.GROUP);
+    return bookingRepository.save(groupBooking).then(groupBooking => {
+      savedGroupBooking = groupBooking
+      assert.strictEqual(savedGroupBooking.Bike.length, 2)
+      assert.strictEqual(savedGroupBooking.User, user2)
+      assert.strictEqual(savedGroupBooking.Status, BookingStatus.RETURNED)
+      assert.strictEqual(savedGroupBooking.Type, BookingType.GROUP)
     })
+  })
 
-    it('should update a booking in the database', async () => {
-        const bookingToUpdate: Booking = savedSingleBooking
+  it('should update a booking in the database', function() {
+    const bookingToUpdate: Booking = savedSingleBooking
 
-        bookingToUpdate.Status = BookingStatus.DELIVERED
+    bookingToUpdate.Status = BookingStatus.DELIVERED
 
-        const updatedBooking = await bookingRepository.update(bookingToUpdate)
-        
-        assert.strictEqual(updatedBooking.Status, bookingToUpdate.Status)
+    return bookingRepository.update(bookingToUpdate).then(updatedBooking => {
+        console.log(updatedBooking)
+      assert.strictEqual(BookingStatus.DELIVERED, updatedBooking.Status)
     })
+  })
 
-    it('should find a booking by ID', async () => {
-        assert.ok(savedSingleBooking.ID)
-        const bookingIdToFind = savedSingleBooking.ID
-        const foundBooking = await bookingRepository.findById(bookingIdToFind)
-        assert.strictEqual(foundBooking.ID, bookingIdToFind)
+  it('should find a booking by ID', function() {
+    assert.ok(savedSingleBooking.ID)
+    const bookingIdToFind = savedSingleBooking.ID
+    return bookingRepository.findById(bookingIdToFind).then(foundBooking => {
+      assert.strictEqual(foundBooking.ID, bookingIdToFind)
     })
-    
-    it('should find all the bookings', async() => {
-      const bookings = await bookingRepository.findAll({})
+  })
+
+  it('should find all the bookings', function() {
+    return bookingRepository.findAll({}).then((bookings) => {
+      console.log(bookings)
       assert.ok(Array.isArray(bookings))
       assert.equal(2, bookings.length)
     })
+  })
 
-    it('should find bookings by search criteria', async () => {
-        const searchCriteria = {
-          userId: user2.ID,
-          bikeId: bike3.ID
-        }
-        const bookings = await bookingRepository.findAll(searchCriteria)
-        assert.ok(Array.isArray(bookings))
-        assert.strictEqual(bookings.length, 1)
-        assert.strictEqual(bookings[0].Type, savedGroupBooking.Type)
-        assert.strictEqual(bookings[0].User.Name, savedGroupBooking.User.Name)
-        assert.strictEqual(bookings[0].Status, savedGroupBooking.Status)
+  it('should find bookings by search criteria', function() {
+    const searchCriteria = {
+      userId: user2.ID,
+      bikeId: bike3.ID
+    }
+    return bookingRepository.findAll(searchCriteria).then( bookings => {
+      assert.ok(Array.isArray(bookings))
+      assert.strictEqual(bookings.length, 1)
+      assert.strictEqual(bookings[0].Type, savedGroupBooking.Type)
+      assert.strictEqual(bookings[0].User.Name, savedGroupBooking.User.Name)
+      assert.strictEqual(bookings[0].Status, savedGroupBooking.Status)
     })
+  })
 })
