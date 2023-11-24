@@ -124,7 +124,7 @@ export default class BookingRepository implements IBookingRepository {
 
         if (!result.rowCount)
             throw new Error("Couldn't update booking") 
-        console.log(result.rows)
+
         return populateBookingFromRows(result.rows, 0)
     }
 
