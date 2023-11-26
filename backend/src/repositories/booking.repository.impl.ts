@@ -103,7 +103,7 @@ export default class BookingRepository implements IBookingRepository {
             await this.client.query(this.insertBookingBikesStmt, [booking.ID, bike.ID])
         })
 
-        return booking
+        return Object.assign({}, booking) 
     }
 
     async update(booking: Booking): Promise<Booking> {
@@ -125,7 +125,7 @@ export default class BookingRepository implements IBookingRepository {
         if (!result.rowCount)
             throw new Error("Couldn't update booking") 
 
-        return populateBookingFromRows(result.rows, 0)
+        return Object.assign({}, booking) 
     }
 
     async findById(bookingId: number): Promise<Booking> {

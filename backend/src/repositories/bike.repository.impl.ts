@@ -85,10 +85,7 @@ export default class BikeRepository implements IBikeRepository {
     let query: string = this.findAllStmt
 
     query += createWhereClausule(searchCriteria)
-    console.log(query)
-    console.log(Object.values(searchCriteria))
     let result = await this.client.query(query, Object.values(searchCriteria))
-    console.log(result.rows)
     return result.rows.map(row => this.bikeFromRow(row))
   } 
 

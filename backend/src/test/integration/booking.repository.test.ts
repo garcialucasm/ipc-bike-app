@@ -101,7 +101,6 @@ describe('IBookingRepository Integration Test', function() {
     bookingToUpdate.Status = BookingStatus.DELIVERED
 
     return bookingRepository.update(bookingToUpdate).then(updatedBooking => {
-        console.log(updatedBooking)
       assert.strictEqual(BookingStatus.DELIVERED, updatedBooking.Status)
     })
   })
@@ -116,7 +115,6 @@ describe('IBookingRepository Integration Test', function() {
 
   it('should find all the bookings', function() {
     return bookingRepository.findAll({}).then((bookings) => {
-      console.log(bookings)
       assert.ok(Array.isArray(bookings))
       assert.equal(2, bookings.length)
     })

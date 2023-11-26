@@ -1,9 +1,9 @@
 
 import assert, { fail } from "assert";
-import { Bike, BikeStatus } from "../models/bike.model";
-import IBikeRepository from "../repositories/bike.repository";
-import IBikeService from "../services/bike.service";
-import BikeService from "../services/bike.service.impl";
+import { Bike, BikeStatus } from "../../models/bike.model";
+import IBikeRepository from "../../repositories/bike.repository";
+import IBikeService from "../../services/bike.service";
+import BikeService from "../../services/bike.service.impl";
 import MockBikeRepository from "./bike.fixtures";
 
 

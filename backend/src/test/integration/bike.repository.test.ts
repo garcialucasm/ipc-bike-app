@@ -20,19 +20,11 @@ describe('IBikeRepository Integration Tests', function() {
   before(async function () {
     await client.connect()
     bikeRepository = new BikeRepository(client); 
-    let bike1 = await bikeRepository.save({Numbering: 1, Size: "medium", CurrentStatus: BikeStatus.FREE, IsActive: true})
-    let bike2 = await bikeRepository.save({Numbering: 2, Size: "small", CurrentStatus: BikeStatus.INUSE, IsActive: true})
-    let bike3 = await bikeRepository.save({Numbering: 3, Size: "small", CurrentStatus: BikeStatus.BOOKED, IsActive: true})
-    let bike4 = await bikeRepository.save({Numbering: 4, Size: "medium", CurrentStatus: BikeStatus.INUSE, IsActive: true})
-    let bike5 = await bikeRepository.save({Numbering: 5, Size: "small", CurrentStatus: BikeStatus.DISABLED, IsActive: false})
-  
-    console.log(bike1)
-    console.log(bike2)
-    console.log(bike3)
-    console.log(bike4)
-    console.log(bike5)
-
-    bikeRepository.findAll({}).then(bikes => console.log(bikes))
+    await bikeRepository.save({Numbering: 1, Size: "medium", CurrentStatus: BikeStatus.FREE, IsActive: true})
+    await bikeRepository.save({Numbering: 2, Size: "small", CurrentStatus: BikeStatus.INUSE, IsActive: true})
+    await bikeRepository.save({Numbering: 3, Size: "small", CurrentStatus: BikeStatus.BOOKED, IsActive: true})
+    await bikeRepository.save({Numbering: 4, Size: "medium", CurrentStatus: BikeStatus.INUSE, IsActive: true})
+    await bikeRepository.save({Numbering: 5, Size: "small", CurrentStatus: BikeStatus.DISABLED, IsActive: false})
   });
 
   after(function () {
@@ -56,7 +48,6 @@ describe('IBikeRepository Integration Tests', function() {
       assert.strictEqual(savedBike.CurrentStatus, BikeStatus.FREE)
       assert.ok(savedBike.IsActive)
       assert.ok(savedBike.ID)
-      console.log(1)
     })
   })
 
@@ -67,28 +58,21 @@ describe('IBikeRepository Integration Tests', function() {
 
     return bikeRepository.update(bikeToUpdate).then(updatedBike => {
       assert.strictEqual(updatedBike.CurrentStatus, bikeToUpdate.CurrentStatus)
-      console.log(2)
     })
   });
 
   it('should find a bike by ID', function() {
-    console.log("looking for a single bike")
     assert.ok(savedBike.ID)
-    bikeRepository.findAll({}).then(bikes => console.log(bikes))
     const bikeIdToFind = savedBike.ID
     return bikeRepository.findById(bikeIdToFind).then(foundBike => {
       assert.strictEqual(foundBike.ID, bikeIdToFind)
-      console.log(3)
     })
   });
 
   it('should find all the bikes', function() {
-    console.log("looking for all bikes")
     return bikeRepository.findAll({}).then(bikes => {
-      console.log(bikes)
       assert.ok(Array.isArray(bikes))
       assert.equal(6, bikes.length)
-      console.log(4)
     })
   })
 
@@ -104,7 +88,6 @@ describe('IBikeRepository Integration Tests', function() {
       assert.strictEqual(bikes[0].Numbering, searchCriteria.numbering);
       assert.strictEqual(bikes[0].Size, searchCriteria.size);
       assert.strictEqual(bikes[0].CurrentStatus, searchCriteria.currentStatus);
-      console.log(5)
     })
   });
 
@@ -113,7 +96,6 @@ describe('IBikeRepository Integration Tests', function() {
     assert.ok(savedBike.ID)
     return bikeRepository.delete(savedBike.ID).then(deletedBike => {
       assert.strictEqual(deletedBike.ID, savedBike.ID);
-      console.log(6)
     })
   });
 });

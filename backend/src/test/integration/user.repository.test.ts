@@ -52,8 +52,9 @@ describe('IUserRepository Integration Tests', () => {
     assert.ok(savedUser.ID)
   })
 
-  after(function() {
-    cleanupDb(client)
+  after(async function() {
+    await cleanupDb(client)
+    client.end()
   })
 
   it('should update a user in the database', function() {
