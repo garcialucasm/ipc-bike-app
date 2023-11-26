@@ -8,7 +8,6 @@
     "build": "tsc",
     "test": "ts-mocha src/test/unit/*.test.ts",
     "integration": "ts-mocha src/test/integration/*.test.ts",
-    "integration-1": "ts-mocha src/test/integration/booking.repository.test.ts"
   },
   "keywords": [],
   "author": "",
