@@ -1,10 +1,10 @@
 import FooterWeb from "@/components/organisms/FooterWeb";
-import BodyHomeWeb from "../components/organisms/BodyHomeWeb";
-import HeaderWebPage from "@/components/organisms/HeaderWebpage";
+import BodyHomeWeb from "../components/templates/BodyHomeWeb";
+import HeaderWebPage from "@/components/organisms/HeaderWebPage";
 
 export default function Page() {
   return (
-    <div className="bg-white">
+    <div>
       <HeaderWebPage />
       <BodyHomeWeb />
       <FooterWeb />

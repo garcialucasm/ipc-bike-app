@@ -19,7 +19,9 @@ export enum ReturnBookingSection {
 }
 
 export enum MenuNavigation {
-  homePage = "homePage",
+  login = "login",
+  homePageWeb = "homePageWeb",
+  homePageApp = "homePageApp",
   singleBooking = "singleBooking",
   groupBooking = "groupBooking",
 }

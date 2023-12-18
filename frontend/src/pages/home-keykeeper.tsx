@@ -16,20 +16,28 @@ export default function HomeKeyKeeper() {
   return (
     <>
       {isLoggedIn ? (
-        <div className="flex flex-col items-center text-center min-h-screen">
-          <div className="container-webapp flex flex-col items-center">
-            <HeaderWebApp
-              headingTitle={"Welcome, Lorem Ipsum"}
-              headingSubTitle="Lorem ipsum is placeholder text commonly used"
-              currentPage={MenuNavigation.homePage}
-            />
+        <div className="flex flex-col items-center text-center mb-3">
+          <div className="container-webapp flex flex-col items-center pb-6">
+            <div className="w-full mb-3">
+              <HeaderWebApp
+                headingTitle={"Alumni Bike"}
+                headingSubTitle="Book, Ride, Explore: All for Free"
+                currentPage={MenuNavigation.homePageApp}
+              />
+            </div>
             <div className="w-11/12 flex flex-col">
               <div className="flex flex-col items-center">
-                <Head title="IPC Alumni Bike" />
-                <AvailabilityContainer
-                  availabilitySelection={availabilityShowSelection}
-                />
-                <BookingsOverview />
+                <div className="w-full ">
+                  <Head title="IPC Alumni Bike" />
+                </div>
+                <div className="w-full my-3">
+                  <AvailabilityContainer
+                    availabilitySelection={availabilityShowSelection}
+                  />
+                </div>
+                <div className="w-full my-3">
+                  <BookingsOverview />
+                </div>
               </div>
             </div>
           </div>

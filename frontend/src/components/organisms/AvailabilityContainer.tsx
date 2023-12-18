@@ -1,5 +1,5 @@
 import { BikeSize, BikeStatus } from "@/types/BikeType";
-import AvailabilityLabel from "../molecules/AvailabilityLabel";
+import AvailabilityCard from "../molecules/AvailabilityCard";
 
 export const AvailabilityConfig = {
   HomeSingleBooking: {
@@ -43,8 +43,7 @@ function AvailabilityContainer(props: {
   };
 }) {
   //TODO get the number of bikes for each BikeStatus
-  const bikeCountFreeStandardSize = 8;
-  const bikeCountFreeSmallSize = 3;
+  const bikeCountFree = 8;
   const bikeCountBooked = 5;
   const bikeCountInUse = 8;
   const bikeCountDisabled = 1;
@@ -54,36 +53,31 @@ function AvailabilityContainer(props: {
 
   return (
     <>
-      <div className="flex flex-col items-center container-webapp-availability">
-        <div>
+      <div
+        className="overflow-x-auto w-full flex flex-col items-center bg-white
+      "
+      >
+        <div className="overflow-x-clip flex w-full gap-3">
           {ShowFreeBikes && (
-            <AvailabilityLabel
+            <AvailabilityCard
               selectedStatus={BikeStatus.FREE}
-              bikeSize={BikeSize.STANDARD}
-              bikeCount={bikeCountFreeStandardSize}
-            />
-          )}
-          {ShowFreeBikes && (
-            <AvailabilityLabel
-              selectedStatus={BikeStatus.FREE}
-              bikeSize={BikeSize.SMALL}
-              bikeCount={bikeCountFreeSmallSize}
+              bikeCount={bikeCountFree}
             />
           )}
           {ShowBookedBikes && (
-            <AvailabilityLabel
+            <AvailabilityCard
               selectedStatus={BikeStatus.BOOKED}
               bikeCount={bikeCountBooked}
             />
           )}
           {ShowInUseBikes && (
-            <AvailabilityLabel
+            <AvailabilityCard
               selectedStatus={BikeStatus.INUSE}
               bikeCount={bikeCountInUse}
             />
           )}
           {ShowDisabledBikes && (
-            <AvailabilityLabel
+            <AvailabilityCard
               selectedStatus={BikeStatus.DISABLED}
               bikeCount={bikeCountDisabled}
             />

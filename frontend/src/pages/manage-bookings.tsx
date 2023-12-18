@@ -30,14 +30,14 @@ function ManageBookings() {
   }
 
   return (
-    <div className="flex flex-col items-center text-center h-screen">
+    <div className="flex flex-col items-center text-center">
       <div className="container-webapp flex flex-col items-center">
         <HeaderWebApp
           headingTitle={"Welcome, Lorem Ipsum"}
           headingSubTitle="Lorem ipsum is placeholder text commonly used"
-          currentPage={MenuNavigation.homePage}
+          currentPage={MenuNavigation.homePageApp}
         />
-        <div className="w-11/12 flex flex-col items-center">
+        <div className="w-11/12  flex flex-col items-center">
           {currentSection === ManageBookingSection.bookingsOverview && (
             <>
               <AvailabilityContainer

@@ -3,7 +3,7 @@ import Button from "../atoms/Button";
 import Link from "next/link";
 import { SingleBookingSection } from "@/types/NavigationSections";
 import { useState } from "react";
-import BikeTypeContainer from "../organisms/BikeTypeContainer";
+import BikeChooserContainer from "../organisms/BikeChooserContainer";
 
 //TODO get the number of bikes for each BikeStatus
 const countFreeByType = { standardType: 5, classicType: 10, smallType: 3 };
@@ -31,19 +31,19 @@ function InputStudentBikeSize(props: {
   return (
     <>
       <div className="w-11/12 flex flex-col items-center">
-        <h3 className="w-full mb-5 text-lg text-start font-medium text-gray-900">
+        <div className="instruction-label">
           Select the bike type
-        </h3>
-        <ul className="w-full mb-5 border border-gray-200 shadow-lg rounded-xl">
+        </div>
+        <ul className="w-full mb-5 border border-slate-200 shadow-lg rounded-xl">
           <div>
-            <BikeTypeContainer
+            <BikeChooserContainer
               bikeCountFree={{
                 bikeSize: radioBikeSizeValue,
                 countFree: countFreeByType,
               }}
             />
           </div>
-          <div className="flex justify-around bg-gradient-to-b from-white from-40% via-gray-200 via-60% to-gray-200 border-b-4 rounded-b-xl">
+          <div className="flex justify-around bg-gradient-to-b from-white from-40% via-slate-200 via-60% to-slate-200 border-b-4 rounded-b-xl">
             <li className="w-full">
               <input
                 type="radio"
@@ -56,10 +56,10 @@ function InputStudentBikeSize(props: {
               />
               <label
                 htmlFor="standard-bike-size"
-                className={`text-gray-500 rounded-lg cursor-pointer bg-gray-200 peer-checked:bg-white peer-checked:rounded-b-xl peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100`}
+                className={`bike-type-chooser-item`}
               >
                 <div
-                  className={`w-full py-2 rounded-b-xl text-lg font-bold bg-inherit ${
+                  className={`w-full py-2 rounded-b-xl text-lg bg-inherit ${
                     radioBikeSizeValue == BikeSize.CLASSIC
                       ? "rounded-tr-xl"
                       : ""
@@ -81,10 +81,10 @@ function InputStudentBikeSize(props: {
               />
               <label
                 htmlFor="classic-bike-size"
-                className="text-gray-500 rounded-lg cursor-pointer bg-gray-200 peer-checked:bg-white peer-checked:rounded-b-xl peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100"
+                className="bike-type-chooser-item"
               >
                 <div
-                  className={`w-full py-2 rounded-b-xl text-lg font-bold bg-inherit ${
+                  className={`w-full py-2 rounded-b-xl text-lg bg-inherit ${
                     radioBikeSizeValue == BikeSize.STANDARD
                       ? "rounded-tl-xl"
                       : ""
@@ -108,10 +108,10 @@ function InputStudentBikeSize(props: {
               />
               <label
                 htmlFor="small-bike-size"
-                className="text-gray-500 rounded-lg cursor-pointer bg-gray-200 peer-checked:bg-white peer-checked:rounded-b-xl peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100"
+                className="bike-type-chooser-item"
               >
                 <div
-                  className={`w-full py-2 rounded-b-xl text-lg font-bold bg-inherit ${
+                  className={`w-full py-2 rounded-b-xl text-lg bg-inherit ${
                     radioBikeSizeValue == BikeSize.CLASSIC
                       ? "rounded-tl-xl"
                       : ""
