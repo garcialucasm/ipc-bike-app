@@ -7,7 +7,7 @@ export default function bookingController(bookingService: IBookingService, route
 
   const router: Router = Router(routerOptions)
 
-  router.post("/createSingle", async (req, res) => {
+  router.post("/create/single", async (req, res) => {
     let userName = req.body.userName
     let room = req.body.room
     let bikeSize = req.body.bikeSize
