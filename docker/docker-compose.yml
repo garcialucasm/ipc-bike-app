@@ -1,0 +1,31 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    command: ["postgres", "-c", "log_statement=all"]
+    environment:
+      POSTGRES_DB: ipc
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./backend/resources/db.sql:/docker-entrypoint-initdb.d/db.sql  
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  test_container:
+    build:
+      dockerfile: docker/backend.test.Dockerfile
+    environment:
+      TEST_USER: postgres
+      TEST_HOST: db
+      TEST_DATABASE: ipc
+      TEST_PASSWORD: postgres
+      TEST_PORT: 5432
+    depends_on:
+      db:
+        condition: service_healthy
+

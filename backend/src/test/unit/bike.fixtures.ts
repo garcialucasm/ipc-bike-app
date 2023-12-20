@@ -1,6 +1,6 @@
 
-import { Bike, BikeStatus } from "../models/bike.model";
-import IBikeRepository from "../repositories/bike.repository"
+import { Bike, BikeStatus } from "../../models/bike.model";
+import IBikeRepository from "../../repositories/bike.repository"
 
 export default class MockBikeRepository implements IBikeRepository {
 

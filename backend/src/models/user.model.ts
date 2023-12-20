@@ -1,14 +1,14 @@
 
 enum UserType {
-  STUDENT = "student",
-  PROFESSOR = "professor",
-  KEYKEEPER = "keyKeeper"
+  STUDENT = 'STUDENT', 
+  PROFESSOR = 'PROFESSOR', 
+  KEYKEEPER = 'KEYKEEPER'
 }
 
 enum UserStatus {
-  BOOKED = "booked",
-  INUSE = "inUse",
-  FREE = "free"
+  BOOKED = 'BOOKED', 
+  INUSE = 'INUSE', 
+  FREE = 'FREE'
 }
 
 interface User {
