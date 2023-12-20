@@ -17,7 +17,7 @@ export default function bookingController(bookingService: IBookingService, route
       validateRoom(room)
       validateBikeSize(bikeSize)
 
-      bookingService.createStudentBooking(userName, room, bikeSize)
+      bookingService.createSingleBooking(userName, room, bikeSize)
       .then(booking => {
         res.status(200)
           .send({Response: booking})
