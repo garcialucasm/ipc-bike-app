@@ -1,5 +1,5 @@
-import { Booking, BookingStatus } from "../models/booking.model";
-import IBookingRepository from "../repositories/booking.repository";
+import { Booking, BookingStatus } from "../../models/booking.model";
+import IBookingRepository from "../../repositories/booking.repository";
 
 export default class MockBookingRepository implements IBookingRepository {
   private bookings: Map<number, Booking>;

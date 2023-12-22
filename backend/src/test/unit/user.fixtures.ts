@@ -1,5 +1,5 @@
 
-import { User, UserStatus, UserType } from "../models/user.model";
+import { User, UserStatus, UserType } from "../../models/user.model";
 import IUserRepository from "../repositories/user.repository"
 
 export default class MockUserRepository implements IUserRepository {
