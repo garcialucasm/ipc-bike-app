@@ -49,7 +49,7 @@ export default class UserService implements IUserService {
       user.Status = status;
       return await this.userRepository.update(user)
     }  else {
-      throw new Error(`Unable to change status ${user.Status} to ${status}`)
+      throw new Error(`Unable to change user status ${user.Status} to ${status}`)
     }
   }
 }

@@ -8,28 +8,29 @@ function filterPropertiesWithPrefix(object: any, prefix: string) : any {
   const filtered : string[] = Object.keys(object).filter(key => key.startsWith(dotedPrefix))
   let res = {}
   filtered.forEach((key) => {
-    const newKey: string = key.split(dotedPrefix)[1]
+    const newKey: string = key.replace(dotedPrefix, '')
     res[newKey] = object[key]
-  });
+  })
 
   return res
 }
 
 function bookingFromRow(row: any) : Booking {
+  let bookingData = filterPropertiesWithPrefix(row, 'bk')
   let user : User = userFromRow(filterPropertiesWithPrefix(row, 'u'))
-  let bikes: Bike[] = bikeFromRow(filterPropertiesWithPrefix(row, 'b'))
 
   return {
-    ID: Number.parseInt(row['id']),
+    ID: Number.parseInt(bookingData['id']),
     User: user,
-    Bike: bikes,
-    Type: row['type'] ? BookingType[row['type'] as keyof typeof BookingType] : BookingType.SINGLE,
-    Status: row['status'] ? BookingStatus[row['status'] as keyof typeof BookingStatus] : BookingStatus.BOOKED,
-    Notes: row['notes'],
-    ReturnedCondition: row['returned_condition'],
-    CreatedAt: row['created_at'] ? new Date(row['created_at']) : undefined, 
-    ConfirmedAt: row['confirmed_at'] ? new Date(row['confirmed_at']) : undefined, 
-    ReturnedAt: row['returned_at'] ? new Date(row['returned_at']) : undefined, 
+    Bike: [],
+    BikeCount: Number.parseInt(bookingData['bike_count']),
+    Type: bookingData['type'] ? BookingType[bookingData['type'] as keyof typeof BookingType] : BookingType.SINGLE,
+    Status: bookingData['status'] ? BookingStatus[bookingData['status'] as keyof typeof BookingStatus] : BookingStatus.BOOKED,
+    Notes: bookingData['notes'],
+    ReturnedCondition: bookingData['returned_condition'],
+    CreatedAt: bookingData['created_at'] ? new Date(row['created_at']) : undefined, 
+    ConfirmedAt: bookingData['confirmed_at'] ? new Date(row['confirmed_at']) : undefined, 
+    ReturnedAt: bookingData['returned_at'] ? new Date(row['returned_at']) : undefined, 
   }
 }
 
@@ -48,13 +49,13 @@ function bikeFromRow(row: any) : Bike {
 
 function userFromRow(row: any) : User {
   return {
-    ID: 1,
-    Name: "",
-    Room: "",
-    Type: UserType.STUDENT,
-    Term: "",
-    Status: UserStatus.FREE,
-    IsActive: true,
+    ID: Number.parseInt(row['id']),
+    Name: row['name'],
+    Room: row['room'],
+    Type: row['type'] ? UserType[ row['type'] as keyof typeof UserType] : UserType.STUDENT,
+    Term: row['term'],
+    Status: row['status'] ? UserStatus[row['status'] as keyof typeof UserStatus] : UserStatus.FREE,
+    IsActive: row['is_active'] ? new Boolean(row['is_active']).valueOf() : false,
     CreatedAt: row['created_at'] ? new Date(row['created_at']) : undefined,
     UpdatedAt: row['updated_at'] ? new Date(row['updated_at']) : undefined,
     DeletedAt: row['deleted_at'] ? new Date(row['deleted_at']) : undefined

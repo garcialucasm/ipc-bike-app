@@ -1,6 +1,6 @@
 
-import {Bike} from "./bike.model";
-import {User} from "./user.model";
+import { Bike } from "./bike.model";
+import { User } from "./user.model";
 
 enum BookingStatus {
   BOOKED = "BOOKED", 
@@ -19,6 +19,7 @@ interface Booking {
   ID?: number;
   User: User;
   Bike: Bike[];
+  BikeCount: number;
   Status: BookingStatus;
   Type: BookingType;
   CreatedAt?: Date;

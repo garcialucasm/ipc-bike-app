@@ -1,9 +1,9 @@
 import assert from 'assert';
-import IUserService from '../services/user.service'; // Update this path
-import { User, UserStatus, UserType } from '../models/user.model'; // Update this path
-import IUserRepository from '../repositories/user.repository';
+import IUserService from '../../services/user.service'; // Update this path
+import { User, UserStatus, UserType } from '../../models/user.model'; // Update this path
+import IUserRepository from '../../repositories/user.repository';
 import MockUserRepository from './user.fixtures';
-import UserService from '../services/user.service.impl';
+import UserService from '../../services/user.service.impl';
 
 let userService: IUserService;
 let userRepository: IUserRepository

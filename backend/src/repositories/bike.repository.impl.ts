@@ -9,7 +9,7 @@ export default class BikeRepository implements IBikeRepository {
   client: Client
 
   insertStmt: string = "INSERT INTO bike (numbering, size, current_status, is_active, created_at) " +
-    "VALUES ($1, $2, $3, $4, $5) RETURNING id"
+    "VALUES ($1, $2, $3, $4, $5) RETURNING *"
 
   updateStmt: string = "UPDATE bike SET is_active=$1, updated_at=$2, current_status=$3 WHERE id=$4 RETURNING *"
 
@@ -33,8 +33,7 @@ export default class BikeRepository implements IBikeRepository {
       throw new Error("save to database have failed")
 
     let [row] = result.rows
-    bike.ID = Number.parseInt(row['id'])
-    return bike
+    return this.bikeFromRow(row)
   }
 
   async update(bike: Bike): Promise<Bike> {
@@ -86,9 +85,7 @@ export default class BikeRepository implements IBikeRepository {
     let query: string = this.findAllStmt
 
     query += createWhereClausule(searchCriteria)
-
     let result = await this.client.query(query, Object.values(searchCriteria))
-
     return result.rows.map(row => this.bikeFromRow(row))
   } 
 

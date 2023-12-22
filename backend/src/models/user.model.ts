@@ -1,10 +1,14 @@
 
 enum UserType {
-  STUDENT, PROFESSOR, KEYKEEPER
+  STUDENT = 'STUDENT', 
+  PROFESSOR = 'PROFESSOR', 
+  KEYKEEPER = 'KEYKEEPER'
 }
 
 enum UserStatus {
-  BOOKED, INUSE, FREE
+  BOOKED = 'BOOKED', 
+  INUSE = 'INUSE', 
+  FREE = 'FREE'
 }
 
 interface User {
@@ -20,4 +24,4 @@ interface User {
   DeletedAt?: Date,
 }
 
-export {UserType, UserStatus, User}
+export { UserType, UserStatus, User }

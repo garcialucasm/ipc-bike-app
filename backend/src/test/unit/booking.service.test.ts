@@ -1,19 +1,19 @@
 import assert from 'assert'
-import IBookingService from '../services/booking.service'
-import { Booking, BookingStatus } from '../models/booking.model' // Update this path
-import IBikeChooser from '../services/bike.chooser'
-import IBikeService from '../services/bike.service'
-import IUserService from '../services/user.service'
-import BikeService from '../services/bike.service.impl'
+import IBookingService from '../../services/booking.service'
+import { Booking, BookingStatus } from '../../models/booking.model' // Update this path
+import IBikeChooser from '../../services/bike.chooser'
+import IBikeService from '../../services/bike.service'
+import IUserService from '../../services/user.service'
+import BikeService from '../../services/bike.service.impl'
 import MockBikeRepository from './bike.fixtures'
-import UserService from '../services/user.service.impl'
+import UserService from '../../services/user.service.impl'
 import MockUserRepository from './user.fixtures'
-import RandomBikeChooser from '../services/random.bike.chooser'
-import BookingService from '../services/booking.service.impl'
-import IBookingRepository from '../repositories/booking.repository'
+import RandomBikeChooser from '../../services/random.bike.chooser'
+import BookingService from '../../services/booking.service.impl'
+import IBookingRepository from '../../repositories/booking.repository'
 import MockBookingRepository from './booking.fixtures'
-import { UserStatus } from '../models/user.model'
-import { BikeStatus } from '../models/bike.model'
+import { UserStatus } from '../../models/user.model'
+import { BikeStatus } from '../../models/bike.model'
 
 let bookingRepository: IBookingRepository
 let bikeService: IBikeService
@@ -43,7 +43,7 @@ describe('For a valid user', () => {
   let booking: Booking
 
   it('should create a student booking', async () => {
-    booking = await bookingService.createStudentBooking(userName, room, bikeSize)
+    booking = await bookingService.createSingleBooking(userName, room, bikeSize)
     
     assert.strictEqual(booking.User.Name, userName)
     assert.strictEqual(booking.Bike[0].Size, bikeSize)

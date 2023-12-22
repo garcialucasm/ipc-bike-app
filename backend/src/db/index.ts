@@ -1,11 +1,31 @@
 import {Client} from 'ts-postgres'
 
-const client = new Client({
-  user: process.env.USER,
-  host: process.env.HOST,
-  database: process.env.DATABASE,
-  password: process.env.PASSWORD,
-  port: process.env.PORT,
-});
+class DatabaseClient { 
+  client: Client
 
-export default client
+  constructor(client: Client) {
+    this.client = client
+    this.init()
+  }
+
+  private init() {
+    this.client.connect()
+  }
+
+  execute(query: string, params: any[]) : Promise<Iterable> {
+
+    let resultIterator = this.client.query(query, params);
+    
+    for (let row in resultIterator) {
+      row.
+    }
+    return this.client.query(query, params)
+  }
+}
+
+/*export default mysql.createConnection({
+  host: dbConfig.host,
+  user: dbConfig.user,
+  password: dbConfig.password,
+  database: dbConfig.database
+});*/

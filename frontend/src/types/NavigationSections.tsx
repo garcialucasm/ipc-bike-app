@@ -1,19 +1,34 @@
 export enum SingleBookingSection {
-  SelectBikeSize,
-  InputUserData,
-  PreBookingConfirmation,
-  BookingConfirmed,
+  selectBikeSize = "selectBikeSize",
+  inputUserData = "inputUserData",
+  preBookingConfirmation = "preBookingConfirmation",
+  bookingConfirmationStatus = "bookingConfirmationStatus",
 }
 
 export enum ManageBookingSection {
-  BookingsOverview,
-  PreHandoverConfirmation,
-  HandoverRefused,
-  HandoverConfirmed,
+  bookingsOverview = "bookingsOverview",
+  preHandoverConfirmation = "preHandoverConfirmation",
+  handoverRefused = "handoverRefused",
+  handoverConfirmationStatus = "handoverConfirmationStatus",
 }
 
 export enum ReturnBookingSection {
-  BookingsOverview,
-  PreReturnConfirmation,
-  ReturnConfirmed,
+  bookingsOverview = "bookingsOverview",
+  preReturnConfirmation = "preReturnConfirmation",
+  returnConfirmationStatus = "returnConfirmationStatus",
+}
+
+export enum MenuNavigation {
+  login = "login",
+  homePageWeb = "homePageWeb",
+  homePageApp = "homePageApp",
+  singleBooking = "singleBooking",
+  groupBooking = "groupBooking",
+}
+
+export enum MenuOptions {
+  profile = "profile",
+  inventory = "inventory",
+  stats = "stats",
+  signOut = "signOut",
 }

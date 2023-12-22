@@ -1,22 +1,31 @@
 import React, { useState, useEffect } from "react";
-import HeaderTemp from "@/components/organisms/HeaderTemp";
-import InputStudentBikeSize from "@/components/templates/InputStudentBikeSize";
-import InputStudentData from "@/components/templates/InputStudentData";
+import InputSingleBikeSize from "@/components/templates/InputSingleBikeSize";
+import InputSingleUserData from "@/components/templates/InputSingleUserData";
 import PreBookingConfirmation from "@/components/templates/PreBookingConfirmation";
 import BookingConfirmed from "@/components/templates/BookingConfirmed";
 import { BikeSize } from "@/types/BikeType";
 import { UserData } from "@/types/UserType";
-import { BookingType } from "@/types/BookingType";
-import { SingleBookingSection } from "@/types/NavigationSections";
+import { BookingStatus, BookingType } from "@/types/BookingType";
+import {
+  MenuNavigation,
+  SingleBookingSection,
+} from "@/types/NavigationSections";
+import Stepper from "@/components/organisms/Stepper";
+import HeaderWebApp from "@/components/organisms/HeaderWebApp";
 
 function HomeSingleBooking() {
   // Creating states for show of hide components
   const [currentSection, setCurrentSection] = useState<SingleBookingSection>(
-    SingleBookingSection.SelectBikeSize
+    SingleBookingSection.selectBikeSize
   );
 
   // Creating state for bikeSizeSelected
   const [bikeSizeSelected, setBikeSize] = useState(BikeSize.NONE);
+
+  // Creating state for currentBookingStatus
+  const [currentBookingStatus, setCurrentBookingStatus] = useState(
+    BookingStatus.FREE
+  );
 
   // Creating state for enteredUserData in InputStudentData
   const [enteredUserData, setEnteredUserData] = useState<UserData>({
@@ -33,24 +42,30 @@ function HomeSingleBooking() {
       lastName: "",
       roomNumber: "",
     },
+    bookingStatus: BookingStatus.FREE,
   });
 
   // Creating state to check if isUserDataValid and only then submit booking
   const [isUserDataValid, setIsUserDataValid] = useState(false);
 
   // Statements to control navigation (next, submit & return buttons)
-  const handleNavigation = (event: { buttonValue: SingleBookingSection }) => {
-    const valueButtonClicked: SingleBookingSection = event.buttonValue;
-    setCurrentSection(valueButtonClicked);
+  const handleNavigation = (event: { buttonName: SingleBookingSection }) => {
+    const buttonClicked: SingleBookingSection =
+      event.buttonName as SingleBookingSection;
+    setCurrentSection(buttonClicked);
+    if (buttonClicked === SingleBookingSection.bookingConfirmationStatus) {
+      handleBookingConfirmation();
+    }
   };
 
   // Update bikeSizeSelected
   function handleBikeSize(event: { selectedSize: BikeSize }) {
+    console.log(event.selectedSize);
     const bikeSizeSelected = event.selectedSize;
     setBikeSize(bikeSizeSelected);
   }
 
-  // Correct me
+  // TODO
   // Create a function to validate user data input
   function checkEnteredUserData() {
     setIsUserDataValid(true);
@@ -65,20 +80,28 @@ function HomeSingleBooking() {
     setBookingData({
       bookingBikeSize: bikeSizeSelected,
       bookingUserData: enteredUserData,
+      bookingStatus: currentBookingStatus,
     });
-    // Correct me
+
+    // TODO
     // Choose a strategic location to leave this function call (checkEnteredUserData)
     checkEnteredUserData();
-  }, [bikeSizeSelected, isUserDataValid, enteredUserData]);
+  }, [
+    bikeSizeSelected,
+    isUserDataValid,
+    enteredUserData,
+    currentBookingStatus,
+  ]);
 
-  // Correct me
+  // TODO
   // Option to confirm Booking or Return to user data input
-  function handleBookingConfirmation(event: { value: SingleBookingSection }) {
-    console.log(`event: ${event.value}`);
-    console.log(event.value === SingleBookingSection.BookingConfirmed);
+  function handleBookingConfirmation() {
     // Temp - Submit confirmation
-    const buttonOnConfirmation = event.value;
-    if (buttonOnConfirmation == SingleBookingSection.BookingConfirmed) {
+    setCurrentBookingStatus(BookingStatus.BOOKED);
+    const buttonOnConfirmation = SingleBookingSection.bookingConfirmationStatus;
+    if (
+      buttonOnConfirmation === SingleBookingSection.bookingConfirmationStatus
+    ) {
       alert(
         buttonOnConfirmation +
           "\n" +
@@ -95,12 +118,12 @@ function HomeSingleBooking() {
           "\n"
       );
       //function to submit data
-    } else if (buttonOnConfirmation === SingleBookingSection.InputUserData) {
+    } else if (buttonOnConfirmation === SingleBookingSection.inputUserData) {
       setIsUserDataValid(false);
     }
   }
 
-  // Correct me (remove)
+  // TODO (remove)
   // Checking status of bikeSizeSelected (bike size input) and isUserDataValid (user data input)
   useEffect(() => {
     console.log("bikeSizeSelected changed:", bikeSizeSelected);
@@ -113,36 +136,45 @@ function HomeSingleBooking() {
   }, [enteredUserData]);
 
   return (
-    <div className="center-content">
-      <HeaderTemp heading="Single Booking" />
+    <>
+      <div className="flex flex-col items-center text-center mb-3">
+        <div className="container-webapp flex flex-col items-center pb-6">
+          <HeaderWebApp
+            headingTitle={"Single Booking"}
+            headingSubTitle="Select the type of bike, confirm the details, and book."
+            currentPage={MenuNavigation.singleBooking}
+          />
+          <Stepper currentSection={currentSection} />
+          {currentSection === SingleBookingSection.selectBikeSize && (
+            <InputSingleBikeSize
+              onNavigation={handleNavigation}
+              onSizeSelection={handleBikeSize}
+            />
+          )}
 
-      {currentSection === SingleBookingSection.SelectBikeSize && (
-        <InputStudentBikeSize
-          onNavigation={handleNavigation}
-          onSizeSelection={handleBikeSize}
-        />
-      )}
-      {currentSection === SingleBookingSection.InputUserData && (
-        <InputStudentData
-          onNavigation={handleNavigation}
-          sendUserDataState={enteredUserData}
-          sendSetUserDataState={setEnteredUserData}
-        />
-      )}
-      {currentSection === SingleBookingSection.PreBookingConfirmation && (
-        <PreBookingConfirmation
-          onNavigation={handleNavigation}
-          onConfirmation={handleBookingConfirmation}
-          bookingData={bookingData}
-        />
-      )}
-      {currentSection === SingleBookingSection.BookingConfirmed && (
-        <BookingConfirmed
-          onNavigation={handleNavigation}
-          bookingData={bookingData}
-        />
-      )}
-    </div>
+          {currentSection === SingleBookingSection.inputUserData && (
+            <InputSingleUserData
+              onNavigation={handleNavigation}
+              sendUserDataState={enteredUserData}
+              sendSetUserDataState={setEnteredUserData}
+            />
+          )}
+          {currentSection === SingleBookingSection.preBookingConfirmation && (
+            <PreBookingConfirmation
+              onNavigation={handleNavigation}
+              bookingData={bookingData}
+            />
+          )}
+          {currentSection ===
+            SingleBookingSection.bookingConfirmationStatus && (
+            <BookingConfirmed
+              onNavigation={handleNavigation}
+              bookingData={bookingData}
+            />
+          )}
+        </div>
+      </div>
+    </>
   );
 }
 

@@ -1,50 +1,58 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import HeaderTemp from "@/components/organisms/HeaderTemp";
-import AvailabilityContainer from "@/components/organisms/AvailabilityContainer";
+import HeaderWebApp from "@/components/organisms/HeaderWebApp";
+import AvailabilityContainer, {
+  AvailabilityConfig,
+} from "@/components/organisms/AvailabilityContainer";
 import BookingsOverview from "@/components/organisms/BookingsOverview";
-import { ManageBookingSection } from "@/types/NavigationSections";
+import { ManageBookingSection, MenuNavigation } from "@/types/NavigationSections";
 import PreHandoverConfirmation from "@/components/templates/PreHandoverConfirmation";
+
+const availabilityShowSelection = AvailabilityConfig.ManageBookings;
 
 function ManageBookings() {
   // Creating states for show of hide components
   const [currentSection, setCurrentSection] = useState<ManageBookingSection>(
-    ManageBookingSection.BookingsOverview
+    ManageBookingSection.bookingsOverview
   );
 
   // Statements to control navegation (next, submit & return buttons)
-  const handleNavigation = (event: { buttonValue: ManageBookingSection }) => {
-    const valueButtonClicked: ManageBookingSection = event.buttonValue;
-    setCurrentSection(valueButtonClicked);
+  const handleNavigation = (event: { buttonName: ManageBookingSection }) => {
+    const buttonClicked: ManageBookingSection =
+      event.buttonName as ManageBookingSection;
+    setCurrentSection(buttonClicked);
   };
 
-  // Correct me
+  // TODO
   // Option to confirm/refuse Booking or Return to BookingsOverview
   function handleBookingConfirmation(event: { value: ManageBookingSection }) {
     return;
   }
 
   return (
-    <div className="center-content">
-      <HeaderTemp heading="Manage Bookings" />
-
-      {currentSection === ManageBookingSection.BookingsOverview && (
-        <>
-          <AvailabilityContainer />
-          <BookingsOverview />
-          <Link href="/home-keykeeper">
-            <div className="button-return">Return</div>
-          </Link>
-        </>
-      )}
-      {currentSection === ManageBookingSection.PreHandoverConfirmation && (
-        <>
-          <PreHandoverConfirmation
-            onNavigation={handleNavigation}
-            onConfirmation={handleBookingConfirmation}
-          />
-        </>
-      )}
+    <div className="flex flex-col items-center text-center">
+      <div className="container-webapp flex flex-col items-center">
+        <HeaderWebApp
+          headingTitle={"Welcome, Lorem Ipsum"}
+          headingSubTitle="Lorem ipsum is placeholder text commonly used"
+          currentPage={MenuNavigation.homePageApp}
+        />
+        <div className="w-11/12  flex flex-col items-center">
+          {currentSection === ManageBookingSection.bookingsOverview && (
+            <>
+              <AvailabilityContainer
+                availabilitySelection={availabilityShowSelection}
+              />
+              
+            </>
+          )}
+          {currentSection === ManageBookingSection.preHandoverConfirmation && (
+            <>
+              <PreHandoverConfirmation onNavigation={handleNavigation} />
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

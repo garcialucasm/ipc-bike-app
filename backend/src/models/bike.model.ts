@@ -17,4 +17,4 @@ interface Bike {
   DeltedAt?: Date;
 }
 
-export {BikeStatus, Bike}
+export { BikeStatus, Bike }
