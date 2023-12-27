@@ -6,13 +6,14 @@ import { User, UserType, UserStatus } from "../models/user.model";
 function filterPropertiesWithPrefix(object: any, prefix: string) : any { 
   const dotedPrefix = prefix + '.'
   const filtered : string[] = Object.keys(object).filter(key => key.startsWith(dotedPrefix))
-  let res = {}
-  filtered.forEach((key) => {
+  let res: Map<String, any> = new Map<String, any>()
+
+  filtered.forEach((key: string) => {
     const newKey: string = key.replace(dotedPrefix, '')
-    res[newKey] = object[key]
+    res.set(newKey, object[key])
   })
 
-  return res
+  return Object.fromEntries(res)
 }
 
 function bookingFromRow(row: any) : Booking {
@@ -62,4 +63,4 @@ function userFromRow(row: any) : User {
   }
 }
 
-export {bookingFromRow, bikeFromRow, userFromRow}
+export {bookingFromRow, bikeFromRow, userFromRow, filterPropertiesWithPrefix}

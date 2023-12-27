@@ -1,5 +1,5 @@
 
-export default async function cleanupDb(client) {
+export default async function cleanupDb(client: any) {
     let cleanupUser = 'DELETE FROM "user"'
     let cleanupBooking = 'DELETE FROM "booking"'
     let cleanupBookingBike = 'DELETE FROM "booking_bike"'
