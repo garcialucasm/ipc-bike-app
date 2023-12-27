@@ -75,11 +75,25 @@ export default class BookingRepository implements IBookingRepository {
                 where u.id = $1
                 order by bk.id`
 
+    findByStatusStmt: string = `select ${this.findSelectFields.join(', ')} 
+                from booking bk inner join "user" u on bk.user_id = u.id 
+                inner join booking_bike bb on bk.id = bb.booking_id 
+                inner join bike b on b.id = bb.bike_id
+                where bk.status = $1
+                order by bk.id`
+
+    findByBikeStmt: string = `select ${this.findSelectFields.join(', ')} 
+                from booking bk inner join "user" u on bk.user_id = u.id 
+                inner join booking_bike bb on bk.id = bb.booking_id 
+                inner join bike b on b.id = bb.bike_id
+                where b.id = $1
+                order by bk.id`
+
     findAllStmt: string = `select ${this.findSelectFields.join(', ')} 
                 from booking bk inner join "user" u on bk.user_id = u.id 
                 inner join booking_bike bb on bk.id = bb.booking_id 
                 inner join bike b on b.id = bb.bike_id
-                _WHERE_ order by bk.id`
+                order by bk.id`
 
     constructor(client: Client) {
         this.client = client
@@ -161,14 +175,37 @@ export default class BookingRepository implements IBookingRepository {
         return toBookingArray(objectRows)
     }
 
-    async findAll(searchCriteria: { userId?: number, bikeId?: number, status?: BookingStatus }): Promise<Booking[]> {
-        let stmt = this.findAllStmt 
-
-        stmt = stmt.replace("_WHERE_", createWhereClausule(searchCriteria, 'bk'))
-
+    async findByBike(bikeId: number): Promise<Booking[]> {
         let query = {
-            text: stmt, 
-            values: Object.values(searchCriteria),
+            text: this.findByBikeStmt,
+            values: [bikeId],
+            rowMode: 'array'
+        }
+
+        let result = await this.client.query(query)
+
+        let objectRows = result.rows.map(row => toObj(this.findSelectFields, row))
+
+        return toBookingArray(objectRows)
+    }
+
+    async findByStatus(status: BookingStatus): Promise<Booking[]> {
+        let query = {
+            text: this.findByStatusStmt,
+            values: [status],
+            rowMode: 'array'
+        }
+
+        let result = await this.client.query(query)
+
+        let objectRows = result.rows.map(row => toObj(this.findSelectFields, row))
+
+        return toBookingArray(objectRows)
+    }
+
+    async findAll(): Promise<Booking[]> {
+        let query = {
+            text: this.findAllStmt, 
             rowMode: 'array'
         }
         let result = await this.client.query(query)
@@ -176,5 +213,4 @@ export default class BookingRepository implements IBookingRepository {
 
         return toBookingArray(objectRows)
    }
-
 }

@@ -107,18 +107,20 @@ export default class BookingService implements IBookingService {
     return updatedBooking
   }
 
-  async listAllOpened(): Promise<Booking[]> {
+  async findAll(showInactive: boolean): Promise<Booking[]> {
     let openedBookings: Booking[] = []
-    let booked = this.bookingRepository.findAll({status: BookingStatus.BOOKED})
-    let delivered = this.bookingRepository.findAll({status: BookingStatus.DELIVERED})
-    openedBookings.push(... await booked)
-    openedBookings.push(... await delivered)
-
+    
+    if (showInactive) {
+        let all = this.bookingRepository.findAll()
+        openedBookings.push(... await all)
+    } else {
+        let booked = this.bookingRepository.findByStatus(BookingStatus.BOOKED)
+        let delivered = this.bookingRepository.findByStatus(BookingStatus.DELIVERED)
+        openedBookings.push(... await booked)
+        openedBookings.push(... await delivered)
+    } 
+    
     return  openedBookings
-  }
-
-  listInUse(): Promise<Booking[]> {
-    throw new Error("Method not implemented.");
   }
 
 }

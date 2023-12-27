@@ -26,9 +26,12 @@ function toSnakeCase(s: string) : string {
     return result
 }
 
-function createWhereClausule(searchCriteria: {}, prefix: string = "") : string {
+function createWhereClausule(searchCriteria: {}, prefix: string[] = []) : string {
     let where: string = ""
     let searchKeys = Object.keys(searchCriteria)
+
+    if (prefix.length != 0 && searchKeys.length != prefix.length) 
+        throw new Error("prefix size must match search keys")
 
     if (searchKeys.length > 0) {
         where += " WHERE "
@@ -36,7 +39,12 @@ function createWhereClausule(searchCriteria: {}, prefix: string = "") : string {
 
         searchKeys.forEach( (criteria, idx) => {
             let sanitized = toSnakeCase(criteria)
-            sanitized = prefix.length > 0 ? `${prefix}.${sanitized}` : sanitized
+
+            if (prefix.length != 0) {
+                let argumentPrefix = prefix[idx]
+                sanitized = argumentPrefix.length > 0 ? `${argumentPrefix}.${sanitized}` : sanitized
+            }
+
             whereArguments.push(`${sanitized} = $${idx + 1}`)
         });
         
