@@ -20,14 +20,16 @@ export default function bookingController(bookingService: IBookingService, route
       bookingService.createSingleBooking(userName, room, bikeSize)
       .then(booking => {
         res.status(200)
-          .send({Response: booking})
+          .send({booking: booking})
       }).catch(error => {
+        console.log(error)
         res.status(401)
-          .send({Response: error.message})
+          .send({error: error.message})
       })
-    } catch (error) {
+    } catch (error: any) {
+      console.log(error)
       res.status(401)
-        .send({Response: error.message})
+        .send({error: error.message})
     }
   })
 
@@ -35,10 +37,11 @@ export default function bookingController(bookingService: IBookingService, route
     bookingService.approve(parseInt(req.params.id))
       .then(booking => {
         res.status(200)
-          .send({Response: booking})
+          .send({booking: booking})
       }).catch (error => {
+        console.log(error) 
         res.status(401)
-          .send({Response: error.message})
+          .send({error: error.message})
       })
   })
 
@@ -46,10 +49,11 @@ export default function bookingController(bookingService: IBookingService, route
     bookingService.returnBike(parseInt(req.params.id))
     .then(booking => {
       res.status(200)
-        .send({Response: booking})
+        .send({booking: booking})
     }).catch(error => {
+      console.log(error)
       res.status(401)
-        .send({Response: error.message})
+        .send({error: error.message})
     })
   })
 
@@ -57,10 +61,11 @@ export default function bookingController(bookingService: IBookingService, route
     bookingService.listAllOpened()
       .then(bookings => {
         res.status(200)
-          .send({Response: bookings})
+          .send({bookings: bookings})
       }).catch(error => {
+        console.log(error)
         res.status(401)
-          .send({Response: error.message})
+          .send({error: error.message})
       })
   })
   

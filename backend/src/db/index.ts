@@ -1,11 +1,9 @@
-import {Client} from 'ts-postgres'
+import {Client} from 'pg'
 
-const client = new Client({
-  user: process.env.USER,
-  host: process.env.HOST,
-  database: process.env.DATABASE,
-  password: process.env.PASSWORD,
-  port: process.env.PORT,
-});
 
-export default client
+export default new Client({
+  host: process.env.IPC_BIKES_HOST,
+  user: process.env.IPC_BIKES_USER,
+  password: process.env.IPC_BIKES_PASSWORD,
+  database: process.env.IPC_BIKES_DB
+})

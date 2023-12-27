@@ -1,7 +1,7 @@
 import { Client } from "pg"
-import { Booking, BookingType } from "../models/booking.model"
+import { Booking, BookingStatus, BookingType } from "../models/booking.model"
 import IBookingRepository from "./booking.repository"
-import { bikeFromRow, bookingFromRow } from "./mappings"
+import { bikeFromRow, bookingFromRow, filterPropertiesWithPrefix } from "./mappings"
 import { createWhereClausule } from "./sql.util"
 
 
@@ -15,12 +15,12 @@ function populateBookingFromRows(rows: any[], offset: number) : Booking {
 
     switch (booking.Type) {
         case BookingType.SINGLE:
-            booking.Bike.push(bikeFromRow(rows[offset]))
+            booking.Bike.push(bikeFromRow(filterPropertiesWithPrefix(rows[offset], 'b')))
         break;
 
         case BookingType.GROUP:
             for (let i = offset; i < offset + booking.BikeCount && i < rows.length; ++i) {
-            booking.Bike.push(bikeFromRow(rows[i]))
+            booking.Bike.push(bikeFromRow(filterPropertiesWithPrefix(rows[i], 'b')))
         }
     }
     
@@ -140,7 +140,7 @@ export default class BookingRepository implements IBookingRepository {
             throw new Error(`Couldn't find booking with id ${bookingId}`)
         
         let objectRows = result.rows.map(row => toObj(this.findSelectFields, row))
-
+        
         return populateBookingFromRows(objectRows, 0)
     }
 
@@ -164,14 +164,13 @@ export default class BookingRepository implements IBookingRepository {
     async findAll(searchCriteria: { userId?: number, bikeId?: number, status?: BookingStatus }): Promise<Booking[]> {
         let stmt = this.findAllStmt 
 
-        stmt = stmt.replace("_WHERE_", createWhereClausule(searchCriteria))
+        stmt = stmt.replace("_WHERE_", createWhereClausule(searchCriteria, 'bk'))
 
         let query = {
             text: stmt, 
             values: Object.values(searchCriteria),
             rowMode: 'array'
         }
-
         let result = await this.client.query(query)
         let objectRows = result.rows.map(row => toObj(this.findSelectFields, row))
 
