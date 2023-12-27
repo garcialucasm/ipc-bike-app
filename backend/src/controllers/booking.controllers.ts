@@ -58,13 +58,13 @@ export default function bookingController(bookingService: IBookingService, route
   })
 
   router.get("/all", (req, res) => {
-    let showActive: boolean = true
+    let showInactive: boolean = false 
 
-    if (req.query.showActive && req.query.showActive === 'false') {
-      showActive = false
+    if (req.query.showInactive && req.query.showInactive === 'true') {
+      showInactive = true
     }
 
-    bookingService.findAll(showActive)
+    bookingService.findAll(showInactive)
       .then(bookings => {
         res.status(200)
           .send({bookings: bookings})
