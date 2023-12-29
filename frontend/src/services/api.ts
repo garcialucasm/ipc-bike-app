@@ -1,6 +1,6 @@
 // api.js
 //TODO correct the API url
-const apiUrl = 'http://localhost:3000';
+const apiUrl = 'http://localhost';
 
 export const api = {
   baseUrl: apiUrl,

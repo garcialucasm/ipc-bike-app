@@ -4,44 +4,6 @@ import { api } from "./api";
 //Url to Show all active bookings
 const activeBookingsUrl = "/booking/all";
 
-// Sample data
-const sampleData = [
-  {
-    id: 1,
-    status: BookingStatus.BOOKED,
-    user: "John Smith",
-    bikeType: "Standard",
-    bike: "04",
-  },
-  {
-    id: 2,
-    status: BookingStatus.BOOKED,
-    user: "Emily Johnson",
-    bikeType: "Standard",
-    bike: "11",
-  },
-  {
-    id: 3,
-    status: BookingStatus.HANDEDOVER,
-    user: "Sarah Davis",
-    bikeType: "Classic",
-    bike: "05",
-  },
-  {
-    id: 4,
-    status: BookingStatus.HANDEDOVER,
-    user: "Michael Brown",
-    bikeType: "Standard",
-    bike: "08",
-  },
-  {
-    id: 5,
-    status: BookingStatus.HANDEDOVER,
-    user: "David Wilson",
-    bikeType: "Small",
-    bike: "01",
-  },
-];
 
 // Show all active bookings
 const bookingFetchApi = async () => {
@@ -52,8 +14,20 @@ const bookingFetchApi = async () => {
       throw new Error(`Error: ${response.status} - ${response.statusText}`);
     }
 
+    console.log(`Status: ${response.status}`)
+
     const data = await response.json();
-    const activeBookings = data.booking || sampleData; //TODO remove sampleData
+    const activeBookings = data.bookings;
+
+    // Loop through each booking and log relevant information
+    activeBookings.forEach((booking: any) => {
+      console.log(`- ID: ${booking.ID}`);
+      console.log(`- User Name: ${booking.User.Name}`);
+      console.log(`- Bike: ${booking.Bike[0].Numbering}`);
+      console.log(`- Type: ${booking.User.Type}`);
+      console.log(`- Status: ${booking.User.Status}`);
+      // Add more details as needed
+    });
 
     return { activeBookings, error: null };
   } catch (error: any) {
