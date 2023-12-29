@@ -58,9 +58,9 @@ export default function bookingController(bookingService: IBookingService, route
   })
 
   router.get("/all", (req, res) => {
-    let showInactive: boolean = false 
 
-    if (req.query.showInactive && req.query.showInactive === 'true') {
+    let showInactive: boolean = false 
+    if (req.query.show_inactive && req.query.show_inactive === 'true') {
       showInactive = true
     }
 
