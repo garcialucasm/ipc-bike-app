@@ -22,7 +22,7 @@ function getStatusColor(status: BookingStatus | UserStatus | BikeStatus) {
   let animationStatusClass: string;
 
   if (
-    status === BookingStatus.RETURNED ||
+    status === BookingStatus.FREE ||
     status === BikeStatus.FREE ||
     status === UserStatus.FREE
   ) {
@@ -36,7 +36,7 @@ function getStatusColor(status: BookingStatus | UserStatus | BikeStatus) {
     statusColorClass = StatusColorClass.YELLOW;
     animationStatusClass = AnimationStatusClass.BOOKED;
   } else if (
-    status === BookingStatus.HANDEDOVER ||
+    status === BookingStatus.INUSE ||
     status === BikeStatus.INUSE ||
     status === UserStatus.INUSE
   ) {
@@ -44,6 +44,7 @@ function getStatusColor(status: BookingStatus | UserStatus | BikeStatus) {
     animationStatusClass = AnimationStatusClass.INUSE;
   } else if (
     status === BookingStatus.CANCELED ||
+    status === BookingStatus.DELIVERED ||
     status === BikeStatus.DISABLED
   ) {
     statusColorClass = StatusColorClass.GRAY;

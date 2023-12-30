@@ -3,10 +3,16 @@ import { api } from "./api";
 
 //Url to Show all active bookings
 const activeBookingsUrl = "/booking/all";
+//Url to Cancel a booking
+const cancelBookingUrl = "/booking/all";
+//Url to Approve a booking
+const approveBookingUrl = "/booking/approve/";
+//Url to Return a booking
+const returnBookingUrl = "/booking/return/";
 
 
 // Show all active bookings
-const bookingFetchApi = async () => {
+export const bookingFetchApi = async () => {
   try {
     const response = await fetch(`${api.baseUrl + activeBookingsUrl}`);
 
@@ -35,4 +41,50 @@ const bookingFetchApi = async () => {
   }
 };
 
-export default bookingFetchApi;
+// Approve a booking
+export const approveBookingFetchApi = async (bookingId: number) => {
+  try {
+    const response = await fetch(api.baseUrl + approveBookingUrl + bookingId, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} - ${response.statusText}`);
+    }
+
+    console.log(`Status: ${response.status}`)
+    console.log(`Booking ID ${bookingId} approved`);
+    const approvedBooking = true
+
+    return { approvedBooking, error: null };
+  } catch (error: any) {
+    return { approvedBooking: null, error: `Error fetching data: ${error.message}` };
+  }
+};
+
+// Return a booking
+export const returnBookingFetchApi = async (bookingId: number) => {
+  try {
+    const response = await fetch(api.baseUrl + returnBookingUrl + bookingId, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} - ${response.statusText}`);
+    }
+
+    console.log(`Status: ${response.status}`)
+    console.log(`Booking ID ${bookingId} returned`);
+    const returnedBooking = true
+
+    return { returnedBooking, error: null };
+  } catch (error: any) {
+    return { returnedBooking: null, error: `Error fetching data: ${error.message}` };
+  }
+};

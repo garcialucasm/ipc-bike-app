@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import StatusIndicator from "../atoms/StatusIndicator";
 import { BookingStatus } from "@/types/BookingType";
 import Button from "../atoms/Button";
-import bookingFetchApi from "@/services/bookingApi";
+import {
+  returnBookingFetchApi,
+  approveBookingFetchApi,
+  bookingFetchApi,
+} from "@/services/bookingApi";
+import { UserStatus } from "@/types/UserType";
 
 function BookingsOverview() {
   const [bookingData, setBookingData] = useState<{
@@ -23,6 +28,23 @@ function BookingsOverview() {
   }, []); // Empty dependency array to run the effect only once when the component mounts
 
   const { activeBookings, error } = bookingData;
+
+  async function handleClickCancelBooking(bookingId: number) {
+    console.log(bookingId);
+  }
+
+  async function handleClickConfirmation(
+    bookingId: number,
+    bookingStatus: UserStatus
+  ) {
+    if (bookingStatus === UserStatus.BOOKED) {
+      const result = await approveBookingFetchApi(bookingId);
+      console.log(result);
+    } else if (bookingStatus === UserStatus.INUSE) {
+      const result = await returnBookingFetchApi(bookingId);
+      console.log(result);
+    }
+  }
 
   if (!activeBookings || error) {
     return (
@@ -63,7 +85,7 @@ function BookingsOverview() {
                     className="px-4 md:px-6 py-4 text-slate-900 whitespace-nowrap bg-white border-b"
                   >
                     <th scope="row" className="ps-2 md:ps-6 py-4">
-                      <StatusIndicator status={booking.User.Status} />
+                      <StatusIndicator status={booking.Status} />
                     </th>
                     <td className="flex items-center px-4 md:px-6 py-4 font-medium">
                       <svg
@@ -88,7 +110,10 @@ function BookingsOverview() {
                     </td>
                     <td className="px-4 md:px-6 py-4">
                       <div className="flex w-fit text-slate-400">
-                        <Button>
+                        <Button
+                          onClick={() => handleClickCancelBooking(booking.ID)}
+                          name="cancel-booking"
+                        >
                           <div className="w-fit border rounded-full border-slate-400 mx-0.5 hover:bg-slate-400 hover:text-white">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -118,7 +143,15 @@ function BookingsOverview() {
                             </svg>
                           </div>
                         </Button>
-                        <Button>
+                        <Button
+                          onClick={() =>
+                            handleClickConfirmation(
+                              booking.ID,
+                              booking.User.Status
+                            )
+                          }
+                          name="approve-booking"
+                        >
                           <div className="w-fit border rounded-full border-slate-400 mx-0.5 hover:bg-slate-400 hover:text-white">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"

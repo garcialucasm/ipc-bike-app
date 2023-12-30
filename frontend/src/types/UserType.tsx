@@ -5,9 +5,9 @@ export enum UserType {
 }
 
 export enum UserStatus {
-  BOOKED = "booked",
-  INUSE = "inUse",
-  FREE = "free",
+  BOOKED = "BOOKED",
+  INUSE = "INUSE",
+  FREE = "FREE",
 }
 interface UserData {
   firstName: string;

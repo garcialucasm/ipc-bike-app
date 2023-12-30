@@ -45,7 +45,7 @@ function BookingConfimed(props: {
             <span>See the Rules</span>
           </div>
         </a>
-        <Link href="/home-keykeeper">
+        <Link href="/home-app">
           <div className="btn-return">Go to Main Page</div>
         </Link>
       </div>

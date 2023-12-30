@@ -9,7 +9,7 @@ function Login() {
     const { name } = event.currentTarget;
     switch (name) {
       case MenuNavigation.login:
-        window.location.replace("/home-keykeeper");
+        window.location.replace("/home-app");
         break;
       case MenuNavigation.homePageWeb:
         window.location.replace("/");
