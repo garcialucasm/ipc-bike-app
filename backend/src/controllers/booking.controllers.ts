@@ -2,6 +2,21 @@
 import { Router, RouterOptions } from 'express'
 import IBookingService from '../services/booking.service'
 import { validateRoom, validateUserName, validateBikeSize } from '../models/validators'
+import BookingDTO from '../dto/booking.dto'
+import { Booking, BookingStatus, BookingType } from '../models/booking.model'
+
+
+function toBookingDTO(booking: Booking) : BookingDTO {
+  return {
+    id: booking.ID ?? 0,
+    status: BookingStatus[booking.Status as keyof typeof BookingStatus].toLowerCase(),
+    user: booking.User.Name,
+    bikeType: booking.Type == BookingType.SINGLE? 
+      booking.Bike[0].Size.toLowerCase() : booking.Bike.map(bike => bike.Size.toLowerCase()),
+    bike: booking.Type == BookingType.SINGLE? 
+      booking.Bike[0].Numbering.toString() : booking.Bike.map(bike => bike.Numbering.toString())
+  }
+}
 
 export default function bookingController(bookingService: IBookingService, routerOptions?: RouterOptions) {
 
@@ -20,7 +35,7 @@ export default function bookingController(bookingService: IBookingService, route
       bookingService.createSingleBooking(userName, room, bikeSize)
       .then(booking => {
         res.status(200)
-          .send({booking: booking})
+          .send({booking: toBookingDTO(booking)})
       }).catch(error => {
         console.log(error)
         res.status(401)
@@ -37,7 +52,7 @@ export default function bookingController(bookingService: IBookingService, route
     bookingService.approve(parseInt(req.params.id))
       .then(booking => {
         res.status(200)
-          .send({booking: booking})
+          .send({booking: toBookingDTO(booking)})
       }).catch (error => {
         console.log(error) 
         res.status(401)
@@ -49,7 +64,7 @@ export default function bookingController(bookingService: IBookingService, route
     bookingService.returnBike(parseInt(req.params.id))
     .then(booking => {
       res.status(200)
-        .send({booking: booking})
+        .send({booking: toBookingDTO(booking)})
     }).catch(error => {
       console.log(error)
       res.status(401)
@@ -65,6 +80,9 @@ export default function bookingController(bookingService: IBookingService, route
     }
 
     bookingService.findAll(showInactive)
+      .then(bookings => 
+        bookings.map(booking => toBookingDTO(booking))
+      )
       .then(bookings => {
         res.status(200)
           .send({bookings: bookings})
