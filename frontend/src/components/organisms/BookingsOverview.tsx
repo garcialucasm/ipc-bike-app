@@ -105,7 +105,10 @@ function BookingsOverview() {
                       {booking.user}
                     </td>
                     <td className="px-4 md:px-6 py-4 text-slate-500">
-                      {booking.bikeType}
+                      {booking.bikeType && booking.bikeType.length > 0
+                        ? booking.bikeType.charAt(0).toUpperCase() +
+                          booking.bikeType.slice(1)
+                        : ""}
                     </td>
                     <td className="px-4 md:px-6 py-4 text-slate-500">
                       {booking.bike}

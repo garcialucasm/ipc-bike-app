@@ -1,9 +1,9 @@
 export enum BikeSize {
-  NONE = "none",
-  CLASSIC = "classic",
-  SMALL = "small",
-  STANDARD = "standard",
-  FREE = "free"
+  NONE = "NONE",
+  CLASSIC = "CLASSIC",
+  SMALL = "SMALL",
+  STANDARD = "STANDARD",
+  FREE = "FREE"
 }
 
 export enum BikeStatus {
