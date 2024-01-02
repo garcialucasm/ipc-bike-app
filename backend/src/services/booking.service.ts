@@ -37,10 +37,6 @@ export default interface IBookingService {
   /**
    * List all bookings in BOOKED state
    */
-  listAllOpened() : Promise<Booking[]>;
+  findAll(showInactive: boolean) : Promise<Booking[]>;
 
-  /**
-   * List all booking in DELIVERED state 
-   */
-  listInUse() : Promise<Booking[]>;
 }

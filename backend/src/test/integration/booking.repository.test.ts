@@ -114,23 +114,9 @@ describe('IBookingRepository Integration Test', function() {
   })
 
   it('should find all the bookings', function() {
-    return bookingRepository.findAll({}).then((bookings) => {
+    return bookingRepository.findAll().then((bookings) => {
       assert.ok(Array.isArray(bookings))
       assert.equal(2, bookings.length)
-    })
-  })
-
-  it('should find bookings by search criteria', function() {
-    const searchCriteria = {
-      userId: user2.ID,
-      bikeId: bike3.ID
-    }
-    return bookingRepository.findAll(searchCriteria).then( bookings => {
-      assert.ok(Array.isArray(bookings))
-      assert.strictEqual(bookings.length, 1)
-      assert.strictEqual(bookings[0].Type, savedGroupBooking.Type)
-      assert.strictEqual(bookings[0].User.Name, savedGroupBooking.User.Name)
-      assert.strictEqual(bookings[0].Status, savedGroupBooking.Status)
     })
   })
 })

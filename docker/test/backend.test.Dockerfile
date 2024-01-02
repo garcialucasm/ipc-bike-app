@@ -14,4 +14,4 @@ ENV TEST_DATABASE=""
 ENV TEST_PASSWORD=""
 ENV TEST_PORT=5432
 #ENTRYPOINT [ "ls" ]
-ENTRYPOINT [ "npm", "run", "integration" ]
+ENTRYPOINT [ "npm", "run", "integration-test" ]

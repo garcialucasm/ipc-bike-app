@@ -1,6 +1,6 @@
 
 import { Bike, BikeStatus } from "../models/bike.model";
-import { Booking, BookingStatus } from "../models/booking.model";
+import { Booking, BookingStatus, BookingType } from "../models/booking.model";
 import { User, UserStatus, UserType } from "../models/user.model";
 import IBookingRepository from "../repositories/booking.repository";
 import IBikeChooser from "./bike.chooser";
@@ -31,7 +31,6 @@ export default class BookingService implements IBookingService {
   }
 
   async createSingleBooking(userName: string, room: string, bikeSize: string): Promise<Booking> {
-
     let availableBikes = await this.bikeService.findAllAvailable(bikeSize)
 
     if (availableBikes.length == 0)
@@ -47,7 +46,9 @@ export default class BookingService implements IBookingService {
       Bike: [bike],
       User: user,
       Status: BookingStatus.BOOKED,
-      ReturnedCondition: ""
+      ReturnedCondition: "",
+      BikeCount: 1, 
+      Type: BookingType.SINGLE
     }
 
     booking = await this.bookingRepository.save(booking)
@@ -69,7 +70,6 @@ export default class BookingService implements IBookingService {
       throw new Error("User is not a student")
   }
 
-
   async approve(bookingId: number): Promise<Booking> {
     let booking: Booking = await this.bookingRepository.findById(bookingId)
     if (booking.Status !== BookingStatus.BOOKED)
@@ -81,12 +81,13 @@ export default class BookingService implements IBookingService {
     if (booking.User.Status !== UserStatus.BOOKED)
       throw new Error("Booking not allowed by User Status");
 
-    booking.Status = BookingStatus.HANDEDOVER
+    booking.Status = BookingStatus.DELIVERED
     booking.User = await this.userService.changeStatus(booking.User, UserStatus.INUSE)
     booking.Bike[0] = await this.bikeService.changeStatus(booking.Bike[0], BikeStatus.INUSE)
     let updatedBooking = await this.bookingRepository.update(booking)
     return updatedBooking
   }
+  
   async returnBike(bookingId: number): Promise<Booking> {
     let booking: Booking = await this.bookingRepository.findById(bookingId)
     booking.Status = BookingStatus.RETURNED
@@ -96,6 +97,7 @@ export default class BookingService implements IBookingService {
 
     return updatedBooking
   }
+  
   async cancel(bookingId: number): Promise<Booking> {
     let booking: Booking = await this.bookingRepository.findById(bookingId)
     booking.Status = BookingStatus.CANCELED
@@ -104,11 +106,21 @@ export default class BookingService implements IBookingService {
     let updatedBooking = await this.bookingRepository.update(booking)
     return updatedBooking
   }
-  listAllOpened(): Promise<Booking[]> {
-    throw new Error("Method not implemented.");
-  }
-  listInUse(): Promise<Booking[]> {
-    throw new Error("Method not implemented.");
+
+  async findAll(showInactive: boolean): Promise<Booking[]> {
+    let openedBookings: Booking[] = []
+    
+    if (showInactive) {
+        let all = this.bookingRepository.findAll()
+        openedBookings.push(... await all)
+    } else {
+        let booked = this.bookingRepository.findByStatus(BookingStatus.BOOKED)
+        let delivered = this.bookingRepository.findByStatus(BookingStatus.DELIVERED)
+        openedBookings.push(... await booked)
+        openedBookings.push(... await delivered)
+    } 
+    
+    return  openedBookings
   }
 
 }

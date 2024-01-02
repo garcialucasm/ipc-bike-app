@@ -1,0 +1,34 @@
+version: '3.1'
+
+services:
+  ipcbikes-db:
+    image: postgres
+    restart: always
+    command: ["postgres", "-c", "log_statement=all"]
+    environment:
+      POSTGRES_DB: ipcbikes
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./backend/resources/db.sql:/docker-entrypoint-initdb.d/0.initdb.sql
+      - ./backend/resources/bikes.sql:/docker-entrypoint-initdb.d/1.bikes.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  ipbcbikes-backend:
+    build:
+      dockerfile: docker/staging/backend.Dockerfile
+    environment:
+      IPC_BIKES_HOST: ipcbikes-db
+      IPC_BIKES_USER: postgres
+      IPC_BIKES_PASSWORD: postgres
+      IPC_BIKES_DB: ipcbikes
+      IPC_BIKES_PORT: 5432
+    depends_on:
+      ipcbikes-db:
+        condition: service_healthy
+    ports:
+      - 80:3000
+

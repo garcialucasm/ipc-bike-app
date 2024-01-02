@@ -1,5 +1,5 @@
-import { Booking, BookingStatus } from "../models/booking.model";
-import IBookingRepository from "../repositories/booking.repository";
+import { Booking, BookingStatus } from "../../models/booking.model";
+import IBookingRepository from "../../repositories/booking.repository";
 
 export default class MockBookingRepository implements IBookingRepository {
   private bookings: Map<number, Booking>;
@@ -44,17 +44,17 @@ export default class MockBookingRepository implements IBookingRepository {
     return userBookings;
   }
 
-  async findAll(searchCriteria: {
-    userId?: number,
-    bikeId?: number,
-    status?: BookingStatus
-  }): Promise<Booking[]> {
+findByBike(bikeId: number): Promise<Booking[]> {
+    throw new Error()
+}
+
+findByStatus(status: BookingStatus): Promise<Booking[]> {
+    throw new Error()
+}
+
+  async findAll(): Promise<Booking[]> {
 
     let result = Array.from(this.bookings.values())
-      .filter(booking => searchCriteria.userId ? searchCriteria.userId == booking.User.ID : true)
-      .filter(booking => searchCriteria.bikeId ? booking.Bike.map(bike => bike.ID).some(id => id == searchCriteria.bikeId) : true)
-      .filter(booking => searchCriteria.status ? searchCriteria.status == booking.Status : true)
-
     return result
   }
 }

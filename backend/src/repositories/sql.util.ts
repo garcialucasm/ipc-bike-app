@@ -11,7 +11,7 @@ function isValid(s: string) : boolean {
 function toSnakeCase(s: string) : string {
     let result: string = ""
     
-    for (let i = 0; i < s.length; ++i) {
+    for (let i = 0; i < s.length; ++i) { 
         if (!isValid(s[i]))
             continue
 
@@ -26,9 +26,12 @@ function toSnakeCase(s: string) : string {
     return result
 }
 
-function createWhereClausule(searchCriteria: {}) : string {
+function createWhereClausule(searchCriteria: {}, prefix: string[] = []) : string {
     let where: string = ""
     let searchKeys = Object.keys(searchCriteria)
+
+    if (prefix.length != 0 && searchKeys.length != prefix.length) 
+        throw new Error("prefix size must match search keys")
 
     if (searchKeys.length > 0) {
         where += " WHERE "
@@ -36,6 +39,12 @@ function createWhereClausule(searchCriteria: {}) : string {
 
         searchKeys.forEach( (criteria, idx) => {
             let sanitized = toSnakeCase(criteria)
+
+            if (prefix.length != 0) {
+                let argumentPrefix = prefix[idx]
+                sanitized = argumentPrefix.length > 0 ? `${argumentPrefix}.${sanitized}` : sanitized
+            }
+
             whereArguments.push(`${sanitized} = $${idx + 1}`)
         });
         
@@ -44,5 +53,6 @@ function createWhereClausule(searchCriteria: {}) : string {
 
     return where
 }
+
 
 export {createWhereClausule}

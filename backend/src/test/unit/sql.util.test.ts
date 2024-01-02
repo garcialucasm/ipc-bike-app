@@ -18,6 +18,16 @@ describe ("create where clausule", () => {
         assert.strictEqual(where, " WHERE one_field = $1 AND another_field = $2")
     })
 
+    it("concatenate with prefix", () => {
+        const where = createWhereClausule({oneField: 1}, ['prefix'])
+        assert.strictEqual(where, " WHERE prefix.one_field = $1")
+    })
+
+    it("concatenate more than one prefix", () => {
+        const where = createWhereClausule({oneField: 1, anotherField: 1}, ['of', 'af'])
+        assert.strictEqual(where, " WHERE of.one_field = $1 AND af.another_field = $2")
+    })
+
     it("doesnt destroy snake case search", () => {
         const where = createWhereClausule({snake_case: 1})
 
