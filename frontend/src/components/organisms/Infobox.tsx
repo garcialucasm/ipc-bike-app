@@ -1,7 +1,7 @@
 import React from "react";
-import { BookingType } from "@/types/BookingType";
+import { Booking } from "@/types/BookingType";
 
-function Infobox(props: { bookingData: BookingType }) {
+function Infobox(props: { bookingData: Booking }) {
   const { firstName, lastName, roomNumber } = props.bookingData.bookingUserData;
   const bikeSize = props.bookingData.bookingBikeSize;
   const fullName = firstName + " " + lastName;

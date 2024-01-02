@@ -5,7 +5,7 @@ import PreBookingConfirmation from "@/components/templates/PreBookingConfirmatio
 import BookingConfirmed from "@/components/templates/BookingConfirmed";
 import { BikeSize } from "@/types/BikeType";
 import { UserData } from "@/types/UserType";
-import { BookingStatus, BookingType } from "@/types/BookingType";
+import { BookingStatus, Booking } from "@/types/BookingType";
 import {
   MenuNavigation,
   SingleBookingSection,
@@ -23,9 +23,7 @@ function HomeSingleBooking() {
   const [bikeSizeSelected, setBikeSize] = useState(BikeSize.NONE);
 
   // Creating state for currentBookingStatus
-  const [currentBookingStatus, setCurrentBookingStatus] = useState(
-    BookingStatus.FREE
-  );
+  const [currentBookingStatus, setCurrentBookingStatus] = useState("");
 
   // Creating state for enteredUserData in InputStudentData
   const [enteredUserData, setEnteredUserData] = useState<UserData>({
@@ -35,14 +33,14 @@ function HomeSingleBooking() {
   });
 
   // Creating state to manage user data and then submit booking
-  const [bookingData, setBookingData] = useState<BookingType>({
+  const [bookingData, setBookingData] = useState<Booking>({
     bookingBikeSize: BikeSize.NONE,
     bookingUserData: {
       firstName: "",
       lastName: "",
       roomNumber: "",
     },
-    bookingStatus: BookingStatus.FREE,
+    bookingStatus: BookingStatus.BOOKED,
   });
 
   // Creating state to check if isUserDataValid and only then submit booking
@@ -80,7 +78,7 @@ function HomeSingleBooking() {
     setBookingData({
       bookingBikeSize: bikeSizeSelected,
       bookingUserData: enteredUserData,
-      bookingStatus: currentBookingStatus,
+      bookingStatus: currentBookingStatus as BookingStatus,
     });
 
     // TODO

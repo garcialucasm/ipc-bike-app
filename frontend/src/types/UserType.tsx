@@ -1,7 +1,7 @@
 export enum UserType {
-  STUDENT = "student",
-  PROFESSOR = "professor",
-  KEYKEEPER = "keyKeeper",
+  STUDENT = "STUDENT",
+  PROFESSOR = "PROFESSOR",
+  KEYKEEPER = "KEYKEEPER",
 }
 
 export enum UserStatus {
