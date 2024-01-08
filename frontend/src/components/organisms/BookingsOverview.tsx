@@ -87,7 +87,7 @@ function BookingsOverview() {
                     className="px-4 md:px-6 py-4 text-slate-900 whitespace-nowrap bg-white border-b"
                   >
                     <th scope="row" className="ps-2 md:ps-6 py-4">
-                      <StatusIndicator status={booking.status} />
+                      <StatusIndicator currentStatus={booking.status} />
                     </th>
                     <td className="flex items-center px-4 md:px-6 py-4 font-medium">
                       <svg

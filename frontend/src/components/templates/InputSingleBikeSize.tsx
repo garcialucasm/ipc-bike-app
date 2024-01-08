@@ -4,9 +4,18 @@ import Link from "next/link";
 import { SingleBookingSection } from "@/types/NavigationSections";
 import { useState } from "react";
 import BikeChooserContainer from "../organisms/BikeChooserContainer";
+import { BookingStatus } from "@/types/BookingType";
 
 //TODO get the number of bikes for each BikeStatus
-const countFreeByType = { standardType: 5, classicType: 10, smallType: 3 };
+const bikeFreeCountByType = { standardType: 0, classicType: 10, smallType: 3 };
+
+interface FreeBikeCounter {
+  freeBikeCounterByType: {
+    standardType: number;
+    classicType: number;
+    smallType: number;
+  };
+}
 
 function InputStudentBikeSize(props: {
   onSizeSelection: (bikeSizeButton: { selectedSize: BikeSize }) => void;
@@ -18,28 +27,34 @@ function InputStudentBikeSize(props: {
     BikeSize.CLASSIC
   );
 
+  // Creating state to manage free bikes counter
+  const [bikeCounter, setFreeBikeCounter] = useState<FreeBikeCounter>({
+    freeBikeCounterByType: { standardType: 0, classicType: 10, smallType: 3 },
+  });
+
   function handleRadioChange(event: React.ChangeEvent<HTMLInputElement>) {
     const selectedRadio = event.target.value as BikeSize;
+    //TODO create a validation for selecting the bike size according to availability
     setRadioBikeSizeValue(selectedRadio);
     console.log("Selected Bike Size: ", selectedRadio);
   }
 
   function handleClick() {
-    props.onSizeSelection({ selectedSize: radioBikeSizeValue });
+    const selectedSize = props.onSizeSelection({
+      selectedSize: radioBikeSizeValue,
+    });
     props.onNavigation({ buttonName: SingleBookingSection.inputUserData });
   }
   return (
     <>
       <div className="w-11/12 flex flex-col items-center">
-        <div className="instruction-label">
-          Select the bike type
-        </div>
+        <div className="instruction-label">Select the bike type</div>
         <ul className="w-full mb-5 border border-slate-200 shadow-lg rounded-xl">
           <div>
             <BikeChooserContainer
-              bikeCountFree={{
-                bikeSize: radioBikeSizeValue,
-                countFree: countFreeByType,
+              bikeChooserInfo={{
+                bikeType: radioBikeSizeValue,
+                bikeFreeCount: bikeFreeCountByType,
               }}
             />
           </div>

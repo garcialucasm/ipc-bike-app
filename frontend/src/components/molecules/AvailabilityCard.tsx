@@ -61,7 +61,7 @@ function AvailabilityCard(props: {
       >
         <span>
           <StatusIndicator
-            status={selectedStatus}
+            currentStatus={selectedStatus}
             isStatic={false}
             height="h-3"
             width="w-3"

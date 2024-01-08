@@ -1,3 +1,5 @@
+//Since we are using the client side functionalities like useState() we will have
+//to mark our components with use client so that nextjs considers it as a client component.
 "use client";
 
 import React, { useState } from "react";

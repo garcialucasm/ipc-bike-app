@@ -58,12 +58,12 @@ function getStatusColor(status: BookingStatus | UserStatus | BikeStatus) {
 }
 
 function StatusIndicator(props: {
-  status: BookingStatus | UserStatus | BikeStatus;
+  currentStatus: BookingStatus | UserStatus | BikeStatus;
   isStatic?: boolean;
   height?: string;
   width?: string;
 }) {
-  const statusColor = getStatusColor(props.status);
+  const statusColor = getStatusColor(props.currentStatus);
   const { isStatic } = props;
   const { height, width } = props;
   const { statusColorClass, animationStatusClass } = statusColor;

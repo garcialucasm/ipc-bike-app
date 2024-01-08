@@ -1,29 +1,31 @@
 import React from "react";
-import { BikeAvailability, BikeSize } from "@/types/BikeType";
+import { BikeAvailability, BikeSize, BikeStatus } from "@/types/BikeType";
 import Image from "next/image";
+import StatusIndicator from "../atoms/StatusIndicator";
 
-function BikeChooserContainer(props: { bikeCountFree: BikeAvailability }) {
-  const { bikeSize: bikeType, countFree } = props.bikeCountFree;
+function BikeChooserContainer(props: { bikeChooserInfo: BikeAvailability }) {
+  const { bikeType,  bikeFreeCount } = props.bikeChooserInfo;
   let bikeSelectedImage: string;
-  let bikeSelectedCountFree: number;
+  let bikeSelectedFreeCount: number;
   let bikeSelectedRecomendation: string;
+  let bikeSelectedStatusIndicator: BikeStatus;
 
   switch (bikeType) {
     case BikeSize.STANDARD:
       bikeSelectedImage = "/bike-type-standard.jpg";
-      bikeSelectedCountFree = countFree.standardType;
+      bikeSelectedFreeCount = bikeFreeCount.standardType;
       bikeSelectedRecomendation =
         "Recommended for people 5'4\" | 163 cm or taller. TODO Standard";
       break;
     case BikeSize.CLASSIC:
       bikeSelectedImage = "/bike-type-classic.jpg";
-      bikeSelectedCountFree = countFree.classicType;
+      bikeSelectedFreeCount = bikeFreeCount.classicType;
       bikeSelectedRecomendation =
         "Recommended for people 5'4\" | 163 cm or taller. TODO Classic";
       break;
     case BikeSize.SMALL:
       bikeSelectedImage = "/bike-type-folding.jpg";
-      bikeSelectedCountFree = countFree.smallType;
+      bikeSelectedFreeCount = bikeFreeCount.smallType;
       bikeSelectedRecomendation =
         "Recommended for people 5'4\" | 163 cm or taller. TODO Small";
       break;
@@ -34,15 +36,18 @@ function BikeChooserContainer(props: { bikeCountFree: BikeAvailability }) {
       return;
   }
 
+  if (bikeSelectedFreeCount > 0) {
+    bikeSelectedStatusIndicator = BikeStatus.FREE;
+  } else {
+    bikeSelectedStatusIndicator = BikeStatus.DISABLED;
+  }
+
   return (
     <div className="flex flex-col items-center">
-      <div className="w-full text-xs text-slate-400 px-3 py-2">
-        <span
-          className={`relative inline-flex rounded-full h-2 w-2 bg-green-500`}
-        ></span>
-        <span className="px-2">
-          <span className="font-medium">{bikeSelectedCountFree}</span> available
-        </span>
+      <div className="flex flex-row items-center text-xs text-slate-400 px-3 py-2">
+        <StatusIndicator currentStatus={bikeSelectedStatusIndicator} isStatic={true} />
+        <span className="font-medium px-1">{bikeSelectedFreeCount}</span>{" "}
+        available
       </div>
       <Image
         src={bikeSelectedImage}
