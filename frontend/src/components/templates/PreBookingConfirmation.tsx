@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@/components/atoms/Button";
 import { SingleBookingSection } from "@/types/NavigationSections";
 import Infobox from "../organisms/Infobox";
@@ -12,10 +12,29 @@ function PreBookingConfirmation(props: {
 }) {
   const bookingData = props.bookingData;
 
+  const [isTermsAndConditionsChecked, setIsTermsAndConditionsChecked] =
+    useState(false);
+
+  const [itemNeedsAttention, setItemNeedsAttention] = useState(false);
+
+  function handleCheckboxChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setIsTermsAndConditionsChecked(event.target.checked);
+  }
+
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     const { name } = event.currentTarget;
     const buttonClicked: SingleBookingSection = name as SingleBookingSection;
-    props.onNavigation({ buttonName: buttonClicked });
+    if (buttonClicked === SingleBookingSection.inputUserData) {
+      props.onNavigation({ buttonName: buttonClicked });
+    } else if (
+      buttonClicked === SingleBookingSection.bookingConfirmationStatus
+    ) {
+      if (isTermsAndConditionsChecked) {
+        props.onNavigation({ buttonName: buttonClicked });
+      } else {
+        setItemNeedsAttention(true); // Trigger attention when Confirm Booking is clicked without checking the checkbox
+      }
+    }
   }
   return (
     <div className="flex flex-col items-center w-11/12">
@@ -27,8 +46,11 @@ function PreBookingConfirmation(props: {
         <input
           id="default-checkbox"
           type="checkbox"
-          value=""
-          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-xl"
+          checked={isTermsAndConditionsChecked}
+          onChange={handleCheckboxChange}
+          className={`w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-xl ${
+            itemNeedsAttention ? "ring ring-red-200" : ""
+          }`}
         />
         <label
           htmlFor="default-checkbox"
@@ -43,7 +65,9 @@ function PreBookingConfirmation(props: {
       <Button
         onClick={handleClick}
         name={SingleBookingSection.bookingConfirmationStatus}
-        className="btn-primary"
+        className={
+          isTermsAndConditionsChecked ? `btn-primary` : `btn-primary-discrete`
+        }
       >
         <span>Confirm Booking</span>
       </Button>
