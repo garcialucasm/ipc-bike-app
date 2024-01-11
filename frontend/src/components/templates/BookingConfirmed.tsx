@@ -17,9 +17,8 @@ function BookingConfimed(props: {
   const bookingData = props.bookingData;
   const [showNextSteps, setShowNextSteps] = useState(false);
   const serverResult = props.serverResult;
-  const errorMessage = serverResult.error
-    ? serverResult.error.split(":")[1].trim()
-    : "";
+  console.log(serverResult);
+  const errorMessage = serverResult.error ? serverResult.error : "";
   return (
     <div className="flex flex-col items-center w-11/12 text-slate-700">
       {/* Render if there are no errors */}
@@ -63,7 +62,7 @@ function BookingConfimed(props: {
         </>
       ) : (
         <>
-        {/* Render if there are any errors */}
+          {/* Render if there are any errors */}
           <div className="w-full pb-3">
             <div className="flex items-center justify-center py-3">
               <div className="font-bold px-2">Booking Failed</div>{" "}

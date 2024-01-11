@@ -19,6 +19,8 @@ function BookingsOverview() {
     error: null,
   });
 
+  const [reloadData, setReloadData] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await bookingFetchApi();
@@ -26,12 +28,13 @@ function BookingsOverview() {
     };
 
     fetchData();
-  }, []); // Empty dependency array to run the effect only once when the component mounts
+  }, [reloadData]); // Empty dependency array to run the effect only once when the component mounts
 
   const { activeBookings, error } = bookingData;
 
   async function handleClickCancelBooking(bookingId: number) {
     console.log(bookingId);
+    setReloadData(!reloadData);
   }
 
   async function handleClickConfirmation(
@@ -44,6 +47,8 @@ function BookingsOverview() {
     } else if (bookingStatus === BookingStatus.DELIVERED) {
       await returnBookingFetchApi(bookingId);
     }
+    // Set confirmation status to trigger re-render
+    setReloadData((prevStatus) => !prevStatus);
   }
 
   // Check if activeBookings returned an error
