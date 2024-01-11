@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import HomeKeyKeeper from "@/components/templates/home-keykeeper";
+import HomeKeyKeeper from "@/components/templates/HomeKeykeeper";
 
 let isLoggedIn: boolean = true;
 

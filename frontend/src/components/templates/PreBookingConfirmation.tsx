@@ -19,6 +19,7 @@ function PreBookingConfirmation(props: {
 
   function handleCheckboxChange(event: React.ChangeEvent<HTMLInputElement>) {
     setIsTermsAndConditionsChecked(event.target.checked);
+    setItemNeedsAttention(false);
   }
 
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
@@ -49,7 +50,7 @@ function PreBookingConfirmation(props: {
           checked={isTermsAndConditionsChecked}
           onChange={handleCheckboxChange}
           className={`w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-xl ${
-            itemNeedsAttention ? "ring ring-red-200" : ""
+            itemNeedsAttention ? "ring-1 ring-red-400" : ""
           }`}
         />
         <label

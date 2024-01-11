@@ -1,6 +1,6 @@
 import React from "react";
 
-//C
+// confirmation icon
 export function IconSvgProcessConfirmed(props: {
   height: string;
   width: string;
@@ -9,7 +9,7 @@ export function IconSvgProcessConfirmed(props: {
   const { height, width, fillColor } = props;
   return (
     <>
-      <div className="border-2 rounded-full p-1 border-green-500 text-white">
+      <div className="border-2 rounded-full p-1 border-green-500">
         <svg
           className={`${height} ${width}`}
           aria-hidden="true"
@@ -24,6 +24,37 @@ export function IconSvgProcessConfirmed(props: {
             strokeLinejoin="round"
             strokeWidth="2"
             d="M1 5.917 5.724 10.5 15 1.5"
+          />
+        </svg>
+      </div>
+    </>
+  );
+}
+
+// feedback error icon
+export function IconSvgFeedbackError(props: {
+  height: string;
+  width: string;
+  fillColor?: string;
+}) {
+  const { height, width, fillColor } = props;
+  return (
+    <>
+      <div className="">
+        <svg
+          className={`${height} ${width}`}
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="-2 -2 28 28"
+        >
+          <path
+            className={fillColor ?? "fill-current"}
+            fill={fillColor ?? "currentColor"}
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1"
+            d="m15.828,6.854l-3.146,3.146,3.146,3.146c.195.195.195.512,0,.707-.098.098-.226.146-.354.146s-.256-.049-.354-.146l-3.146-3.146-3.146,3.146c-.098.098-.226.146-.354.146s-.256-.049-.354-.146c-.195-.195-.195-.512,0-.707l3.146-3.146-3.146-3.146c-.195-.195-.195-.512,0-.707s.512-.195.707,0l3.146,3.146,3.146-3.146c.195-.195.512-.195.707,0s.195.512,0,.707Zm8.172-3.354v13c0,1.93-1.57,3.5-3.5,3.5h-3.532l-3.985,3.295c-.275.245-.626.368-.979.368-.356,0-.715-.126-1.001-.379l-3.897-3.284h-3.606c-1.93,0-3.5-1.57-3.5-3.5V3.5C0,1.57,1.57,0,3.5,0h17c1.93,0,3.5,1.57,3.5,3.5Zm-1,0c0-1.378-1.122-2.5-2.5-2.5H3.5c-1.378,0-2.5,1.122-2.5,2.5v13c0,1.378,1.122,2.5,2.5,2.5h3.789c.118,0,.232.042.322.118l4.047,3.41c.198.176.485.178.675.008l4.137-3.421c.09-.074.203-.115.319-.115h3.711c1.378,0,2.5-1.122,2.5-2.5V3.5Z"
           />
         </svg>
       </div>

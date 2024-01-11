@@ -41,8 +41,10 @@ function HomeSingleBooking() {
     bookingStatus: BookingStatus.BOOKED,
   });
 
-  // Creating state to check if isUserDataValid and only then submit booking
-  const [isUserDataValid, setIsUserDataValid] = useState(false);
+  // Creating state to manage server response
+  const [serverResult, setServerResult] = useState<any>({
+    serverResult: "",
+  });
 
   // Statements to control navigation (next, submit & return buttons)
   const handleNavigation = (event: { buttonName: SingleBookingSection }) => {
@@ -61,7 +63,7 @@ function HomeSingleBooking() {
     setBikeSize(bikeSizeSelected);
   }
 
-  // Update bookingData after states [bikeSizeSelected, isUserDataValid or enteredUserDataboth] change
+  // Update bookingData after states [bikeSizeSelected or enteredUserDataboth] change
   useEffect(() => {
     setBookingData((prevBookingData) => ({
       ...prevBookingData,
@@ -71,35 +73,21 @@ function HomeSingleBooking() {
       bookingBikeSize: bikeSizeSelected,
       bookingUserData: enteredUserData,
     });
-  }, [bikeSizeSelected, isUserDataValid, enteredUserData]);
+  }, [bikeSizeSelected, enteredUserData]);
 
-  // TODO
-  // Option to confirm Booking or Return to user data input
+  // TODO: Send Booking confirmation or Return to user data input
   async function handleBookingConfirmation() {
-    // Temp - Submit confirmation
     const buttonOnConfirmation = SingleBookingSection.bookingConfirmationStatus;
     if (
       buttonOnConfirmation === SingleBookingSection.bookingConfirmationStatus
     ) {
       const result = await createSingleBookingFetchApi(bookingData);
+      setServerResult(result);
       console.log(result);
       //function to submit data
     } else if (buttonOnConfirmation === SingleBookingSection.inputUserData) {
-      setIsUserDataValid(false);
     }
   }
-
-  // TODO (remove)
-  // Checking status of bikeSizeSelected (bike size input) and isUserDataValid (user data input)
-  useEffect(() => {
-    console.log("bikeSizeSelected changed:", bikeSizeSelected);
-  }, [bikeSizeSelected]);
-  useEffect(() => {
-    console.log("isUserDataValid changed:", isUserDataValid);
-  }, [isUserDataValid]);
-  useEffect(() => {
-    console.log("enteredUserData changed:", enteredUserData);
-  }, [enteredUserData]);
 
   return (
     <>
@@ -136,6 +124,7 @@ function HomeSingleBooking() {
             <BookingConfirmed
               onNavigation={handleNavigation}
               bookingData={bookingData}
+              serverResult={serverResult}
             />
           )}
         </div>
