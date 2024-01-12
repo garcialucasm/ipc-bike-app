@@ -39,4 +39,9 @@ export default interface IBookingService {
    */
   findAll(showInactive: boolean) : Promise<Booking[]>;
 
+
+  /**
+    * Count all booking group by status
+    */
+  countBookingsByStatus() : Promise<Map<BookingStatus, number>>;
 }

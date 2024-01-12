@@ -18,6 +18,7 @@ import RandomBikeChooser from "./services/random.bike.chooser"
 import IUserService from "./services/user.service"
 
 import db from "./db/index"
+import bikeController from "./controllers/bike.controller"
 
 db.connect()
 
@@ -38,6 +39,7 @@ app.use(cors())
 app.use(bodyParser.json())
 
 app.use('/booking/', bookingController(bookingService))
+app.use('/bike/', bikeController(bikeService))
 
 app.get("/", async (req, res) => {
   return res.status(200).send({ Response: "IPC - Alumni Bike" })

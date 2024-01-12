@@ -123,4 +123,8 @@ export default class BookingService implements IBookingService {
     return  openedBookings
   }
 
+  countBookingsByStatus() : Promise<Map<BookingStatus, number>> {
+    return this.bookingRepository.countBookingsByStatus()
+  }
+
 }

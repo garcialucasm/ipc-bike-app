@@ -95,6 +95,10 @@ export default class BookingRepository implements IBookingRepository {
                 inner join bike b on b.id = bb.bike_id
                 order by bk.id`
 
+
+    countBookingsByStatusStmt: string = `select bk.status, count(bk.status)
+              from booking bk group by bk.status`
+
     constructor(client: Client) {
         this.client = client
     }
@@ -213,4 +217,19 @@ export default class BookingRepository implements IBookingRepository {
 
         return toBookingArray(objectRows)
    }
+    
+  async countBookingsByStatus(): Promise<Map<BookingStatus, number>> {
+      let query = {
+        text: this.countBookingsByStatusStmt 
+      }
+
+      let result = await this.client.query(query)
+      let ans : Map<BookingStatus, number> = new Map<BookingStatus, number>()
+      
+      result.rows.forEach(row => {
+        ans.set(BookingStatus[row.status as keyof typeof BookingStatus], Number.parseInt(row.count))
+      })
+
+      return ans
+  }
 }

@@ -2,8 +2,9 @@
 import { Router, RouterOptions } from 'express'
 import IBookingService from '../services/booking.service'
 import { validateRoom, validateUserName, validateBikeSize } from '../models/validators'
-import BookingDTO from '../dto/booking.dto'
+import {BookingDTO, BookingStatusDTO } from '../dto/booking.dto'
 import { Booking, BookingStatus, BookingType } from '../models/booking.model'
+import { stat } from 'fs'
 
 
 function toBookingDTO(booking: Booking) : BookingDTO {
@@ -18,9 +19,28 @@ function toBookingDTO(booking: Booking) : BookingDTO {
   }
 }
 
+function toBookingStatusDTO(status: Map<BookingStatus, number>) : BookingStatusDTO {
+  return {
+    inuse: status.get(BookingStatus.DELIVERED) ?? 0,
+    booked: status.get(BookingStatus.BOOKED) ?? 0,
+    canceled: status.get(BookingStatus.CANCELED) ?? 0,
+    returned: status.get(BookingStatus.RETURNED) ?? 0
+  }
+}
+
 export default function bookingController(bookingService: IBookingService, routerOptions?: RouterOptions) {
 
   const router: Router = Router(routerOptions)
+  
+  router.get("/status", async (req, res) => {
+    bookingService.countBookingsByStatus()
+      .then(statusResult => toBookingStatusDTO(statusResult))
+      .then(statusResult => {
+        res.status(200)
+          .send({status: statusResult})
+      })
+  })
+
 
   router.post("/create/single", async (req, res) => {
     let userName = req.body.userName

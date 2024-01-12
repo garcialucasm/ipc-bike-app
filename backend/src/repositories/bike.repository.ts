@@ -6,5 +6,6 @@ export default interface IBikeRepository {
   delete(bikeId: number): Promise<Bike>;
   findById(bikeId: number) : Promise<Bike>;
   findAll(searchCriteria: {numbering?: number, size?: string, currentStatus?: BikeStatus}) : Promise<Bike[]>;
+  countBikesByStatus() : Promise<Map<BikeStatus, number>>;
 }
 
