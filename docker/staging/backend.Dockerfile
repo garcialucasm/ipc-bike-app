@@ -5,8 +5,7 @@ COPY ./backend/src ./src
 COPY ./backend/resources ./resources 
 COPY ./backend/package.json ./package.json
 COPY ./backend/tsconfig.json ./tsconfig.json
-RUN npm install 
-
+COPY ./backend/node_modules ./node_modules
 
 ENV IPC_BIKES_HOST=""
 ENV IPC_BIKES_USER=""

@@ -44,13 +44,17 @@ export default class MockBookingRepository implements IBookingRepository {
     return userBookings;
   }
 
-findByBike(bikeId: number): Promise<Booking[]> {
+  findByBike(bikeId: number): Promise<Booking[]> {
     throw new Error()
-}
+  }
 
-findByStatus(status: BookingStatus): Promise<Booking[]> {
+  findByStatus(status: BookingStatus): Promise<Booking[]> {
     throw new Error()
-}
+  }
+
+  countBookingsByStatus(): Promise<Map<BookingStatus, number>> {
+    throw new Error()
+  }
 
   async findAll(): Promise<Booking[]> {
 

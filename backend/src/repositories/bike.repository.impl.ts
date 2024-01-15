@@ -18,6 +18,9 @@ export default class BikeRepository implements IBikeRepository {
   findByIdStmt: string = "SELECT * from bike where id=$1"
 
   findAllStmt: string = "SELECT * FROM bike "
+  
+  countBikesByStatusStmt: string = `SELECT b.current_status, count(b.current_status) FROM bike b
+                                        GROUP BY b.current_status`
 
   constructor(client: Client) {
     this.client = client
@@ -104,4 +107,16 @@ export default class BikeRepository implements IBikeRepository {
     return bike;
   }
 
+  async countBikesByStatus(): Promise<Map<BikeStatus, number>> {
+    let query: string = this.countBikesByStatusStmt
+    
+    const result =  await this.client.query(query)
+    let ans: Map<BikeStatus, number> = new Map<BikeStatus, number>()
+    
+    result.rows.forEach(row => {
+      ans.set(BikeStatus[row.current_status as keyof typeof BikeStatus], Number.parseInt(row.count))
+    });
+
+    return ans
+  }
 }
