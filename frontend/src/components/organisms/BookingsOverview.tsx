@@ -19,8 +19,8 @@ function BookingsOverview() {
     error: null,
   });
 
-  const [reloadData, setReloadData] = useState(false);
-
+const [reloadData, setReloadData] = useState(false);
+  
   useEffect(() => {
     const fetchData = async () => {
       const result = await bookingFetchApi();
