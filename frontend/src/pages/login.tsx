@@ -1,22 +1,81 @@
+//Since we are using the client side functionalities like useState() we will have
+//to mark our components with use client so that nextjs considers it as a client component.
+"use client";
+
+import React, { useState } from "react";
 import Button from "@/components/atoms/Button";
-import Head from "@/components/atoms/Head";
 import { MenuNavigation } from "@/types/NavigationSections";
 import Image from "next/image";
 
+interface ErrorMessage {
+  username: string;
+  password: string;
+}
+
+const errorMessage: ErrorMessage = {
+  username: "",
+  password: "",
+};
+
 function Login() {
-  //TODO Create handle authentication
-  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
-    const { name } = event.currentTarget;
-    switch (name) {
-      case MenuNavigation.login:
-        window.location.replace("/home-app");
-        break;
-      case MenuNavigation.homePageWeb:
-        window.location.replace("/");
-      default:
-        break;
+  const [formLoginData, setFormLoginData] = useState({
+    username: "",
+    password: "",
+  });
+
+  const [errorMessages, setErrorMessages] = useState(errorMessage);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setFormLoginData({
+      ...formLoginData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleBlur = () => {
+    setErrorMessages(staticValidate(formLoginData));
+  };
+
+  const handleFocus = () => {
+    setErrorMessages({
+      username: "",
+      password: "",
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setErrorMessages(staticValidate(formLoginData));
+    //TODO create a function to validate. If worng => use existing error messages. If right => redirect
+    //TODO prevent more than 5 attempts in a row
+    window.location.replace("/home-app");
+  };
+
+  const staticValidate = (formValues: any) => {
+    let error: ErrorMessage = {
+      username: "",
+      password: "",
+    };
+    console.log(formValues);
+    if (!formValues.username) {
+      error.username = "Username or e-mail are required";
+    } else if (formValues.username.length < 5) {
+      error.username = "Please enter a valid username or email";
+    } else {
+      error.username = "";
     }
+    if (formValues.password.length < 8) {
+      error.password = "Password must have at least 8 characters";
+    } else {
+      error.password = "";
+    }
+    return error;
+  };
+
+  function handleReturnButton() {
+    window.location.replace("/");
   }
+
   return (
     <>
       <div className="h-screen md:flex">
@@ -31,14 +90,12 @@ function Login() {
           <p className="text-white mt-1">Book, Ride, Explore: All for Free</p>
         </div>
         <div className="flex md:w-1/2 justify-center py-10 items-center bg-white">
-          <form className="bg-white">
-            <h1 className="text-gray-800 font-bold text-2xl mb-1">
-              Hello! 👋
-            </h1>
+          <form onSubmit={handleSubmit} className="bg-white">
+            <h1 className="text-gray-800 font-bold text-2xl mb-1">Hello! 👋</h1>
             <p className="text-sm font-normal text-gray-600 mb-7">
               Welcome Back
             </p>
-            <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
+            <div className="flex items-center border-2 py-2 px-3 rounded-2xl">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 text-gray-400"
@@ -54,14 +111,22 @@ function Login() {
                 />
               </svg>
               <input
+                onChange={handleChange}
+                onBlur={handleBlur}
+                onFocus={handleFocus}
+                value={formLoginData.username}
                 className="pl-2 outline-none border-none"
                 type="text"
-                name=""
-                id=""
-                placeholder="Username"
+                name="username"
+                id="username"
+                required={true}
+                placeholder="Username or e-mail"
               />
             </div>
-            <div className="flex items-center border-2 py-2 px-3 rounded-2xl">
+            <span className="text-xs text-red-600 text-wrap px-1">
+              {errorMessages.username}
+            </span>
+            <div className="flex items-center border-2 py-2 px-3 rounded-2xl mt-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 text-gray-400"
@@ -75,30 +140,38 @@ function Login() {
                 />
               </svg>
               <input
+                onChange={handleChange}
+                onBlur={handleBlur}
+                onFocus={handleFocus}
+                value={formLoginData.password}
                 className="pl-2 outline-none border-none"
                 type="password"
-                name=""
-                id=""
+                name="password"
+                id="password"
                 placeholder="Password"
+                required={true}
               />
             </div>
+            <span className="text-xs text-red-600 text-wrap px-1">
+              {errorMessages.password}
+            </span>
             <div className="block w-full mt-4 py-2">
               <Button
-                onClick={handleClick}
-                name={MenuNavigation.login}
+                type="submit"
+                name={MenuNavigation.homePageApp}
                 className="btn-primary"
               >
                 <span>Log in</span>
               </Button>
               <Button
-                onClick={handleClick}
+                onClick={handleReturnButton}
                 name={MenuNavigation.homePageWeb}
                 className="btn-return"
               >
                 <span>Return</span>
               </Button>
             </div>
-            <span className="text-xs ml-2 text-slate-500 hover:text-blue-500 cursor-pointer">
+            <span className="text-xs ml-2 text ps-1-slate-500 hover:text-blue-500 cursor-pointer">
               Forgot Password ?
             </span>
           </form>

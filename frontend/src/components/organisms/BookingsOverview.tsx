@@ -8,6 +8,7 @@ import {
   bookingFetchApi,
 } from "@/services/bookingApi";
 import { UserStatus } from "@/types/UserType";
+import Link from "next/link";
 
 function BookingsOverview() {
   const [bookingData, setBookingData] = useState<{
@@ -18,6 +19,8 @@ function BookingsOverview() {
     error: null,
   });
 
+const [reloadData, setReloadData] = useState(false);
+  
   useEffect(() => {
     const fetchData = async () => {
       const result = await bookingFetchApi();
@@ -25,12 +28,13 @@ function BookingsOverview() {
     };
 
     fetchData();
-  }, []); // Empty dependency array to run the effect only once when the component mounts
+  }, [reloadData]); // Empty dependency array to run the effect only once when the component mounts
 
   const { activeBookings, error } = bookingData;
 
   async function handleClickCancelBooking(bookingId: number) {
     console.log(bookingId);
+    setReloadData(!reloadData);
   }
 
   async function handleClickConfirmation(
@@ -39,23 +43,49 @@ function BookingsOverview() {
   ) {
     let bookingStatus = status.toUpperCase();
     if (bookingStatus === BookingStatus.BOOKED) {
-      console.log(bookingStatus);
-      const result = await approveBookingFetchApi(bookingId);
-      console.log(result);
+      await approveBookingFetchApi(bookingId);
     } else if (bookingStatus === BookingStatus.DELIVERED) {
-      const result = await returnBookingFetchApi(bookingId);
-      console.log(result);
+      await returnBookingFetchApi(bookingId);
     }
+    // Set confirmation status to trigger re-render
+    setReloadData((prevStatus) => !prevStatus);
   }
 
-  if (!activeBookings || error) {
+  // Check if activeBookings returned an error
+  if (error) {
     return (
       <>
-        <div>Error: Unable to fetch booking data. Please try again later.</div>
-        <div>Error: {error}</div>
+        <div className="text-xs">
+          Something unexpected happened. It was not possible to fetch active
+          bookings. Please try again later.
+        </div>
+        <div className="text-xs text-slate-300">Error: {error}</div>
       </>
     );
-  } else {
+  }
+  // Check if activeBookings is empty
+  else if (!activeBookings || activeBookings.length === 0) {
+    return (
+      <>
+        <div className="w-full text-xs text-slate-600 rounded-lg bg-slate-100">
+          <p className="text-pretty p-2">There are no active bookings. 😊</p>
+          <p className="text-pretty p-2">
+            To create a new one, please go to the{" "}
+            <Link className="font-medium text-slate-600" href="/single-booking">
+              Single Booking
+            </Link>{" "}
+            or{" "}
+            <Link className="font-medium text-slate-600" href="/group-booking">
+              Group Booking
+            </Link>{" "}
+            section.
+          </p>{" "}
+        </div>
+      </>
+    );
+  }
+  // Check and render table only if there is activeBookings
+  else if (activeBookings.length > 0) {
     return (
       <>
         <div className="w-full">
@@ -87,7 +117,7 @@ function BookingsOverview() {
                     className="px-4 md:px-6 py-4 text-slate-900 whitespace-nowrap bg-white border-b"
                   >
                     <th scope="row" className="ps-2 md:ps-6 py-4">
-                      <StatusIndicator status={booking.status} />
+                      <StatusIndicator currentStatus={booking.status} />
                     </th>
                     <td className="flex items-center px-4 md:px-6 py-4 font-medium">
                       <svg
@@ -175,6 +205,14 @@ function BookingsOverview() {
               </tbody>
             </table>
           </div>
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div className="text-xs">
+          Something unexpected happened. Please try again later.
         </div>
       </>
     );

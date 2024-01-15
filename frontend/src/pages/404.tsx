@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Custom404() {
   return (
     <>
@@ -18,7 +20,7 @@ export default function Custom404() {
               "Sorry, the page you are looking for could not be found. It's probably under construction."
             }
           </p>
-          <a
+          <Link
             href="/"
             className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-gray-100 px-4 py-2 rounded-full transition duration-150"
             title="Return Home"
@@ -36,7 +38,7 @@ export default function Custom404() {
               ></path>
             </svg>
             <span>Return Home</span>
-          </a>
+          </Link>
         </div>
         <div className="w-1/2 lg:h-full flex lg:items-end justify-center p-4">
           <svg

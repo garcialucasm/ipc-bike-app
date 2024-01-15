@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../atoms/Button";
 import { UserData } from "@/types/UserType";
 import { SingleBookingSection } from "@/types/NavigationSections";
+
+interface ErrorMessage {
+  showErrorMessages: boolean;
+  firstName: string;
+  lastName: string;
+  roomNumber: string;
+}
 
 function InputStudentData(props: {
   onNavigation: (navigationButton: {
@@ -16,6 +23,18 @@ function InputStudentData(props: {
     }
   ) => void;
 }) {
+  const [errorMessages, setErrorMessages] = useState({
+    showErrorMessages: false,
+    firstName: "",
+    lastName: "",
+    roomNumber: "",
+  });
+
+  useEffect(() => {
+    // Run the validation when sendUserDataState changes
+    setErrorMessages(staticValidate(props.sendUserDataState));
+  }, [props.sendUserDataState]);
+
   // Get user's data entry (first name, last name, room number) when input is changed
   function handleUserDataChange(event: {
     target: { value: any; name: string };
@@ -31,8 +50,75 @@ function InputStudentData(props: {
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     const { name } = event.currentTarget;
     const buttonClicked: SingleBookingSection = name as SingleBookingSection;
-    props.onNavigation({ buttonName: buttonClicked });
+    setErrorMessages(staticValidate(props.sendUserDataState));
+    if (
+      buttonClicked === SingleBookingSection.preBookingConfirmation &&
+      props.sendUserDataState.firstName !== "" &&
+      props.sendUserDataState.lastName !== "" &&
+      props.sendUserDataState.roomNumber !== "" &&
+      errorMessages.firstName === "" &&
+      errorMessages.lastName === "" &&
+      errorMessages.roomNumber === ""
+    ) {
+      props.onNavigation({ buttonName: buttonClicked });
+    } else if (buttonClicked === SingleBookingSection.selectBikeSize) {
+      props.onNavigation({ buttonName: buttonClicked });
+    } else {
+      setErrorMessages((prevErrorMessages) => ({
+        ...prevErrorMessages,
+        showErrorMessages: true,
+      }));
+    }
   }
+
+  const staticValidate = (formValues: any) => {
+    let error: ErrorMessage = {
+      showErrorMessages: false,
+      firstName: "",
+      lastName: "",
+      roomNumber: "",
+    };
+    //First name input validation
+    if (!formValues.firstName) {
+      error.firstName = "First name is required";
+    } else if (
+      formValues.firstName.length < 2 ||
+      formValues.firstName.length > 50
+    ) {
+      error.firstName = "Please enter a valid first name";
+    } else if (!/^[a-zA-Z]+$/.test(formValues.firstName)) {
+      error.lastName =
+        "Please enter a valid first name without special characters";
+    } else {
+      error.firstName = "";
+    }
+    //Last name input validation
+    if (!formValues.lastName) {
+      error.lastName = "Last name is required";
+    } else if (
+      formValues.lastName.length < 2 ||
+      formValues.lastName.length > 50
+    ) {
+      error.lastName = "Please enter a valid last name";
+    } else if (!/^[a-zA-Z]+$/.test(formValues.lastName)) {
+      error.lastName =
+        "Please enter a valid last name without special characters";
+    } else {
+      error.lastName = "";
+    }
+    //Room number input validation
+    if (!formValues.roomNumber) {
+      error.roomNumber = "Room number is required";
+    } else if (
+      formValues.roomNumber.length < 2 ||
+      formValues.roomNumber.length > 20
+    ) {
+      error.roomNumber = "Please enter a valid room number";
+    } else {
+      error.roomNumber = "";
+    }
+    return error;
+  };
 
   return (
     <>
@@ -40,7 +126,14 @@ function InputStudentData(props: {
         <div className="instruction-label">Please, enter user data:</div>
         <div>
           <div className="flex gap-2">
-            <div className="input-text">
+            <div
+              className={`input-text  ${
+                errorMessages.firstName != "" &&
+                errorMessages.showErrorMessages === true
+                  ? "ring-1 ring-red-500"
+                  : ""
+              }`}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 text-gray-400"
@@ -59,10 +152,17 @@ function InputStudentData(props: {
                 onChange={handleUserDataChange}
                 type="text"
                 value={props.sendUserDataState.firstName}
-                className="pl-2 outline-none border-none w-full"
+                className={`pl-2 outline-none border-none w-full`}
               />
             </div>
-            <div className="input-text">
+            <div
+              className={`input-text  ${
+                errorMessages.lastName != "" &&
+                errorMessages.showErrorMessages === true
+                  ? "ring-1 ring-red-500"
+                  : ""
+              }`}
+            >
               <input
                 name="lastName"
                 onChange={handleUserDataChange}
@@ -73,7 +173,14 @@ function InputStudentData(props: {
               />
             </div>
           </div>
-          <div className="input-text">
+          <div
+            className={`input-text  ${
+              errorMessages.roomNumber != "" &&
+              errorMessages.showErrorMessages === true
+                ? "ring-1 ring-red-500"
+                : ""
+            }`}
+          >
             <svg
               className="h-5 w-5 text-gray-400"
               xmlns="http://www.w3.org/2000/svg"
@@ -96,6 +203,15 @@ function InputStudentData(props: {
             />
           </div>
         </div>
+        <span className="text-xs text-red-600 text-wrap px-1">
+          {errorMessages.showErrorMessages ? errorMessages.firstName : ""}
+        </span>
+        <span className="text-xs text-red-600 text-wrap px-1">
+          {errorMessages.showErrorMessages ? errorMessages.lastName : ""}
+        </span>
+        <span className="text-xs text-red-600 text-wrap px-1">
+          {errorMessages.showErrorMessages ? errorMessages.roomNumber : ""}
+        </span>
         <div>
           <Button
             onClick={handleClick}

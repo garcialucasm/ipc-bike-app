@@ -24,21 +24,13 @@ export const bookingFetchApi = async () => {
     const response = await fetch(`${api.baseUrl + activeBookingsUrl}`);
 
     if (!response.ok) {
-      if (response.status === 404) {
-        throw new Error('Data not found');
-      } else if (response.status === 500) {
-        throw new Error('Server error');
-      } else {
-        throw new Error(`Error: ${response.status} - ${response.statusText}`);
-      }
+      throw new Error(`${response.status}: ${response.statusText}`);
     }
-
-    console.log(`Status: ${response.status}`)
 
     const data = await response.json();
     const activeBookings = data.bookings;
 
-    // Loop through each booking and log relevant information
+    // Loop through each active booking and show relevant information in the console
     activeBookings.forEach((booking: any) => {
       // console.dir(booking, { depth: null });
       // console.log(JSON.stringify(booking, null, 2));
@@ -46,7 +38,7 @@ export const bookingFetchApi = async () => {
 
     return { activeBookings, error: null };
   } catch (error: any) {
-    return { activeBookings: null, error: `Error fetching data: ${error.message}` };
+    return { activeBookings: null, error: `${error.message}` };
   }
 };
 
@@ -59,16 +51,8 @@ export const bikeStatusCounterFetchApi = async () => {
   try {
     const response = await fetch(`${api.baseUrl + bikeStatusCounterUrl}`);
     if (!response.ok) {
-      if (response.status === 404) {
-        throw new Error('Data not found');
-      } else if (response.status === 500) {
-        throw new Error('Server error');
-      } else {
-        throw new Error(`Error: ${response.status} - ${response.statusText}`);
-      }
+      throw new Error(`${response.status}: ${response.statusText}`);
     }
-
-    console.log(`Status: ${response.status}`)
 
     return {
       bikeCountFree,
@@ -83,7 +67,7 @@ export const bikeStatusCounterFetchApi = async () => {
       bikeCountBooked: number,
       bikeCountInUse: number,
       bikeCountDisabled: number,
-      error: `Error fetching data: ${error.message}`
+      error: `${error.message}`
     };
   }
 }
@@ -102,16 +86,12 @@ export const createSingleBookingFetchApi = async (bookingData: Booking) => {
         bikeSize: bookingData.bookingBikeSize,
       }),
     });
+
     console.log("User: " + bookingData.bookingUserData.firstName + " " + bookingData.bookingUserData.lastName)
+
     if (!response.ok) {
-      if (response.status === 404) {
-        throw new Error('Data not found');
-      } else if (response.status === 500) {
-        throw new Error('Server error');
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.error);
-      }
+      const errorData = await response.json();
+      throw new Error(errorData.error);
     }
 
     const data = await response.json();
@@ -119,7 +99,7 @@ export const createSingleBookingFetchApi = async (bookingData: Booking) => {
   } catch (error: any) {
     console.error('Error creating single booking:', error.message);
     return {
-      data: null, error: `Error fetching data: ${error.message}`
+      data: null, error: `${error.message}`
     }
   }
 }
@@ -136,21 +116,14 @@ export const approveBookingFetchApi = async (bookingId: number) => {
     });
 
     if (!response.ok) {
-      if (response.status === 404) {
-        throw new Error('Data not found');
-      } else if (response.status === 500) {
-        throw new Error('Server error');
-      } else {
-        throw new Error(`Error: ${response.status} - ${response.statusText}`);
-      }
+      throw new Error(`${response.status}: ${response.statusText}`);
     }
-    console.log(`Status: ${response.status}`)
     console.log(`Booking ID ${bookingId} approved`);
     const approvedBooking = true
 
     return { approvedBooking, error: null };
   } catch (error: any) {
-    return { approvedBooking: null, error: `Error fetching data: ${error.message}` };
+    return { approvedBooking: null, error: `${error.message}` };
   }
 };
 
@@ -165,21 +138,14 @@ export const returnBookingFetchApi = async (bookingId: number) => {
     });
 
     if (!response.ok) {
-      if (response.status === 404) {
-        throw new Error('Data not found');
-      } else if (response.status === 500) {
-        throw new Error('Server error');
-      } else {
-        throw new Error(`Error: ${response.status} - ${response.statusText}`);
-      }
+      throw new Error(`${response.status}: ${response.statusText}`);
     }
 
-    console.log(`Status: ${response.status}`)
     console.log(`Booking ID ${bookingId} returned`);
     const returnedBooking = true
 
     return { returnedBooking, error: null };
   } catch (error: any) {
-    return { returnedBooking: null, error: `Error fetching data: ${error.message}` };
+    return { returnedBooking: null, error: `${error.message}` };
   }
 };

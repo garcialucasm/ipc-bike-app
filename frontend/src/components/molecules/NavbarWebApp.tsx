@@ -14,7 +14,7 @@ function NavbarWebApp() {
     <>
       <nav className="flex w-full items-center justify-between flex-wrap py-2">
         <span className="sr-only">IPC Alumni</span>
-        <a href="/">
+        <Link href="/">
           <Image
             src="/logo-ipc-white.png"
             className="h-6 w-auto"
@@ -22,7 +22,7 @@ function NavbarWebApp() {
             height={399}
             alt=""
           />
-        </a>
+        </Link>
         <div className="block">
           <button
             onClick={() => setIsOpen(!isOpen)}

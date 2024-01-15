@@ -3,7 +3,7 @@ export enum BikeSize {
   CLASSIC = "CLASSIC",
   SMALL = "SMALL",
   STANDARD = "STANDARD",
-  FREE = "FREE"
+  FREE = "FREE",
 }
 
 export enum BikeStatus {
@@ -14,8 +14,8 @@ export enum BikeStatus {
 }
 
 export interface BikeAvailability {
-  bikeSize: BikeSize;
-  countFree: {
+  bikeType: BikeSize;
+  bikeFreeCount: {
     standardType: number;
     classicType: number;
     smallType: number;
