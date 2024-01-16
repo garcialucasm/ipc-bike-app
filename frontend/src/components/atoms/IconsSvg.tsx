@@ -1,5 +1,39 @@
 import React from "react";
 
+export function IconSvgLoader(props: { height: string; fillColor?: string }) {
+  const { height, fillColor } = props;
+  const width = height;
+  return (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="xMidYMid"
+        className={`${height} ${width} ${fillColor ?? "fill-current"}`}
+      >
+        <circle
+          cx="50"
+          cy="50"
+          fill="none"
+          stroke="#3498db"
+          stroke-width="4"
+          r="25"
+          stroke-dasharray="117.80972450961724 41.269908169872416"
+        >
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            repeatCount="indefinite"
+            dur="1s"
+            values="0 50 50;360 50 50"
+            keyTimes="0;1"
+          />
+        </circle>
+      </svg>
+    </>
+  );
+}
+
 // confirmation icon
 export function IconSvgProcessConfirmed(props: {
   height: string;

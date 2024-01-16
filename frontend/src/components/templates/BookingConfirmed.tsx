@@ -5,6 +5,7 @@ import Button from "../atoms/Button";
 import {
   IconSvgProcessConfirmed,
   IconSvgFeedbackError,
+  IconSvgLoader,
 } from "../atoms/IconsSvg";
 import Infobox from "../organisms/Infobox";
 import NextSteps from "../molecules/NextSteps";
@@ -22,7 +23,11 @@ function BookingConfimed(props: {
   return (
     <div className="flex flex-col items-center w-11/12 text-slate-700">
       {/* Render if there are no errors */}
-      {!serverResult.error ? (
+      {errorMessage === "" ? (
+        <>
+          <IconSvgLoader height={"h-24"} />
+        </>
+      ) : !serverResult.error ? (
         <>
           <div className="w-full pb-3">
             <div className="flex items-center justify-center py-3">
