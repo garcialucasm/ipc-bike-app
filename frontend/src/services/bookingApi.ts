@@ -19,7 +19,7 @@ const returnBookingUrl = "/booking/return/";
 
 
 // Show all active bookings
-export const bookingFetchApi = async () => {
+export async function bookingFetchApi() {
   try {
     const response = await fetch(`${api.baseUrl + activeBookingsUrl}`);
 
