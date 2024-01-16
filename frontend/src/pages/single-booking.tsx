@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import InputSingleBikeSize from "@/components/templates/InputSingleBikeSize";
 import InputSingleUserData from "@/components/templates/InputSingleUserData";
 import PreBookingConfirmation from "@/components/templates/PreBookingConfirmation";
-import BookingConfirmed from "@/components/templates/BookingConfirmed";
+import BookingConfirmation from "@/components/templates/BookingConfirmation";
 import { BikeSize } from "@/types/BikeType";
 import { UserData } from "@/types/UserType";
 import { BookingStatus, Booking } from "@/types/BookingType";
@@ -118,8 +118,7 @@ function HomeSingleBooking() {
           )}
           {currentSection ===
             SingleBookingSection.bookingConfirmationStatus && (
-            <BookingConfirmed
-              onNavigation={handleNavigation}
+            <BookingConfirmation
               bookingData={bookingData}
               serverResult={serverResult}
             />
