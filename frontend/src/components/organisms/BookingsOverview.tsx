@@ -48,7 +48,7 @@ const [reloadData, setReloadData] = useState(false);
       await returnBookingFetchApi(bookingId);
     }
     // Set confirmation status to trigger re-render
-    setReloadData((prevStatus) => !prevStatus);
+    setReloadData(!reloadData);
   }
 
   // Check if activeBookings returned an error

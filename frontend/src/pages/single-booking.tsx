@@ -20,9 +20,6 @@ function HomeSingleBooking() {
     SingleBookingSection.selectBikeSize
   );
 
-  // Creating state for bikeSizeSelected
-  const [bikeSizeSelected, setBikeSize] = useState(BikeSize.NONE);
-
   // Creating state for enteredUserData in InputStudentData
   const [enteredUserData, setEnteredUserData] = useState<UserData>({
     firstName: "",
@@ -60,20 +57,20 @@ function HomeSingleBooking() {
   function handleBikeSize(event: { selectedSize: BikeSize }) {
     console.log(event.selectedSize);
     const bikeSizeSelected = event.selectedSize;
-    setBikeSize(bikeSizeSelected);
+    setBookingData((prevBookingData) => ({
+      ...prevBookingData,
+      bookingBikeSize: bikeSizeSelected,
+    }));
   }
 
+  // TODO: remove the enteredUserData state and leave only bookingData state 
   // Update bookingData after states [bikeSizeSelected or enteredUserDataboth] change
   useEffect(() => {
     setBookingData((prevBookingData) => ({
       ...prevBookingData,
       bookingUserData: enteredUserData,
     }));
-    setBookingData({
-      bookingBikeSize: bikeSizeSelected,
-      bookingUserData: enteredUserData,
-    });
-  }, [bikeSizeSelected, enteredUserData]);
+  }, [enteredUserData]);
 
   // TODO: Send Booking confirmation or Return to user data input
   async function handleBookingConfirmation() {
