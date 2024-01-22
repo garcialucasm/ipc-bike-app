@@ -13,19 +13,13 @@ import {
 import Stepper from "@/components/organisms/Stepper";
 import HeaderWebApp from "@/components/organisms/HeaderWebApp";
 import { createSingleBookingFetchApi } from "@/services/bookingApi";
+import Head from "@/components/atoms/Head";
 
 function HomeSingleBooking() {
   // Creating states for show of hide components
   const [currentSection, setCurrentSection] = useState<SingleBookingSection>(
     SingleBookingSection.selectBikeSize
   );
-
-  // Creating state for enteredUserData in InputStudentData
-  const [enteredUserData, setEnteredUserData] = useState<UserData>({
-    firstName: "",
-    lastName: "",
-    roomNumber: "",
-  });
 
   // Creating state to manage user data and then submit booking
   const [bookingData, setBookingData] = useState<Booking>({
@@ -63,16 +57,7 @@ function HomeSingleBooking() {
     }));
   }
 
-  // TODO: remove the enteredUserData state and leave only bookingData state 
-  // Update bookingData after states [bikeSizeSelected or enteredUserDataboth] change
-  useEffect(() => {
-    setBookingData((prevBookingData) => ({
-      ...prevBookingData,
-      bookingUserData: enteredUserData,
-    }));
-  }, [enteredUserData]);
-
-  // TODO: Send Booking confirmation or Return to user data input
+  // Show Booking confirmation status or Return to user data input
   async function handleBookingConfirmation() {
     const buttonOnConfirmation = SingleBookingSection.bookingConfirmationStatus;
     if (
@@ -81,7 +66,6 @@ function HomeSingleBooking() {
       const result = await createSingleBookingFetchApi(bookingData);
       setServerResult(result);
       console.log(result);
-      //function to submit data
     } else if (buttonOnConfirmation === SingleBookingSection.inputUserData) {
     }
   }
@@ -90,6 +74,7 @@ function HomeSingleBooking() {
     <>
       <div className="flex flex-col items-center text-center mb-3">
         <div className="container-webapp flex flex-col items-center pb-6">
+          <Head title="IPC Alumni Bike" />
           <HeaderWebApp
             headingTitle={"Single Booking"}
             headingSubTitle="Select the type of bike, confirm the details, and book."
@@ -106,8 +91,8 @@ function HomeSingleBooking() {
           {currentSection === SingleBookingSection.inputUserData && (
             <InputSingleUserData
               onNavigation={handleNavigation}
-              sendUserDataState={enteredUserData}
-              sendSetUserDataState={setEnteredUserData}
+              bookingData={bookingData}
+              setBookingData={setBookingData}
             />
           )}
           {currentSection === SingleBookingSection.preBookingConfirmation && (

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Button from "../atoms/Button";
 import { UserData } from "@/types/UserType";
 import { SingleBookingSection } from "@/types/NavigationSections";
+import { Booking, BookingType } from "@/types/BookingType";
 
 interface ErrorMessage {
   showErrorMessages: boolean;
@@ -14,14 +15,8 @@ function InputStudentData(props: {
   onNavigation: (navigationButton: {
     buttonName: SingleBookingSection;
   }) => void;
-  sendUserDataState: UserData;
-  sendSetUserDataState: (
-    userDataState: (prevValues: UserData) => {
-      firstName: string;
-      lastName: string;
-      roomNumber: string;
-    }
-  ) => void;
+  bookingData: Booking;
+  setBookingData: (getPrevState: (prevState: Booking) => Booking) => void;
 }) {
   const [errorMessages, setErrorMessages] = useState({
     showErrorMessages: false,
@@ -32,17 +27,17 @@ function InputStudentData(props: {
 
   useEffect(() => {
     // Run the validation when sendUserDataState changes
-    setErrorMessages(staticValidate(props.sendUserDataState));
-  }, [props.sendUserDataState]);
+    setErrorMessages(staticValidate(props.bookingData.bookingUserData));
+  }, [props.bookingData]);
 
   // Get user's data entry (first name, last name, room number) when input is changed
   function handleUserDataChange(event: {
     target: { value: any; name: string };
   }) {
     const { value, name } = event.target;
-    props.sendSetUserDataState((prevValues: UserData) => ({
+    props.setBookingData((prevValues) => ({
       ...prevValues,
-      [name]: value,
+      bookingUserData: { ...prevValues.bookingUserData, [name]: value },
     }));
     console.log(event.target);
   }
@@ -50,12 +45,13 @@ function InputStudentData(props: {
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     const { name } = event.currentTarget;
     const buttonClicked: SingleBookingSection = name as SingleBookingSection;
-    setErrorMessages(staticValidate(props.sendUserDataState));
+    setErrorMessages(staticValidate(props.bookingData.bookingUserData));
+    console.log(errorMessages);
     if (
       buttonClicked === SingleBookingSection.preBookingConfirmation &&
-      props.sendUserDataState.firstName !== "" &&
-      props.sendUserDataState.lastName !== "" &&
-      props.sendUserDataState.roomNumber !== "" &&
+      props.bookingData.bookingUserData.firstName !== "" &&
+      props.bookingData.bookingUserData.lastName !== "" &&
+      props.bookingData.bookingUserData.roomNumber !== "" &&
       errorMessages.firstName === "" &&
       errorMessages.lastName === "" &&
       errorMessages.roomNumber === ""
@@ -151,7 +147,7 @@ function InputStudentData(props: {
                 name="firstName"
                 onChange={handleUserDataChange}
                 type="text"
-                value={props.sendUserDataState.firstName}
+                value={props.bookingData.bookingUserData.firstName}
                 className={`pl-2 outline-none border-none w-full`}
               />
             </div>
@@ -167,7 +163,7 @@ function InputStudentData(props: {
                 name="lastName"
                 onChange={handleUserDataChange}
                 type="text"
-                value={props.sendUserDataState.lastName}
+                value={props.bookingData.bookingUserData.lastName}
                 placeholder="Last name"
                 className="pl-2 outline-none border-none w-full"
               />
@@ -198,7 +194,7 @@ function InputStudentData(props: {
               onChange={handleUserDataChange}
               type="text"
               placeholder="Room Number"
-              value={props.sendUserDataState.roomNumber}
+              value={props.bookingData.bookingUserData.roomNumber}
               className="pl-2 outline-none border-none w-full"
             />
           </div>

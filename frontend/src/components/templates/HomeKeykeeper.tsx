@@ -27,9 +27,6 @@ export default function HomeKeyKeeper() {
             </div>
             <div className="w-11/12 flex flex-col">
               <div className="flex flex-col items-center">
-                <div className="w-full ">
-                  <Head title="IPC Alumni Bike" />
-                </div>
                 <div className="w-full my-3">
                   <AvailabilityContainer
                     availabilitySelection={availabilityShowSelection}
