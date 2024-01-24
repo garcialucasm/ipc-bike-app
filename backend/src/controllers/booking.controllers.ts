@@ -4,7 +4,9 @@ import IBookingService from '../services/booking.service'
 import { validateRoom, validateUserName, validateBikeSize } from '../models/validators'
 import {BookingDTO, BookingStatusDTO } from '../dto/booking.dto'
 import { Booking, BookingStatus, BookingType } from '../models/booking.model'
+// TOCHECK: was this "stat" unintentional?
 import { stat } from 'fs'
+import { auth } from '../utils/auth'
 
 
 function toBookingDTO(booking: Booking) : BookingDTO {
@@ -42,7 +44,7 @@ export default function bookingController(bookingService: IBookingService, route
   })
 
 
-  router.post("/create/single", async (req, res) => {
+  router.post("/create/single", auth, async (req, res) => {
     let userName = req.body.userName
     let room = req.body.room
     let bikeSize = req.body.bikeSize
@@ -56,6 +58,7 @@ export default function bookingController(bookingService: IBookingService, route
       .then(booking => {
         res.status(200)
           .send({booking: toBookingDTO(booking)})
+          // TOCHECK: Are these double "catch" necessary?
       }).catch(error => {
         console.log(error)
         res.status(401)

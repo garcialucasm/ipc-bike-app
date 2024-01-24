@@ -21,6 +21,19 @@ CREATE TABLE "user" (
 -- Create index on user table
 CREATE INDEX "user_search_idx" ON "user" ("name", "room", "term");
 
+-- Create account table
+CREATE TABLE "account" (
+  "id" SERIAL PRIMARY KEY,
+  "email" VARCHAR(255) UNIQUE NOT NULL,
+  "password" VARCHAR(255) NOT NULL,
+  "is_active" boolean not null,
+  "created_at" TIMESTAMP,
+  "updated_at" TIMESTAMP,
+  "deleted_at" TIMESTAMP
+);
+
+-- Create index on account table
+CREATE INDEX "account_search_idx" ON "account" ("email");
 
 create table "bike" (
   "id" SERIAL PRIMARY KEY,

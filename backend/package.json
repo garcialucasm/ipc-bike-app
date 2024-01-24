@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node dist/index.js",
+    "watch": "tsc -w",
+    "start": "tsc && nodemon dist/index.js",
     "build": "tsc",
-    "api-test": "jest --detectOpenHandles", 
+    "api-test": "jest --detectOpenHandles",
     "unit-test": "ts-mocha src/test/unit/*.test.ts",
     "integration-test": "ts-mocha src/test/integration/*.test.ts"
   },
@@ -19,15 +20,20 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
-    "express": "^4.18.2"
+    "dotenv": "^16.4.0",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/body-parser": "^1.19.3",
     "@types/cors": "^2.8.14",
     "@types/express": "^4.17.18",
     "@types/jest": "^29.5.11",
+    "@types/jsonwebtoken": "^9.0.5",
     "@types/mocha": "^10.0.2",
     "@types/node": "^20.8.2",
     "@types/pg": "^8.10.7",
