@@ -78,7 +78,7 @@ export const createSingleBookingFetchApi = async (bookingData: Booking) => {
     const response = await fetch(api.baseUrl + createSingleBookingUrl, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFhMUBhYTEuY29tIiwiaWF0IjoxNzA2MTgxMDUyLCJleHAiOjE3MDYzNTM4NTJ9.f5eVNP1ZpU5bSQBmvz6ZVPwbZwG7fawyn0xlBPLyEmQ",
       },
       body: JSON.stringify({
         userName: bookingData.bookingUserData.firstName + " " + bookingData.bookingUserData.lastName,

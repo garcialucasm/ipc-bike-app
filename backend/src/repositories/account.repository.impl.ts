@@ -1,7 +1,6 @@
 import { Client } from "pg";
-import { Account } from "../models/account.model";
+import { userAccount } from "../models/account.model";
 import IAccountRepository from "./account.repository";
-import { createWhereClausule } from "./sql.util";
 import { accountFromRow } from "./mappings";
 import bcrypt from 'bcrypt';
 
@@ -28,45 +27,68 @@ export default class AccountRepository implements IAccountRepository {
     this.client = client;
   }
 
-  async save(account: Account): Promise<Account> {
-    account.createdAt = new Date()
-    if (account.password) {
-      account.password = await bcrypt.hash(account.password, saltRounds);
+  async save(account: userAccount): Promise<userAccount> {
+    try {
+      account.user.createdAt = new Date()
+      if (account.user.password) {
+        account.user.password = await bcrypt.hash(account.user.password, saltRounds);
+      }
+
+      let result = await this.client.query(this.insertAccountStmt, [account.user.email, account.user.password, account.user.isActive, account.user.createdAt])
+
+      let [row] = result.rows
+
+      if (row === undefined)
+        throw new Error("Couldn't insert user account")
+
+      return accountFromRow(row)
     }
-
-    let result = await this.client.query(this.insertAccountStmt, [account.email, account.password, account.isActive, account.createdAt])
-
-    let [row] = result.rows
-
-    if (row === undefined)
-      throw new Error("Couldn't insert user account")
-
-    return accountFromRow(row)
+    catch (error) {
+      throw error;
+    }
   }
 
-  async findByEmail(email: string): Promise<Account> {
-    let result = await this.client.query(this.findByEmailStmt, [email])
+  async findByEmail(email: string): Promise<userAccount> {
+    try {
+      let result = await this.client.query(this.findByEmailStmt, [email])
 
-    let [row] = result.rows
+      let [row] = result.rows
 
-    return row
+      return row
+    } catch (error) {
+      throw error;
+    }
   }
 
-  async login(email: string): Promise<Account> {
-    let result = await this.client.query(this.loginStmt, [email])
+  async findAccount(email: string): Promise<userAccount> {
+    try {
+      let result = await this.client.query(this.loginStmt, [email])
 
-    let [row] = result.rows
+      let [row] = result.rows
 
-    return row
+      if (!row) {
+        throw new Error("Email not found");
+      }
+
+      return {
+        user: {
+          id: row.id,
+          email: row.email,
+          password: row.password,
+        },
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 
   // // TODO: Complete this method
   // async update(account: Account): Promise<Account> {
-  //   if (account.email === undefined)
+  //   if (account.user.email === undefined)
   //     throw new Error("Cant update user with undefined email")
 
-  //   account.updatedAt = new Date()
-  //   let result = await this.client.query(this.updateUserStmt, [account.email])
+  //   account.user.updatedAt = new Date()
+  //   let result = await this.client.query(this.updateUserStmt, [account.user.email])
 
   //   if (result.rowCount == 0)
   //     throw new Error("Couldn't update user account")

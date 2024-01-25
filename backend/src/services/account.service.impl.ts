@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { Account } from "../models/account.model";
+import { userAccount } from "../models/account.model";
 import IAccountRepository from "../repositories/account.repository";
 import IAccountService from "./account.service";
 import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
@@ -17,16 +17,18 @@ export default class AccountService implements IAccountService {
     this.accountRepository = accountRepository
   }
 
-  async registerAccount(email: string, password: string): Promise<Account> {
+  async registerAccount(email: string, password: string): Promise<userAccount> {
     const users = await this.accountRepository.findByEmail(email)
-    let account: Account
+    let account: userAccount
 
     if (!users) {
       account = {
-        email: email,
-        password: password,
-        isActive: true
-      } as Account
+        user: {
+          email: email,
+          password: password,
+          isActive: true
+        }
+      } as userAccount
 
       account = await this.accountRepository.save(account)
     } else {
@@ -36,32 +38,34 @@ export default class AccountService implements IAccountService {
     return account
   }
 
-  async login(email: string, password: string): Promise<Account> {
+  async login(email: string, password: string): Promise<userAccount> {
+
     try {
       if (!email) {
         throw new Error("Email is not provided");
       }
 
-      const foundAccount = await this.accountRepository.login(email, password);
+      const foundAccount = await this.accountRepository.findAccount(email, password);
+      console.log(foundAccount)
 
-      if (!foundAccount) {
+      if (!foundAccount.user.email) {
         throw new Error("Email is not correct or does not exist");
       }
 
-      if (!foundAccount.password) {
+      if (!foundAccount.user.password) {
         throw new Error("Password is not provided");
       }
 
-      const isMatch = bcrypt.compareSync(password, foundAccount.password);
+      const isMatch = bcrypt.compareSync(password, foundAccount.user.password);
 
       if (isMatch) {
-        const token = jwt.sign({ id: foundAccount.id?.toString(), email: foundAccount.email }, jwtSecretKey, {
+        const token = jwt.sign({ id: foundAccount.user.id?.toString(), email: foundAccount.user.email }, jwtSecretKey, {
           expiresIn: '2 days',
         });
 
         console.log(token)
 
-        return { id: foundAccount.id, email: foundAccount.email, token: token };
+        return { user: { id: foundAccount.user.id, email: foundAccount.user.email }, token: token };
       } else {
         throw new Error('Password is not correct');
       }
@@ -70,10 +74,9 @@ export default class AccountService implements IAccountService {
     }
   }
 
-  async findByEmail(accountEmail: string): Promise<Account[]> {
-    let accounts: Account[] = []
-
-    let result = this.accountRepository.findByEmail(accountEmail)
+  async findByEmail(email: string): Promise<userAccount[]> {
+    let accounts: userAccount[] = []
+    let result = this.accountRepository.findByEmail(email)
     accounts.push(await result)
     return accounts
   }

@@ -1,6 +1,6 @@
 import { Bike, BikeStatus } from "../models/bike.model";
 import { Booking, BookingStatus, BookingType } from "../models/booking.model";
-import { Account } from "../models/account.model";
+import { userAccount } from "../models/account.model";
 import { User, UserType, UserStatus } from "../models/user.model";
 
 
@@ -64,15 +64,17 @@ function userFromRow(row: any): User {
   }
 }
 
-function accountFromRow(row: any): Account {
+function accountFromRow(row: any): userAccount {
   return {
-    id: Number.parseInt(row['id']),
-    email: row['email'],
-    password: row['password'],
-    isActive: row['is_active'] ? new Boolean(row['is_active']).valueOf() : false,
-    createdAt: row['created_at'] ? new Date(row['created_at']) : undefined,
-    updatedAt: row['updated_at'] ? new Date(row['updated_at']) : undefined,
-    deletedAt: row['deleted_at'] ? new Date(row['deleted_at']) : undefined
+    user: {
+      id: Number.parseInt(row['id']),
+      email: row['email'],
+      password: row['password'],
+      isActive: row['is_active'] ? new Boolean(row['is_active']).valueOf() : false,
+      createdAt: row['created_at'] ? new Date(row['created_at']) : undefined,
+      updatedAt: row['updated_at'] ? new Date(row['updated_at']) : undefined,
+      deletedAt: row['deleted_at'] ? new Date(row['deleted_at']) : undefined
+    }
   }
 }
 

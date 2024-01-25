@@ -1,19 +1,14 @@
 import { Router, RouterOptions } from 'express'
 import IAccountService from '../services/account.service'
 import { validateEmail, validatePassword } from "../models/validators";
-import { Account } from "../models/account.model";
+import { userAccount } from "../models/account.model";
 import { AccountDataDTO } from "../dto/account.dto";
 import { cleanUpSpaces } from "../utils/strings";
 
-function getErrorMessage(error: unknown) {
-    if (error instanceof Error) return error.message;
-    return String(error);
-}
 
 function toAccountEmailDTO(email: string): string {
     return email ? cleanUpSpaces(email.toLowerCase()) : '';
 }
-
 
 export default function accountController(accountService: IAccountService, routerOptions?: RouterOptions) {
 
@@ -51,11 +46,10 @@ export default function accountController(accountService: IAccountService, route
         try {
             email = toAccountEmailDTO(email)
             validateEmail(email)
-            validatePassword(password)
             accountService.login(email, password)
-                .then(() => {
+                .then((account) => {
                     res.status(200)
-                        .send("Authenticated successfully")
+                        .send(account)
                 }).catch(error => {
                     console.log(error)
                     res.status(500)

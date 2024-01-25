@@ -31,7 +31,7 @@ function validateEmail(email: string) {
     throw new Error("User's email is not valid")
 }
 
-function validatePassword(password: string, requireSpecialChar: boolean = false) {
+function validatePassword(password: string, requireSpecialChar: boolean = true) {
   if (!password.length) {
     throw new Error("Password cannot be empty");
   }
