@@ -24,6 +24,7 @@ import db from "./db/index"
 import bikeController from "./controllers/bike.controller"
 import accountController from "./controllers/account.controller"
 import 'dotenv/config'
+import { checkAuth } from "./utils/auth"
 
 db.connect()
 
@@ -47,8 +48,10 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 
-app.use('/booking/', bookingController(bookingService))
-app.use('/bike/', bikeController(bikeService))
+app.use('/secure/*', checkAuth)
+
+app.use('/secure/booking/', bookingController(bookingService))
+app.use('/secure/bike/', bikeController(bikeService))
 app.use('/auth/', accountController(accountService))
 
 app.get("/", async (req, res) => {

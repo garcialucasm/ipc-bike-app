@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { userAccount } from "../models/account.model";
+import { Account } from "../models/account.model";
 import IAccountRepository from "../repositories/account.repository";
 import IAccountService from "./account.service";
 import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
@@ -17,9 +17,9 @@ export default class AccountService implements IAccountService {
     this.accountRepository = accountRepository
   }
 
-  async registerAccount(email: string, password: string): Promise<userAccount> {
+  async registerAccount(email: string, password: string): Promise<Account> {
     const users = await this.accountRepository.findByEmail(email)
-    let account: userAccount
+    let account: Account
 
     if (!users) {
       account = {
@@ -28,7 +28,7 @@ export default class AccountService implements IAccountService {
           password: password,
           isActive: true
         }
-      } as userAccount
+      } as Account
 
       account = await this.accountRepository.save(account)
     } else {
@@ -38,7 +38,7 @@ export default class AccountService implements IAccountService {
     return account
   }
 
-  async login(email: string, password: string): Promise<userAccount> {
+  async login(email: string, password: string): Promise<Account> {
 
     try {
       if (!email) {
@@ -46,7 +46,6 @@ export default class AccountService implements IAccountService {
       }
 
       const foundAccount = await this.accountRepository.findAccount(email, password);
-      console.log(foundAccount)
 
       if (!foundAccount.user.email) {
         throw new Error("Email is not correct or does not exist");
@@ -63,8 +62,6 @@ export default class AccountService implements IAccountService {
           expiresIn: '2 days',
         });
 
-        console.log(token)
-
         return { user: { id: foundAccount.user.id, email: foundAccount.user.email }, token: token };
       } else {
         throw new Error('Password is not correct');
@@ -74,8 +71,8 @@ export default class AccountService implements IAccountService {
     }
   }
 
-  async findByEmail(email: string): Promise<userAccount[]> {
-    let accounts: userAccount[] = []
+  async findByEmail(email: string): Promise<Account[]> {
+    let accounts: Account[] = []
     let result = this.accountRepository.findByEmail(email)
     accounts.push(await result)
     return accounts

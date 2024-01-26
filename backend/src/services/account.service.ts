@@ -1,5 +1,5 @@
 
-import { userAccount } from "../models/account.model";
+import { Account } from "../models/account.model";
 
 export default interface IAccountService {
 
@@ -8,7 +8,7 @@ export default interface IAccountService {
      * 
      * @param email 
      */
-    findByEmail(email: string): Promise<userAccount[]>;
+    findByEmail(email: string): Promise<Account[]>;
 
     /**
      * if there's an user account with the same email in the database, gets the user account
@@ -17,7 +17,7 @@ export default interface IAccountService {
      * @param email 
      * @param password
      */
-    registerAccount(email: string, password: string): Promise<userAccount>;
+    registerAccount(email: string, password: string): Promise<Account>;
 
     /**
      * if there's an user with the same email in the database, gets the userEmail and the userPassword
@@ -26,7 +26,7 @@ export default interface IAccountService {
      * @param email 
      * @param password
      */
-    login(email: string, password: string): Promise<userAccount>;
+    login(email: string, password: string): Promise<Account>;
 
 
 }

@@ -1,6 +1,6 @@
 import { Bike, BikeStatus } from "../models/bike.model";
 import { Booking, BookingStatus, BookingType } from "../models/booking.model";
-import { userAccount } from "../models/account.model";
+import { Account } from "../models/account.model";
 import { User, UserType, UserStatus } from "../models/user.model";
 
 
@@ -64,7 +64,7 @@ function userFromRow(row: any): User {
   }
 }
 
-function accountFromRow(row: any): userAccount {
+function accountFromRow(row: any): Account {
   return {
     user: {
       id: Number.parseInt(row['id']),

@@ -1,5 +1,5 @@
 import { Client } from "pg";
-import { userAccount } from "../models/account.model";
+import { Account } from "../models/account.model";
 import IAccountRepository from "./account.repository";
 import { accountFromRow } from "./mappings";
 import bcrypt from 'bcrypt';
@@ -15,19 +15,13 @@ export default class AccountRepository implements IAccountRepository {
 
   findByEmailStmt: string = `SELECT id, email, is_active, created_at, updated_at, deleted_at FROM "account" WHERE email=$1`;
 
-  loginStmt: string = `SELECT email, password FROM "account" WHERE email=$1`;
-
-  // findAllStmt: string = `SELECT * FROM "account"`
-
-  // updateUserStmt: string = `UPDATE "account" SET password=$1, is_active=$2, updated_at=$3 WHERE email=$4 RETURNING *`
-
-  // deleteUserStmt: string = `UPDATE "account" set is_active=$1, deleted_at=$2 WHERE email=$3 RETURNING *`
+  loginStmt: string = `SELECT id, email, password FROM "account" WHERE email=$1`;
 
   constructor(client: Client) {
     this.client = client;
   }
 
-  async save(account: userAccount): Promise<userAccount> {
+  async save(account: Account): Promise<Account> {
     try {
       account.user.createdAt = new Date()
       if (account.user.password) {
@@ -48,7 +42,7 @@ export default class AccountRepository implements IAccountRepository {
     }
   }
 
-  async findByEmail(email: string): Promise<userAccount> {
+  async findByEmail(email: string): Promise<Account> {
     try {
       let result = await this.client.query(this.findByEmailStmt, [email])
 
@@ -60,7 +54,7 @@ export default class AccountRepository implements IAccountRepository {
     }
   }
 
-  async findAccount(email: string): Promise<userAccount> {
+  async findAccount(email: string): Promise<Account> {
     try {
       let result = await this.client.query(this.loginStmt, [email])
 
@@ -81,43 +75,5 @@ export default class AccountRepository implements IAccountRepository {
       throw error;
     }
   }
-
-  // // TODO: Complete this method
-  // async update(account: Account): Promise<Account> {
-  //   if (account.user.email === undefined)
-  //     throw new Error("Cant update user with undefined email")
-
-  //   account.user.updatedAt = new Date()
-  //   let result = await this.client.query(this.updateUserStmt, [account.user.email])
-
-  //   if (result.rowCount == 0)
-  //     throw new Error("Couldn't update user account")
-
-  //   let [row] = result.rows
-
-  //   return accountFromRow(row)
-  // }
-
-  // // TODO: Complete this method
-  // async delete(email: string): Promise<Account> {
-  //   let result = await this.client.query(this.deleteUserStmt, [false, new Date(), email])
-
-  //   if (result.rowCount == 0)
-  //     throw new Error("Couldn't delete user account")
-
-  //   let [row] = result.rows
-
-  //   return accountFromRow(row)
-  // }
-
-  // // TODO: Complete this method
-  // async findAll(searchCriteria: { email?: string | undefined }): Promise<Account[]> {
-  //   let query: string = this.findAllStmt
-
-  //   query += createWhereClausule(searchCriteria)
-  //   let result = await this.client.query(query, Object.values(searchCriteria))
-
-  //   return result.rows.map(row => accountFromRow(row))
-  // }
 
 }

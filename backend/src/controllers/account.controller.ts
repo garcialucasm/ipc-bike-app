@@ -1,13 +1,13 @@
 import { Router, RouterOptions } from 'express'
 import IAccountService from '../services/account.service'
 import { validateEmail, validatePassword } from "../models/validators";
-import { userAccount } from "../models/account.model";
 import { AccountDataDTO } from "../dto/account.dto";
 import { cleanUpSpaces } from "../utils/strings";
 
 
-function toAccountEmailDTO(email: string): string {
-    return email ? cleanUpSpaces(email.toLowerCase()) : '';
+function toAccountDTO(email: string): AccountDataDTO {
+    email = email ? cleanUpSpaces(email.toLowerCase()) : '';
+    return { email: email }
 }
 
 export default function accountController(accountService: IAccountService, routerOptions?: RouterOptions) {
@@ -17,12 +17,13 @@ export default function accountController(accountService: IAccountService, route
     router.post("/register", async (req, res) => {
         let email = req.body.email
         let password = req.body.password
+        let account: AccountDataDTO
 
         try {
-            email = toAccountEmailDTO(email)
-            validateEmail(email)
-            validatePassword(password)
-            accountService.registerAccount(email, password)
+            // validateEmail(email)
+            // validatePassword(password)
+            account = toAccountDTO(email)
+            accountService.registerAccount(account.email, password)
                 .then(() => {
                     res.status(200)
                         .send("Successfully registered")
@@ -42,11 +43,12 @@ export default function accountController(accountService: IAccountService, route
     router.post("/login", async (req, res) => {
         let email = req.body.email
         let password = req.body.password
+        let account: AccountDataDTO
 
         try {
-            email = toAccountEmailDTO(email)
-            validateEmail(email)
-            accountService.login(email, password)
+            account = toAccountDTO(email)
+            // validateEmail(account.email)
+            accountService.login(account.email, password)
                 .then((account) => {
                     res.status(200)
                         .send(account)
@@ -61,21 +63,6 @@ export default function accountController(accountService: IAccountService, route
             res.status(401)
                 .send({ error: error.message })
         }
-    })
-
-    router.post("/email", (req, res) => {
-
-        let email = req.body.email
-        email = toAccountEmailDTO(email)
-        accountService.findByEmail(email)
-            .then(userAccount => {
-                res.status(200)
-                    .send({ userAccount: userAccount })
-            }).catch(error => {
-                console.log(error)
-                res.status(401)
-                    .send({ error: error.message })
-            })
     })
 
     return router

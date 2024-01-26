@@ -1,4 +1,4 @@
-interface userAccount {
+interface Account {
     user: {
         id?: number;
         email: string,
@@ -11,5 +11,5 @@ interface userAccount {
     token?: string,
 }
 
-export { userAccount }
+export { Account }
 
