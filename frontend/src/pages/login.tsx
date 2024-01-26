@@ -6,6 +6,8 @@ import React, { useState } from "react";
 import Button from "@/components/atoms/Button";
 import { MenuNavigation } from "@/types/NavigationSections";
 import Image from "next/image";
+import { login } from "@/services/bookingApi";
+import { setCookie } from "@/utils/cookieUtils";
 
 interface ErrorMessage {
   username: string;
@@ -25,6 +27,50 @@ function Login() {
 
   const [errorMessages, setErrorMessages] = useState(errorMessage);
 
+  const handleBlur = () => {
+    // setErrorMessages(staticValidate(formLoginData));
+  };
+
+  // const staticValidate = (formValues: any) => {
+  //   let error: ErrorMessage = {
+  //     username: "",
+  //     password: "",
+  //   };
+  //   if (!formValues.username) {
+  //     error.username = "Username or e-mail are required";
+  //   } else if (formValues.username.length < 5) {
+  //     error.username = "Please enter a valid username or email";
+  //   } else {
+  //     error.username = "";
+  //   }
+  //   if (formValues.password.length < 8) {
+  //     error.password = "Password must have at least 8 characters";
+  //   } else {
+  //     error.password = "";
+  //   }
+  //   return error;
+  // };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // setErrorMessages(staticValidate(formLoginData));
+    if (
+      formLoginData.username !== "" &&
+      formLoginData.password !== "" &&
+      errorMessages.username === "" &&
+      errorMessages.password === ""
+    ) {
+      const response = await login(
+        formLoginData.username,
+        formLoginData.password
+      );
+
+      if (response.data) {
+        setCookie("ipcBikeApp_authToken", response.data.token);
+      }
+    }
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormLoginData({
       ...formLoginData,
@@ -32,44 +78,11 @@ function Login() {
     });
   };
 
-  const handleBlur = () => {
-    setErrorMessages(staticValidate(formLoginData));
-  };
-
   const handleFocus = () => {
     setErrorMessages({
       username: "",
       password: "",
     });
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setErrorMessages(staticValidate(formLoginData));
-    //TODO create a function to validate. If worng => use existing error messages. If right => redirect
-    //TODO prevent more than 5 attempts in a row
-    window.location.replace("/home-app");
-  };
-
-  const staticValidate = (formValues: any) => {
-    let error: ErrorMessage = {
-      username: "",
-      password: "",
-    };
-    console.log(formValues);
-    if (!formValues.username) {
-      error.username = "Username or e-mail are required";
-    } else if (formValues.username.length < 5) {
-      error.username = "Please enter a valid username or email";
-    } else {
-      error.username = "";
-    }
-    if (formValues.password.length < 8) {
-      error.password = "Password must have at least 8 characters";
-    } else {
-      error.password = "";
-    }
-    return error;
   };
 
   function handleReturnButton() {

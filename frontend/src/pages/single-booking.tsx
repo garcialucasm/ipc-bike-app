@@ -4,7 +4,6 @@ import InputSingleUserData from "@/components/templates/InputSingleUserData";
 import PreBookingConfirmation from "@/components/templates/PreBookingConfirmation";
 import BookingConfirmation from "@/components/templates/BookingConfirmation";
 import { BikeSize } from "@/types/BikeType";
-import { UserData } from "@/types/UserType";
 import { BookingStatus, Booking } from "@/types/BookingType";
 import {
   MenuNavigation,
@@ -49,7 +48,6 @@ function HomeSingleBooking() {
 
   // Update bikeSizeSelected
   function handleBikeSize(event: { selectedSize: BikeSize }) {
-    console.log(event.selectedSize);
     const bikeSizeSelected = event.selectedSize;
     setBookingData((prevBookingData) => ({
       ...prevBookingData,
@@ -65,7 +63,6 @@ function HomeSingleBooking() {
     ) {
       const result = await createSingleBookingFetchApi(bookingData);
       setServerResult(result);
-      console.log(result);
     } else if (buttonOnConfirmation === SingleBookingSection.inputUserData) {
     }
   }

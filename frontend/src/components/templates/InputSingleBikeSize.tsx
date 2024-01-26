@@ -4,7 +4,6 @@ import Link from "next/link";
 import { SingleBookingSection } from "@/types/NavigationSections";
 import { useState } from "react";
 import BikeChooserContainer from "../organisms/BikeChooserContainer";
-import { BookingStatus } from "@/types/BookingType";
 
 //TODO get the number of bikes for each BikeStatus
 const bikeFreeCountByType = { standardType: 0, classicType: 10, smallType: 3 };
@@ -36,7 +35,6 @@ function InputStudentBikeSize(props: {
     const selectedRadio = event.target.value as BikeSize;
     //TODO create a validation for selecting the bike size according to availability
     setRadioBikeSizeValue(selectedRadio);
-    console.log("Selected Bike Size: ", selectedRadio);
   }
 
   function handleClick() {

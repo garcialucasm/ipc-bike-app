@@ -1,40 +1,49 @@
 import { Booking, BookingStatus } from "@/types/BookingType";
-import { api } from "./api";
+import { ApiHeader, api } from "./api";
 import { number } from "prop-types";
+import { authHeader } from '@/utils/authUtils';
 
 //Url to Show all active bookings
-const activeBookingsUrl = "/booking/all";
+const loginUrl = "/auth/login";
+//Url to Show all active bookings
+const activeBookingsUrl = "/secure/booking/all";
 //Url to Show all bookings
-const allBookingsUrl = "/booking/all?show_inactive=true";
+const allBookingsUrl = "/secure/booking/all?show_inactive=true";
 //Url to Show number of bikes in each status 
-const bikeStatusCounterUrl = "/booking/";
+const bikeStatusCounterUrl = "/secure/booking/";
 //Url to Create Single booking
-const createSingleBookingUrl = "/booking/create/single";
+const createSingleBookingUrl = "/secure/booking/create/single";
 //Url to Cancel a booking
-const cancelBookingUrl = "/booking/all";
+const cancelBookingUrl = "/secure/booking/cancel";
 //Url to Approve a booking
-const approveBookingUrl = "/booking/approve/";
+const approveBookingUrl = "/secure/booking/approve/";
 //Url to Return a booking
-const returnBookingUrl = "/booking/return/";
+const returnBookingUrl = "/secure/booking/return/";
 
+
+// Login
+export const login = async (email: string, password: string) => {
+  try {
+    const response = await ApiHeader.post(api.baseUrl + loginUrl,
+      {
+        email: email,
+        password: password,
+      }, authHeader())
+    return { data: response.data, error: null };
+
+  } catch (error: any) {
+    console.error('Error authenticating:', error.message);
+    return {
+      data: null, error: `${error.message}`
+    }
+  }
+}
 
 // Show all active bookings
 export async function bookingFetchApi() {
   try {
-    const response = await fetch(`${api.baseUrl + activeBookingsUrl}`);
-
-    if (!response.ok) {
-      throw new Error(`${response.status}: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    const activeBookings = data.bookings;
-
-    // Loop through each active booking and show relevant information in the console
-    activeBookings.forEach((booking: any) => {
-      // console.dir(booking, { depth: null });
-      // console.log(JSON.stringify(booking, null, 2));
-    });
+    const response = await ApiHeader.get(api.baseUrl + activeBookingsUrl, authHeader());
+    const activeBookings = response.data.bookings;
 
     return { activeBookings, error: null };
   } catch (error: any) {
@@ -49,8 +58,9 @@ export const bikeStatusCounterFetchApi = async () => {
   let bikeCountInUse: number = 0;
   let bikeCountDisabled: number = 0;
   try {
-    const response = await fetch(`${api.baseUrl + bikeStatusCounterUrl}`);
-    if (!response.ok) {
+    const response = await ApiHeader.get(api.baseUrl + bikeStatusCounterUrl, authHeader());
+
+    if (response.status < 200 || response.status >= 300) {
       throw new Error(`${response.status}: ${response.statusText}`);
     }
 
@@ -75,26 +85,19 @@ export const bikeStatusCounterFetchApi = async () => {
 //Create Single Booking
 export const createSingleBookingFetchApi = async (bookingData: Booking) => {
   try {
-    const response = await fetch(api.baseUrl + createSingleBookingUrl, {
-      method: 'POST',
-      headers: {
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFhMUBhYTEuY29tIiwiaWF0IjoxNzA2MTgxMDUyLCJleHAiOjE3MDYzNTM4NTJ9.f5eVNP1ZpU5bSQBmvz6ZVPwbZwG7fawyn0xlBPLyEmQ",
-      },
-      body: JSON.stringify({
-        userName: bookingData.bookingUserData.firstName + " " + bookingData.bookingUserData.lastName,
-        room: bookingData.bookingUserData.roomNumber,
-        bikeSize: bookingData.bookingBikeSize,
-      }),
-    });
+    const response = await ApiHeader.post(api.baseUrl + createSingleBookingUrl, {
+      userName: bookingData.bookingUserData.firstName + " " + bookingData.bookingUserData.lastName,
+      room: bookingData.bookingUserData.roomNumber,
+      bikeSize: bookingData.bookingBikeSize,
+    }, authHeader()
+    );
 
-    console.log("User: " + bookingData.bookingUserData.firstName + " " + bookingData.bookingUserData.lastName)
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error);
+    if (response.status < 200 || response.status >= 300) {
+      throw new Error(`${response.status}: ${response.statusText}`);
     }
 
-    const data = await response.json();
+    const data = response.data
+
     return { booking: data.booking, error: null }; // Assuming the server returns the booking information
   } catch (error: any) {
     console.error('Error creating single booking:', error.message);
@@ -107,18 +110,11 @@ export const createSingleBookingFetchApi = async (bookingData: Booking) => {
 // Approve a booking
 export const approveBookingFetchApi = async (bookingId: number) => {
   try {
-    console.log(bookingId)
-    const response = await fetch(api.baseUrl + approveBookingUrl + bookingId, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await ApiHeader.post(api.baseUrl + approveBookingUrl + bookingId, authHeader());
 
-    if (!response.ok) {
+    if (response.status < 200 || response.status >= 300) {
       throw new Error(`${response.status}: ${response.statusText}`);
     }
-    console.log(`Booking ID ${bookingId} approved`);
     const approvedBooking = true
 
     return { approvedBooking, error: null };
@@ -130,18 +126,12 @@ export const approveBookingFetchApi = async (bookingId: number) => {
 // Return a booking
 export const returnBookingFetchApi = async (bookingId: number) => {
   try {
-    const response = await fetch(api.baseUrl + returnBookingUrl + bookingId, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await ApiHeader.post(api.baseUrl + returnBookingUrl + bookingId, authHeader());
 
-    if (!response.ok) {
+    if (response.status < 200 || response.status >= 300) {
       throw new Error(`${response.status}: ${response.statusText}`);
     }
 
-    console.log(`Booking ID ${bookingId} returned`);
     const returnedBooking = true
 
     return { returnedBooking, error: null };

@@ -16,9 +16,9 @@ export function IconSvgLoader(props: { height: string; fillColor?: string }) {
           cy="50"
           fill="none"
           stroke="#3498db"
-          stroke-width="4"
+          strokeWidth="4"
           r="25"
-          stroke-dasharray="117.80972450961724 41.269908169872416"
+          strokeDasharray="117.80972450961724 41.269908169872416"
         >
           <animateTransform
             attributeName="transform"

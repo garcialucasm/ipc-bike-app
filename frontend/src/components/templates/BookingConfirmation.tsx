@@ -22,8 +22,6 @@ function BookingConfirmation({
   useEffect(() => {
     setResult(serverResult);
   }, [serverResult]);
-  console.log("Data in result: " + ("data" in result));
-  console.log("Result Error: " + !result.error);
   return (
     <div className="flex flex-col items-center w-11/12 text-slate-700">
       {/* Render if there are no errors */}

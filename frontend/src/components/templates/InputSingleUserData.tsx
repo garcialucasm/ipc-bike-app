@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Button from "../atoms/Button";
-import { UserData } from "@/types/UserType";
 import { SingleBookingSection } from "@/types/NavigationSections";
-import { Booking, BookingType } from "@/types/BookingType";
+import { Booking } from "@/types/BookingType";
 
 interface ErrorMessage {
   showErrorMessages: boolean;
@@ -39,14 +38,12 @@ function InputStudentData(props: {
       ...prevValues,
       bookingUserData: { ...prevValues.bookingUserData, [name]: value },
     }));
-    console.log(event.target);
   }
 
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     const { name } = event.currentTarget;
     const buttonClicked: SingleBookingSection = name as SingleBookingSection;
     setErrorMessages(staticValidate(props.bookingData.bookingUserData));
-    console.log(errorMessages);
     if (
       buttonClicked === SingleBookingSection.preBookingConfirmation &&
       props.bookingData.bookingUserData.firstName !== "" &&

@@ -33,7 +33,6 @@ const [reloadData, setReloadData] = useState(false);
   const { activeBookings, error } = bookingData;
 
   async function handleClickCancelBooking(bookingId: number) {
-    console.log(bookingId);
     setReloadData(!reloadData);
   }
 
