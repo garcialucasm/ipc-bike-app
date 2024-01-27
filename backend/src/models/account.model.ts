@@ -1,6 +1,7 @@
 interface Account {
     user: {
         id?: number;
+        name?: string,
         email: string,
         password?: string,
         isActive?: Boolean,

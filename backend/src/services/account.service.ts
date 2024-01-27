@@ -17,7 +17,7 @@ export default interface IAccountService {
      * @param email 
      * @param password
      */
-    registerAccount(email: string, password: string): Promise<Account>;
+    registerAccount(name: string, email: string, password: string): Promise<Account>;
 
     /**
      * if there's an user with the same email in the database, gets the userEmail and the userPassword

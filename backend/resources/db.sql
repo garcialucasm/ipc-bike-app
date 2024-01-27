@@ -24,6 +24,7 @@ CREATE INDEX "user_search_idx" ON "user" ("name", "room", "term");
 -- Create account table
 CREATE TABLE "account" (
   "id" SERIAL PRIMARY KEY,
+  "name" VARCHAR(255) NOT NULL,
   "email" VARCHAR(255) UNIQUE NOT NULL,
   "password" VARCHAR(255) NOT NULL,
   "is_active" boolean not null,

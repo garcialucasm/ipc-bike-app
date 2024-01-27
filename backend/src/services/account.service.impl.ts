@@ -17,13 +17,14 @@ export default class AccountService implements IAccountService {
     this.accountRepository = accountRepository
   }
 
-  async registerAccount(email: string, password: string): Promise<Account> {
+  async registerAccount(name: string, email: string, password: string): Promise<Account> {
     const users = await this.accountRepository.findByEmail(email)
     let account: Account
 
     if (!users) {
       account = {
         user: {
+          name: name,
           email: email,
           password: password,
           isActive: true

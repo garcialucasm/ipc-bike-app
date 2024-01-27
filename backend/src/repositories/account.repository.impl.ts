@@ -10,10 +10,10 @@ export default class AccountRepository implements IAccountRepository {
 
   client: Client
 
-  insertAccountStmt: string = `INSERT INTO "account" (email, password, is_active, created_at)
-    VALUES($1, $2, $3, $4) RETURNING *`
+  insertAccountStmt: string = `INSERT INTO "account" (name, email, password, is_active, created_at)
+    VALUES($1, $2, $3, $4, $5) RETURNING *`
 
-  findByEmailStmt: string = `SELECT id, email, is_active, created_at, updated_at, deleted_at FROM "account" WHERE email=$1`;
+  findByEmailStmt: string = `SELECT id, name, email, is_active, created_at, updated_at, deleted_at FROM "account" WHERE email=$1`;
 
   loginStmt: string = `SELECT id, email, password FROM "account" WHERE email=$1`;
 
@@ -23,6 +23,7 @@ export default class AccountRepository implements IAccountRepository {
 
   async save(account: Account): Promise<Account> {
     try {
+      const name = account.user.name
       const email = account.user.email
       let password = account.user.password ?? ''
       const isActive = account.user.isActive
@@ -30,7 +31,7 @@ export default class AccountRepository implements IAccountRepository {
 
       password = await bcrypt.hash(password, saltRounds);
 
-      let result = await this.client.query(this.insertAccountStmt, [email, password, isActive, createdAt])
+      let result = await this.client.query(this.insertAccountStmt, [name, email, password, isActive, createdAt])
 
       let [row] = result.rows
 
