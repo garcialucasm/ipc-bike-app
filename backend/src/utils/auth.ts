@@ -20,7 +20,7 @@ export const checkAuth = async (req: Request, res: Response, next: NextFunction)
         }
 
         if (!jwtSecretKey) {
-            throw new Error("JWT_SECRET_KEY is not set.Please configure it.");
+            throw new Error("JWT_SECRET_KEY is not set. Please configure it.");
         }
         const decoded = jwt.verify(token, jwtSecretKey);
         (req as CustomRequest).token = decoded;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Button from "../atoms/Button";
 import { SingleBookingSection } from "@/types/NavigationSections";
 import { Booking } from "@/types/BookingType";
+import { validateName, validateRoomNumber } from "@/utils/validators";
 
 interface ErrorMessage {
   showErrorMessages: boolean;
@@ -43,20 +44,28 @@ function InputStudentData(props: {
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     const { name } = event.currentTarget;
     const buttonClicked: SingleBookingSection = name as SingleBookingSection;
-    setErrorMessages(staticValidate(props.bookingData.bookingUserData));
+    const userData = props.bookingData.bookingUserData;
+
+    // Run validation and update error messages
+    setErrorMessages(staticValidate(userData));
+
+    // Check conditions for navigation
     if (
       buttonClicked === SingleBookingSection.preBookingConfirmation &&
-      props.bookingData.bookingUserData.firstName !== "" &&
-      props.bookingData.bookingUserData.lastName !== "" &&
-      props.bookingData.bookingUserData.roomNumber !== "" &&
-      errorMessages.firstName === "" &&
-      errorMessages.lastName === "" &&
-      errorMessages.roomNumber === ""
+      userData.firstName &&
+      userData.lastName &&
+      userData.roomNumber &&
+      !errorMessages.firstName &&
+      !errorMessages.lastName &&
+      !errorMessages.roomNumber
     ) {
+      // Navigate if all conditions are met
       props.onNavigation({ buttonName: buttonClicked });
     } else if (buttonClicked === SingleBookingSection.selectBikeSize) {
+      // Navigate for the other button
       props.onNavigation({ buttonName: buttonClicked });
     } else {
+      // Show error messages
       setErrorMessages((prevErrorMessages) => ({
         ...prevErrorMessages,
         showErrorMessages: true,
@@ -72,44 +81,13 @@ function InputStudentData(props: {
       roomNumber: "",
     };
     //First name input validation
-    if (!formValues.firstName) {
-      error.firstName = "First name is required";
-    } else if (
-      formValues.firstName.length < 2 ||
-      formValues.firstName.length > 50
-    ) {
-      error.firstName = "Please enter a valid first name";
-    } else if (!/^[a-zA-Z]+$/.test(formValues.firstName)) {
-      error.lastName =
-        "Please enter a valid first name without special characters";
-    } else {
-      error.firstName = "";
-    }
+    error.firstName = validateName(formValues.firstName);
+
     //Last name input validation
-    if (!formValues.lastName) {
-      error.lastName = "Last name is required";
-    } else if (
-      formValues.lastName.length < 2 ||
-      formValues.lastName.length > 50
-    ) {
-      error.lastName = "Please enter a valid last name";
-    } else if (!/^[a-zA-Z]+$/.test(formValues.lastName)) {
-      error.lastName =
-        "Please enter a valid last name without special characters";
-    } else {
-      error.lastName = "";
-    }
+    error.lastName = validateName(formValues.lastName);
+
     //Room number input validation
-    if (!formValues.roomNumber) {
-      error.roomNumber = "Room number is required";
-    } else if (
-      formValues.roomNumber.length < 2 ||
-      formValues.roomNumber.length > 20
-    ) {
-      error.roomNumber = "Please enter a valid room number";
-    } else {
-      error.roomNumber = "";
-    }
+    error.roomNumber = validateRoomNumber(formValues.roomNumber);
     return error;
   };
 

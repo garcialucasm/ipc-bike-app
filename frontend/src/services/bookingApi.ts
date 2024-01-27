@@ -1,34 +1,27 @@
 import { Booking, BookingStatus } from "@/types/BookingType";
-import { ApiHeader, api } from "./api";
-import { number } from "prop-types";
-import { authHeader } from '@/utils/authUtils';
+import { ApiHeader } from "./api";
+import { cleanUpSpaces } from "@/utils/validators";
 
-//Url to Show all active bookings
-const loginUrl = "/auth/login";
-//Url to Show all active bookings
-const activeBookingsUrl = "/secure/booking/all";
-//Url to Show all bookings
-const allBookingsUrl = "/secure/booking/all?show_inactive=true";
-//Url to Show number of bikes in each status 
-const bikeStatusCounterUrl = "/secure/booking/";
-//Url to Create Single booking
-const createSingleBookingUrl = "/secure/booking/create/single";
-//Url to Cancel a booking
-const cancelBookingUrl = "/secure/booking/cancel";
-//Url to Approve a booking
-const approveBookingUrl = "/secure/booking/approve/";
-//Url to Return a booking
-const returnBookingUrl = "/secure/booking/return/";
+const apiUrls = {
+  loginUrl: "/auth/login",
+  activeBookingsUrl: "/secure/booking/all",
+  allBookingsUrl: "/secure/booking/all?show_inactive=true",
+  bikeStatusCounterUrl: "/secure/booking/",
+  createSingleBookingUrl: "/secure/booking/create/single",
+  cancelBookingUrl: "/secure/booking/cancel",
+  approveBookingUrl: "/secure/booking/approve/",
+  returnBookingUrl: "/secure/booking/return/",
+}
 
 
 // Login
 export const login = async (email: string, password: string) => {
   try {
-    const response = await ApiHeader.post(api.baseUrl + loginUrl,
+    const response = await ApiHeader.post(apiUrls.loginUrl,
       {
         email: email,
         password: password,
-      }, authHeader())
+      })
     return { data: response.data, error: null };
 
   } catch (error: any) {
@@ -42,11 +35,12 @@ export const login = async (email: string, password: string) => {
 // Show all active bookings
 export async function bookingFetchApi() {
   try {
-    const response = await ApiHeader.get(api.baseUrl + activeBookingsUrl, authHeader());
+    const response = await ApiHeader.get(apiUrls.activeBookingsUrl);
     const activeBookings = response.data.bookings;
 
     return { activeBookings, error: null };
   } catch (error: any) {
+    console.error('Error getting active bookings:', error.message);
     return { activeBookings: null, error: `${error.message}` };
   }
 };
@@ -58,7 +52,7 @@ export const bikeStatusCounterFetchApi = async () => {
   let bikeCountInUse: number = 0;
   let bikeCountDisabled: number = 0;
   try {
-    const response = await ApiHeader.get(api.baseUrl + bikeStatusCounterUrl, authHeader());
+    const response = await ApiHeader.get(apiUrls.bikeStatusCounterUrl);
 
     if (response.status < 200 || response.status >= 300) {
       throw new Error(`${response.status}: ${response.statusText}`);
@@ -72,24 +66,25 @@ export const bikeStatusCounterFetchApi = async () => {
       error: null
     };
   } catch (error: any) {
+    console.error('Error getting status counter:', error.message);
     return {
-      bikeCountFree: number,
-      bikeCountBooked: number,
-      bikeCountInUse: number,
-      bikeCountDisabled: number,
-      error: `${error.message}`
-    };
+      data: null, error: `${error.message}`
+    }
   }
 }
 
 //Create Single Booking
 export const createSingleBookingFetchApi = async (bookingData: Booking) => {
   try {
-    const response = await ApiHeader.post(api.baseUrl + createSingleBookingUrl, {
-      userName: bookingData.bookingUserData.firstName + " " + bookingData.bookingUserData.lastName,
-      room: bookingData.bookingUserData.roomNumber,
-      bikeSize: bookingData.bookingBikeSize,
-    }, authHeader()
+    const userName = cleanUpSpaces(bookingData.bookingUserData.firstName) + " " + cleanUpSpaces(bookingData.bookingUserData.lastName)
+    const room = bookingData.bookingUserData.roomNumber
+    const bikeSize = bookingData.bookingBikeSize
+
+    const response = await ApiHeader.post(apiUrls.createSingleBookingUrl, {
+      userName: userName,
+      room: room,
+      bikeSize: bikeSize,
+    }
     );
 
     if (response.status < 200 || response.status >= 300) {
@@ -110,7 +105,7 @@ export const createSingleBookingFetchApi = async (bookingData: Booking) => {
 // Approve a booking
 export const approveBookingFetchApi = async (bookingId: number) => {
   try {
-    const response = await ApiHeader.post(api.baseUrl + approveBookingUrl + bookingId, authHeader());
+    const response = await ApiHeader.post(apiUrls.approveBookingUrl + bookingId);
 
     if (response.status < 200 || response.status >= 300) {
       throw new Error(`${response.status}: ${response.statusText}`);
@@ -119,6 +114,7 @@ export const approveBookingFetchApi = async (bookingId: number) => {
 
     return { approvedBooking, error: null };
   } catch (error: any) {
+    console.error('Error approving a booking:', error.message);
     return { approvedBooking: null, error: `${error.message}` };
   }
 };
@@ -126,7 +122,7 @@ export const approveBookingFetchApi = async (bookingId: number) => {
 // Return a booking
 export const returnBookingFetchApi = async (bookingId: number) => {
   try {
-    const response = await ApiHeader.post(api.baseUrl + returnBookingUrl + bookingId, authHeader());
+    const response = await ApiHeader.post(apiUrls.returnBookingUrl + bookingId);
 
     if (response.status < 200 || response.status >= 300) {
       throw new Error(`${response.status}: ${response.statusText}`);
@@ -136,6 +132,7 @@ export const returnBookingFetchApi = async (bookingId: number) => {
 
     return { returnedBooking, error: null };
   } catch (error: any) {
+    console.error('Error approving a return:', error.message);
     return { returnedBooking: null, error: `${error.message}` };
   }
 };
