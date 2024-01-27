@@ -23,7 +23,6 @@ import IUserService from "./services/user.service"
 import db from "./db/index"
 import bikeController from "./controllers/bike.controller"
 import accountController from "./controllers/account.controller"
-import 'dotenv/config'
 import { checkAuth } from "./utils/auth"
 
 db.connect()

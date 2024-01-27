@@ -23,12 +23,14 @@ export default class AccountRepository implements IAccountRepository {
 
   async save(account: Account): Promise<Account> {
     try {
-      account.user.createdAt = new Date()
-      if (account.user.password) {
-        account.user.password = await bcrypt.hash(account.user.password, saltRounds);
-      }
+      const email = account.user.email
+      let password = account.user.password ?? ''
+      const isActive = account.user.isActive
+      const createdAt = new Date()
 
-      let result = await this.client.query(this.insertAccountStmt, [account.user.email, account.user.password, account.user.isActive, account.user.createdAt])
+      password = await bcrypt.hash(password, saltRounds);
+
+      let result = await this.client.query(this.insertAccountStmt, [email, password, isActive, createdAt])
 
       let [row] = result.rows
 

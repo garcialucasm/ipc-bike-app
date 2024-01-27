@@ -41,8 +41,8 @@ export default function accountController(accountService: IAccountService, route
     })
 
     router.post("/login", async (req, res) => {
-        let email = req.body.email
-        let password = req.body.password
+        const email = req.body.email
+        const password = req.body.password
         let account: AccountDataDTO
 
         try {

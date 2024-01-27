@@ -1,9 +1,11 @@
 import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
+import dotenv from "dotenv"
 
-// TODO: Correct this part
-// const jwtSecretKey = process.env.JWT_SECRET_KEY
-const jwtSecretKey = "process.env.JWT_SECRET_KEY"
+dotenv.config()
+
+const jwtSecretKey = process.env.JWT_SECRET_KEY
+
 
 export interface CustomRequest extends Request {
     token: string | JwtPayload;
@@ -12,8 +14,13 @@ export interface CustomRequest extends Request {
 export const checkAuth = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const token = req.header('Authorization')?.replace('Bearer ', '');
+
         if (!token) {
             throw new Error('No token found');
+        }
+
+        if (!jwtSecretKey) {
+            throw new Error("JWT_SECRET_KEY is not set.Please configure it.");
         }
         const decoded = jwt.verify(token, jwtSecretKey);
         (req as CustomRequest).token = decoded;

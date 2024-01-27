@@ -3,11 +3,11 @@ import { Account } from "../models/account.model";
 import IAccountRepository from "../repositories/account.repository";
 import IAccountService from "./account.service";
 import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
-import 'dotenv/config'
+import dotenv from "dotenv"
 
-// TODO: Correct this part
-// const jwtSecretKey = process.env.JWT_SECRET_KEY
-const jwtSecretKey = "process.env.JWT_SECRET_KEY"
+dotenv.config()
+
+const jwtSecretKey = process.env.JWT_SECRET_KEY
 
 export default class AccountService implements IAccountService {
 
@@ -38,31 +38,38 @@ export default class AccountService implements IAccountService {
     return account
   }
 
-  async login(email: string, password: string): Promise<Account> {
+  async login(loginEmail: string, loginPassword: string): Promise<Account> {
 
     try {
-      if (!email) {
+      if (!loginEmail) {
         throw new Error("Email is not provided");
       }
 
-      const foundAccount = await this.accountRepository.findAccount(email, password);
+      const foundAccount = await this.accountRepository.findAccount(loginEmail, loginPassword);
+      const storedEmail = foundAccount.user.email
+      const storedPassword = foundAccount.user.password
+      const accountId = foundAccount.user.id
 
-      if (!foundAccount.user.email) {
+      if (!storedEmail) {
         throw new Error("Email is not correct or does not exist");
       }
 
-      if (!foundAccount.user.password) {
+      if (!storedPassword) {
         throw new Error("Password is not provided");
       }
 
-      const isMatch = bcrypt.compareSync(password, foundAccount.user.password);
+      const isMatch = await bcrypt.compare(loginPassword, storedPassword);
+
+      if (!jwtSecretKey) {
+        throw new Error("JWT_SECRET_KEY is not set.Please configure it.");
+      }
 
       if (isMatch) {
-        const token = jwt.sign({ id: foundAccount.user.id?.toString(), email: foundAccount.user.email }, jwtSecretKey, {
+        const token = jwt.sign({ id: accountId?.toString(), email: storedEmail }, jwtSecretKey, {
           expiresIn: '2 days',
         });
 
-        return { user: { id: foundAccount.user.id, email: foundAccount.user.email }, token: token };
+        return { user: { id: accountId, email: storedEmail }, token: token };
       } else {
         throw new Error('Password is not correct');
       }
