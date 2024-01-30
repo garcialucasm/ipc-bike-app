@@ -13,8 +13,10 @@ import Stepper from "@/components/organisms/Stepper";
 import HeaderWebApp from "@/components/organisms/HeaderWebApp";
 import { createSingleBookingFetchApi } from "@/services/bookingApi";
 import Head from "@/components/atoms/Head";
+import withAuth from "@/auth/withAuth";
+import { NextPage } from "next";
 
-function HomeSingleBooking() {
+const HomeSingleBooking: NextPage = () => {
   // Creating states for show of hide components
   const [currentSection, setCurrentSection] = useState<SingleBookingSection>(
     SingleBookingSection.selectBikeSize
@@ -111,4 +113,4 @@ function HomeSingleBooking() {
   );
 }
 
-export default HomeSingleBooking;
+export default withAuth(HomeSingleBooking);

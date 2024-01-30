@@ -1,5 +1,6 @@
 import React from "react";
 
+// loading animation
 export function IconSvgLoader(props: { height: string; fillColor?: string }) {
   const { height, fillColor } = props;
   const width = height;
@@ -7,28 +8,45 @@ export function IconSvgLoader(props: { height: string; fillColor?: string }) {
     <>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 100 100"
-        preserveAspectRatio="xMidYMid"
+        viewBox="0 0 24 24"
         className={`${height} ${width} ${fillColor ?? "fill-current"}`}
       >
-        <circle
-          cx="50"
-          cy="50"
-          fill="none"
-          stroke="#3498db"
-          strokeWidth="4"
-          r="25"
-          strokeDasharray="117.80972450961724 41.269908169872416"
-        >
+        <g stroke="currentColor">
+          <circle
+            cx="12"
+            cy="12"
+            r="9.5"
+            fill="none"
+            strokeLinecap="round"
+            strokeWidth="3"
+          >
+            <animate
+              attributeName="stroke-dasharray"
+              calcMode="spline"
+              dur="1.5s"
+              keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1"
+              keyTimes="0;0.475;0.95;1"
+              repeatCount="indefinite"
+              values="0 150;42 150;42 150;42 150"
+            />
+            <animate
+              attributeName="stroke-dashoffset"
+              calcMode="spline"
+              dur="1.5s"
+              keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1"
+              keyTimes="0;0.475;0.95;1"
+              repeatCount="indefinite"
+              values="0;-16;-59;-59"
+            />
+          </circle>
           <animateTransform
             attributeName="transform"
-            type="rotate"
+            dur="2s"
             repeatCount="indefinite"
-            dur="1s"
-            values="0 50 50;360 50 50"
-            keyTimes="0;1"
+            type="rotate"
+            values="0 12 12;360 12 12"
           />
-        </circle>
+        </g>
       </svg>
     </>
   );

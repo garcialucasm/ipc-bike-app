@@ -1,3 +1,5 @@
+import { ErrorMessageLogin } from "@/pages/login";
+
 export function cleanUpSpaces(s: string): string {
     // Remove double or more spaces
     const noDoubleSpaces = s.replace(/\s{2,}/g, ' ');
@@ -34,4 +36,29 @@ export function validateRoomNumber(s: string): string {
     } else {
         return "";
     }
+}
+
+export const validateLogin = (formValues: any) => {
+    let error: ErrorMessageLogin = {
+        email: "",
+        password: "",
+    };
+    if (!formValues.email) {
+        error.email = "User name or e-mail are required";
+    } else if (!isEmail(formValues.email)) {
+        error.email = "Please enter a valid email or email";
+    } else {
+        error.email = "";
+    }
+    if (formValues.password.length < 8) {
+        error.password = "Password must have at least 8 characters";
+    } else {
+        error.password = "";
+    }
+    return error;
+};
+
+export function isEmail(s: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(s)
 }

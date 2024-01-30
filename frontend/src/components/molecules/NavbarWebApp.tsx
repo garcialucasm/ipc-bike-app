@@ -2,13 +2,30 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Button from "../atoms/Button";
-import { MenuOptions, SingleBookingSection } from "@/types/NavigationSections";
+import {
+  MenuNavigation,
+  SingleBookingSection,
+} from "@/types/NavigationSections";
+import { useRouter } from "next/router";
+import { logout } from "@/auth/authUtils";
 
 function NavbarWebApp() {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
-  //TODO Sign out and close the menu when clicks outside
-  function handleClick() {}
+  //TODO Close the menu when clicks outside
+  function handleClick(buttonClicked: MenuNavigation) {
+    switch (buttonClicked) {
+      case MenuNavigation.logout:
+        logout();
+        router.push("/");
+        return MenuNavigation.homePageWeb;
+      default:
+        // Handle the unknown section
+        console.error(`Unknown section: ${buttonClicked}`);
+        return MenuNavigation.homePageApp;
+    }
+  }
 
   return (
     <>
@@ -121,8 +138,8 @@ function NavbarWebApp() {
               </div>
             </Link>
             <Button
-              onClick={handleClick}
-              name={MenuOptions.signOut}
+              onClick={() => handleClick(MenuNavigation.logout)}
+              name={MenuNavigation.logout}
               className="text-slate-500 w-full text-left"
             >
               <div className="block py-2 px-8 bg-slate-100 rounded-lg border-slate-200 border-t hover:bg-slate-200 hover:rounded-lg hover:text-blue-700">
@@ -138,7 +155,7 @@ function NavbarWebApp() {
                       d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z"
                     />
                   </svg>
-                  <div className="px-2">Sign out</div>
+                  <div className="px-2">Log out</div>
                 </div>
               </div>
             </Button>

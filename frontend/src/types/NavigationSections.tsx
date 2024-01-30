@@ -20,15 +20,12 @@ export enum ReturnBookingSection {
 
 export enum MenuNavigation {
   login = "login",
+  logout = "logout",
   homePageWeb = "homePageWeb",
   homePageApp = "homePageApp",
   singleBooking = "singleBooking",
   groupBooking = "groupBooking",
-}
-
-export enum MenuOptions {
   profile = "profile",
   inventory = "inventory",
   stats = "stats",
-  signOut = "signOut",
 }
