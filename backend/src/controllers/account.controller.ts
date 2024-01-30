@@ -36,13 +36,13 @@ export default function accountController(accountService: IAccountService, route
                     res.status(200)
                         .send("Successfully registered")
                 }).catch(error => {
-                    console.log(error)
+                    console.error(error)
                     res.status(500)
                         .send({ error: error.message })
                 })
         }
         catch (error: any) {
-            console.log(error)
+            console.error(error)
             res.status(401)
                 .send({ error: error.message })
         }
@@ -60,14 +60,15 @@ export default function accountController(accountService: IAccountService, route
                 .then((account) => {
                     res.status(200)
                         .send(account)
+                    console.info("Authenticated successfully")
                 }).catch(error => {
-                    console.log(error)
+                    console.error(error)
                     res.status(500)
                         .send({ error: error.message })
                 })
         }
         catch (error: any) {
-            console.log(error)
+            console.error(error)
             res.status(401)
                 .send({ error: error.message })
         }

@@ -1,4 +1,4 @@
-import { Booking, BookingStatus } from "@/types/BookingType";
+import { Booking } from "@/types/BookingType";
 import { ApiHeader } from "./api";
 import { cleanUpSpaces } from "@/utils/validators";
 
@@ -6,7 +6,6 @@ const apiUrls = {
   loginUrl: "/auth/login",
   activeBookingsUrl: "/secure/booking/all",
   allBookingsUrl: "/secure/booking/all?show_inactive=true",
-  bikeStatusCounterUrl: "/secure/booking/",
   createSingleBookingUrl: "/secure/booking/create/single",
   cancelBookingUrl: "/secure/booking/cancel",
   approveBookingUrl: "/secure/booking/approve/",
@@ -15,7 +14,7 @@ const apiUrls = {
 
 
 // Login
-export const login = async (email: string, password: string) => {
+export async function login(email: string, password: string) {
   try {
     const response = await ApiHeader.post(apiUrls.loginUrl,
       {
@@ -45,36 +44,8 @@ export async function bookingFetchApi() {
   }
 };
 
-// Bike Status Counter
-export const bikeStatusCounterFetchApi = async () => {
-  let bikeCountFree: number = 0;
-  let bikeCountBooked: number = 0;
-  let bikeCountInUse: number = 0;
-  let bikeCountDisabled: number = 0;
-  try {
-    const response = await ApiHeader.get(apiUrls.bikeStatusCounterUrl);
-
-    if (response.status < 200 || response.status >= 300) {
-      throw new Error(`${response.status}: ${response.statusText}`);
-    }
-
-    return {
-      bikeCountFree,
-      bikeCountBooked,
-      bikeCountInUse,
-      bikeCountDisabled,
-      error: null
-    };
-  } catch (error: any) {
-    console.error('Error getting status counter:', error.message);
-    return {
-      data: null, error: `${error.message}`
-    }
-  }
-}
-
 //Create Single Booking
-export const createSingleBookingFetchApi = async (bookingData: Booking) => {
+export async function createSingleBookingFetchApi(bookingData: Booking) {
   try {
     const userName = cleanUpSpaces(bookingData.bookingUserData.firstName) + " " + cleanUpSpaces(bookingData.bookingUserData.lastName)
     const room = bookingData.bookingUserData.roomNumber
@@ -93,7 +64,7 @@ export const createSingleBookingFetchApi = async (bookingData: Booking) => {
 
     const data = response.data
 
-    return { booking: data.booking, error: null }; // Assuming the server returns the booking information
+    return { booking: data.booking, error: null };
   } catch (error: any) {
     console.error('Error creating single booking:', error.message);
     return {
@@ -103,7 +74,7 @@ export const createSingleBookingFetchApi = async (bookingData: Booking) => {
 }
 
 // Approve a booking
-export const approveBookingFetchApi = async (bookingId: number) => {
+export async function approveBookingFetchApi(bookingId: number) {
   try {
     const response = await ApiHeader.post(apiUrls.approveBookingUrl + bookingId);
 
@@ -120,7 +91,7 @@ export const approveBookingFetchApi = async (bookingId: number) => {
 };
 
 // Return a booking
-export const returnBookingFetchApi = async (bookingId: number) => {
+export async function returnBookingFetchApi(bookingId: number) {
   try {
     const response = await ApiHeader.post(apiUrls.returnBookingUrl + bookingId);
 
