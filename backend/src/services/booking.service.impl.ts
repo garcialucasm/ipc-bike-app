@@ -11,6 +11,7 @@ import IUserService from "./user.service";
 export default class BookingService implements IBookingService {
 
   bookingRepository: IBookingRepository;
+  bookingStatusTransitions: Map<BookingStatus, BookingStatus[]>
   bikeService: IBikeService;
   userService: IUserService
   bikeChooser: IBikeChooser
@@ -24,6 +25,10 @@ export default class BookingService implements IBookingService {
     currentTerm: string) {
 
     this.bookingRepository = bookingRepository
+    this.bookingStatusTransitions = new Map([
+      [BookingStatus.BOOKED, [BookingStatus.DELIVERED, BookingStatus.CANCELED]],
+      [BookingStatus.DELIVERED, [BookingStatus.RETURNED]],
+    ])
     this.bikeService = bikeService
     this.bikeChooser = bikeChooser
     this.userService = userService
@@ -47,7 +52,7 @@ export default class BookingService implements IBookingService {
       User: user,
       Status: BookingStatus.BOOKED,
       ReturnedCondition: "",
-      BikeCount: 1, 
+      BikeCount: 1,
       Type: BookingType.SINGLE
     }
 
@@ -72,58 +77,64 @@ export default class BookingService implements IBookingService {
 
   async approve(bookingId: number): Promise<Booking> {
     let booking: Booking = await this.bookingRepository.findById(bookingId)
-    if (booking.Status !== BookingStatus.BOOKED)
-      throw new Error("Booking not allowed by Current Booking Status");
-
-    if (booking.Bike[0].CurrentStatus !== BikeStatus.BOOKED)
-      throw new Error("Booking not allowed by Bike Status");
-
-    if (booking.User.Status !== UserStatus.BOOKED)
-      throw new Error("Booking not allowed by User Status");
-
-    booking.Status = BookingStatus.DELIVERED
     booking.User = await this.userService.changeStatus(booking.User, UserStatus.INUSE)
     booking.Bike[0] = await this.bikeService.changeStatus(booking.Bike[0], BikeStatus.INUSE)
-    let updatedBooking = await this.bookingRepository.update(booking)
-    return updatedBooking
-  }
-  
-  async returnBike(bookingId: number): Promise<Booking> {
-    let booking: Booking = await this.bookingRepository.findById(bookingId)
-    booking.Status = BookingStatus.RETURNED
-    booking.User = await this.userService.changeStatus(booking.User, UserStatus.FREE)
-    booking.Bike[0] = await this.bikeService.changeStatus(booking.Bike[0], BikeStatus.FREE)
-    let updatedBooking = await this.bookingRepository.update(booking)
+    let updatedBooking = await this.changeStatus(booking, BookingStatus.DELIVERED)
 
     return updatedBooking
   }
-  
+
+  async returnBike(bookingId: number): Promise<Booking> {
+    try {
+      let booking: Booking = await this.bookingRepository.findById(bookingId)
+      booking.User = await this.userService.changeStatus(booking.User, UserStatus.FREE)
+      booking.Bike[0] = await this.bikeService.changeStatus(booking.Bike[0], BikeStatus.FREE)
+      let updatedBooking = await this.changeStatus(booking, BookingStatus.RETURNED)
+
+      return updatedBooking
+    } catch (error) {
+      console.error('An error occurred:', error);
+      throw new Error('Error returning the bike');
+    }
+  }
+
+  async changeStatus(booking: Booking, status: BookingStatus): Promise<Booking> {
+    const transitions = this.bookingStatusTransitions.get(booking.Status)
+    if (transitions?.includes(status)) {
+      booking.Status = status;
+      return await this.bookingRepository.update(booking)
+    } else {
+      throw new Error(`Unable to change booking status ${booking.Status} to ${status}`)
+    }
+  }
+
   async cancel(bookingId: number): Promise<Booking> {
     let booking: Booking = await this.bookingRepository.findById(bookingId)
     booking.Status = BookingStatus.CANCELED
     booking.User = await this.userService.changeStatus(booking.User, UserStatus.FREE)
     booking.Bike[0] = await this.bikeService.changeStatus(booking.Bike[0], BikeStatus.FREE)
     let updatedBooking = await this.bookingRepository.update(booking)
+
     return updatedBooking
   }
 
   async findAll(showInactive: boolean): Promise<Booking[]> {
     let openedBookings: Booking[] = []
-    
+
     if (showInactive) {
-        let all = this.bookingRepository.findAll()
-        openedBookings.push(... await all)
+      let all = this.bookingRepository.findAll()
+      openedBookings.push(... await all)
     } else {
-        let booked = this.bookingRepository.findByStatus(BookingStatus.BOOKED)
-        let delivered = this.bookingRepository.findByStatus(BookingStatus.DELIVERED)
-        openedBookings.push(... await booked)
-        openedBookings.push(... await delivered)
-    } 
-    
-    return  openedBookings
+      let booked = this.bookingRepository.findByStatus(BookingStatus.BOOKED)
+      let delivered = this.bookingRepository.findByStatus(BookingStatus.DELIVERED)
+      openedBookings.push(... await booked)
+      openedBookings.push(... await delivered)
+    }
+
+    return openedBookings
   }
 
-  countBookingsByStatus() : Promise<Map<BookingStatus, number>> {
+  countBookingsByStatus(): Promise<Map<BookingStatus, number>> {
     return this.bookingRepository.countBookingsByStatus()
   }
 
