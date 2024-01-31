@@ -4,10 +4,9 @@ import IAccountRepository from "../repositories/account.repository";
 import IAccountService from "./account.service";
 import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
 import dotenv from "dotenv"
+import { generateAsyncToken } from "../utils/auth";
 
 dotenv.config()
-
-const jwtSecretKey = process.env.JWT_SECRET_KEY
 
 export default class AccountService implements IAccountService {
 
@@ -49,7 +48,7 @@ export default class AccountService implements IAccountService {
       const foundAccount = await this.accountRepository.findAccount(loginEmail, loginPassword);
       const storedEmail = foundAccount.user.email
       const storedPassword = foundAccount.user.password
-      const accountId = foundAccount.user.id
+      const storedId = foundAccount.user.id
 
       if (!storedEmail) {
         throw new Error("Email is not correct or does not exist");
@@ -59,18 +58,16 @@ export default class AccountService implements IAccountService {
         throw new Error("Password is not provided");
       }
 
-      const isMatch = await bcrypt.compare(loginPassword, storedPassword);
-
-      if (!jwtSecretKey) {
-        throw new Error("JWT_SECRET_KEY is not set.Please configure it.");
+      if (!storedId) {
+        throw new Error("Id does not exist");
       }
 
-      if (isMatch) {
-        const token = jwt.sign({ id: accountId?.toString(), email: storedEmail }, jwtSecretKey, {
-          expiresIn: '2 days',
-        });
+      const isMatch = await bcrypt.compare(loginPassword, storedPassword);
 
-        return { user: { id: accountId, email: storedEmail }, token: token };
+      if (isMatch) {
+        const asyncToken = await generateAsyncToken({ id: storedId?.toString(), email: storedEmail });
+
+        return { user: { id: storedId, email: storedEmail }, token: asyncToken };
       } else {
         throw new Error('Password is not correct');
       }

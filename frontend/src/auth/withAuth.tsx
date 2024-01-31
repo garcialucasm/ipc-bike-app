@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import { getTokenFromCookies } from "./authUtils";
 import jwt from "jsonwebtoken";
 
-const jwtSecretKey: string =
-  "$2b$08$MvbPB9GVM99XdKcyOm2Taeij/osCiKXmnzIYERKbCi8QXPmmqnq";
+const jwtSecretKey = process.env.NEXT_PUBLIC_JWT_SECRET_KEY?.trim();
 
 const withAuth = (WrappedComponent: NextPage) => {
   const SecureComponent: NextPage = (props) => {
