@@ -27,7 +27,7 @@ export default class BookingService implements IBookingService {
     this.bookingRepository = bookingRepository
     this.bookingStatusTransitions = new Map([
       [BookingStatus.BOOKED, [BookingStatus.DELIVERED, BookingStatus.CANCELED]],
-      [BookingStatus.DELIVERED, [BookingStatus.RETURNED]],
+      [BookingStatus.DELIVERED, [BookingStatus.RETURNED, BookingStatus.CANCELED]],
     ])
     this.bikeService = bikeService
     this.bikeChooser = bikeChooser
@@ -85,17 +85,12 @@ export default class BookingService implements IBookingService {
   }
 
   async returnBike(bookingId: number): Promise<Booking> {
-    try {
-      let booking: Booking = await this.bookingRepository.findById(bookingId)
-      booking.User = await this.userService.changeStatus(booking.User, UserStatus.FREE)
-      booking.Bike[0] = await this.bikeService.changeStatus(booking.Bike[0], BikeStatus.FREE)
-      let updatedBooking = await this.changeStatus(booking, BookingStatus.RETURNED)
+    let booking: Booking = await this.bookingRepository.findById(bookingId)
+    booking.User = await this.userService.changeStatus(booking.User, UserStatus.FREE)
+    booking.Bike[0] = await this.bikeService.changeStatus(booking.Bike[0], BikeStatus.FREE)
+    let updatedBooking = await this.changeStatus(booking, BookingStatus.RETURNED)
 
-      return updatedBooking
-    } catch (error) {
-      console.error('An error occurred:', error);
-      throw new Error('Error returning the bike');
-    }
+    return updatedBooking
   }
 
   async changeStatus(booking: Booking, status: BookingStatus): Promise<Booking> {
