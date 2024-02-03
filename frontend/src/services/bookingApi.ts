@@ -1,6 +1,7 @@
 import { Booking } from "@/types/BookingType";
 import { ApiHeader } from "./api";
-import { cleanUpSpaces } from "@/utils/validators";
+import { cleanUpSpaces } from "@/app/utils/validators";
+
 
 const apiUrls = {
   loginUrl: "/auth/login",

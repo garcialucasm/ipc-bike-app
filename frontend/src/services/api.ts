@@ -1,4 +1,4 @@
-import { authHeader } from "@/auth/authUtils";
+import { authHeader } from "@/app/auth/authUtils";
 import axios from "axios";
 
 // api.js
