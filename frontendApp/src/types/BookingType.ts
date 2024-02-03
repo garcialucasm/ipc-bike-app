@@ -14,10 +14,8 @@ export enum BookingType {
   CLASSROOM = "CLASSROOM",
 }
 
-interface Booking {
-  bookingBikeSize: BikeSize;
-  bookingUserData: UserData;
-  bookingStatus?: BookingStatus;
+export interface SingleBookingProps {
+  bookingBikeSize: BikeSize | null;
+  bookingUserData: UserData | null;
+  bookingStatus: BookingStatus | null;
 }
-
-export type { Booking };

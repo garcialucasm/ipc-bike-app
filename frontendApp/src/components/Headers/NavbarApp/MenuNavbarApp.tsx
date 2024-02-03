@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation"
 import { NavigationPaths } from "@/types/NavigationPaths"
 import { logout } from "@/app/auth/authUtils"
 
-import Button from "../../Buttons/Button"
+import PrimaryButton from "../../Buttons/PrimaryButton"
 
 function MenuNavbarApp() {
   const [isOpen, setIsOpen] = useState(false)
@@ -20,7 +20,7 @@ function MenuNavbarApp() {
       case NavigationPaths.logout:
         logout()
         router.push("/")
-        return NavigationPaths.homeApp
+        return NavigationPaths.homeAppAdmin
       default:
         console.error(`Unknown section: ${buttonClicked}`)
         return NavigationPaths.homeWeb
@@ -137,7 +137,7 @@ function MenuNavbarApp() {
                 </div>
               </div>
             </Link>
-            <Button
+            <PrimaryButton
               onClick={() => handleClick(NavigationPaths.logout)}
               name={NavigationPaths.logout}
               className="w-full text-left text-slate-500"
@@ -158,7 +158,7 @@ function MenuNavbarApp() {
                   <div className="px-2">Log out</div>
                 </div>
               </div>
-            </Button>
+            </PrimaryButton>
           </div>
         </div>
       </nav>

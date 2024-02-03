@@ -1,7 +1,8 @@
 export enum NavigationPaths {
-  login = "/login",
-  logout = "/logout",
-  homeApp = "/home",
+  login = "/auth/login",
+  logout = "/auth/logout",
+  homeAppAdmin = "/home/admin",
+  homeAppStudent = "/home/student",
   homeWeb = "/home-web",
   singleBooking = "/booking/single-booking",
   groupBooking = "/booking/group-booking",

@@ -21,12 +21,12 @@ function MainNavbarApp() {
   const pathname = usePathname()
 
   return (
-    <div className="container flex w-full flex-col items-center rounded-b-2xl bg-gradient-to-tr from-blue-800 via-blue-800 to-blue-600 py-2 text-white">
+    <div className="flex w-full flex-col items-center rounded-b-2xl bg-gradient-to-tr from-blue-800 via-blue-800 to-blue-600 py-2 text-white">
       <div className="flex w-11/12 flex-col items-start">
         <MenuNavbarApp />
         <div className="flex w-full overflow-x-auto text-left text-xxs md:text-xs">
           <Link
-            href={NavigationPaths.homeApp}
+            href={NavigationPaths.homeAppAdmin}
             className={`header-menu-items ms-0 flex items-center ${
               pathname === "/home" && "header-menu-item-current-page"
             }`}
@@ -63,7 +63,7 @@ function MainNavbarApp() {
             </span>
           </Link>
           <Link
-            href={NavigationPaths.homeApp}
+            href={NavigationPaths.homeAppAdmin}
             className="header-menu-items flex items-center"
           >
             <IconSvgBecomeMember />
