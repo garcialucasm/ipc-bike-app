@@ -13,9 +13,16 @@ export enum BookingType {
   GROUP = "GROUP",
   CLASSROOM = "CLASSROOM",
 }
-
 export interface SingleBookingProps {
+  currentSection: SingleBookingSections | null;
   bookingBikeSize: BikeSize | null;
-  bookingUserData: UserData | null;
+  bookingUserData: UserData;
   bookingStatus: BookingStatus | null;
+}
+
+export enum SingleBookingSections {
+  selectBikeSize = "selectBikeSize",
+  inputUserData = "inputUserData",
+  preBookingConfirmation = "preBookingConfirmation",
+  bookingConfirmationStatus = "bookingConfirmationStatus",
 }

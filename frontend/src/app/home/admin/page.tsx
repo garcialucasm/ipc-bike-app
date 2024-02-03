@@ -26,12 +26,6 @@ export default function Page() {
           <div className="my-3 w-full">
             {/* <BookingsOverview /> */}BookingsOverview
           </div>
-          <p>Page context component</p>
-          <p>Account name: {account?.id}</p>
-          <p>Account name: {account?.name}</p>
-          <p>Account name: {account?.token}</p>
-          <PrimaryButton onClick={() => setLogin()}>Login</PrimaryButton>
-          <PrimaryButton onClick={() => setLogout()}>Logout</PrimaryButton>
         </div>
       </div>
     </>

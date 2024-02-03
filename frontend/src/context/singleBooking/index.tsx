@@ -3,9 +3,8 @@
 import { createContext, useContext, useState } from "react"
 
 import { SingleBookingContextProps } from "@/types/ContextType"
-import { SingleBookingProps } from "@/types/BookingType"
+import { SingleBookingProps, SingleBookingSections } from "@/types/BookingType"
 import { BikeSize } from "@/types/BikeType"
-import { error } from "console"
 import { UserData } from "@/types/UserType"
 
 const SingleBookingContext = createContext<SingleBookingContextProps>(
@@ -15,10 +14,22 @@ const SingleBookingContext = createContext<SingleBookingContextProps>(
 const SingleBookingProvider = ({ children }: { children: React.ReactNode }) => {
   // Creating state to manage user data and then submit booking
   const [bookingData, setBookingData] = useState<SingleBookingProps>({
+    currentSection: SingleBookingSections.selectBikeSize,
     bookingBikeSize: null,
-    bookingUserData: null,
+    bookingUserData: { firstName: "", lastName: "", roomNumber: "" },
     bookingStatus: null,
   })
+
+  const settingCurrentSection = (section: SingleBookingSections) => {
+    try {
+      setBookingData((prevBookingData) => ({
+        ...prevBookingData,
+        currentSection: section,
+      }))
+    } catch (error) {
+      console.error("Error setting Current Section: " + error)
+    }
+  }
 
   const settingBikeSize = (bikeSizeSelected: BikeSize) => {
     try {
@@ -26,8 +37,9 @@ const SingleBookingProvider = ({ children }: { children: React.ReactNode }) => {
         ...prevBookingData,
         bookingBikeSize: bikeSizeSelected,
       }))
-    } catch (error) {}
-    console.error("Error setting Bike Size: " + error)
+    } catch (error) {
+      console.error("Error setting Bike Size: " + error)
+    }
   }
 
   const settingUserData = (enteredUserData: UserData) => {
@@ -36,8 +48,9 @@ const SingleBookingProvider = ({ children }: { children: React.ReactNode }) => {
         ...prevBookingData,
         bookingUserData: enteredUserData,
       }))
-    } catch (error) {}
-    console.error("Error setting User Data: " + error)
+    } catch (error) {
+      console.error("Error setting User Data: " + error)
+    }
   }
 
   const settingServerResult = (serverResult: any) => {
@@ -46,14 +59,16 @@ const SingleBookingProvider = ({ children }: { children: React.ReactNode }) => {
         ...prevBookingData,
         bookingStatus: serverResult,
       }))
-    } catch (error) {}
-    console.error("Error setting Booking Status: " + error)
+    } catch (error) {
+      console.error("Error setting Booking Status: " + error)
+    }
   }
 
   return (
     <SingleBookingContext.Provider
       value={{
         bookingData,
+        settingCurrentSection,
         settingBikeSize,
         settingUserData,
         settingServerResult,
@@ -64,9 +79,9 @@ const SingleBookingProvider = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-const useAuth = () => {
+const useSingleBookingContext = () => {
   const context = useContext(SingleBookingContext)
   return context
 }
 
-export { SingleBookingContext, SingleBookingProvider, useAuth }
+export { SingleBookingContext, SingleBookingProvider, useSingleBookingContext }

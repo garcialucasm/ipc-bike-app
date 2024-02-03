@@ -6,7 +6,13 @@ export enum BikeStatus {
 }
 
 export enum BikeSize {
-  Standard,
-  Classic,
-  Small,
+  STANDARD = "STANDARD",
+  CLASSIC = "CLASSIC",
+  SMALL = "SMALL",
 }
+
+export type BikeCounter = {
+  [status in BikeStatus]: {
+    [size in BikeSize]: number;
+  };
+};
