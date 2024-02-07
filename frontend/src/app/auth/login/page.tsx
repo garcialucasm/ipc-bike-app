@@ -8,6 +8,7 @@ import Image from "next/image"
 import { login } from "@/services/bookingApi"
 import { setCookie } from "@/app/utils/cookieUtils"
 import { validateLogin } from "@/app/utils/validators"
+import SecondaryButton from "@/components/Buttons/SecondaryButton"
 
 export interface ErrorMessageLogin {
   email: string
@@ -165,13 +166,12 @@ function Login() {
               >
                 <span>Log in</span>
               </PrimaryButton>
-              <PrimaryButton
+              <SecondaryButton
                 onClick={handleReturnButton}
                 name={NavigationPaths.homeWeb}
-                className="btn-return"
               >
                 <span>Return</span>
-              </PrimaryButton>
+              </SecondaryButton>
             </div>
             <span className="text ps-1-slate-500 ml-2 cursor-pointer text-xs hover:text-blue-500">
               Forgot Password ?

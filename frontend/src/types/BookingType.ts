@@ -8,21 +8,22 @@ export enum BookingStatus {
   CANCELED = "CANCELED",
 }
 
-export enum BookingType {
+export enum Booking {
   SINGLE = "SINGLE",
   GROUP = "GROUP",
   CLASSROOM = "CLASSROOM",
 }
 export interface SingleBookingProps {
   currentSection: SingleBookingSections | null;
-  bookingBikeSize: BikeSize | null;
-  bookingUserData: UserData;
+  bikeSize: BikeSize | null;
+  userData: UserData;
   bookingStatus: BookingStatus | null;
+  serverResult: number | null;
 }
 
 export enum SingleBookingSections {
   selectBikeSize = "selectBikeSize",
   inputUserData = "inputUserData",
   preBookingConfirmation = "preBookingConfirmation",
-  bookingConfirmationStatus = "bookingConfirmationStatus",
+  bookingConfirmation = "bookingConfirmationStatus",
 }

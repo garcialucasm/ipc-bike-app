@@ -28,10 +28,10 @@ function MainNavbarApp() {
           <Link
             href={NavigationPaths.homeAppAdmin}
             className={`header-menu-items ms-0 flex items-center ${
-              pathname === "/home" && "header-menu-item-current-page"
+              pathname.includes("/home") && "header-menu-item-current-page"
             }`}
           >
-            <IconSvgHome />
+            <IconSvgHome height="28" />
             <span className="pl-1 pr-2">Home</span>
           </Link>
           <Link
@@ -41,7 +41,7 @@ function MainNavbarApp() {
               "header-menu-item-current-page"
             }`}
           >
-            <IconSvgSingleBooking />
+            <IconSvgSingleBooking height="28" />
             <span className="pl-1 pr-2">
               Single
               <br />
@@ -55,7 +55,7 @@ function MainNavbarApp() {
               "header-menu-item-current-page"
             }`}
           >
-            <IconSvgGroupBooking />
+            <IconSvgGroupBooking height="28" />
             <span className="pl-1 pr-2">
               Group
               <br />
@@ -66,7 +66,7 @@ function MainNavbarApp() {
             href={NavigationPaths.homeAppAdmin}
             className="header-menu-items flex items-center"
           >
-            <IconSvgBecomeMember />
+            <IconSvgBecomeMember height="28" />
             <span className="pl-1 pr-2">
               Become
               <br />a member

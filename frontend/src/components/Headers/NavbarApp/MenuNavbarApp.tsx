@@ -64,9 +64,9 @@ function MenuNavbarApp() {
         <div
           className={`flex w-full justify-end ${isOpen ? "block" : "hidden"}`}
         >
-          <div className="absolute rounded-lg border border-slate-200 bg-white text-left text-sm shadow-lg">
+          <div className="absolute rounded-2xl border border-slate-200 bg-white text-left text-sm shadow-lg">
             <Link href="" className="text-slate-500">
-              <div className="block px-8 py-2 hover:rounded-lg hover:bg-slate-100 hover:text-blue-700">
+              <div className="block px-8 py-2 hover:rounded-2xl hover:bg-slate-100 hover:text-blue-700">
                 <div className="flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +84,7 @@ function MenuNavbarApp() {
               </div>
             </Link>
             <Link href="" className="text-slate-500">
-              <div className="block px-8 py-2 hover:rounded-lg hover:bg-slate-100 hover:text-blue-700">
+              <div className="block px-8 py-2 hover:rounded-2xl hover:bg-slate-100 hover:text-blue-700">
                 <div className="flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -102,7 +102,7 @@ function MenuNavbarApp() {
               </div>
             </Link>
             <Link href="" className="text-slate-500">
-              <div className="block px-8 py-2 hover:rounded-lg hover:bg-slate-100 hover:text-blue-700">
+              <div className="block px-8 py-2 hover:rounded-2xl hover:bg-slate-100 hover:text-blue-700">
                 <div className="flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -120,7 +120,7 @@ function MenuNavbarApp() {
               </div>
             </Link>
             <Link href="" className="text-slate-500">
-              <div className="block px-8 py-2 hover:rounded-lg hover:bg-slate-200 hover:text-blue-700">
+              <div className="block px-8 py-2 hover:rounded-2xl hover:bg-slate-200 hover:text-blue-700">
                 <div className="flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -142,7 +142,7 @@ function MenuNavbarApp() {
               name={NavigationPaths.logout}
               className="w-full text-left text-slate-500"
             >
-              <div className="block rounded-lg border-t border-slate-200 bg-slate-100 px-8 py-2 hover:rounded-lg hover:bg-slate-200 hover:text-blue-700">
+              <div className="block rounded-2xl border-t border-slate-200 bg-slate-100 px-8 py-2 hover:rounded-2xl hover:bg-slate-200 hover:text-blue-700">
                 <div className="flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

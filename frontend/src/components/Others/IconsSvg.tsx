@@ -8,10 +8,10 @@ export function IconSvgHome(props: { height?: string; fillColor?: string }) {
     <>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        height="28"
         viewBox="0 -960 960 960"
-        width="28"
-        className={`${height} ${width} ${fillColor ?? "fill-current"}`}
+        height={height}
+        width={width}
+        className={`${fillColor ?? "fill-current"}`}
       >
         <path
           className="fill-current"
@@ -33,10 +33,10 @@ export function IconSvgSingleBooking(props: {
     <>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        height="28"
         viewBox="0 -960 960 960"
-        width="28"
-        className={`${height} ${width} ${fillColor ?? "fill-current"}`}
+        height={height}
+        width={width}
+        className={`${fillColor ?? "fill-current"}`}
       >
         <path
           className="fill-current"
@@ -58,10 +58,10 @@ export function IconSvgGroupBooking(props: {
     <>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        height="28"
         viewBox="0 -960 960 960"
-        width="28"
-        className={`${height} ${width} ${fillColor ?? "fill-current"}`}
+        height={height}
+        width={width}
+        className={`${fillColor ?? "fill-current"}`}
       >
         <path
           className="fill-current"
@@ -83,10 +83,10 @@ export function IconSvgBecomeMember(props: {
     <>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        height="28"
         viewBox="0 -960 960 960"
-        width="28"
-        className={`${height} ${width} ${fillColor ?? "fill-current"}`}
+        height={height}
+        width={width}
+        className={`${fillColor ?? "fill-current"}`}
       >
         <path
           className="fill-current"
@@ -97,8 +97,134 @@ export function IconSvgBecomeMember(props: {
   )
 }
 
+// Person
+export function IconSvgPersonCircle(props: {
+  height?: string
+  width?: string
+  fillColor?: string
+  bgColor?: string
+}) {
+  const { height, width, fillColor, bgColor } = props
+  return (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 -960 960 960"
+        fill="currentColor"
+        height={height}
+        width={width}
+        className={`${fillColor ?? "fill-current"} ${bgColor} rounded-full`}
+      >
+        <path
+          fillRule="evenodd"
+          d="M247.846-260.615q51-36.693 108.231-58.039Q413.308-340 480-340q66.692 0 123.923 21.346 57.231 21.346 108.231 58.039 39.615-41 63.731-96.847Q800-413.308 800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 66.692 24.115 122.538 24.116 55.847 63.731 96.847ZM480.023-460q-50.562 0-85.292-34.707Q360-529.415 360-579.977t34.707-85.292Q429.415-700 479.977-700t85.292 34.708Q600-630.585 600-580.023q0 50.562-34.708 85.292Q530.585-460 480.023-460ZM480-120q-75.308 0-141-28.038-65.692-28.039-114.308-76.654Q176.077-273.308 148.038-339 120-404.692 120-480t28.038-141q28.039-65.692 76.654-114.308Q273.308-783.923 339-811.962 404.692-840 480-840t141 28.038q65.692 28.039 114.308 76.654Q783.923-686.692 811.962-621 840-555.308 840-480t-28.038 141q-28.039 65.692-76.654 114.308Q686.692-176.077 621-148.038 555.308-120 480-120Zm0-40q55.308 0 108.846-19.346 53.539-19.346 92.539-52.962-39-31.307-90.231-49.5Q539.923-300 480-300q-59.923 0-111.538 17.808-51.616 17.807-89.847 49.884 39 33.616 92.539 52.962Q424.692-160 480-160Zm0-340q33.692 0 56.846-23.154Q560-546.308 560-580q0-33.692-23.154-56.846Q513.692-660 480-660q-33.692 0-56.846 23.154Q400-613.692 400-580q0 33.692 23.154 56.846Q446.308-500 480-500Zm0-80Zm0 350Z"
+          clipRule="evenodd"
+        />
+      </svg>
+    </>
+  )
+}
+
+// Person
+export function IconSvgPersonFilled(props: {
+  height?: string
+  width?: string
+  fillColor?: string
+}) {
+  const { height, width, fillColor } = props
+  return (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        height={height}
+        width={width}
+        className={`${fillColor ?? "fill-current"}`}
+      >
+        <path
+          fillRule="evenodd"
+          d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+          clipRule="evenodd"
+        />
+      </svg>
+    </>
+  )
+}
+
+// Person
+export function IconSvgPersonThin(props: {
+  height?: string
+  width?: string
+  fillColor?: string
+}) {
+  const { height, width, fillColor } = props
+  return (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 -960 960 960"
+        fill="currentColor"
+        height={height}
+        width={width}
+        className={`${fillColor ?? "fill-current"}`}
+      >
+        <path d="M480-504.615q-49.5 0-84.75-35.25T360-624.615q0-49.501 35.25-84.751 35.25-35.25 84.75-35.25t84.75 35.25Q600-674.116 600-624.615q0 49.5-35.25 84.75T480-504.615ZM200-215.384v-65.847q0-24.769 14.423-46.346 14.423-21.577 38.808-33.5 56.615-27.154 113.307-40.731Q423.231-415.385 480-415.385q56.769 0 113.462 13.577 56.692 13.577 113.307 40.731 24.385 11.923 38.808 33.5Q760-306 760-281.231v65.847H200Zm40-40.001h480v-25.846q0-13.307-8.577-25-8.577-11.692-23.731-19.769-49.384-23.923-101.836-36.654Q533.405-375.385 480-375.385q-53.405 0-105.856 12.731Q321.692-349.923 272.308-326q-15.154 8.077-23.731 19.769-8.577 11.693-8.577 25v25.846Zm240-289.23q33 0 56.5-23.5t23.5-56.5q0-33-23.5-56.5t-56.5-23.5q-33 0-56.5 23.5t-23.5 56.5q0 33 23.5 56.5t56.5 23.5Zm0-80Zm0 369.23Z" />
+      </svg>
+    </>
+  )
+}
+
+// Person
+export function IconSvgPerson(props: {
+  height?: string
+  width?: string
+  fillColor?: string
+}) {
+  const { height, width, fillColor } = props
+  return (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 -960 960 960"
+        fill="currentColor"
+        height={height}
+        width={width}
+        className={`${fillColor ?? "fill-current"}`}
+      >
+        <path d="M480-492.309q-57.749 0-98.874-41.124-41.125-41.125-41.125-98.874 0-57.75 41.125-98.874 41.125-41.125 98.874-41.125 57.749 0 98.874 41.125 41.125 41.124 41.125 98.874 0 57.749-41.125 98.874-41.125 41.124-98.874 41.124ZM180.001-187.694v-88.922q0-29.384 15.962-54.422 15.961-25.038 42.653-38.5 59.308-29.077 119.654-43.615T480-427.691q61.384 0 121.73 14.538 60.346 14.538 119.654 43.615 26.692 13.462 42.653 38.5 15.962 25.038 15.962 54.422v88.922H180.001ZM240-247.693h480v-28.923q0-12.154-7.039-22.5-7.038-10.346-19.115-16.885-51.692-25.461-105.418-38.577Q534.702-367.693 480-367.693t-108.428 13.115q-53.726 13.116-105.418 38.577-12.077 6.539-19.115 16.885Q240-288.77 240-276.616v28.923Zm240-304.614q33 0 56.5-23.5t23.5-56.5q0-33-23.5-56.5t-56.5-23.5q-33 0-56.5 23.5t-23.5 56.5q0 33 23.5 56.5t56.5 23.5Zm0-80Zm0 384.614Z" />
+      </svg>
+    </>
+  )
+}
+
+// Room door
+export function IconSvgRoomDoor(props: {
+  height?: string
+  width?: string
+  fillColor?: string
+}) {
+  const { height, width, fillColor } = props
+  return (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 -960 960 960"
+        fill="currentColor"
+        fillRule="evenodd"
+        clipRule="evenodd"
+        height={height}
+        width={width}
+        className={`${fillColor ?? "fill-current"}`}
+      >
+        <path d="M120-120v-80h80v-640h400v40h160v600h80v80H680v-600h-80v600H120Zm320-320q17 0 28.5-11.5T480-480q0-17-11.5-28.5T440-520q-17 0-28.5 11.5T400-480q0 17 11.5 28.5T440-440Z" />
+      </svg>
+    </>
+  )
+}
+
 // loading animation
-export function IconSvgLoader(props: { height: string; fillColor?: string }) {
+export function IconSvgLoader(props: { height?: string; fillColor?: string }) {
   const { height, fillColor } = props
   const width = height
   return (
@@ -106,7 +232,9 @@ export function IconSvgLoader(props: { height: string; fillColor?: string }) {
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
-        className={`${height} ${width} ${fillColor ?? "fill-current"}`}
+        height={height}
+        width={width}
+        className={`${fillColor ?? "fill-current"}`}
       >
         <g stroke="currentColor">
           <circle
@@ -151,8 +279,8 @@ export function IconSvgLoader(props: { height: string; fillColor?: string }) {
 
 // confirmation icon
 export function IconSvgProcessConfirmed(props: {
-  height: string
-  width: string
+  height?: string
+  width?: string
   fillColor?: string
 }) {
   const { height, width, fillColor } = props
@@ -160,7 +288,8 @@ export function IconSvgProcessConfirmed(props: {
     <>
       <div className="rounded-full border-2 border-green-500 p-1">
         <svg
-          className={`${height} ${width}`}
+          height={height}
+          width={width}
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -182,8 +311,8 @@ export function IconSvgProcessConfirmed(props: {
 
 // feedback error icon
 export function IconSvgFeedbackError(props: {
-  height: string
-  width: string
+  height?: string
+  width?: string
   fillColor?: string
 }) {
   const { height, width, fillColor } = props
@@ -191,7 +320,8 @@ export function IconSvgFeedbackError(props: {
     <>
       <div className="">
         <svg
-          className={`${height} ${width}`}
+          height={height}
+          width={width}
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="-2 -2 28 28"
@@ -213,8 +343,8 @@ export function IconSvgFeedbackError(props: {
 
 // bike standard icon
 export function IconSvgBikeStandard(props: {
-  height: string
-  width: string
+  height?: string
+  width?: string
   fillColor?: string
 }) {
   const { height, width, fillColor } = props
@@ -240,8 +370,8 @@ export function IconSvgBikeStandard(props: {
 
 // bike booked icon
 export function IconSvgBikeBooked(props: {
-  height: string
-  width: string
+  height?: string
+  width?: string
   customClass?: string
   fillColor1?: string
   fillColor2?: string
@@ -291,8 +421,8 @@ export function IconSvgBikeBooked(props: {
 
 // bike booked icon 2
 export function IconSvgBikeBooked2(props: {
-  height: string
-  width: string
+  height?: string
+  width?: string
   fillColor1?: string
   fillColor2?: string
   fillColor3?: string
@@ -327,8 +457,8 @@ export function IconSvgBikeBooked2(props: {
 
 // bike in use icon
 export function IconSvgBikeInUse(props: {
-  height: string
-  width: string
+  height?: string
+  width?: string
   fillColor1?: string
   fillColor2?: string
 }) {
@@ -369,8 +499,8 @@ export function IconSvgBikeInUse(props: {
 }
 // bike maintenance icon
 export function IconSvgBikeDisabled(props: {
-  height: string
-  width: string
+  height?: string
+  width?: string
   fillColor1?: string
   fillColor2?: string
 }) {
@@ -392,6 +522,81 @@ export function IconSvgBikeDisabled(props: {
           d="M46,3A15,15,0,0,0,34.4,27.5a1,1,0,0,1,.175.95l-.989,2.967,3.207-1.068A.987.987,0,0,1,37.1,30.3a1,1,0,0,1,.557.17A14.92,14.92,0,0,0,43,32.691v-8.2A8.666,8.666,0,0,1,43,8v8.082L46,19l3-2.918V8a8.666,8.666,0,0,1,0,16.491V32.7A15,15,0,0,0,46,3Z"
         />
       </svg>
+    </>
+  )
+}
+
+// Delete with Circle
+export function IconSvgDeleteCircle(props: {
+  height?: string
+  fillColor?: string
+}) {
+  const { height, fillColor } = props
+  const width = height
+  return (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 -960 960 960"
+        height={height}
+        width={width}
+        className={`${fillColor ?? "fill-current"}`}
+      >
+        <path
+          className="fill-current"
+          d="M256-213.847 213.847-256l224-224-224-224L256-746.153l224 224 224-224L746.153-704l-224 224 224 224L704-213.847l-224-224-224 224Z"
+        />
+      </svg>{" "}
+    </>
+  )
+}
+
+// Ellipsis with Circle
+export function IconSvgEllipsisCircle(props: {
+  height?: string
+  fillColor?: string
+}) {
+  const { height, fillColor } = props
+  const width = height
+  return (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 -960 960 960"
+        height={height}
+        width={width}
+        className={`${fillColor ?? "fill-current"}`}
+      >
+        <path
+          className="fill-current"
+          d="M249.231-420.001q-24.749 0-42.374-17.625-17.624-17.625-17.624-42.374 0-24.749 17.624-42.374 17.625-17.625 42.374-17.625 24.75 0 42.374 17.625Q309.23-504.749 309.23-480q0 24.749-17.625 42.374-17.624 17.625-42.374 17.625Zm230.769 0q-24.749 0-42.374-17.625-17.625-17.625-17.625-42.374 0-24.749 17.625-42.374 17.625-17.625 42.374-17.625 24.749 0 42.374 17.625 17.625 17.625 17.625 42.374 0 24.749-17.625 42.374-17.625 17.625-42.374 17.625Zm230.769 0q-24.75 0-42.374-17.625Q650.77-455.251 650.77-480q0-24.749 17.625-42.374 17.624-17.625 42.374-17.625 24.749 0 42.374 17.625 17.624 17.625 17.624 42.374 0 24.749-17.624 42.374-17.625 17.625-42.374 17.625Z"
+        />
+      </svg>{" "}
+    </>
+  )
+}
+
+// Approval with Circle
+export function IconSvgApprovalCircle(props: {
+  height?: string
+  fillColor?: string
+}) {
+  const { height, fillColor } = props
+  const width = height
+  return (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 -960 960 960"
+        height={height}
+        width={width}
+        className={`${fillColor ?? "fill-current"}`}
+      >
+        <path
+          className="fill-current"
+          d="M382-253.847 168.616-467.231l42.769-42.768L382-339.384l366.615-366.615 42.769 42.768L382-253.847Z"
+        />
+      </svg>{" "}
     </>
   )
 }

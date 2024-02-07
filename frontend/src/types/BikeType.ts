@@ -11,8 +11,12 @@ export enum BikeSize {
   SMALL = "SMALL",
 }
 
-export type BikeCounter = {
-  [status in BikeStatus]: {
-    [size in BikeSize]: number;
+export type AllBikesAvailability = {
+  [size in BikeSize]: {
+    [status in BikeStatus]: number;
   };
+};
+
+export type BikeAvailabilityCard = {
+  [status in BikeStatus]: number
 };

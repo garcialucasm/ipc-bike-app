@@ -1,7 +1,6 @@
-import { Booking } from "@/types/BookingType";
+import { SingleBookingProps } from "@/types/BookingType";
 import { ApiHeader } from "./api";
 import { cleanUpSpaces } from "@/app/utils/validators";
-
 
 const apiUrls = {
   loginUrl: "/auth/login",
@@ -13,6 +12,9 @@ const apiUrls = {
   returnBookingUrl: "/secure/booking/return/",
 }
 
+// TODO: Handle the double requirement in a better way. Maybe by stacking.
+// Flag to track whether an action is in progress
+let isProcessing = false;
 
 // Login
 export async function login(email: string, password: string) {
@@ -45,12 +47,19 @@ export async function bookingFetchApi() {
   }
 };
 
+
 //Create Single Booking
-export async function createSingleBookingFetchApi(bookingData: Booking) {
+export async function createSingleBookingFetchApi(bookingData: SingleBookingProps) {
   try {
-    const userName = cleanUpSpaces(bookingData.bookingUserData.firstName) + " " + cleanUpSpaces(bookingData.bookingUserData.lastName)
-    const room = bookingData.bookingUserData.roomNumber
-    const bikeSize = bookingData.bookingBikeSize
+    if (isProcessing) {
+      return { data: null, error: "Processing " };
+    }
+
+    isProcessing = true;
+
+    const userName = cleanUpSpaces(bookingData.userData.firstName) + " " + cleanUpSpaces(bookingData.userData.lastName)
+    const room = bookingData.userData.roomNumber
+    const bikeSize = bookingData.bikeSize
 
     const response = await ApiHeader.post(apiUrls.createSingleBookingUrl, {
       userName: userName,
@@ -63,14 +72,15 @@ export async function createSingleBookingFetchApi(bookingData: Booking) {
       throw new Error(`${response.status}: ${response.statusText}`);
     }
 
-    const data = response.data
-
-    return { booking: data.booking, error: null };
+    const data = response
+    return { data: data, error: null };
   } catch (error: any) {
     console.error('Error creating single booking:', error.message);
     return {
       data: null, error: `${error.message}`
     }
+  } finally {
+    isProcessing = false;
   }
 }
 

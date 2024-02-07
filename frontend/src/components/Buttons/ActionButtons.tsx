@@ -4,9 +4,9 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode
 }
 
-export default function PrimaryButton({ children, ...attributes }: Props) {
+export default function ActionButton({ children, ...attributes }: Props) {
   return (
-    <button type="button" className="btn-primary w-full" {...attributes}>
+    <button type="button" {...attributes} className="btn-action">
       {children}
     </button>
   )

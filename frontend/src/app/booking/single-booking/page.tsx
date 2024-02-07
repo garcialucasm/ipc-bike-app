@@ -2,19 +2,38 @@
 
 import { SingleBookingSections } from "@/types/BookingType"
 import { useSingleBookingContext } from "@/context/singleBooking"
-import InputSingleBikeSize from "@/components/SingleBooking/InputSingleBikeSize"
-import InputSingleUserData from "@/components/SingleBooking/InputSingleUserData"
+import InputSingleBikeSize from "@/components/Booking/SingleBooking/InputSingleBikeSize"
+import InputSingleUserData from "@/components/Booking/SingleBooking/InputSingleUserData"
+import PreBookingConfirmation from "@/components/Booking/PreBookingConfirmation"
+import BookingConfirmation from "@/components/Booking/BookingConfirmation"
+import { useEffect } from "react"
+import { BikeSize } from "@/types/BikeType"
+import Stepper from "@/components/Stepper/Stepper"
 
 export default function HomeSingleBooking() {
-  const { bookingData } = useSingleBookingContext()
+  const {
+    bookingData,
+    settingBikeSize,
+    settingCurrentSection,
+    settingServerResult,
+    settingUserData,
+  } = useSingleBookingContext()
 
   const currentSection = bookingData.currentSection
 
+  useEffect(() => {
+    settingCurrentSection(SingleBookingSections.selectBikeSize)
+    settingBikeSize(BikeSize.STANDARD)
+    settingUserData({ firstName: "", lastName: "", roomNumber: "" })
+    settingServerResult(null)
+    return
+  }, [])
+
   return (
     <>
-      <div className="mb-3 flex flex-col items-center text-center">
-        <div className="container-webapp flex flex-col items-center pb-6">
-          {/* <Stepper currentSection={currentSection} /> */}
+      <div className="container-page-webapp">
+        <div className="container-subpage-webapp">
+          <Stepper />
           {currentSection === SingleBookingSections.selectBikeSize && (
             <InputSingleBikeSize />
           )}
@@ -23,13 +42,13 @@ export default function HomeSingleBooking() {
             <InputSingleUserData />
           )}
 
-          {currentSection === SingleBookingSections.preBookingConfirmation &&
-            // <PreBookingConfirmation />
-            "PreBookingConfirmation"}
+          {currentSection === SingleBookingSections.preBookingConfirmation && (
+            <PreBookingConfirmation />
+          )}
 
-          {currentSection === SingleBookingSections.bookingConfirmationStatus &&
-            // <BookingConfirmation />
-            "BookingConfirmation"}
+          {currentSection === SingleBookingSections.bookingConfirmation && (
+            <BookingConfirmation />
+          )}
         </div>
       </div>
     </>

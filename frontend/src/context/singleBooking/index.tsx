@@ -15,9 +15,10 @@ const SingleBookingProvider = ({ children }: { children: React.ReactNode }) => {
   // Creating state to manage user data and then submit booking
   const [bookingData, setBookingData] = useState<SingleBookingProps>({
     currentSection: SingleBookingSections.selectBikeSize,
-    bookingBikeSize: null,
-    bookingUserData: { firstName: "", lastName: "", roomNumber: "" },
+    bikeSize: null,
+    userData: { firstName: "", lastName: "", roomNumber: "" },
     bookingStatus: null,
+    serverResult: null,
   })
 
   const settingCurrentSection = (section: SingleBookingSections) => {
@@ -35,7 +36,7 @@ const SingleBookingProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       setBookingData((prevBookingData) => ({
         ...prevBookingData,
-        bookingBikeSize: bikeSizeSelected,
+        bikeSize: bikeSizeSelected,
       }))
     } catch (error) {
       console.error("Error setting Bike Size: " + error)
@@ -46,7 +47,7 @@ const SingleBookingProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       setBookingData((prevBookingData) => ({
         ...prevBookingData,
-        bookingUserData: enteredUserData,
+        userData: enteredUserData,
       }))
     } catch (error) {
       console.error("Error setting User Data: " + error)
@@ -57,7 +58,7 @@ const SingleBookingProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       setBookingData((prevBookingData) => ({
         ...prevBookingData,
-        bookingStatus: serverResult,
+        serverResult: serverResult,
       }))
     } catch (error) {
       console.error("Error setting Booking Status: " + error)

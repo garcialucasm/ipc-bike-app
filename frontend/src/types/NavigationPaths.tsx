@@ -3,10 +3,19 @@ export enum NavigationPaths {
   logout = "/auth/logout",
   homeAppAdmin = "/home/admin",
   homeAppStudent = "/home/student",
-  homeWeb = "/home-web",
+  homeApp = "/home",
+  // TODO: Redirect to home web page
+  homeWeb = "/home",
+  // TODO: Redirect to the rules web page
+  rules = "/rules",
   singleBooking = "/booking/single-booking",
   groupBooking = "/booking/group-booking",
   profile = "/profile",
   inventory = "/inventory",
   stats = "/stats",
+}
+
+export enum NavigationOptions {
+  next = "next",
+  return = "return",
 }

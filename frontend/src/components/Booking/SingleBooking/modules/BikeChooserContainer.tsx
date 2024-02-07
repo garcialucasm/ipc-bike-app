@@ -1,7 +1,7 @@
 import React from "react"
-import { BikeCounter, BikeSize, BikeStatus } from "@/types/BikeType"
+import { BikeAvailabilityCard, BikeSize, BikeStatus } from "@/types/BikeType"
 import Image from "next/image"
-import StatusIndicator from "../Others/StatusIndicator"
+import StatusIndicator from "../../../Others/StatusIndicator"
 
 function BikeChooserContainer(props: { bikeSize: BikeSize }) {
   const bikeSize = props.bikeSize
@@ -15,19 +15,22 @@ function BikeChooserContainer(props: { bikeSize: BikeSize }) {
       bikeSelectedImage = "/bike-type-standard.jpg"
       bikeSelectedFreeCount = 1
       bikeSelectedRecomendation =
-        "Recommended for people 5'4\" | 163 cm or taller. TODO Standard"
+        // TODO: Get right recommendation
+        "Recommended for people 5'4\" | 163 cm or taller."
       break
     case BikeSize.CLASSIC:
       bikeSelectedImage = "/bike-type-classic.jpg"
       bikeSelectedFreeCount = 0
       bikeSelectedRecomendation =
-        "Recommended for people 5'4\" | 163 cm or taller. TODO Classic"
+        // TODO: Get right recommendation
+        "Recommended for people 5'4\" | 163 cm or taller."
       break
     case BikeSize.SMALL:
       bikeSelectedImage = "/bike-type-folding.jpg"
       bikeSelectedFreeCount = 2
       bikeSelectedRecomendation =
-        "Recommended for people 5'4\" | 163 cm or taller. TODO Small"
+        // TODO: Get right recommendation
+        "Recommended for people 5'4\" | 163 cm or taller."
       break
     default:
       // Log an error or handle the unknown section
