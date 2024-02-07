@@ -10,10 +10,10 @@ import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
 type ServerResultBikeAvailability =
   | {
       data: {
-        free: number
-        booked: number
-        inUse: number
-        disabled: number
+        [BikeStatus.FREE]: number
+        [BikeStatus.BOOKED]: number
+        [BikeStatus.INUSE]: number
+        [BikeStatus.DISABLED]: number
       }
       error: null
     }
@@ -23,7 +23,8 @@ type ServerResultBikeAvailability =
     }
 
 function AvailabilityContainer() {
-  const { settingBikeAvailabilityCardData } = useBikeAvailabilityContext()
+  const { bikeAvailabilityCardData, settingBikeAvailabilityCardData } =
+    useBikeAvailabilityContext()
 
   const getBikeCounterByStatus = async () => {
     try {
@@ -31,12 +32,15 @@ function AvailabilityContainer() {
         await bikeStatusCounterFetchApi()
 
       if (serverResult.data) {
+        console.log(serverResult.data)
         settingBikeAvailabilityCardData({
-          [BikeStatus.FREE]: serverResult.data.free,
-          [BikeStatus.BOOKED]: serverResult.data.booked,
-          [BikeStatus.INUSE]: serverResult.data.inUse,
-          [BikeStatus.DISABLED]: serverResult.data.disabled,
+          [BikeStatus.FREE]: serverResult.data[BikeStatus.FREE] | 0,
+          [BikeStatus.BOOKED]: serverResult.data[BikeStatus.BOOKED] | 0,
+          [BikeStatus.INUSE]: serverResult.data[BikeStatus.INUSE] | 0,
+          [BikeStatus.DISABLED]: serverResult.data[BikeStatus.DISABLED] | 0,
         })
+        console.log(serverResult.data)
+        console.log(bikeAvailabilityCardData)
       } else {
         console.error("Unable to fetch bike counter data")
       }

@@ -32,7 +32,7 @@ const BikeAvailabilityProvider = ({
     try {
       setBikeAvailabilityCardData((prevBikeData) => ({
         ...prevBikeData,
-        bikeAvailabilityData: bikeAvailability,
+        ...bikeAvailability, // Spread the new values directly
       }))
     } catch (error) {
       console.error("Error setting Current Section: " + error)

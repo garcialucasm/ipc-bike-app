@@ -1,3 +1,4 @@
+import { BikeStatus } from '@/types/BikeType';
 import { ApiHeader } from "./api";
 
 const apiUrls = {
@@ -26,10 +27,10 @@ export async function bikeStatusCounterFetchApi() {
 
         return {
             data: {
-                free: bikeCountFree,
-                booked: bikeCountBooked,
-                inUse: bikeCountInUse,
-                disabled: bikeCountDisabled
+                [BikeStatus.FREE]: bikeCountFree,
+                [BikeStatus.BOOKED]: bikeCountBooked,
+                [BikeStatus.INUSE]: bikeCountInUse,
+                [BikeStatus.DISABLED]: bikeCountDisabled
             }, error: null
         };
     } catch (error: any) {
