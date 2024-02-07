@@ -5,9 +5,10 @@ import { UserData } from "./UserType";
 
 // TODO: Just for test
 export type AuthContextProps = {
-    account: AccountProps | null;
-    login: (account: AccountProps) => void;
+    accountData: AccountProps | null;
+    login: (accountData: AccountProps) => void;
     logout: () => void;
+    settingIsAuthenticated: (isAuth: boolean | null) => void;
 };
 
 
@@ -20,6 +21,6 @@ export type SingleBookingContextProps = {
 }
 
 export type BikeAvailabilityContextProps = {
-    bikeAvailabilityCardData: BikeAvailabilityCard;
-    settingBikeAvailabilityCardData: (bikeAvailabilityCardData: BikeAvailabilityCard) => void;
+    bikeAvailabilityData: BikeAvailabilityCard;
+    updatingBikeAvailability: () => void
 }

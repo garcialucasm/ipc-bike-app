@@ -5,24 +5,41 @@ import { createContext, useContext, useState } from "react"
 import { AccountProps } from "@/types/AccountType"
 import { AuthContextProps } from "@/types/ContextType"
 
+export const initialAccountState = {
+  id: null,
+  name: null,
+  isAuthenticated: false,
+}
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps)
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [account, setAccount] = useState<AccountProps | null>(null)
+  const [accountData, setAccountData] =
+    useState<AccountProps>(initialAccountState)
 
-  const login = (account: AccountProps) => {
-    setAccount(account)
-    console.log("Login")
-    console.log(account)
+  const login = (accountDataResponse: AccountProps) => {
+    setAccountData(accountDataResponse)
   }
 
   const logout = () => {
-    setAccount(null)
-    console.log("logout")
-    console.log(account)
+    setAccountData(initialAccountState)
   }
+
+  const settingIsAuthenticated = (isAuth: boolean | null) => {
+    setAccountData((prevValues) => ({
+      ...prevValues,
+      isAuthenticated: isAuth,
+    }))
+  }
+
   return (
-    <AuthContext.Provider value={{ account, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        accountData: accountData,
+        login,
+        logout,
+        settingIsAuthenticated,
+      }}
+    >
       <>{children}</>
     </AuthContext.Provider>
   )

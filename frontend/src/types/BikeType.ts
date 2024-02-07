@@ -1,8 +1,8 @@
 export enum BikeStatus {
+  FREE = "FREE",
   BOOKED = "BOOKED",
   INUSE = "INUSE",
   DISABLED = "DISABLED",
-  FREE = "FREE",
 }
 
 export enum BikeSize {
@@ -18,5 +18,8 @@ export type AllBikesAvailability = {
 };
 
 export type BikeAvailabilityCard = {
-  [status in BikeStatus]: number
+  [BikeStatus.BOOKED]: number,
+  [BikeStatus.INUSE]: number,
+  [BikeStatus.FREE]: number,
+  [BikeStatus.DISABLED]: number
 };

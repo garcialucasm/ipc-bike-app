@@ -6,7 +6,7 @@ import "./globals.css"
 import HeaderApp from "@/components/Headers/HeaderApp"
 import { AppProvider } from "@/context/page"
 import FooterApp from "@/components/Footers/FooterApp"
-import ShowContextDev from "@/components/Test/ShowContextDev"
+import DevShowContext from "@/components/Test/DevShowContext"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -25,11 +25,9 @@ export default function RootLayout({
       <body className={`flex min-h-screen flex-col ${inter.className}`}>
         <AppProvider>
           <HeaderApp />
-          <div className="container-main-webapp">
-            {children}
-          </div>
+          {children}
           <FooterApp />
-          <ShowContextDev />
+          <DevShowContext />
         </AppProvider>
       </body>
     </html>

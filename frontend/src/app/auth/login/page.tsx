@@ -2,12 +2,13 @@
 
 import React, { useState } from "react"
 import { useRouter } from "next/navigation"
-import PrimaryButton from "@/components/Buttons/PrimaryButton"
-import { NavigationPaths } from "@/types/NavigationPaths"
 import Image from "next/image"
-import { login } from "@/services/bookingApi"
-import { setCookie } from "@/app/utils/cookieUtils"
+
+import { login, setCookie } from "../authUtils"
+import { NavigationPaths } from "@/types/NavigationPaths"
 import { validateLogin } from "@/app/utils/validators"
+
+import PrimaryButton from "@/components/Buttons/PrimaryButton"
 import SecondaryButton from "@/components/Buttons/SecondaryButton"
 
 export interface ErrorMessageLogin {

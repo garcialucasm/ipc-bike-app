@@ -16,9 +16,9 @@ function AvailabilityCard(props: {
 }) {
   const selectedStatus = props.selectedStatus as BikeStatus
 
-  const { bikeAvailabilityCardData } = useBikeAvailabilityContext()
+  const { bikeAvailabilityData } = useBikeAvailabilityContext()
 
-  const currentBikeCount = bikeAvailabilityCardData[selectedStatus]
+  const currentBikeCount = bikeAvailabilityData[selectedStatus]
 
   let cardTextColorByStatus = "bg-slate-200 text-slate-600"
   let cardColorByStatus = "border border-s-2"

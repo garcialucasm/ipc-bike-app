@@ -1,9 +1,6 @@
 import { BikeStatus } from '@/types/BikeType';
-import { ApiHeader } from "./api";
-
-const apiUrls = {
-    bikeStatusCounterUrl: "/secure/bike/status",
-}
+import { ApiHeader, apiUrls } from "./api";
+import { ServerResultBikeAvailability } from '@/types/ServerResult';
 
 // Bike Status Counter
 export async function bikeStatusCounterFetchApi() {
@@ -39,4 +36,9 @@ export async function bikeStatusCounterFetchApi() {
             data: null, error: `${error.message}`
         }
     }
+}
+
+export async function getBikeAvailability() {
+    const serverResult: ServerResultBikeAvailability = await bikeStatusCounterFetchApi()
+    return serverResult
 }

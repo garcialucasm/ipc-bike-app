@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from "react"
-import Link from "next/link"
-import {
-  IconSvgFeedbackError,
-  IconSvgLoader,
-  IconSvgProcessConfirmed,
-} from "../Others/IconsSvg"
-import InfoboxSingleBookingDetails from "./SingleBooking/modules/InfoboxSingleBookingDetails"
-import PrimaryButton from "../Buttons/PrimaryButton"
-import NextSteps from "./SingleBooking/modules/NextSteps"
+
+import { IconSvgLoader } from "../Others/IconsSvg"
 import { useSingleBookingContext } from "@/context/singleBooking"
 import { createSingleBookingFetchApi } from "@/services/bookingApi"
-import { NavigationPaths } from "@/types/NavigationPaths"
 import BookingFailed from "./SingleBooking/modules/BookingFailed"
 import BookingConfirmed from "./SingleBooking/modules/BookingConfirmed"
 

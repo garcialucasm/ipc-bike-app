@@ -1,4 +1,4 @@
-import { getCookies, setCookie } from "../utils/cookieUtils";
+import { ApiHeader, apiUrls } from "@/services/api";
 
 
 export interface I_AuthHeader {
@@ -8,8 +8,10 @@ export interface I_AuthHeader {
     };
 }
 
-export const authHeader = (): I_AuthHeader => {
-    const token = getTokenFromCookies();
+const cookieNameToken = "ipcBikeApp_authToken";
+
+export function authHeader(): I_AuthHeader {
+    const token = getTokenFromCookies("ipcBikeApp_authToken");
     return {
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -18,15 +20,62 @@ export const authHeader = (): I_AuthHeader => {
     };
 };
 
-const cookieNameToken = "ipcBikeApp_authToken";
 
+// Login
+export async function login(email: string, password: string) {
+    try {
+        const response = await ApiHeader.post(apiUrls.loginUrl,
+            {
+                email: email,
+                password: password,
+            })
+        return { data: response.data, error: null };
 
-export function getTokenFromCookies() {
-    return getCookies(cookieNameToken)
+    } catch (error: any) {
+        console.error('Error authenticating:', error.message);
+        return {
+            data: null, error: `${error.message}`
+        }
+    }
 }
 
-export const logout = async () => {
+export function getTokenFromCookies(name: string) {
+    try {
+        if (typeof document !== 'undefined') {
+            const cookies = document.cookie.split(';');
+            const cookieName = `${name}=`;
 
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i].trim();
+                if (cookie.startsWith(cookieName)) {
+                    return decodeURIComponent(cookie.substring(cookieName.length, cookie.length));
+                }
+            }
+        }
+    }
+    catch {
+        throw new Error("Cookie error: error getting cookies")
+    }
+};
+
+
+export async function setCookie(name: string, value: string, days: number = 2) {
+    try {
+        const expirationDate = new Date();
+        expirationDate.setDate(expirationDate.getDate() + days);
+
+        const cookieValue =
+            encodeURIComponent(value) +
+            (days ? `; expires=${expirationDate.toUTCString()}` : "");
+
+        document.cookie = `${name}=${cookieValue}; path=/; Secure; SameSite=None`;
+        return true
+    } catch (error) {
+        throw new Error("Error setting cookie: " + error)
+    }
+};
+
+export async function logout() {
     try {
         // Clear the authentication token cookie
         await setCookie(cookieNameToken, "", -1);
@@ -35,4 +84,4 @@ export const logout = async () => {
     } catch (error) {
         throw new Error("Logout error: " + error);
     }
-};
+}

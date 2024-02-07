@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
 
 import { BookingStatus } from "@/types/BookingType"
 import {
@@ -9,7 +8,6 @@ import {
   approveBookingFetchApi,
   bookingFetchApi,
 } from "@/services/bookingApi"
-import PrimaryButton from "@/components/Buttons/PrimaryButton"
 import StatusIndicator from "@/components/Others/StatusIndicator"
 import ActionButton from "@/components/Buttons/ActionButtons"
 import {
@@ -20,6 +18,7 @@ import {
 } from "@/components/Others/IconsSvg"
 import { EmptyBookingsOverview } from "./EmptyBookingsOverview"
 import { ErrorBookingsOverview } from "./ErrorBookingsOverview"
+import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
 
 function BookingsOverview() {
   const [bookingData, setBookingData] = useState<{
@@ -31,6 +30,8 @@ function BookingsOverview() {
   })
 
   const [reloadData, setReloadData] = useState(false)
+
+  const { updatingBikeAvailability } = useBikeAvailabilityContext()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,6 +59,7 @@ function BookingsOverview() {
       await returnBookingFetchApi(bookingId)
     }
     // Set confirmation status to trigger re-render
+    updatingBikeAvailability()
     setReloadData(!reloadData)
   }
 

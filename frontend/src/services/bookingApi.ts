@@ -1,45 +1,16 @@
+import { ApiHeader, apiUrls } from "./api";
 import { SingleBookingProps } from "@/types/BookingType";
-import { ApiHeader } from "./api";
 import { cleanUpSpaces } from "@/app/utils/validators";
-
-const apiUrls = {
-  loginUrl: "/auth/login",
-  activeBookingsUrl: "/secure/booking/all",
-  allBookingsUrl: "/secure/booking/all?show_inactive=true",
-  createSingleBookingUrl: "/secure/booking/create/single",
-  cancelBookingUrl: "/secure/booking/cancel",
-  approveBookingUrl: "/secure/booking/approve/",
-  returnBookingUrl: "/secure/booking/return/",
-}
 
 // TODO: Handle the double requirement in a better way. Maybe by stacking.
 // Flag to track whether an action is in progress
 let isProcessing = false;
-
-// Login
-export async function login(email: string, password: string) {
-  try {
-    const response = await ApiHeader.post(apiUrls.loginUrl,
-      {
-        email: email,
-        password: password,
-      })
-    return { data: response.data, error: null };
-
-  } catch (error: any) {
-    console.error('Error authenticating:', error.message);
-    return {
-      data: null, error: `${error.message}`
-    }
-  }
-}
 
 // Show all active bookings
 export async function bookingFetchApi() {
   try {
     const response = await ApiHeader.get(apiUrls.activeBookingsUrl);
     const activeBookings = response.data.bookings;
-
     return { activeBookings, error: null };
   } catch (error: any) {
     console.error('Error getting active bookings:', error.message);

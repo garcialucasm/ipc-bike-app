@@ -1,9 +1,14 @@
 "use client"
 
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 
 import { BikeAvailabilityContextProps } from "@/types/ContextType"
 import { BikeAvailabilityCard, BikeStatus } from "@/types/BikeType"
+import {
+  bikeStatusCounterFetchApi,
+  getBikeAvailability,
+} from "@/services/bikeApi"
+import { ServerResultBikeAvailability } from "@/types/ServerResult"
 
 // Creating initial state for bike availability data
 export const initialBikeAvailability: BikeAvailabilityCard = {
@@ -23,27 +28,28 @@ const BikeAvailabilityProvider = ({
   children: React.ReactNode
 }) => {
   // Creating state to manage bike availability data
-  const [bikeAvailabilityCardData, setBikeAvailabilityCardData] =
+  const [bikeAvailabilityData, setBikeAvailabilityData] =
     useState<BikeAvailabilityCard>(initialBikeAvailability)
 
-  const settingBikeAvailabilityCardData = (
-    bikeAvailability: BikeAvailabilityCard
-  ) => {
-    try {
-      setBikeAvailabilityCardData((prevBikeData) => ({
-        ...prevBikeData,
-        ...bikeAvailability, // Spread the new values directly
-      }))
-    } catch (error) {
-      console.error("Error setting Current Section: " + error)
+  const updatingBikeAvailability = async () => {
+    const serverResult = await getBikeAvailability()
+    if (serverResult.data) {
+      setBikeAvailabilityData({
+        [BikeStatus.FREE]: serverResult.data[BikeStatus.FREE] | 0,
+        [BikeStatus.BOOKED]: serverResult.data[BikeStatus.BOOKED] | 0,
+        [BikeStatus.INUSE]: serverResult.data[BikeStatus.INUSE] | 0,
+        [BikeStatus.DISABLED]: serverResult.data[BikeStatus.DISABLED] | 0,
+      })
+    } else {
+      console.error("Unable to fetch bike counter data")
     }
   }
 
   return (
     <BikeAvailabilityContext.Provider
       value={{
-        bikeAvailabilityCardData,
-        settingBikeAvailabilityCardData,
+        bikeAvailabilityData,
+        updatingBikeAvailability,
       }}
     >
       <>{children}</>

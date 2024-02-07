@@ -54,7 +54,7 @@ export function validateRoomNumber(s: string): string {
     }
 }
 
-export const validateLogin = (formValues: any) => {
+export function validateLogin(formValues: any) {
     let error: ErrorMessageLogin = {
         email: "",
         password: "",
