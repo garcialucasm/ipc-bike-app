@@ -5,7 +5,7 @@ import IAccountService from "./account.service";
 import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
 import dotenv from "dotenv"
 import { generateAsyncToken } from "../utils/auth";
-import { AccountDataDTO } from "../dto/account.dto";
+import { AccountDTO } from "../dto/account.dto";
 
 dotenv.config()
 
@@ -37,7 +37,7 @@ export default class AccountService implements IAccountService {
     return account
   }
 
-  async login(loginEmail: string, loginPassword: string): Promise<AccountDataDTO> {
+  async login(loginEmail: string, loginPassword: string): Promise<AccountDTO> {
 
     try {
       if (!loginEmail) {

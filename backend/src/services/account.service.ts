@@ -1,5 +1,5 @@
 
-import { AccountDataDTO } from "../dto/account.dto";
+import { AccountDTO } from "../dto/account.dto";
 import { Account } from "../models/account.model";
 
 export default interface IAccountService {
@@ -27,7 +27,7 @@ export default interface IAccountService {
      * @param email 
      * @param password
      */
-    login(email: string, password: string): Promise<AccountDataDTO>;
+    login(email: string, password: string): Promise<AccountDTO>;
 
 
 }

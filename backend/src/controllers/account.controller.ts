@@ -1,11 +1,11 @@
 import { Router, RouterOptions } from 'express'
 import IAccountService from '../services/account.service'
 import { validateEmail, validatePassword, validateUserName } from "../models/validators";
-import { AccountDataDTO } from "../dto/account.dto";
+import { AccountDTO } from "../dto/account.dto";
 import { cleanUpSpaces } from "../utils/strings";
 
 
-function toAccountDTO(account: AccountDataDTO): AccountDataDTO {
+function toAccountDTO(account: AccountDTO): AccountDTO {
     return {
         id: account.id ?? 0,
         accountName: account.accountName ?? '',
