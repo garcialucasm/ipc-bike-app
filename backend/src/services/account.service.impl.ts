@@ -7,6 +7,8 @@ import dotenv from "dotenv"
 import { generateAsyncToken } from "../utils/auth";
 import { AccountDTO } from "../dto/account.dto";
 
+const saltRounds = 8
+
 dotenv.config()
 
 export default class AccountService implements IAccountService {
@@ -22,12 +24,15 @@ export default class AccountService implements IAccountService {
     let account: Account
 
     if (!users) {
+      const hash = await bcrypt.hash(password, saltRounds);
+      
       account = {
         AccountName: name,
         Email: email,
-        Hash: password,
+        Hash: hash,
         IsActive: true
       } as Account
+
 
       account = await this.accountRepository.save(account)
     } else {

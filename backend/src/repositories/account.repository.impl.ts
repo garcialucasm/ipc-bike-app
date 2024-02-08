@@ -2,9 +2,6 @@ import { Client } from "pg";
 import { Account } from "../models/account.model";
 import IAccountRepository from "./account.repository";
 import { accountFromRow } from "./mappings";
-import bcrypt from 'bcrypt';
-
-const saltRounds = 8
 
 export default class AccountRepository implements IAccountRepository {
 
@@ -25,11 +22,9 @@ export default class AccountRepository implements IAccountRepository {
     try {
       const name = account.AccountName
       const email = account.Email
-      let hash = account.Hash ?? ''
+      const hash = account.Hash
       const isActive = account.IsActive
       const createdAt = new Date()
-
-      hash = await bcrypt.hash(hash, saltRounds);
 
       let result = await this.client.query(this.insertAccountStmt, [name, email, hash, isActive, createdAt])
 
