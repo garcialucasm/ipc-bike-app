@@ -48,9 +48,8 @@ function Login() {
           formLoginData.email,
           formLoginData.password
         )
-
         if (response.data) {
-          await setCookie("ipcBikeApp_authToken", response.data.token)
+          await setCookie("ipcBikeApp_authToken", response.data.account.token)
           router.replace(NavigationPaths.homeAppAdmin)
         }
       } catch (error) {

@@ -22,15 +22,6 @@ export const apiUrls = {
   bikeStatusCounterUrl: "/secure/bike/status",
 }
 
-
-// // Variable to use inside the dynamically import to avoid 'authHeader' to be accessed before it's initialized
-// let headers = {};
-
-// // Dynamically import to avoid 'authHeader' to be accessed before it's initialized
-// import("@/app/auth/authUtils").then(({ authHeader }) => {
-//   headers = authHeader().headers;
-// });
-
 export const ApiHeader = axios.create({
   baseURL: apiUrl,
   headers: authHeader().headers,

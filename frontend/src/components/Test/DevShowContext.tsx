@@ -52,8 +52,8 @@ function DevShowContext() {
               </span>
               <span>
                 {" "}
-                &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;Name:
-                <span className="text-slate-500">{accountData?.name}</span>
+                &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;Name:{" "}
+                <span className="text-slate-500">{accountData?.accountName}</span>
               </span>
             </p>
             {(bikeAvailabilityData.FREE !== 0 ||

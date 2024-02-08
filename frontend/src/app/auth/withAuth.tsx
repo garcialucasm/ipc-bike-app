@@ -15,9 +15,7 @@ const jwtSecretKey = process.env.NEXT_PUBLIC_JWT_SECRET_KEY?.trim()
 const withAuth = (WrappedComponent: NextPage) => {
   const SecureComponent: NextPage = (props) => {
     const router = useRouter()
-    const { accountData, login } = useAuth()
-    const [accountState, setAccountState] =
-      useState<AccountProps>(initialAccountState)
+    const { login } = useAuth()
 
     // Check authentication
     useEffect(() => {
@@ -41,9 +39,9 @@ const withAuth = (WrappedComponent: NextPage) => {
           // Check if the token is valid, and optionally, check additional claims or conditions
           if (decodedToken) {
             const accountId = decodedToken.id
-            const accountName = decodedToken.name
+            const accountName = decodedToken.accountName
             // TODO: Change backend to name instead of email
-            login({ id: accountId, name: accountName, isAuthenticated: true })
+            login({ id: accountId, accountName: accountName, isAuthenticated: true })
             return true
           } else {
             throw new Error("Authentication error: Invalid token.")

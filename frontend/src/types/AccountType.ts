@@ -1,5 +1,5 @@
 export type AccountProps = {
     id: number | null;
-    name: string | null;
+    accountName: string | null;
     isAuthenticated: boolean | null;
 }
