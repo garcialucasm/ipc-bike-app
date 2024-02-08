@@ -15,7 +15,7 @@ export default class AccountRepository implements IAccountRepository {
 
   findByEmailStmt: string = `SELECT id, name, email, is_active, created_at, updated_at, deleted_at FROM "account" WHERE email=$1`;
 
-  loginStmt: string = `SELECT id, email, password FROM "account" WHERE email=$1`;
+  loginStmt: string = `SELECT id, email, name, password FROM "account" WHERE email=$1`;
 
   constructor(client: Client) {
     this.client = client;
@@ -23,10 +23,10 @@ export default class AccountRepository implements IAccountRepository {
 
   async save(account: Account): Promise<Account> {
     try {
-      const name = account.user.name
-      const email = account.user.email
-      let password = account.user.password ?? ''
-      const isActive = account.user.isActive
+      const name = account.AccountName
+      const email = account.Email
+      let password = account.Password ?? ''
+      const isActive = account.IsActive
       const createdAt = new Date()
 
       password = await bcrypt.hash(password, saltRounds);
@@ -68,11 +68,10 @@ export default class AccountRepository implements IAccountRepository {
       }
 
       return {
-        user: {
-          id: row.id,
-          email: row.email,
-          password: row.password,
-        },
+        ID: row.id,
+        AccountName: row.name,
+        Email: row.email,
+        Password: row.password,
       };
     } catch (error) {
       throw error;

@@ -66,15 +66,13 @@ function userFromRow(row: any): User {
 
 function accountFromRow(row: any): Account {
   return {
-    user: {
-      id: Number.parseInt(row['id']),
-      email: row['email'],
-      password: row['password'],
-      isActive: row['is_active'] ? new Boolean(row['is_active']).valueOf() : false,
-      createdAt: row['created_at'] ? new Date(row['created_at']) : undefined,
-      updatedAt: row['updated_at'] ? new Date(row['updated_at']) : undefined,
-      deletedAt: row['deleted_at'] ? new Date(row['deleted_at']) : undefined
-    }
+    ID: Number.parseInt(row['id']),
+    Email: row['email'],
+    Password: row['password'],
+    IsActive: row['is_active'] ? new Boolean(row['is_active']).valueOf() : false,
+    CreatedAt: row['created_at'] ? new Date(row['created_at']) : undefined,
+    UpdatedAt: row['updated_at'] ? new Date(row['updated_at']) : undefined,
+    DeletedAt: row['deleted_at'] ? new Date(row['deleted_at']) : undefined
   }
 }
 

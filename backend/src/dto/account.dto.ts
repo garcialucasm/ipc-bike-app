@@ -1,6 +1,7 @@
 interface AccountDataDTO {
-  name?: string
-  email: string
+  id: number
+  accountName: string
+  token: string
 }
 
 export { AccountDataDTO }

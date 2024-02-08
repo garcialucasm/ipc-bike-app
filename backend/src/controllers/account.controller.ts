@@ -1,14 +1,16 @@
 import { Router, RouterOptions } from 'express'
 import IAccountService from '../services/account.service'
-import { validateEmail, validatePassword } from "../models/validators";
+import { validateEmail, validatePassword, validateUserName } from "../models/validators";
 import { AccountDataDTO } from "../dto/account.dto";
 import { cleanUpSpaces } from "../utils/strings";
 
 
-function toAccountDTO(email: string, name?: string): AccountDataDTO {
-    email = email ? cleanUpSpaces(email.toLowerCase()) : '';
-    name = name ? cleanUpSpaces(name.toLowerCase()) : '';
-    return { name: name, email: email }
+function toAccountDTO(account: AccountDataDTO): AccountDataDTO {
+    return {
+        id: account.id ?? 0,
+        accountName: account.accountName ?? '',
+        token: account.token ?? '',
+    }
 }
 
 export default function accountController(accountService: IAccountService, routerOptions?: RouterOptions) {
@@ -16,22 +18,16 @@ export default function accountController(accountService: IAccountService, route
     const router: Router = Router(routerOptions)
 
     router.post("/register", async (req, res) => {
-        let accountName = req.body.accountName
-        let email = req.body.email
-        let password = req.body.password
-        let account: AccountDataDTO
+        const accountName = cleanUpSpaces(req.body.accountName.toLowerCase())
+        const email = cleanUpSpaces(req.body.email.toLowerCase())
+        const password = req.body.password
 
         try {
-            // TODO: create validationUserName(accountName)
-            // validateEmail(email)
-            // validatePassword(password)
-            account = toAccountDTO(accountName, email)
+            //validateUserName(accountName)
+            //validateEmail(email)
+            //validatePassword(password)
 
-            if (!account.name) {
-                throw new Error("The account name cannot be empty")
-            }
-
-            accountService.registerAccount(account.name, account.email, password)
+            accountService.registerAccount(accountName, email, password)
                 .then(() => {
                     res.status(200)
                         .send("Successfully registered")
@@ -49,17 +45,15 @@ export default function accountController(accountService: IAccountService, route
     })
 
     router.post("/login", async (req, res) => {
-        const email = req.body.email
+        const email = cleanUpSpaces(req.body.email.toLowerCase())
         const password = req.body.password
-        let account: AccountDataDTO
 
         try {
-            account = toAccountDTO(email)
-            // validateEmail(account.email)
-            accountService.login(account.email, password)
+            // validateEmail(email)
+            accountService.login(email, password)
                 .then((account) => {
                     res.status(200)
-                        .send(account)
+                        .send({ account: toAccountDTO(account) })
                     console.info("Authenticated successfully")
                 }).catch(error => {
                     console.error(error)

@@ -5,6 +5,7 @@ import IAccountService from "./account.service";
 import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
 import dotenv from "dotenv"
 import { generateAsyncToken } from "../utils/auth";
+import { AccountDataDTO } from "../dto/account.dto";
 
 dotenv.config()
 
@@ -22,12 +23,10 @@ export default class AccountService implements IAccountService {
 
     if (!users) {
       account = {
-        user: {
-          name: name,
-          email: email,
-          password: password,
-          isActive: true
-        }
+        AccountName: name,
+        Email: email,
+        Password: password,
+        IsActive: true
       } as Account
 
       account = await this.accountRepository.save(account)
@@ -38,7 +37,7 @@ export default class AccountService implements IAccountService {
     return account
   }
 
-  async login(loginEmail: string, loginPassword: string): Promise<Account> {
+  async login(loginEmail: string, loginPassword: string): Promise<AccountDataDTO> {
 
     try {
       if (!loginEmail) {
@@ -46,9 +45,10 @@ export default class AccountService implements IAccountService {
       }
 
       const foundAccount = await this.accountRepository.findAccount(loginEmail, loginPassword);
-      const storedEmail = foundAccount.user.email
-      const storedPassword = foundAccount.user.password
-      const storedId = foundAccount.user.id
+      const storedEmail = foundAccount.Email
+      const storedPassword = foundAccount.Password
+      const storedId = foundAccount.ID
+      const storedAccountName = foundAccount.AccountName
 
       if (!storedEmail) {
         throw new Error("Email is not correct or does not exist");
@@ -62,12 +62,16 @@ export default class AccountService implements IAccountService {
         throw new Error("Id does not exist");
       }
 
+      if (!storedAccountName) {
+        throw new Error("Account name is not valid or does not exist");
+      }
+
       const isMatch = await bcrypt.compare(loginPassword, storedPassword);
 
       if (isMatch) {
-        const asyncToken = await generateAsyncToken({ id: storedId?.toString(), email: storedEmail });
+        const asyncToken = await generateAsyncToken({ id: storedId?.toString(), accountName: storedAccountName });
 
-        return { user: { id: storedId, email: storedEmail }, token: asyncToken };
+        return { id: storedId, accountName: storedAccountName, token: asyncToken };
       } else {
         throw new Error('Password is not correct');
       }

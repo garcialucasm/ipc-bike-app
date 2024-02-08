@@ -31,7 +31,7 @@ export const checkAuth = async (req: Request, res: Response, next: NextFunction)
     }
 };
 
-export function generateAsyncToken(payload: { id: string, email: string }): Promise<string> {
+export function generateAsyncToken(payload: { id: string, accountName: string }): Promise<string> {
     return new Promise((resolve, reject) => {
         if (!privateJwtKey) {
             reject(new Error("JWT PRIVATE KEY is not set. Please configure it."));

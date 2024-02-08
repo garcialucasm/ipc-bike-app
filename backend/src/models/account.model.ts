@@ -1,15 +1,13 @@
 interface Account {
-    user: {
-        id?: number;
-        name?: string,
-        email: string,
-        password?: string,
-        isActive?: Boolean,
-        createdAt?: Date,
-        updatedAt?: Date,
-        deletedAt?: Date,
-    }
-    token?: string,
+    ID?: number;
+    AccountName?: string,
+    Email?: string,
+    Password?: string,
+    IsActive?: Boolean,
+    CreatedAt?: Date,
+    UpdatedAt?: Date,
+    DeletedAt?: Date,
+    Token?: string,
 }
 
 export { Account }
