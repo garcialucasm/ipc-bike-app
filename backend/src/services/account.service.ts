@@ -9,7 +9,7 @@ export default interface IAccountService {
      * 
      * @param email 
      */
-    findByEmail(email: string): Promise<Account[]>;
+    findByEmail(email: string): Promise<Account | null>;
 
     /**
      * if there's an user account with the same email in the database, gets the user account

@@ -45,15 +45,15 @@ export default class AccountRepository implements IAccountRepository {
     }
   }
 
-  async findByEmail(email: string): Promise<Account> {
+  async findByEmail(email: string): Promise<Account | null> {
     try {
       let result = await this.client.query(this.findByEmailStmt, [email])
 
-      let [row] = result.rows
+      let account = result.rows[0]
 
-      return row
+      return account
     } catch (error) {
-      throw error;
+      throw new Error("Couldn't find account by email")
     }
   }
 
@@ -61,17 +61,17 @@ export default class AccountRepository implements IAccountRepository {
     try {
       let result = await this.client.query(this.loginStmt, [email])
 
-      let [row] = result.rows
+      let account = result.rows[0]
 
-      if (!row) {
+      if (!account) {
         throw new Error("Email not found");
       }
 
       return {
-        ID: row.id,
-        AccountName: row.name,
-        Email: row.email,
-        Password: row.password,
+        ID: account.id,
+        AccountName: account.name,
+        Email: account.email,
+        Password: account.password,
       };
     } catch (error) {
       throw error;

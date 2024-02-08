@@ -80,10 +80,8 @@ export default class AccountService implements IAccountService {
     }
   }
 
-  async findByEmail(email: string): Promise<Account[]> {
-    let accounts: Account[] = []
+  async findByEmail(email: string): Promise<Account | null> {
     let result = this.accountRepository.findByEmail(email)
-    accounts.push(await result)
-    return accounts
+    return result
   }
 }
