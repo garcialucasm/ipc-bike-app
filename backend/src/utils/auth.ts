@@ -2,11 +2,12 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import fs from 'fs'
 import path from 'path';
+import dotenv from "dotenv"
 
-const pathPrivateJwtKey = path.join(__dirname, '../../', 'private.pem');
-const pathPublicJwtKey = path.join(__dirname, '../../', 'public.pem');
-const privateJwtKey = fs.readFileSync(pathPrivateJwtKey, 'utf-8').trim();
-const publicJwtKey = fs.readFileSync(pathPublicJwtKey, 'utf-8').trim();
+dotenv.config()
+
+const privateJwtKey = process.env.PIVATE_JWT_KEY;
+const publicJwtKey = process.env.PUBLIC_JWT_KEY;
 
 export interface CustomRequest extends Request {
     token: string | JwtPayload;
@@ -34,6 +35,7 @@ export function generateAsyncToken(payload: { id: string, email: string }): Prom
     return new Promise((resolve, reject) => {
         if (!privateJwtKey) {
             reject(new Error("JWT PRIVATE KEY is not set. Please configure it."));
+            return;
         }
 
         jwt.sign(payload, privateJwtKey, { algorithm: 'RS256' }, (err, token) => {
