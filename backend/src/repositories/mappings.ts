@@ -68,7 +68,7 @@ function accountFromRow(row: any): Account {
   return {
     ID: Number.parseInt(row['id']),
     Email: row['email'],
-    Password: row['password'],
+    Hash: row['password'],
     IsActive: row['is_active'] ? new Boolean(row['is_active']).valueOf() : false,
     CreatedAt: row['created_at'] ? new Date(row['created_at']) : undefined,
     UpdatedAt: row['updated_at'] ? new Date(row['updated_at']) : undefined,

@@ -10,12 +10,12 @@ export default class AccountRepository implements IAccountRepository {
 
   client: Client
 
-  insertAccountStmt: string = `INSERT INTO "account" (name, email, password, is_active, created_at)
+  insertAccountStmt: string = `INSERT INTO "account" (name, email, hash, is_active, created_at)
     VALUES($1, $2, $3, $4, $5) RETURNING *`
 
   findByEmailStmt: string = `SELECT id, name, email, is_active, created_at, updated_at, deleted_at FROM "account" WHERE email=$1`;
 
-  loginStmt: string = `SELECT id, email, name, password FROM "account" WHERE email=$1`;
+  loginStmt: string = `SELECT id, email, name, hash FROM "account" WHERE email=$1`;
 
   constructor(client: Client) {
     this.client = client;
@@ -25,13 +25,13 @@ export default class AccountRepository implements IAccountRepository {
     try {
       const name = account.AccountName
       const email = account.Email
-      let password = account.Password ?? ''
+      let hash = account.Hash ?? ''
       const isActive = account.IsActive
       const createdAt = new Date()
 
-      password = await bcrypt.hash(password, saltRounds);
+      hash = await bcrypt.hash(hash, saltRounds);
 
-      let result = await this.client.query(this.insertAccountStmt, [name, email, password, isActive, createdAt])
+      let result = await this.client.query(this.insertAccountStmt, [name, email, hash, isActive, createdAt])
 
       let [row] = result.rows
 
@@ -71,7 +71,7 @@ export default class AccountRepository implements IAccountRepository {
         ID: account.id,
         AccountName: account.name,
         Email: account.email,
-        Password: account.password,
+        Hash: account.hash,
       };
     } catch (error) {
       throw error;

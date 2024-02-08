@@ -25,7 +25,7 @@ export default class AccountService implements IAccountService {
       account = {
         AccountName: name,
         Email: email,
-        Password: password,
+        Hash: password,
         IsActive: true
       } as Account
 
@@ -46,7 +46,7 @@ export default class AccountService implements IAccountService {
 
       const foundAccount = await this.accountRepository.findAccount(loginEmail, loginPassword);
       const storedEmail = foundAccount.Email
-      const storedPassword = foundAccount.Password
+      const storedPassword = foundAccount.Hash
       const storedId = foundAccount.ID
       const storedAccountName = foundAccount.AccountName
 
