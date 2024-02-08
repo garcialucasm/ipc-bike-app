@@ -6,7 +6,7 @@ import Image from "next/image"
 
 import { login, setCookie } from "../authUtils"
 import { NavigationPaths } from "@/types/NavigationPaths"
-import { validateLogin } from "@/app/utils/validators"
+import { validateLogin } from "@/utils/validators"
 
 import PrimaryButton from "@/components/Buttons/PrimaryButton"
 import SecondaryButton from "@/components/Buttons/SecondaryButton"

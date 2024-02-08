@@ -7,7 +7,7 @@ import { SingleBookingSections } from "@/types/BookingType"
 import { useSingleBookingContext } from "@/context/singleBooking"
 import BikeChooserContainer from "./modules/BikeChooserContainer"
 import { NavigationPaths } from "@/types/NavigationPaths"
-import { toPascalCase } from "@/app/utils/validators"
+import { toPascalCase } from "@/utils/validators"
 
 function InputStudentBikeSize() {
   let defaultBikeSize = BikeSize.STANDARD

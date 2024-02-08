@@ -1,6 +1,6 @@
 import { ApiHeader, apiUrls } from "./api";
 import { SingleBookingProps } from "@/types/BookingType";
-import { cleanUpSpaces } from "@/app/utils/validators";
+import { cleanUpSpaces } from "@/utils/validators";
 
 // TODO: Handle the double requirement in a better way. Maybe by stacking.
 // Flag to track whether an action is in progress

@@ -21,7 +21,7 @@ function MainNavbarApp() {
   const pathname = usePathname()
 
   return (
-    <div className="flex w-full flex-col items-center rounded-b-2xl bg-gradient-to-tr from-blue-800 via-blue-800 to-blue-600 py-2 text-white">
+    <div className="flex w-full flex-col items-center bg-gradient-to-tr from-blue-800 via-blue-800 to-blue-600 py-2 text-white">
       <div className="flex w-11/12 flex-col items-start">
         <MenuNavbarApp />
         <div className="flex w-full overflow-x-auto text-left text-xxs md:text-xs">

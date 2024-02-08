@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
-
-import { Inter } from "next/font/google"
 import "./globals.css"
+import { Inter } from "next/font/google"
 
 import HeaderApp from "@/components/Headers/HeaderApp"
 import { AppProvider } from "@/context/page"

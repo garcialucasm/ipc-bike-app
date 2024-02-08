@@ -6,7 +6,7 @@ import {
   validateFirstName,
   validateLastName,
   validateRoomNumber,
-} from "@/app/utils/validators"
+} from "@/utils/validators"
 import PrimaryButton from "../../Buttons/PrimaryButton"
 import SecondaryButton from "@/components/Buttons/SecondaryButton"
 import {

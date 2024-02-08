@@ -34,7 +34,7 @@ function MenuNavbarApp() {
         <Link href="/">
           <Image
             src="/logo-ipc-white.png"
-            className="h-6 w-auto"
+            className="h-6 xl:h-8 w-auto"
             width={300}
             height={399}
             alt=""
@@ -43,7 +43,7 @@ function MenuNavbarApp() {
         <div className="block">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="flex flex-grow items-center rounded py-2 ps-3 text-white hover:text-blue-300"
+            className="flex flex-grow items-center rounded py-2 ps-3 xl:text-slate-200 hover:text-white"
           >
             <svg
               className={`h-5 w-5 fill-current ${isOpen ? "hidden" : "block"}`}

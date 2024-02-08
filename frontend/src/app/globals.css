@@ -32,7 +32,7 @@
     @apply flex flex-grow flex-col items-center text-center;
   }
   .container-webapp-size {
-    @apply flex h-full w-full max-w-2xl;
+    @apply flex h-full w-full max-w-xl;
   }
   .container-page-webapp {
     @apply container-webapp-size my-6 flex-col items-center rounded-2xl bg-gradient-to-tr from-slate-100 via-slate-100 to-slate-50 px-16 pb-16 pt-8;

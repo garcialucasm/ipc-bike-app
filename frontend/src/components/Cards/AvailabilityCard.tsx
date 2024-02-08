@@ -26,19 +26,19 @@ function AvailabilityCard(props: {
 
   if (selectedStatus === BikeStatus.FREE) {
     textLabel = "available"
-    cardTextColorByStatus = "text-emerald-600 border-slate-200"
+    cardTextColorByStatus = "text-emerald-600"
     cardColorByStatus = "bg-emerald-600"
   } else if (selectedStatus === BikeStatus.BOOKED) {
     textLabel = "to confirm"
-    cardTextColorByStatus = "text-amber-600 border-slate-200"
+    cardTextColorByStatus = "text-amber-600"
     cardColorByStatus = "bg-amber-600"
   } else if (selectedStatus === BikeStatus.INUSE) {
     textLabel = "in use"
-    cardTextColorByStatus = "text-rose-600 border-slate-200"
+    cardTextColorByStatus = "text-rose-600"
     cardColorByStatus = "bg-rose-600"
   } else if (selectedStatus === BikeStatus.DISABLED) {
     textLabel = "disabled"
-    cardTextColorByStatus = "text-slate-600 border-slate-200"
+    cardTextColorByStatus = "text-slate-600"
     cardColorByStatus = "bg-slate-600"
   } else {
     textLabel = ""
