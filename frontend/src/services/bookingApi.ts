@@ -8,11 +8,13 @@ let isProcessing = false;
 
 // Show all active bookings
 export async function bookingFetchApi() {
+export async function bookingFetchApi() {
   try {
     const response = await ApiHeader.get(apiUrls.activeBookingsUrl);
     const activeBookings = response.data.bookings;
     return { activeBookings, error: null };
   } catch (error: any) {
+    console.error('Error getting active bookings:', error.message);
     console.error('Error getting active bookings:', error.message);
     return { activeBookings: null, error: `${error.message}` };
   }
@@ -57,7 +59,11 @@ export async function createSingleBookingFetchApi(bookingData: SingleBookingProp
 
 // Approve a booking
 export async function approveBookingFetchApi(bookingId: number) {
+export async function approveBookingFetchApi(bookingId: number) {
   try {
+    const response = await ApiHeader.post(apiUrls.approveBookingUrl + bookingId);
+
+    if (response.status < 200 || response.status >= 300) {
     const response = await ApiHeader.post(apiUrls.approveBookingUrl + bookingId);
 
     if (response.status < 200 || response.status >= 300) {
@@ -68,15 +74,19 @@ export async function approveBookingFetchApi(bookingId: number) {
     return { approvedBooking, error: null };
   } catch (error: any) {
     console.error('Error approving a booking:', error.message);
+    console.error('Error approving a booking:', error.message);
     return { approvedBooking: null, error: `${error.message}` };
   }
 };
 
 // Return a booking
 export async function returnBookingFetchApi(bookingId: number) {
+export async function returnBookingFetchApi(bookingId: number) {
   try {
     const response = await ApiHeader.post(apiUrls.returnBookingUrl + bookingId);
+    const response = await ApiHeader.post(apiUrls.returnBookingUrl + bookingId);
 
+    if (response.status < 200 || response.status >= 300) {
     if (response.status < 200 || response.status >= 300) {
       throw new Error(`${response.status}: ${response.statusText}`);
     }
@@ -85,6 +95,7 @@ export async function returnBookingFetchApi(bookingId: number) {
 
     return { returnedBooking, error: null };
   } catch (error: any) {
+    console.error('Error approving a return:', error.message);
     console.error('Error approving a return:', error.message);
     return { returnedBooking: null, error: `${error.message}` };
   }

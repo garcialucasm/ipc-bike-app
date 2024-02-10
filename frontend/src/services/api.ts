@@ -5,6 +5,7 @@ import { authHeader } from "@/app/auth/authUtils";
 
 // api.js
 const apiUrl = 'http://localhost:3000';
+const apiUrl = 'http://localhost:3000';
 
 export const apiUrls = {
   // Auth Service
