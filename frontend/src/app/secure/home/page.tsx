@@ -11,7 +11,7 @@ const Home: NextPage = () => {
   const router = useRouter()
 
   /* ----------- // TODO: Redirect according to user type by useAuth ---------- */
-  // router.replace(NavigationPaths.homeAppAdmin)
+  router.replace(NavigationPaths.homeAppAdmin)
 
   return (
     <>
