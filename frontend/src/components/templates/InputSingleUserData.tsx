@@ -207,4 +207,3 @@ function InputStudentData(props: {
 }
 
 export default InputStudentData;
-

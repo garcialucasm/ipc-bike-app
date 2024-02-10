@@ -15,4 +15,3 @@ const HomeApp: NextPage = () => {
 };
 
 export default withAuth(HomeApp);
-

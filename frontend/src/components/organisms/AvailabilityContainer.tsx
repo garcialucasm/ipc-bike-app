@@ -116,4 +116,3 @@ function AvailabilityContainer(props: {
 }
 
 export default AvailabilityContainer;
-

@@ -227,4 +227,3 @@ function BookingsOverview() {
 }
 
 export default BookingsOverview;
-
