@@ -1,6 +1,6 @@
 import assert from 'assert'
 import IBookingService from '../../services/booking.service'
-import { Booking, BookingStatus } from '../../models/booking.model' // Update this path
+import { Booking, BookingStatus, BookingType } from '../../models/booking.model' // Update this path
 import IBikeChooser from '../../services/bike.chooser'
 import IBikeService from '../../services/bike.service'
 import IUserService from '../../services/user.service'
@@ -12,7 +12,7 @@ import RandomBikeChooser from '../../services/random.bike.chooser'
 import BookingService from '../../services/booking.service.impl'
 import IBookingRepository from '../../repositories/booking.repository'
 import MockBookingRepository from './booking.fixtures'
-import { UserStatus } from '../../models/user.model'
+import { UserStatus, UserType } from '../../models/user.model'
 import { BikeStatus } from '../../models/bike.model'
 
 let bookingRepository: IBookingRepository
@@ -21,7 +21,11 @@ let bikeChooser: IBikeChooser
 let userService: IUserService
 let bookingService: IBookingService
 
-before(() => {
+const userName = 'TesterDaSilva'
+const bikeSize = 'medium'
+const room = 'A101'
+
+beforeEach(() => {
   // Initialize bookingService before each test
   // Assuming you have a concrete implementation of IBookingService called BookingService
   bookingRepository = new MockBookingRepository()
@@ -30,35 +34,179 @@ before(() => {
   bikeChooser = new RandomBikeChooser()
 
   bookingService = new BookingService(bookingRepository, bikeService, bikeChooser, userService, "term")
+
 })
 
 describe('For a valid user', () => {
-  before(async () => {
+  beforeEach(async () => {
     await bikeService.createBike(1, 'medium')
   })
 
-  const userName = 'testuser'
-  const bikeSize = 'medium'
-  const room = 'A101'
-  let booking: Booking
-
   it('should create a student booking', async () => {
-    booking = await bookingService.createSingleBooking(userName, room, bikeSize)
-    
-    assert.strictEqual(booking.User.Name, userName)
-    assert.strictEqual(booking.Bike[0].Size, bikeSize)
-    assert.strictEqual(booking.Status, BookingStatus.BOOKED)
-    assert.equal(booking.User.Status, UserStatus.BOOKED)
-    assert.equal(booking.Bike[0].CurrentStatus, BikeStatus.BOOKED)
+    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeSize)
+
+    assert.strictEqual(singleBooking.User.Name, userName)
+    assert.strictEqual(singleBooking.Bike[0].Size, bikeSize)
+    assert.strictEqual(singleBooking.Status, BookingStatus.BOOKED)
+    assert.strictEqual(singleBooking.User.Status, UserStatus.BOOKED)
+    assert.strictEqual(singleBooking.Bike[0].CurrentStatus, BikeStatus.BOOKED)
   })
 
-  it('should approve a booking')
+  it('should approve a booking', async () => {
+    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeSize)
 
-  it('should return a bike')
+    assert.strictEqual(singleBooking.ID, 1)
+    assert.strictEqual(singleBooking.Status, BookingStatus.BOOKED)
+    assert.strictEqual(singleBooking.User.Status, UserStatus.BOOKED)
+    assert.strictEqual(singleBooking.Bike[0].CurrentStatus, BikeStatus.BOOKED)
 
-  it('should cancel a booking')
+  })
+
+  it('should not approve a booking that has already been approved', async () => {
+    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeSize)
+    await bookingService.approve(1)
+
+    try {
+      assert.doesNotThrow(async () => {
+        await bookingService.approve(1);
+      }, Error);
+    } catch (error) {
+      assert.ok(error)
+    }
+
+    assert.strictEqual(singleBooking.Status, BookingStatus.DELIVERED)
+    assert.strictEqual(singleBooking.User.Status, UserStatus.INUSE)
+    assert.strictEqual(singleBooking.Bike[0].CurrentStatus, BikeStatus.INUSE)
+  })
+
+
+  it('should not approve a booking that has already been returned', async () => {
+    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeSize)
+    await bookingService.approve(1)
+    await bookingService.returnBike(1)
+
+    try {
+      assert.doesNotThrow(async () => {
+        await bookingService.approve(1);
+      }, Error)
+    } catch (error) {
+      assert.ok(error)
+    }
+
+    assert.strictEqual(singleBooking.Status, BookingStatus.RETURNED)
+    assert.strictEqual(singleBooking.User.Status, UserStatus.FREE)
+    assert.strictEqual(singleBooking.Bike[0].CurrentStatus, BikeStatus.FREE)
+  })
+
+  it('should return a bike', async () => {
+    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeSize)
+    await bookingService.approve(1)
+    await bookingService.returnBike(1)
+
+    assert.strictEqual(singleBooking.ID, 1)
+    assert.strictEqual(singleBooking.Status, BookingStatus.RETURNED)
+    assert.strictEqual(singleBooking.User.Status, UserStatus.FREE)
+    assert.strictEqual(singleBooking.Bike[0].CurrentStatus, BikeStatus.FREE)
+  })
+
+
+  it('should not return a bike that has not yet been approved', async () => {
+    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeSize)
+
+    try {
+      assert.doesNotThrow(async () => {
+        await bookingService.returnBike(1);
+      }, Error)
+      assert.fail("should fail")
+    } catch (error) {
+      assert.ok(error)
+    }
+
+    assert.strictEqual(singleBooking.Status, BookingStatus.BOOKED)
+    assert.strictEqual(singleBooking.User.Status, UserStatus.BOOKED)
+    assert.strictEqual(singleBooking.Bike[0].CurrentStatus, BikeStatus.BOOKED)
+  })
+
+  it('should not return a bike that has already been returned', async () => {
+    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeSize)
+    await bookingService.approve(1)
+    await bookingService.returnBike(1)
+
+    try {
+      assert.doesNotThrow(async () =>
+        await bookingService.returnBike(1),
+        Error,
+      )
+      assert.fail("should fail")
+    } catch (error) {
+      assert.ok(error)
+    }
+
+    assert.strictEqual(singleBooking.Status, BookingStatus.RETURNED)
+    assert.strictEqual(singleBooking.User.Status, UserStatus.FREE)
+    assert.strictEqual(singleBooking.Bike[0].CurrentStatus, BikeStatus.FREE)
+  })
+
+  it('should cancel a booking with BOOKED status', async () => {
+    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeSize)
+    await bookingService.cancel(1)
+
+    assert.strictEqual(singleBooking.Status, BookingStatus.CANCELED)
+    assert.strictEqual(singleBooking.User.Status, UserStatus.FREE)
+    assert.strictEqual(singleBooking.Bike[0].CurrentStatus, BikeStatus.FREE)
+  })
+
+  it('should cancel a booking with DELIVERED status', async () => {
+    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeSize)
+    await bookingService.approve(1)
+    await bookingService.cancel(1)
+
+    assert.strictEqual(singleBooking.Status, BookingStatus.CANCELED)
+    assert.strictEqual(singleBooking.User.Status, UserStatus.FREE)
+    assert.strictEqual(singleBooking.Bike[0].CurrentStatus, BikeStatus.FREE)
+  })
+
+  it('should not cancel a booking with RETURNED status', async () => {
+    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeSize)
+    await bookingService.approve(1)
+    await bookingService.returnBike(1)
+
+    try {
+      assert.doesNotThrow(async () =>
+        await bookingService.cancel(1),
+        Error,
+      )
+      assert.fail("should fail")
+    } catch (error) {
+      assert.ok(error)
+    }
+
+    assert.strictEqual(singleBooking.Status, BookingStatus.RETURNED)
+    assert.strictEqual(singleBooking.User.Status, UserStatus.FREE)
+    assert.strictEqual(singleBooking.Bike[0].CurrentStatus, BikeStatus.FREE)
+  })
+
+  it('should not cancel a booking with CANCELED status', async () => {
+    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeSize)
+    await bookingService.cancel(1)
+
+    try {
+      assert.doesNotThrow(async () =>
+        await bookingService.cancel(1),
+        Error,
+      )
+      assert.fail("should fail")
+    } catch (error) {
+      assert.ok(error)
+    }
+
+    assert.strictEqual(singleBooking.Status, BookingStatus.CANCELED)
+    assert.strictEqual(singleBooking.User.Status, UserStatus.FREE)
+    assert.strictEqual(singleBooking.Bike[0].CurrentStatus, BikeStatus.FREE)
+  })
 
   it('should list all opened bookings')
 
   it('should list all bookings in use')
+
 })

@@ -18,10 +18,9 @@ function HeaderWebApp(props: {
       case MenuNavigation.groupBooking:
         return MenuNavigation.groupBooking;
       default:
-        // Log an error or handle the unknown section
+        // Handle the unknown section
         console.error(`Unknown section: ${currentPage}`);
-        // Return a default step or handle as appropriate
-        return;
+        return MenuNavigation.homePageApp;
     }
   }, [currentPage]);
 
@@ -118,7 +117,9 @@ function HeaderWebApp(props: {
         <div className="text-xl text-left font-black pt-8 tracking-tight">
           {props.headingTitle}
         </div>
-        <div className="text-left pb-3 text-sm tracking-wider">{props.headingSubTitle}</div>
+        <div className="text-left pb-3 text-sm tracking-wider">
+          {props.headingSubTitle}
+        </div>
       </div>
     </div>
   );

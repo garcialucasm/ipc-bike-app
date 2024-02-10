@@ -2,24 +2,23 @@
 import { Router, RouterOptions } from 'express'
 import IBookingService from '../services/booking.service'
 import { validateRoom, validateUserName, validateBikeSize } from '../models/validators'
-import {BookingDTO, BookingStatusDTO } from '../dto/booking.dto'
+import { BookingDTO, BookingStatusDTO } from '../dto/booking.dto'
 import { Booking, BookingStatus, BookingType } from '../models/booking.model'
-import { stat } from 'fs'
 
 
-function toBookingDTO(booking: Booking) : BookingDTO {
+function toBookingDTO(booking: Booking): BookingDTO {
   return {
     id: booking.ID ?? 0,
     status: BookingStatus[booking.Status as keyof typeof BookingStatus].toLowerCase(),
     user: booking.User.Name,
-    bikeType: booking.Type == BookingType.SINGLE? 
+    bikeType: booking.Type == BookingType.SINGLE ?
       booking.Bike[0].Size.toLowerCase() : booking.Bike.map(bike => bike.Size.toLowerCase()),
-    bike: booking.Type == BookingType.SINGLE? 
+    bike: booking.Type == BookingType.SINGLE ?
       booking.Bike[0].Numbering.toString() : booking.Bike.map(bike => bike.Numbering.toString())
   }
 }
 
-function toBookingStatusDTO(status: Map<BookingStatus, number>) : BookingStatusDTO {
+function toBookingStatusDTO(status: Map<BookingStatus, number>): BookingStatusDTO {
   return {
     inuse: status.get(BookingStatus.DELIVERED) ?? 0,
     booked: status.get(BookingStatus.BOOKED) ?? 0,
@@ -31,40 +30,39 @@ function toBookingStatusDTO(status: Map<BookingStatus, number>) : BookingStatusD
 export default function bookingController(bookingService: IBookingService, routerOptions?: RouterOptions) {
 
   const router: Router = Router(routerOptions)
-  
+
   router.get("/status", async (req, res) => {
     bookingService.countBookingsByStatus()
       .then(statusResult => toBookingStatusDTO(statusResult))
       .then(statusResult => {
         res.status(200)
-          .send({status: statusResult})
+          .send({ status: statusResult })
       })
   })
 
 
   router.post("/create/single", async (req, res) => {
-    let userName = req.body.userName
-    let room = req.body.room
-    let bikeSize = req.body.bikeSize
+    const userName = req.body.userName
+    const room = req.body.room
+    const bikeSize = req.body.bikeSize
 
     try {
-      validateUserName(userName) 
+      validateUserName(userName)
       validateRoom(room)
       validateBikeSize(bikeSize)
-
       bookingService.createSingleBooking(userName, room, bikeSize)
-      .then(booking => {
-        res.status(200)
-          .send({booking: toBookingDTO(booking)})
-      }).catch(error => {
-        console.log(error)
-        res.status(401)
-          .send({error: error.message})
-      })
+        .then(booking => {
+          res.status(200)
+            .send({ booking: toBookingDTO(booking) })
+        }).catch(error => {
+          console.log(error)
+          res.status(401)
+            .send({ error: error.message })
+        })
     } catch (error: any) {
       console.log(error)
       res.status(401)
-        .send({error: error.message})
+        .send({ error: error.message })
     }
   })
 
@@ -72,46 +70,45 @@ export default function bookingController(bookingService: IBookingService, route
     bookingService.approve(parseInt(req.params.id))
       .then(booking => {
         res.status(200)
-          .send({booking: toBookingDTO(booking)})
-      }).catch (error => {
-        console.log(error) 
+          .send({ booking: toBookingDTO(booking) })
+      }).catch(error => {
+        console.log(error)
         res.status(401)
-          .send({error: error.message})
+          .send({ error: error.message })
       })
   })
 
   router.post("/return/:id", (req, res) => {
     bookingService.returnBike(parseInt(req.params.id))
-    .then(booking => {
-      res.status(200)
-        .send({booking: toBookingDTO(booking)})
-    }).catch(error => {
-      console.log(error)
-      res.status(401)
-        .send({error: error.message})
-    })
+      .then(booking => {
+        res.status(200)
+          .send({ booking: toBookingDTO(booking) })
+      }).catch(error => {
+        console.log(error)
+        res.status(401)
+          .send({ error: error.message })
+      })
   })
 
   router.get("/all", (req, res) => {
-
-    let showInactive: boolean = false 
+    let showInactive: boolean = false
     if (req.query.show_inactive && req.query.show_inactive === 'true') {
       showInactive = true
     }
 
     bookingService.findAll(showInactive)
-      .then(bookings => 
+      .then(bookings =>
         bookings.map(booking => toBookingDTO(booking))
       )
       .then(bookings => {
         res.status(200)
-          .send({bookings: bookings})
+          .send({ bookings: bookings })
       }).catch(error => {
         console.log(error)
         res.status(401)
-          .send({error: error.message})
+          .send({ error: error.message })
       })
   })
-  
+
   return router
 }

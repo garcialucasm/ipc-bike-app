@@ -1,28 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Booking } from "@/types/BookingType";
 import Button from "../atoms/Button";
 import {
   IconSvgProcessConfirmed,
   IconSvgFeedbackError,
+  IconSvgLoader,
 } from "../atoms/IconsSvg";
 import Infobox from "../organisms/Infobox";
 import NextSteps from "../molecules/NextSteps";
 
-function BookingConfimed(props: {
-  onNavigation: (navigationButton: any) => void;
+function BookingConfirmation({
+  bookingData,
+  serverResult,
+}: {
   bookingData: Booking;
   serverResult: any;
 }) {
-  const bookingData = props.bookingData;
   const [showNextSteps, setShowNextSteps] = useState(false);
-  const serverResult = props.serverResult;
-  console.log(serverResult);
-  const errorMessage = serverResult.error ? serverResult.error : "";
+  const [result, setResult] = useState(serverResult);
+  useEffect(() => {
+    setResult(serverResult);
+  }, [serverResult]);
   return (
     <div className="flex flex-col items-center w-11/12 text-slate-700">
       {/* Render if there are no errors */}
-      {!serverResult.error ? (
+      {Object.keys(result).length < 2 ? (
+        <>
+          <IconSvgLoader height={"h-24"} />
+        </>
+      ) : !result.error ? (
         <>
           <div className="w-full pb-3">
             <div className="flex items-center justify-center py-3">
@@ -72,7 +79,7 @@ function BookingConfimed(props: {
                 width={"w-8"}
               />
             </div>
-            <div className="block align-baseline font-medium text-center text-sm text-rose-700 bg-rose-100 rounded-lg py-2 mb-4">{`${errorMessage.toLowerCase()}`}</div>
+            <div className="block align-baseline font-medium text-center text-sm text-rose-700 bg-rose-100 rounded-lg py-2 mb-4">{`${result.error.toLowerCase()}`}</div>
             <Infobox bookingData={bookingData} />
           </div>
           <div className="w-full">
@@ -86,4 +93,4 @@ function BookingConfimed(props: {
   );
 }
 
-export default BookingConfimed;
+export default BookingConfirmation;

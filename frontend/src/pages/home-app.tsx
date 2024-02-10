@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import HomeKeyKeeper from "@/components/templates/HomeKeykeeper";
+import Head from "@/components/atoms/Head";
+import withAuth from "@/auth/withAuth";
+import { NextPage } from "next";
 
-let isLoggedIn: boolean = true;
+const HomeApp: NextPage = () => {
 
-export default function HomeApp() {
   return (
     <>
-      {/* TODO Separete home app by login type */}
+      <Head title="IPC Alumni Bike" />
       <HomeKeyKeeper />
     </>
   );
-}
+};
+
+export default withAuth(HomeApp);

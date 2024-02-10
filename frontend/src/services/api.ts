@@ -1,6 +1,10 @@
-// api.js
-const apiUrl = 'http://localhost';
+import { authHeader } from "@/auth/authUtils";
+import axios from "axios";
 
-export const api = {
-  baseUrl: apiUrl,
-};
+// api.js
+const apiUrl = 'http://localhost:3000';
+
+export const ApiHeader = axios.create({
+  baseURL: apiUrl,
+  headers: authHeader().headers,
+});

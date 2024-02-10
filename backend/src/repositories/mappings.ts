@@ -1,11 +1,12 @@
 import { Bike, BikeStatus } from "../models/bike.model";
 import { Booking, BookingStatus, BookingType } from "../models/booking.model";
+import { Account } from "../models/account.model";
 import { User, UserType, UserStatus } from "../models/user.model";
 
 
-function filterPropertiesWithPrefix(object: any, prefix: string) : any { 
+function filterPropertiesWithPrefix(object: any, prefix: string): any {
   const dotedPrefix = prefix + '.'
-  const filtered : string[] = Object.keys(object).filter(key => key.startsWith(dotedPrefix))
+  const filtered: string[] = Object.keys(object).filter(key => key.startsWith(dotedPrefix))
   let res: Map<String, any> = new Map<String, any>()
 
   filtered.forEach((key: string) => {
@@ -16,9 +17,9 @@ function filterPropertiesWithPrefix(object: any, prefix: string) : any {
   return Object.fromEntries(res)
 }
 
-function bookingFromRow(row: any) : Booking {
+function bookingFromRow(row: any): Booking {
   let bookingData = filterPropertiesWithPrefix(row, 'bk')
-  let user : User = userFromRow(filterPropertiesWithPrefix(row, 'u'))
+  let user: User = userFromRow(filterPropertiesWithPrefix(row, 'u'))
 
   return {
     ID: Number.parseInt(bookingData['id']),
@@ -29,16 +30,16 @@ function bookingFromRow(row: any) : Booking {
     Status: bookingData['status'] ? BookingStatus[bookingData['status'] as keyof typeof BookingStatus] : BookingStatus.BOOKED,
     Notes: bookingData['notes'],
     ReturnedCondition: bookingData['returned_condition'],
-    CreatedAt: bookingData['created_at'] ? new Date(row['created_at']) : undefined, 
-    ConfirmedAt: bookingData['confirmed_at'] ? new Date(row['confirmed_at']) : undefined, 
-    ReturnedAt: bookingData['returned_at'] ? new Date(row['returned_at']) : undefined, 
+    CreatedAt: bookingData['created_at'] ? new Date(row['created_at']) : undefined,
+    ConfirmedAt: bookingData['confirmed_at'] ? new Date(row['confirmed_at']) : undefined,
+    ReturnedAt: bookingData['returned_at'] ? new Date(row['returned_at']) : undefined,
   }
 }
 
-function bikeFromRow(row: any) : Bike {
- return { 
+function bikeFromRow(row: any): Bike {
+  return {
     ID: Number.parseInt(row['id']),
-    IsActive: row['is_active']? new Boolean(row['is_active']).valueOf() : false,
+    IsActive: row['is_active'] ? new Boolean(row['is_active']).valueOf() : false,
     CurrentStatus: row['current_status'] ? BikeStatus[row['current_status'] as keyof typeof BikeStatus] : BikeStatus.DISABLED,
     Numbering: Number.parseInt(row['numbering']),
     Size: row['size'],
@@ -48,19 +49,31 @@ function bikeFromRow(row: any) : Bike {
   }
 }
 
-function userFromRow(row: any) : User {
+function userFromRow(row: any): User {
   return {
     ID: Number.parseInt(row['id']),
     Name: row['name'],
     Room: row['room'],
-    Type: row['type'] ? UserType[ row['type'] as keyof typeof UserType] : UserType.STUDENT,
+    Type: row['type'] ? UserType[row['type'] as keyof typeof UserType] : UserType.STUDENT,
     Term: row['term'],
-    Status: row['status'] ? UserStatus[row['status'] as keyof typeof UserStatus] : UserStatus.FREE,
-    IsActive: row['is_active'] ? new Boolean(row['is_active']).valueOf() : false,
+    Status: row['status'] ? UserStatus[row['status'] as keyof typeof UserStatus] : UserStatus.FREE,
+    IsActive: row['is_active'] ? new Boolean(row['is_active']).valueOf() : false,
     CreatedAt: row['created_at'] ? new Date(row['created_at']) : undefined,
     UpdatedAt: row['updated_at'] ? new Date(row['updated_at']) : undefined,
     DeletedAt: row['deleted_at'] ? new Date(row['deleted_at']) : undefined
   }
 }
 
-export {bookingFromRow, bikeFromRow, userFromRow, filterPropertiesWithPrefix}
+function accountFromRow(row: any): Account {
+  return {
+    ID: Number.parseInt(row['id']),
+    Email: row['email'],
+    Hash: row['password'],
+    IsActive: row['is_active'] ? new Boolean(row['is_active']).valueOf() : false,
+    CreatedAt: row['created_at'] ? new Date(row['created_at']) : undefined,
+    UpdatedAt: row['updated_at'] ? new Date(row['updated_at']) : undefined,
+    DeletedAt: row['deleted_at'] ? new Date(row['deleted_at']) : undefined
+  }
+}
+
+export { bookingFromRow, bikeFromRow, userFromRow, filterPropertiesWithPrefix, accountFromRow }

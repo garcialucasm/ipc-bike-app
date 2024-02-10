@@ -7,10 +7,12 @@ import {
   approveBookingFetchApi,
   bookingFetchApi,
 } from "@/services/bookingApi";
-import { UserStatus } from "@/types/UserType";
 import Link from "next/link";
+import { IconSvgLoader } from "../atoms/IconsSvg";
+import { useRouter } from "next/router";
 
 function BookingsOverview() {
+  const router = useRouter();
   const [bookingData, setBookingData] = useState<{
     activeBookings: any; //TODO correct type
     error: string | null;
@@ -19,8 +21,8 @@ function BookingsOverview() {
     error: null,
   });
 
-const [reloadData, setReloadData] = useState(false);
-  
+  const [reloadData, setReloadData] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await bookingFetchApi();
@@ -33,7 +35,6 @@ const [reloadData, setReloadData] = useState(false);
   const { activeBookings, error } = bookingData;
 
   async function handleClickCancelBooking(bookingId: number) {
-    console.log(bookingId);
     setReloadData(!reloadData);
   }
 
@@ -48,18 +49,24 @@ const [reloadData, setReloadData] = useState(false);
       await returnBookingFetchApi(bookingId);
     }
     // Set confirmation status to trigger re-render
-    setReloadData((prevStatus) => !prevStatus);
+    setReloadData(!reloadData);
   }
 
   // Check if activeBookings returned an error
   if (error) {
     return (
       <>
-        <div className="text-xs">
-          Something unexpected happened. It was not possible to fetch active
-          bookings. Please try again later.
+        <div className="w-full flex flex-col justify-center">
+          <div className="text-xs">
+            Something unexpected happened. It was not possible to fetch active
+            bookings.
+            <span className="text-sm">
+              <Button className="btn-return" onClick={() => router.reload()}>
+                Click here to Refresh
+              </Button>
+            </span>
+          </div>
         </div>
-        <div className="text-xs text-slate-300">Error: {error}</div>
       </>
     );
   }

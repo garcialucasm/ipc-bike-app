@@ -1,101 +1,70 @@
-import { Booking, BookingStatus } from "@/types/BookingType";
-import { api } from "./api";
-import { number } from "prop-types";
+import { Booking } from "@/types/BookingType";
+import { ApiHeader } from "./api";
+import { cleanUpSpaces } from "@/utils/validators";
 
-//Url to Show all active bookings
-const activeBookingsUrl = "/booking/all";
-//Url to Show all bookings
-const allBookingsUrl = "/booking/all?show_inactive=true";
-//Url to Show number of bikes in each status 
-const bikeStatusCounterUrl = "/booking/";
-//Url to Create Single booking
-const createSingleBookingUrl = "/booking/create/single";
-//Url to Cancel a booking
-const cancelBookingUrl = "/booking/all";
-//Url to Approve a booking
-const approveBookingUrl = "/booking/approve/";
-//Url to Return a booking
-const returnBookingUrl = "/booking/return/";
+const apiUrls = {
+  loginUrl: "/auth/login",
+  activeBookingsUrl: "/secure/booking/all",
+  allBookingsUrl: "/secure/booking/all?show_inactive=true",
+  createSingleBookingUrl: "/secure/booking/create/single",
+  cancelBookingUrl: "/secure/booking/cancel",
+  approveBookingUrl: "/secure/booking/approve/",
+  returnBookingUrl: "/secure/booking/return/",
+}
 
+
+// Login
+export async function login(email: string, password: string) {
+  try {
+    const response = await ApiHeader.post(apiUrls.loginUrl,
+      {
+        email: email,
+        password: password,
+      })
+    return { data: response.data, error: null };
+
+  } catch (error: any) {
+    console.error('Error authenticating:', error.message);
+    return {
+      data: null, error: `${error.message}`
+    }
+  }
+}
 
 // Show all active bookings
-export const bookingFetchApi = async () => {
+export async function bookingFetchApi() {
   try {
-    const response = await fetch(`${api.baseUrl + activeBookingsUrl}`);
-
-    if (!response.ok) {
-      throw new Error(`${response.status}: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    const activeBookings = data.bookings;
-
-    // Loop through each active booking and show relevant information in the console
-    activeBookings.forEach((booking: any) => {
-      // console.dir(booking, { depth: null });
-      // console.log(JSON.stringify(booking, null, 2));
-    });
+    const response = await ApiHeader.get(apiUrls.activeBookingsUrl);
+    const activeBookings = response.data.bookings;
 
     return { activeBookings, error: null };
   } catch (error: any) {
+    console.error('Error getting active bookings:', error.message);
     return { activeBookings: null, error: `${error.message}` };
   }
 };
 
-// Bike Status Counter
-export const bikeStatusCounterFetchApi = async () => {
-  let bikeCountFree: number = 0;
-  let bikeCountBooked: number = 0;
-  let bikeCountInUse: number = 0;
-  let bikeCountDisabled: number = 0;
+//Create Single Booking
+export async function createSingleBookingFetchApi(bookingData: Booking) {
   try {
-    const response = await fetch(`${api.baseUrl + bikeStatusCounterUrl}`);
-    if (!response.ok) {
+    const userName = cleanUpSpaces(bookingData.bookingUserData.firstName) + " " + cleanUpSpaces(bookingData.bookingUserData.lastName)
+    const room = bookingData.bookingUserData.roomNumber
+    const bikeSize = bookingData.bookingBikeSize
+
+    const response = await ApiHeader.post(apiUrls.createSingleBookingUrl, {
+      userName: userName,
+      room: room,
+      bikeSize: bikeSize,
+    }
+    );
+
+    if (response.status < 200 || response.status >= 300) {
       throw new Error(`${response.status}: ${response.statusText}`);
     }
 
-    return {
-      bikeCountFree,
-      bikeCountBooked,
-      bikeCountInUse,
-      bikeCountDisabled,
-      error: null
-    };
-  } catch (error: any) {
-    return {
-      bikeCountFree: number,
-      bikeCountBooked: number,
-      bikeCountInUse: number,
-      bikeCountDisabled: number,
-      error: `${error.message}`
-    };
-  }
-}
+    const data = response.data
 
-//Create Single Booking
-export const createSingleBookingFetchApi = async (bookingData: Booking) => {
-  try {
-    const response = await fetch(api.baseUrl + createSingleBookingUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userName: bookingData.bookingUserData.firstName + " " + bookingData.bookingUserData.lastName,
-        room: bookingData.bookingUserData.roomNumber,
-        bikeSize: bookingData.bookingBikeSize,
-      }),
-    });
-
-    console.log("User: " + bookingData.bookingUserData.firstName + " " + bookingData.bookingUserData.lastName)
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error);
-    }
-
-    const data = await response.json();
-    return { booking: data.booking, error: null }; // Assuming the server returns the booking information
+    return { booking: data.booking, error: null };
   } catch (error: any) {
     console.error('Error creating single booking:', error.message);
     return {
@@ -105,47 +74,36 @@ export const createSingleBookingFetchApi = async (bookingData: Booking) => {
 }
 
 // Approve a booking
-export const approveBookingFetchApi = async (bookingId: number) => {
+export async function approveBookingFetchApi(bookingId: number) {
   try {
-    console.log(bookingId)
-    const response = await fetch(api.baseUrl + approveBookingUrl + bookingId, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await ApiHeader.post(apiUrls.approveBookingUrl + bookingId);
 
-    if (!response.ok) {
+    if (response.status < 200 || response.status >= 300) {
       throw new Error(`${response.status}: ${response.statusText}`);
     }
-    console.log(`Booking ID ${bookingId} approved`);
     const approvedBooking = true
 
     return { approvedBooking, error: null };
   } catch (error: any) {
+    console.error('Error approving a booking:', error.message);
     return { approvedBooking: null, error: `${error.message}` };
   }
 };
 
 // Return a booking
-export const returnBookingFetchApi = async (bookingId: number) => {
+export async function returnBookingFetchApi(bookingId: number) {
   try {
-    const response = await fetch(api.baseUrl + returnBookingUrl + bookingId, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await ApiHeader.post(apiUrls.returnBookingUrl + bookingId);
 
-    if (!response.ok) {
+    if (response.status < 200 || response.status >= 300) {
       throw new Error(`${response.status}: ${response.statusText}`);
     }
 
-    console.log(`Booking ID ${bookingId} returned`);
     const returnedBooking = true
 
     return { returnedBooking, error: null };
   } catch (error: any) {
+    console.error('Error approving a return:', error.message);
     return { returnedBooking: null, error: `${error.message}` };
   }
 };

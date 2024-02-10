@@ -1,29 +1,61 @@
-//Since we are using the client side functionalities like useState() we will have
-//to mark our components with use client so that nextjs considers it as a client component.
-"use client";
-
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import Button from "@/components/atoms/Button";
 import { MenuNavigation } from "@/types/NavigationSections";
 import Image from "next/image";
+import { login } from "@/services/bookingApi";
+import { setCookie } from "@/utils/cookieUtils";
+import { validateLogin } from "@/utils/validators";
 
-interface ErrorMessage {
-  username: string;
+export interface ErrorMessageLogin {
+  email: string;
   password: string;
 }
 
-const errorMessage: ErrorMessage = {
-  username: "",
+const errorMessage: ErrorMessageLogin = {
+  email: "",
   password: "",
 };
 
 function Login() {
+  const router = useRouter();
   const [formLoginData, setFormLoginData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
-
   const [errorMessages, setErrorMessages] = useState(errorMessage);
+
+  const handleBlur = () => {
+    // TODO: turn on the login validation by removing the comment below
+    // setErrorMessages(validateLogin(formLoginData));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (
+      formLoginData.email !== "" &&
+      formLoginData.password !== "" &&
+      errorMessages.email === "" &&
+      errorMessages.password === ""
+    ) {
+      try {
+        const response = await login(
+          formLoginData.email,
+          formLoginData.password
+        );
+
+        if (response.data) {
+          await setCookie("ipcBikeApp_authToken", response.data.token);
+          window.location.href = "/home-app";
+        }
+      } catch (error) {
+        console.error("Authentication error: ", error);
+        // TODO: Handle incorrect credentials
+        // Handle authentication error
+      }
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormLoginData({
@@ -32,48 +64,15 @@ function Login() {
     });
   };
 
-  const handleBlur = () => {
-    setErrorMessages(staticValidate(formLoginData));
-  };
-
   const handleFocus = () => {
     setErrorMessages({
-      username: "",
+      email: "",
       password: "",
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setErrorMessages(staticValidate(formLoginData));
-    //TODO create a function to validate. If worng => use existing error messages. If right => redirect
-    //TODO prevent more than 5 attempts in a row
-    window.location.replace("/home-app");
-  };
-
-  const staticValidate = (formValues: any) => {
-    let error: ErrorMessage = {
-      username: "",
-      password: "",
-    };
-    console.log(formValues);
-    if (!formValues.username) {
-      error.username = "Username or e-mail are required";
-    } else if (formValues.username.length < 5) {
-      error.username = "Please enter a valid username or email";
-    } else {
-      error.username = "";
-    }
-    if (formValues.password.length < 8) {
-      error.password = "Password must have at least 8 characters";
-    } else {
-      error.password = "";
-    }
-    return error;
-  };
-
   function handleReturnButton() {
-    window.location.replace("/");
+    router.replace("/");
   }
 
   return (
@@ -114,17 +113,17 @@ function Login() {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 onFocus={handleFocus}
-                value={formLoginData.username}
+                value={formLoginData.email}
                 className="pl-2 outline-none border-none"
                 type="text"
-                name="username"
-                id="username"
+                name="email"
+                id="email"
                 required={true}
-                placeholder="Username or e-mail"
+                placeholder="User name or e-mail"
               />
             </div>
             <span className="text-xs text-red-600 text-wrap px-1">
-              {errorMessages.username}
+              {errorMessages.email}
             </span>
             <div className="flex items-center border-2 py-2 px-3 rounded-2xl mt-4">
               <svg

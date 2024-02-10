@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Button from "../atoms/Button";
-import { UserData } from "@/types/UserType";
 import { SingleBookingSection } from "@/types/NavigationSections";
+import { Booking } from "@/types/BookingType";
+import { validateName, validateRoomNumber } from "@/utils/validators";
 
 interface ErrorMessage {
   showErrorMessages: boolean;
@@ -14,14 +15,8 @@ function InputStudentData(props: {
   onNavigation: (navigationButton: {
     buttonName: SingleBookingSection;
   }) => void;
-  sendUserDataState: UserData;
-  sendSetUserDataState: (
-    userDataState: (prevValues: UserData) => {
-      firstName: string;
-      lastName: string;
-      roomNumber: string;
-    }
-  ) => void;
+  bookingData: Booking;
+  setBookingData: (getPrevState: (prevState: Booking) => Booking) => void;
 }) {
   const [errorMessages, setErrorMessages] = useState({
     showErrorMessages: false,
@@ -32,38 +27,45 @@ function InputStudentData(props: {
 
   useEffect(() => {
     // Run the validation when sendUserDataState changes
-    setErrorMessages(staticValidate(props.sendUserDataState));
-  }, [props.sendUserDataState]);
+    setErrorMessages(staticValidate(props.bookingData.bookingUserData));
+  }, [props.bookingData]);
 
   // Get user's data entry (first name, last name, room number) when input is changed
   function handleUserDataChange(event: {
     target: { value: any; name: string };
   }) {
     const { value, name } = event.target;
-    props.sendSetUserDataState((prevValues: UserData) => ({
+    props.setBookingData((prevValues) => ({
       ...prevValues,
-      [name]: value,
+      bookingUserData: { ...prevValues.bookingUserData, [name]: value },
     }));
-    console.log(event.target);
   }
 
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     const { name } = event.currentTarget;
     const buttonClicked: SingleBookingSection = name as SingleBookingSection;
-    setErrorMessages(staticValidate(props.sendUserDataState));
+    const userData = props.bookingData.bookingUserData;
+
+    // Run validation and update error messages
+    setErrorMessages(staticValidate(userData));
+
+    // Check conditions for navigation
     if (
       buttonClicked === SingleBookingSection.preBookingConfirmation &&
-      props.sendUserDataState.firstName !== "" &&
-      props.sendUserDataState.lastName !== "" &&
-      props.sendUserDataState.roomNumber !== "" &&
-      errorMessages.firstName === "" &&
-      errorMessages.lastName === "" &&
-      errorMessages.roomNumber === ""
+      userData.firstName &&
+      userData.lastName &&
+      userData.roomNumber &&
+      !errorMessages.firstName &&
+      !errorMessages.lastName &&
+      !errorMessages.roomNumber
     ) {
+      // Navigate if all conditions are met
       props.onNavigation({ buttonName: buttonClicked });
     } else if (buttonClicked === SingleBookingSection.selectBikeSize) {
+      // Navigate for the other button
       props.onNavigation({ buttonName: buttonClicked });
     } else {
+      // Show error messages
       setErrorMessages((prevErrorMessages) => ({
         ...prevErrorMessages,
         showErrorMessages: true,
@@ -79,44 +81,13 @@ function InputStudentData(props: {
       roomNumber: "",
     };
     //First name input validation
-    if (!formValues.firstName) {
-      error.firstName = "First name is required";
-    } else if (
-      formValues.firstName.length < 2 ||
-      formValues.firstName.length > 50
-    ) {
-      error.firstName = "Please enter a valid first name";
-    } else if (!/^[a-zA-Z]+$/.test(formValues.firstName)) {
-      error.lastName =
-        "Please enter a valid first name without special characters";
-    } else {
-      error.firstName = "";
-    }
+    error.firstName = validateName(formValues.firstName);
+
     //Last name input validation
-    if (!formValues.lastName) {
-      error.lastName = "Last name is required";
-    } else if (
-      formValues.lastName.length < 2 ||
-      formValues.lastName.length > 50
-    ) {
-      error.lastName = "Please enter a valid last name";
-    } else if (!/^[a-zA-Z]+$/.test(formValues.lastName)) {
-      error.lastName =
-        "Please enter a valid last name without special characters";
-    } else {
-      error.lastName = "";
-    }
+    error.lastName = validateName(formValues.lastName);
+
     //Room number input validation
-    if (!formValues.roomNumber) {
-      error.roomNumber = "Room number is required";
-    } else if (
-      formValues.roomNumber.length < 2 ||
-      formValues.roomNumber.length > 20
-    ) {
-      error.roomNumber = "Please enter a valid room number";
-    } else {
-      error.roomNumber = "";
-    }
+    error.roomNumber = validateRoomNumber(formValues.roomNumber);
     return error;
   };
 
@@ -151,7 +122,7 @@ function InputStudentData(props: {
                 name="firstName"
                 onChange={handleUserDataChange}
                 type="text"
-                value={props.sendUserDataState.firstName}
+                value={props.bookingData.bookingUserData.firstName}
                 className={`pl-2 outline-none border-none w-full`}
               />
             </div>
@@ -167,7 +138,7 @@ function InputStudentData(props: {
                 name="lastName"
                 onChange={handleUserDataChange}
                 type="text"
-                value={props.sendUserDataState.lastName}
+                value={props.bookingData.bookingUserData.lastName}
                 placeholder="Last name"
                 className="pl-2 outline-none border-none w-full"
               />
@@ -198,7 +169,7 @@ function InputStudentData(props: {
               onChange={handleUserDataChange}
               type="text"
               placeholder="Room Number"
-              value={props.sendUserDataState.roomNumber}
+              value={props.bookingData.bookingUserData.roomNumber}
               className="pl-2 outline-none border-none w-full"
             />
           </div>
