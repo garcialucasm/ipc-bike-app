@@ -1,0 +1,160 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn-primary {
+    @apply my-2 py-2 px-4 w-full bg-gradient-to-tr from-blue-800 via-blue-800 to-blue-600 text-white font-semibold rounded-full shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75  transition duration-200;
+  }
+  .btn-primary-discrete {
+    @apply my-2 py-2 px-4 w-full bg-gradient-to-tr from-slate-600 via-slate-600 to-slate-600 text-white font-semibold rounded-full shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75  transition duration-200;
+  }
+  .btn-return {
+    @apply my-2 py-2 px-4 w-full bg-gradient-to-tr from-slate-100 via-slate-50 to-white border  border-slate-200 text-color-primary font-semibold rounded-full shadow-md hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 focus:z-10 transition duration-200;
+  }
+
+  .btn-disable {
+    @apply my-2 py-2 px-4 w-full bg-slate-300 text-slate-200 font-semibold rounded-full shadow-md hover:bg-color-tertiary focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+  }
+  .instruction-label {
+    @apply w-full mb-3 text-start font-semibold text-slate-700;
+  }
+  .container-webapp {
+    @apply w-full h-full lg:w-11/12 max-w-xl rounded-xl bg-white shadow-xl;
+  }
+  .card-webapp {
+    @apply bg-white h-full border border-slate-200 rounded-xl shadow;
+  }
+
+  .input-text {
+    @apply w-full flex items-center mb-4 mt-1 px-3 py-2 rounded-xl bg-white border border-slate-300 text-sm shadow-sm placeholder-slate-400
+    focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
+    disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
+    invalid:border-pink-500 invalid:text-pink-600
+    focus:invalid:border-pink-500 focus:invalid:ring-pink-500;
+  }
+
+  .header-menu-item-current-page {
+    @apply border border-white bg-blue-900 brightness-150 font-light;
+  }
+  .header-menu-items {
+    @apply rounded-full text-white px-1 py-0.5 md:mx-1 hover:bg-blue-900 hover:brightness-150;
+  }
+  .stepper-is-done-icon {
+    @apply bg-blue-800 text-white;
+  }
+  .stepper-is-done-bar {
+    @apply after:border-blue-700;
+  }
+  .stepper-is-waiting-icon {
+    @apply bg-slate-300 text-white;
+  }
+  .stepper-is-waiting-bar {
+    @apply after:border-slate-300;
+  }
+  .bike-type-chooser-item {
+    @apply text-slate-500 rounded-lg cursor-pointer bg-slate-200 font-bold peer-checked:font-black peer-checked:bg-white peer-checked:rounded-b-xl peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-blue-500 hover:bg-slate-100;
+  }
+}
+
+:root {
+  --color-primary: #194c9e;
+  --color-primary-hover: #2459af;
+  /* --color-primary: #385e9d; */
+  --color-primary-dark: #222331;
+  --color-secondary: #fa4616;
+  --color-tertiary: #bcbcbc;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #385E9D;
+    --color-primary-dark: #222331;
+    --color-secondary: #FA4616;
+    --color-tertiary: #BCBCBC;
+  }
+} */
+html,
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  line-height: 1.6;
+  font-size: 18px;
+  color: rgb(var(--foreground-rgb));
+}
+
+.background-mesh-part-1 {
+  clip-path: polygon(
+    74.1% 44.1%,
+    100% 61.6%,
+    97.5% 26.9%,
+    85.5% 0.1%,
+    80.7% 2%,
+    72.5% 32.5%,
+    60.2% 62.4%,
+    52.4% 68.1%,
+    47.5% 58.3%,
+    45.2% 34.5%,
+    27.5% 76.7%,
+    0.1% 64.9%,
+    17.9% 100%,
+    27.6% 76.8%,
+    76.1% 97.7%,
+    74.1% 44.1%
+  );
+}
+.background-mesh-part-2 {
+  clip-path: polygon(
+    74.1% 44.1%,
+    100% 61.6%,
+    97.5% 26.9%,
+    85.5% 0.1%,
+    80.7% 2%,
+    72.5% 32.5%,
+    60.2% 62.4%,
+    52.4% 68.1%,
+    47.5% 58.3%,
+    45.2% 34.5%,
+    27.5% 76.7%,
+    0.1% 64.9%,
+    17.9% 100%,
+    27.6% 76.8%,
+    76.1% 97.7%,
+    74.1% 44.1%
+  );
+}
+.background-transparent {
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.7
+  ); /* Semi-transparent white background */
+  backdrop-filter: blur(10px); /* Apply a blur effect to the background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a drop shadow for depth */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.disable-link {
+  pointer-events: none;
+}
+
+a {
+  color: #000000;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}

@@ -114,4 +114,3 @@ const HomeSingleBooking: NextPage = () => {
 }
 
 export default withAuth(HomeSingleBooking);
-

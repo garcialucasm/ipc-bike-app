@@ -1,6 +1,8 @@
-import { BikeStatus } from '@/types/BikeType';
-import { ApiHeader, apiUrls } from "./api";
-import { ServerResultBikeAvailability } from '@/types/ServerResult';
+import { ApiHeader } from "./api";
+
+const apiUrls = {
+    bikeStatusCounterUrl: "/secure/bike/status",
+}
 
 // Bike Status Counter
 export async function bikeStatusCounterFetchApi() {
@@ -24,10 +26,10 @@ export async function bikeStatusCounterFetchApi() {
 
         return {
             data: {
-                [BikeStatus.FREE]: bikeCountFree,
-                [BikeStatus.BOOKED]: bikeCountBooked,
-                [BikeStatus.INUSE]: bikeCountInUse,
-                [BikeStatus.DISABLED]: bikeCountDisabled
+                free: bikeCountFree,
+                booked: bikeCountBooked,
+                inUse: bikeCountInUse,
+                disabled: bikeCountDisabled
             }, error: null
         };
     } catch (error: any) {
@@ -36,9 +38,4 @@ export async function bikeStatusCounterFetchApi() {
             data: null, error: `${error.message}`
         }
     }
-}
-
-export async function getBikeAvailability() {
-    const serverResult: ServerResultBikeAvailability = await bikeStatusCounterFetchApi()
-    return serverResult
 }

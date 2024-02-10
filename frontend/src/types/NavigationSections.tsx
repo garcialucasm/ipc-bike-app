@@ -29,4 +29,3 @@ export enum MenuNavigation {
   inventory = "inventory",
   stats = "stats",
 }
-

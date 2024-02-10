@@ -94,4 +94,3 @@ function BookingConfirmation({
 }
 
 export default BookingConfirmation;
-
