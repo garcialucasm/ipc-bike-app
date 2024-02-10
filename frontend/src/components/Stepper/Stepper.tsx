@@ -17,7 +17,7 @@ function Stepper() {
 
   return (
     <>
-      <ol className="flex w-11/12 items-center py-5">
+      <ol className="flex w-full items-center py-5">
         <li
           className={`flex w-full items-center after:inline-block after:h-1 after:w-full after:border-4 after:border-b after:content-['']
           ${

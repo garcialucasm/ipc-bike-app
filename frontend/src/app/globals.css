@@ -29,7 +29,7 @@
     @apply mb-3 w-full text-start font-semibold text-slate-700;
   }
   .container-main-webapp {
-    @apply flex flex-grow flex-col items-center text-center;
+    @apply mt-[64px] flex flex-grow flex-col items-center px-6 text-center;
   }
   .container-webapp-size {
     @apply flex h-full w-full max-w-xl;
@@ -41,11 +41,11 @@
     @apply flex w-full flex-col items-center;
   }
   .card-webapp {
-    @apply h-full rounded-xl border border-slate-200 bg-white shadow;
+    @apply h-full rounded-2xl border border-slate-200 bg-white shadow;
   }
 
   .input-text {
-    @apply mb-4 mt-1 flex w-full items-center rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm placeholder-slate-400 shadow-sm
+    @apply mb-4 mt-1 flex w-full items-center rounded-2xl border border-slate-300 bg-white px-3 py-2 text-sm placeholder-slate-400 shadow-sm
     invalid:border-pink-500 invalid:text-pink-600 focus:border-sky-500 focus:outline-none
     focus:ring-1 focus:ring-sky-500 focus:invalid:border-pink-500 focus:invalid:ring-pink-500
     disabled:border-slate-200 disabled:bg-slate-50
@@ -53,7 +53,7 @@
   }
 
   .header-menu-item-current-page {
-    @apply border border-white bg-blue-900 font-light brightness-150;
+    @apply border bg-blue-800 text-white;
   }
   .header-menu-items {
     @apply rounded-full px-1 py-0.5 text-white hover:bg-blue-900 hover:brightness-150 md:mx-1;
@@ -71,7 +71,7 @@
     @apply after:border-slate-300;
   }
   .bike-type-chooser-item {
-    @apply cursor-pointer rounded-2xl bg-slate-200 font-bold text-slate-500 hover:bg-slate-100 hover:text-blue-500 peer-checked:rounded-b-xl peer-checked:border-blue-600 peer-checked:bg-white peer-checked:font-black peer-checked:text-blue-600;
+    @apply cursor-pointer rounded-2xl bg-slate-200 font-bold text-slate-500 hover:bg-slate-100 hover:text-blue-500 peer-checked:rounded-b-2xl peer-checked:border-blue-600 peer-checked:bg-white peer-checked:font-black peer-checked:text-blue-600;
   }
 }
 

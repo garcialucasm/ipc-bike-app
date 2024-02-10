@@ -7,7 +7,8 @@ import AvailabilityCard from "./AvailabilityCard"
 import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
 
 function AvailabilityContainer() {
-  const { updatingBikeAvailability: getBikeAvailability } = useBikeAvailabilityContext()
+  const { updatingBikeAvailability: getBikeAvailability } =
+    useBikeAvailabilityContext()
 
   useEffect(() => {
     getBikeAvailability()

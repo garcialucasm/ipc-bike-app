@@ -1,16 +1,19 @@
 "use client"
 
+import { useEffect } from "react"
+import { NextPage } from "next"
+
 import { SingleBookingSections } from "@/types/BookingType"
 import { useSingleBookingContext } from "@/context/singleBooking"
 import InputSingleBikeSize from "@/components/Booking/SingleBooking/InputSingleBikeSize"
 import InputSingleUserData from "@/components/Booking/SingleBooking/InputSingleUserData"
 import PreBookingConfirmation from "@/components/Booking/PreBookingConfirmation"
 import BookingConfirmation from "@/components/Booking/BookingConfirmation"
-import { useEffect } from "react"
 import { BikeSize } from "@/types/BikeType"
 import Stepper from "@/components/Stepper/Stepper"
+import withAuth from "@/app/auth/withAuth"
 
-export default function HomeSingleBooking() {
+const HomeSingleBooking: NextPage = () => {
   const {
     bookingData,
     settingBikeSize,
@@ -54,3 +57,4 @@ export default function HomeSingleBooking() {
     </>
   )
 }
+export default withAuth(HomeSingleBooking)

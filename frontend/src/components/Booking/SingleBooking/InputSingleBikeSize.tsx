@@ -36,9 +36,9 @@ function InputStudentBikeSize() {
   return (
     <>
       <h1 className="instruction-label">Select the bike type</h1>
-      <ul className="mb-5 w-full rounded-xl border border-slate-200 bg-white">
+      <ul className="mb-5 w-full rounded-2xl border border-slate-200 bg-white">
         <BikeChooserContainer bikeSize={radioBikeSizeValue as BikeSize} />
-        <div className="flex justify-around rounded-b-xl border-b bg-gradient-to-b from-white from-40% via-slate-200 via-60% to-slate-200">
+        <div className="flex justify-around rounded-b-2xl border-b bg-gradient-to-b from-white from-40% via-slate-200 via-60% to-slate-200">
           {[BikeSize.STANDARD, BikeSize.CLASSIC, BikeSize.SMALL].map(
             // TODO: Fix curve selection using index and array
             (size, index, array) => (
@@ -54,10 +54,10 @@ function InputStudentBikeSize() {
                 />
                 <label
                   htmlFor={`${size.toLowerCase()}-bike-size`}
-                  className={`bike-type-chooser-item rounded-xl`}
+                  className={`bike-type-chooser-item rounded-2xl`}
                 >
                   <p
-                    className={`w-full rounded-b-xl bg-inherit py-2 ${radioBikeSizeValue === size && "rounded-tl-xl"}`}
+                    className={`w-full rounded-b-2xl bg-inherit py-2 ${radioBikeSizeValue === size && "rounded-tl-xl"}`}
                   >
                     {toPascalCase(size)}
                   </p>

@@ -11,7 +11,7 @@ function InfoboxSingleBookingDetails() {
 
   return (
     <div className="flex w-full flex-col gap-3 sm:flex-row">
-      <div className="flex w-full items-center rounded-xl border bg-white p-3 shadow-md sm:mb-3">
+      <div className="flex w-full items-center rounded-2xl border bg-white p-3 shadow-md sm:mb-3">
         <div className="flex">
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-400">
             <IconSvgPerson fillColor="text-white" height="42" width="42" />
@@ -27,7 +27,7 @@ function InfoboxSingleBookingDetails() {
           </div>
         </div>
       </div>
-      <div className="flex w-full items-center rounded-xl border bg-white p-3 shadow-md sm:mb-3">
+      <div className="flex w-full items-center rounded-2xl border bg-white p-3 shadow-md sm:mb-3">
         <div className="flex">
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-400 p-1">
             <IconSvgBikeStandard

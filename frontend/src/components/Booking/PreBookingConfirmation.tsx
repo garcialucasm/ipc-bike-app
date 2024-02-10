@@ -46,7 +46,7 @@ function PreBookingConfirmation() {
           type="checkbox"
           checked={isTermsAndConditionsChecked}
           onChange={handleCheckboxChange}
-          className={`h-4 w-4 rounded-xl border-gray-300 bg-gray-100 text-blue-600 ${
+          className={`h-4 w-4 rounded-2xl border-gray-300 bg-gray-100 text-blue-600 ${
             itemNeedsAttention ? "ring-1 ring-red-400" : ""
           }`}
         />

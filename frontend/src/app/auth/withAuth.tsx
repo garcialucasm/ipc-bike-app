@@ -6,9 +6,9 @@ import jwt, { JwtPayload } from "jsonwebtoken"
 import { NextPage } from "next"
 
 import { getTokenFromCookies } from "./authUtils"
-import { initialAccountState, useAuth } from "@/context/auth"
-import { AccountProps } from "@/types/AccountType"
+import { useAuth } from "@/context/auth"
 import { NavigationPaths } from "@/types/NavigationPaths"
+import { toPascalCase } from "@/utils/validators"
 
 const jwtSecretKey = process.env.NEXT_PUBLIC_JWT_SECRET_KEY?.trim()
 
@@ -39,9 +39,13 @@ const withAuth = (WrappedComponent: NextPage) => {
           // Check if the token is valid, and optionally, check additional claims or conditions
           if (decodedToken) {
             const accountId = decodedToken.id
-            const accountName = decodedToken.accountName
+            const accountName = toPascalCase(decodedToken.accountName)
             // TODO: Change backend to name instead of email
-            login({ id: accountId, accountName: accountName, isAuthenticated: true })
+            login({
+              id: accountId,
+              accountName: accountName,
+              isAuthenticated: true,
+            })
             return true
           } else {
             throw new Error("Authentication error: Invalid token.")

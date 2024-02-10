@@ -1,11 +1,11 @@
-'use client'
+"use client"
 
 import withAuth from "@/app/auth/withAuth"
 import BookingsOverview from "@/components/Booking/ManageBooking/BookingsOverview/BookingsOverview"
 import AvailabilityContainer from "@/components/Cards/AvailabilityContainer"
 import { NextPage } from "next"
 
-const Page: NextPage = () => {
+const HomeAdmin: NextPage = () => {
   return (
     <>
       <AvailabilityContainer />
@@ -14,4 +14,4 @@ const Page: NextPage = () => {
   )
 }
 
-export default withAuth(Page)
+export default withAuth(HomeAdmin)

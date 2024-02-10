@@ -21,7 +21,7 @@ function AvailabilityCard(props: {
   const currentBikeCount = bikeAvailabilityData[selectedStatus]
 
   let cardTextColorByStatus = "bg-slate-200 text-slate-600"
-  let cardColorByStatus = "border border-s-2"
+  let cardColorByStatus = "bg-slate-600"
   let textLabel: string
 
   if (selectedStatus === BikeStatus.FREE) {
@@ -54,8 +54,8 @@ function AvailabilityCard(props: {
           <StatusIndicator
             currentStatus={selectedStatus}
             isStatic={false}
-            height="h-3"
-            width="w-3"
+            height="h-4"
+            width="w-4"
           />
         </span>
         <div className="flex items-center justify-center p-2">
@@ -99,10 +99,7 @@ function AvailabilityCard(props: {
           {currentBikeCount}
           <span className="px-1 text-xs text-slate-500">{textLabel}</span>
         </span>
-        <span className={`h-1 ${cardColorByStatus}`}></span>
-        {/* <div
-          className={`{flex w-full pb-1 items-center justify-center rounded-b-xl text-slate-100 ${cardColorByStatus}`}
-        ></div> */}
+        <span className={`h-1.5 ${cardColorByStatus}`}></span>
       </div>
     </>
   )

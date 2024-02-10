@@ -9,7 +9,7 @@ import {
   bookingFetchApi,
 } from "@/services/bookingApi"
 import StatusIndicator from "@/components/Others/StatusIndicator"
-import ActionButton from "@/components/Buttons/ActionButtons"
+import ActionButton from "@/components/Buttons/ActionButton"
 import {
   IconSvgDeleteCircle,
   IconSvgApprovalCircle,
