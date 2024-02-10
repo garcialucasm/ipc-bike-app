@@ -298,3 +298,4 @@ export function IconSvgBikeDisabled(props: {
     </>
   );
 }
+

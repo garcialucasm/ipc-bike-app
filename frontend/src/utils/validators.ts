@@ -1,4 +1,5 @@
-import { ErrorMessageLogin } from "@/pages/login";
+import { ErrorMessageLogin } from "../app/auth/login/page";
+
 
 export function cleanUpSpaces(s: string): string {
     // Remove double or more spaces
@@ -10,9 +11,24 @@ export function cleanUpSpaces(s: string): string {
     return trimmed;
 }
 
-export function validateName(s: string): string {
+export function validateFirstName(s: string): string {
     if (!s) {
-        return "First and last name are required";
+        return "First name is required";
+    } else if (
+        s.length < 2 ||
+        s.length > 50
+    ) {
+        return "Please enter a valid name";
+    } else if (!/^[a-zA-Z\s]+$/.test(s)) {
+        return "Please enter a name without special characters";
+    } else {
+        return "";
+    }
+}
+
+export function validateLastName(s: string): string {
+    if (!s) {
+        return "Last name is required";
     } else if (
         s.length < 2 ||
         s.length > 50
@@ -38,7 +54,7 @@ export function validateRoomNumber(s: string): string {
     }
 }
 
-export const validateLogin = (formValues: any) => {
+export function validateLogin(formValues: any) {
     let error: ErrorMessageLogin = {
         email: "",
         password: "",
@@ -61,4 +77,8 @@ export const validateLogin = (formValues: any) => {
 export function isEmail(s: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailRegex.test(s)
+}
+
+export function toPascalCase(input: string): string {
+    return input.replace(/(\w)(\w*)/g, (_, firstChar, rest) => firstChar.toUpperCase() + rest.toLowerCase());
 }

@@ -35,3 +35,4 @@ export interface BikeAvailability {
     smallType: number;
   };
 }
+
