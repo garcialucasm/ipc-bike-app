@@ -2,7 +2,7 @@ import { NavigationPaths } from "@/types/NavigationPaths"
 import Link from "next/link"
 import React from "react"
 
-export default function App({ children }: { children: React.ReactNode }) {
+export default function App() {
   return (
     <>
       <main className="flex h-screen items-center justify-center text-center align-middle">
