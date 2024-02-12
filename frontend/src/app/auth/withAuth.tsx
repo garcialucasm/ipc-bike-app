@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import jwt, { JwtPayload } from "jsonwebtoken"
 import { NextPage } from "next"
 
@@ -15,13 +15,14 @@ const jwtSecretKey = process.env.NEXT_PUBLIC_JWT_SECRET_KEY?.trim()
 const withAuth = (WrappedComponent: NextPage) => {
   const SecureComponent: NextPage = (props) => {
     const router = useRouter()
-    const { login } = useAuth()
+    const { useLogin } = useAuth()
 
     // Check authentication
     useEffect(() => {
       const isAuth = () => {
         // Get the token from the cookie
         const token = getTokenFromCookies("ipcBikeApp_authToken")
+        console.log(token)
 
         if (!token) {
           console.error("Authentication error: Token undefined")
@@ -41,7 +42,7 @@ const withAuth = (WrappedComponent: NextPage) => {
             const accountId = decodedToken.id
             const accountName = toPascalCase(decodedToken.accountName)
             // TODO: Change backend to name instead of email
-            login({
+            useLogin({
               id: accountId,
               accountName: accountName,
               isAuthenticated: true,

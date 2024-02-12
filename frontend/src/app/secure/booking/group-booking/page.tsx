@@ -1,8 +1,4 @@
-import { NextPage } from "next"
-
-import withAuth from "@/app/auth/withAuth"
-
-const HomeGroupBooking: NextPage = () => {
+const HomeGroupBooking = () => {
   return (
     <>
       <p>Group Booking</p>
@@ -10,4 +6,4 @@ const HomeGroupBooking: NextPage = () => {
   )
 }
 
-export default withAuth(HomeGroupBooking)
+export default HomeGroupBooking

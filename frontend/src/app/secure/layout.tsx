@@ -4,6 +4,7 @@ import DevShowContext from "@/components/Test/DevShowContext"
 import { AppProvider } from "@/context/page"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  
   return (
     <AppProvider>
       <HeaderNavbarApp />

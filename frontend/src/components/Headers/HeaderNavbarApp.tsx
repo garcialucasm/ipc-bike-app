@@ -25,11 +25,9 @@ export default function HeaderNavbarApp() {
   const [closedAlert, setClosedAlert] = useState(false)
   function toggleAlertClosed() {
     setClosedAlert(true)
-    console.log(closedAlert.toString())
   }
   function toggleSideBarOpened() {
     setSideBarOpened(!isOpenSideBar)
-    console.log(closedAlert.toString())
   }
   const router = useRouter()
   const accountName = accountData?.accountName

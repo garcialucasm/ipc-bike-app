@@ -1,4 +1,4 @@
-import { ErrorMessageLogin } from "../app/auth/login/page";
+import { ErrorMessageLogin } from "@/components/Login/Login";
 
 
 export function cleanUpSpaces(s: string): string {

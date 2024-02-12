@@ -21,7 +21,7 @@ export function authHeader(): I_AuthHeader {
 };
 
 
-// Login
+/* --------------------------- Handle Login action -------------------------- */
 export async function login(email: string, password: string) {
     try {
         const response = await ApiHeader.post(apiUrls.loginUrl,
@@ -36,6 +36,17 @@ export async function login(email: string, password: string) {
         return {
             data: null, error: `${error.message}`
         }
+    }
+}
+
+/* ------------------ Clear the authentication token cookie ----------------- */
+export async function logout() {
+    try {
+        await setCookie(cookieNameToken, "", -1);
+
+        return true;
+    } catch (error) {
+        throw new Error("Logout error: " + error);
     }
 }
 
@@ -74,14 +85,3 @@ export async function setCookie(name: string, value: string, days: number = 2) {
         throw new Error("Error setting cookie: " + error)
     }
 };
-
-export async function logout() {
-    try {
-        // Clear the authentication token cookie
-        await setCookie(cookieNameToken, "", -1);
-
-        return true;
-    } catch (error) {
-        throw new Error("Logout error: " + error);
-    }
-}
