@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 
@@ -8,7 +8,9 @@ import { NavigationPaths } from "@/types/NavigationPaths"
 import { validateLogin } from "@/utils/validators"
 import PrimaryButton from "@/components/Buttons/PrimaryButton"
 import SecondaryButton from "@/components/Buttons/SecondaryButton"
-import { login, setCookie } from "@/app/auth/authUtils"
+import { getTokenFromCookies, setCookie } from "@/app/auth/authUtils"
+import { checkAuth, login, verifyToken } from "@/services/authService"
+import { cookieTokenName } from "@/types/CookieType"
 
 export interface ErrorMessageLogin {
   email: string
@@ -28,9 +30,20 @@ const Login = () => {
   })
   const [errorMessages, setErrorMessages] = useState(errorMessage)
 
+  useEffect(() => {
+    isAuthRedirection()
+  }, [])
+
   const handleBlur = () => {
     // TODO: turn on the login validation
-    // setErrorMessages(validateLogin(formLoginData));
+    // setErrorMessages(validateLogin(formLoginData))
+  }
+
+  async function isAuthRedirection() {
+    const isAuth = checkAuth()
+    if (await isAuth) {
+      router.replace(NavigationPaths.homeAppAdmin)
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -49,16 +62,20 @@ const Login = () => {
         )
         if (response.data) {
           await setCookie("ipcBikeApp_authToken", response.data.account.token)
-          router.replace(NavigationPaths.homeAppAdmin)
+          window.location.reload()
+        } else {
+          setErrorMessages({
+            email: "",
+            password: "Login failed. Please check your username and password.",
+          })
         }
       } catch (error) {
         console.error("Authentication error: ", error)
-
-        /* ------------------- // TODO: Handle incorrect credentials ------------------- */
-
-        /* -------------------------------------------------------------------------- */
-        /* ---------------------  Handle authentication error --------------------- */
-        /* -------------------------------------------------------------------------- */
+        setErrorMessages({
+          email: "",
+          password:
+            "Oops! Something went wrong. Please try again in a few moments.",
+        })
       }
     }
   }

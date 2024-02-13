@@ -1,5 +1,9 @@
-import { redirect } from "next/navigation"
+"use client"
+
 import { NextPage } from "next"
+
+import withAuth from "@/app/auth/withAuth"
+import { redirect } from "next/navigation"
 
 import { NavigationPaths } from "@/types/NavigationPaths"
 
@@ -8,4 +12,4 @@ const Home: NextPage = () => {
   redirect(NavigationPaths.homeAppAdmin)
 }
 
-export default Home
+export default withAuth(Home)

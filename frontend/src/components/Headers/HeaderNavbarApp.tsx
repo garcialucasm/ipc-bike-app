@@ -6,15 +6,14 @@ import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
 
 import { NavigationPaths } from "@/types/NavigationPaths"
-import { logout } from "@/app/auth/authUtils"
 import Button from "@/components/Buttons/Button"
 import { useAuth } from "@/context/auth"
+import { logout } from "@/services/authService"
 import {
   IconSvgBecomeMember,
   IconSvgGroupBooking,
   IconSvgHome,
   IconSvgPersonCircle,
-  IconSvgPersonFilled,
   IconSvgSingleBooking,
 } from "@/components/Others/IconsSvg"
 

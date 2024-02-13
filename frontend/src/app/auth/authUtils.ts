@@ -1,14 +1,9 @@
-import { ApiHeader, apiUrls } from "@/services/api";
-
-
 export interface I_AuthHeader {
     headers: {
         Authorization: string;
         'Content-Type': string
     };
 }
-
-const cookieNameToken = "ipcBikeApp_authToken";
 
 export function authHeader(): I_AuthHeader {
     const token = getTokenFromCookies("ipcBikeApp_authToken");
@@ -19,36 +14,6 @@ export function authHeader(): I_AuthHeader {
         },
     };
 };
-
-
-/* --------------------------- Handle Login action -------------------------- */
-export async function login(email: string, password: string) {
-    try {
-        const response = await ApiHeader.post(apiUrls.loginUrl,
-            {
-                email: email,
-                password: password,
-            })
-        return { data: response.data, error: null };
-
-    } catch (error: any) {
-        console.error('Error authenticating:', error.message);
-        return {
-            data: null, error: `${error.message}`
-        }
-    }
-}
-
-/* ------------------ Clear the authentication token cookie ----------------- */
-export async function logout() {
-    try {
-        await setCookie(cookieNameToken, "", -1);
-
-        return true;
-    } catch (error) {
-        throw new Error("Logout error: " + error);
-    }
-}
 
 export function getTokenFromCookies(name: string) {
     try {
@@ -69,8 +34,7 @@ export function getTokenFromCookies(name: string) {
     }
 };
 
-
-export async function setCookie(name: string, value: string, days: number = 2) {
+export async function setCookie(name: string, value: string, days: number = 7) {
     try {
         const expirationDate = new Date();
         expirationDate.setDate(expirationDate.getDate() + days);

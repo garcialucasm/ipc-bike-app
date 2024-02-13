@@ -1,6 +1,6 @@
 "use client"
 
-import { useRouter } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import { useEffect } from "react"
 import jwt, { JwtPayload } from "jsonwebtoken"
 import { NextPage } from "next"
@@ -14,15 +14,13 @@ const jwtSecretKey = process.env.NEXT_PUBLIC_JWT_SECRET_KEY?.trim()
 
 const withAuth = (WrappedComponent: NextPage) => {
   const SecureComponent: NextPage = (props) => {
-    const router = useRouter()
-    const { useLogin } = useAuth()
+    const { accountData, useLogin } = useAuth()
 
     // Check authentication
     useEffect(() => {
       const isAuth = () => {
         // Get the token from the cookie
         const token = getTokenFromCookies("ipcBikeApp_authToken")
-        console.log(token)
 
         if (!token) {
           console.error("Authentication error: Token undefined")
@@ -33,20 +31,20 @@ const withAuth = (WrappedComponent: NextPage) => {
           if (!jwtSecretKey) {
             throw new Error("Authentication error: JWT_SECRET_KEY is not set.")
           }
-
           // Decode and verify the JWT token
           const decodedToken = jwt.verify(token, jwtSecretKey) as JwtPayload
 
           // Check if the token is valid, and optionally, check additional claims or conditions
-          if (decodedToken) {
+          if (decodedToken && !accountData?.isAuthenticated) {
             const accountId = decodedToken.id
             const accountName = toPascalCase(decodedToken.accountName)
-            // TODO: Change backend to name instead of email
             useLogin({
               id: accountId,
               accountName: accountName,
               isAuthenticated: true,
             })
+            return true
+          } else if (decodedToken) {
             return true
           } else {
             throw new Error("Authentication error: Invalid token.")
@@ -60,9 +58,9 @@ const withAuth = (WrappedComponent: NextPage) => {
 
       if (!isAuth()) {
         // Redirect to the login page if the user is not authenticated
-        router.push(NavigationPaths.login)
+        redirect(NavigationPaths.login)
       }
-    }, [router])
+    }, [])
 
     return <WrappedComponent {...props} />
   }
