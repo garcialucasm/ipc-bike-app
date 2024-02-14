@@ -14,7 +14,7 @@ export const apiUrls = {
   activeBookingsUrl: "/secure/booking/all",
   allBookingsUrl: "/secure/booking/all?show_inactive=true",
   createSingleBookingUrl: "/secure/booking/create/single",
-  cancelBookingUrl: "/secure/booking/cancel",
+  cancelBookingUrl: "/secure/booking/cancel/",
   approveBookingUrl: "/secure/booking/approve/",
   returnBookingUrl: "/secure/booking/return/",
 

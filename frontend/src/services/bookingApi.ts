@@ -80,7 +80,7 @@ export async function cancelBookingFetchApi(bookingId: number) {
 
     return { canceledBooking, error: null };
   } catch (error: any) {
-    console.error('Error approving a booking:', error.message);
+    console.error('Error canceling a booking:', error.message);
     return { canceledBooking: null, error: `${error.message}` };
   }
 };

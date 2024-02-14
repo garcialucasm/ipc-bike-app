@@ -90,6 +90,18 @@ export default function bookingController(bookingService: IBookingService, route
       })
   })
 
+  router.post("/cancel/:id", (req, res) => {
+    bookingService.cancel(parseInt(req.params.id))
+      .then(booking => {
+        res.status(200)
+          .send({ booking: toBookingDTO(booking) })
+      }).catch(error => {
+        console.log(error)
+        res.status(401)
+          .send({ error: error.message })
+      })
+  })
+
   router.get("/all", (req, res) => {
     let showInactive: boolean = false
     if (req.query.show_inactive && req.query.show_inactive === 'true') {
