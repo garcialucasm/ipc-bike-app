@@ -14,3 +14,8 @@ export type ServerResultBikeAvailability =
         data: null
         error: string
     }
+
+export enum ServerResult {
+    CONFIRMED = 'CONFIRMED',
+    ERROR = 'ERROR'
+}

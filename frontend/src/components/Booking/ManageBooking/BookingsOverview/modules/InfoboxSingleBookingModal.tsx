@@ -6,7 +6,7 @@ import {
   IconSvgDeleteCircle,
   IconSvgPerson,
 } from "@/components/Others/IconsSvg"
-import { BookingActions, BookingStatus } from "@/types/BookingType"
+import { BookingModalActions, BookingStatus } from "@/types/BookingType"
 
 interface InfoboxSingleBookingProps {
   userName: string | null
@@ -31,12 +31,12 @@ function InfoboxSingleBookingModal(BookingData: InfoboxSingleBookingProps) {
     <>
       <p
         className={`flex items-center border-b border-slate-200 pb-4 text-start text-xl font-semibold ${
-          actionToConfirm === BookingActions.CONFIRM
+          actionToConfirm === BookingModalActions.CONFIRM
             ? "text-green-700"
             : "text-rose-700"
         }`}
       >
-        {actionToConfirm === BookingActions.CONFIRM ? (
+        {actionToConfirm === BookingModalActions.CONFIRM ? (
           <span className="me-2 rounded-full border-2 border-green-700 p-0.5 font-bold">
             <IconSvgApprovalCircle height="18px" />
           </span>

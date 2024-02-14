@@ -14,9 +14,10 @@ export enum Booking {
   CLASSROOM = "CLASSROOM",
 }
 
-export enum BookingActions {
+export enum BookingModalActions {
   CANCEL = "Cancel",
   CONFIRM = "Confirm",
+  CLOSERESPONSE = "Close",
 }
 
 export enum SingleBookingSections {

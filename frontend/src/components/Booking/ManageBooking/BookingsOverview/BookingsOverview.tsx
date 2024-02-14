@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect, useRef } from "react"
-import { BookingActions, BookingStatus } from "@/types/BookingType"
+import { BookingModalActions, BookingStatus } from "@/types/BookingType"
 import {
   returnBookingFetchApi,
   approveBookingFetchApi,
@@ -23,12 +23,15 @@ import PrimaryButton from "@/components/Buttons/PrimaryButton"
 import SecondaryButton from "@/components/Buttons/SecondaryButton"
 import InfoboxSingleBookingModal from "./modules/InfoboxSingleBookingModal"
 import TableHeader from "./modules/TableHeader"
+import { ServerResult } from "@/types/ServerResult"
 
 const messageInicial = "Confirm Action"
 const messageCancelBooking = "Are you sure to cancel this booking?"
 const messageCancelReturn = "Are you sure to cancel this bike return?"
 const messageConfirmBooking = "Are you sure to confirm this booking?"
 const messageConfirmReturn = "Are you sure to confirm this bike return?"
+const messageServerResponseConfirmation = "Action confirmed!"
+const messageServerResponseError = "Oops... Something went wrong!"
 
 function BookingsOverview() {
   const [reloadData, setReloadData] = useState(false)
@@ -40,15 +43,16 @@ function BookingsOverview() {
     error: null,
   })
 
-  const [confirmAction, setConfirmAction] = useState<{
+  const [modalAction, setModalAction] = useState<{
     isOpen: boolean
     bookingId: number | null
     userName: string | null
     bikeType: string | null
     bikeNumbering: string | null
     status: BookingStatus | null
-    actionToConfirm: BookingActions | null
+    actionToConfirm: BookingModalActions | null
     dialogMessage: string
+    serverResult: ServerResult | null
   }>({
     isOpen: false,
     bookingId: null,
@@ -58,6 +62,7 @@ function BookingsOverview() {
     status: null,
     actionToConfirm: null,
     dialogMessage: messageInicial,
+    serverResult: null,
   })
   const { updatingBikeAvailability } = useBikeAvailabilityContext()
   const modalRef = useRef<HTMLDivElement>(null)
@@ -82,7 +87,7 @@ function BookingsOverview() {
     userName: string
   ) {
     const bookingStatus = status.toUpperCase() as BookingStatus
-    setConfirmAction((prev) => ({
+    setModalAction((prev) => ({
       ...prev,
       isOpen: true,
       bookingId: bookingId,
@@ -90,15 +95,15 @@ function BookingsOverview() {
       bikeNumbering: bikeNumbering,
       userName: userName,
       status: bookingStatus,
-      actionToConfirm: BookingActions.CANCEL,
+      actionToConfirm: BookingModalActions.CANCEL,
     }))
     if (bookingStatus === BookingStatus.BOOKED) {
-      setConfirmAction((prev) => ({
+      setModalAction((prev) => ({
         ...prev,
         dialogMessage: messageCancelBooking,
       }))
     } else if (bookingStatus === BookingStatus.DELIVERED) {
-      setConfirmAction((prev) => ({
+      setModalAction((prev) => ({
         ...prev,
         dialogMessage: messageCancelReturn,
       }))
@@ -114,7 +119,7 @@ function BookingsOverview() {
     userName: string
   ) {
     const bookingStatus = status.toUpperCase() as BookingStatus
-    setConfirmAction((prev) => ({
+    setModalAction((prev) => ({
       ...prev,
       isOpen: true,
       bookingId: bookingId,
@@ -122,15 +127,15 @@ function BookingsOverview() {
       bikeNumbering: bikeNumbering,
       userName: userName,
       status: bookingStatus,
-      actionToConfirm: BookingActions.CONFIRM,
+      actionToConfirm: BookingModalActions.CONFIRM,
     }))
     if (bookingStatus === BookingStatus.BOOKED) {
-      setConfirmAction((prev) => ({
+      setModalAction((prev) => ({
         ...prev,
         dialogMessage: messageConfirmBooking,
       }))
     } else if (bookingStatus === BookingStatus.DELIVERED) {
-      setConfirmAction((prev) => ({
+      setModalAction((prev) => ({
         ...prev,
         dialogMessage: messageConfirmReturn,
       }))
@@ -139,39 +144,56 @@ function BookingsOverview() {
 
   /* ------------------------ Handle confirm action modal ------------------------ */
   async function handleConfirmAction(confirm: boolean) {
-    if (confirm && confirmAction.bookingId && confirmAction.status) {
-      const { bookingId, status } = confirmAction
+    if (confirm && modalAction.bookingId && modalAction.status) {
+      const { bookingId, status } = modalAction
       const bookingStatus = status.toUpperCase() as BookingStatus
-      const actionToConfirm = confirmAction.actionToConfirm
+      const actionToConfirm = modalAction.actionToConfirm
       if (
         bookingStatus === BookingStatus.BOOKED &&
-        actionToConfirm === BookingActions.CONFIRM
+        actionToConfirm === BookingModalActions.CONFIRM
       ) {
-        await approveBookingFetchApi(bookingId)
+        const response = await approveBookingFetchApi(bookingId)
+        handleServerResponse(response.approvedBooking)
       } else if (
         bookingStatus === BookingStatus.DELIVERED &&
-        actionToConfirm === BookingActions.CONFIRM
+        actionToConfirm === BookingModalActions.CONFIRM
       ) {
-        await returnBookingFetchApi(bookingId)
+        const response = await returnBookingFetchApi(bookingId)
+        handleServerResponse(response.returnedBooking)
       } else if (
         bookingStatus === BookingStatus.BOOKED &&
-        actionToConfirm === BookingActions.CANCEL
+        actionToConfirm === BookingModalActions.CANCEL
       ) {
-        await cancelBookingFetchApi(bookingId)
+        const response = await cancelBookingFetchApi(bookingId)
+        handleServerResponse(response.canceledBooking)
       }
       updatingBikeAvailability()
       setReloadData(!reloadData)
+      setModalAction((prev) => ({
+        ...prev,
+        actionToConfirm: BookingModalActions.CLOSERESPONSE,
+        dialogMessage: messageInicial,
+      }))
+    } else if (!confirm) {
+      setModalAction((prev) => ({
+        ...prev,
+        isOpen: false,
+        bookingId: null,
+        userName: null,
+        bikeType: null,
+        bikeNumbering: null,
+        status: null,
+        actionToConfirm: null,
+        dialogMessage: messageInicial,
+      }))
     }
-    setConfirmAction({
-      isOpen: false,
-      bookingId: null,
-      userName: null,
-      bikeType: null,
-      bikeNumbering: null,
-      status: null,
-      actionToConfirm: null,
-      dialogMessage: messageInicial,
-    })
+  }
+
+  function handleServerResponse(response: boolean | null) {
+    setModalAction((prev) => ({
+      ...prev,
+      serverResult: response ? ServerResult.CONFIRMED : ServerResult.ERROR,
+    }))
   }
 
   const handleModalClick = (e: any) => {
@@ -270,38 +292,83 @@ function BookingsOverview() {
           </table>
         </div>
 
-        {/* -------------------------- Confirm action modal -------------------------- */}
-        {confirmAction.isOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50 backdrop-blur">
-            <div
-              ref={modalRef}
-              className="m-8 grid max-w-md gap-y-4 rounded-2xl bg-white p-8"
-            >
-              <InfoboxSingleBookingModal
-                bikeType={confirmAction.bikeType}
-                userName={confirmAction.userName}
-                bikeNumbering={confirmAction.bikeNumbering}
-                bookingStatus={confirmAction.status}
-                dialogMessage={confirmAction.dialogMessage}
-                actionToConfirm={confirmAction.actionToConfirm}
-              />
-              <div className="flex justify-center">
-                <SecondaryButton
-                  onClick={() => handleConfirmAction(false)}
-                  className="btn-secondary ms-0 w-full max-w-24"
-                >
-                  No
-                </SecondaryButton>
-                <PrimaryButton
-                  onClick={() => handleConfirmAction(true)}
-                  className="btn-primary me-0 w-full max-w-24"
-                >
-                  Yes
-                </PrimaryButton>
+        {/* -------------------------- Modal: Confirm action -------------------------- */}
+        {modalAction.isOpen &&
+          modalAction.actionToConfirm !== BookingModalActions.CLOSERESPONSE && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50 backdrop-blur">
+              <div
+                ref={modalRef}
+                className="m-8 grid min-w-72 max-w-md gap-y-4 rounded-2xl bg-white p-8"
+              >
+                <InfoboxSingleBookingModal
+                  bikeType={modalAction.bikeType}
+                  userName={modalAction.userName}
+                  bikeNumbering={modalAction.bikeNumbering}
+                  bookingStatus={modalAction.status}
+                  dialogMessage={modalAction.dialogMessage}
+                  actionToConfirm={modalAction.actionToConfirm}
+                />
+                <div className="flex justify-start">
+                  <PrimaryButton
+                    onClick={() => handleConfirmAction(true)}
+                    className="btn-primary ms-0 w-full max-w-16"
+                  >
+                    Yes
+                  </PrimaryButton>
+                  <SecondaryButton
+                    onClick={() => handleConfirmAction(false)}
+                    className="btn-secondary w-full max-w-16"
+                  >
+                    No
+                  </SecondaryButton>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+
+        {/* -------------------------- Modal: Server response -------------------------- */}
+        {modalAction.isOpen &&
+          modalAction.actionToConfirm == BookingModalActions.CLOSERESPONSE && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50 backdrop-blur">
+              <div
+                ref={modalRef}
+                className="m-8 grid min-w-72 max-w-md gap-y-4 rounded-2xl bg-white p-8"
+              >
+                <p
+                  className={`flex items-center border-b border-slate-200 pb-4 text-start text-xl font-semibold`}
+                >
+                  {modalAction.serverResult === ServerResult.CONFIRMED ? (
+                    <>
+                      <span className="me-2 rounded-full border-2 border-green-700 p-0.5 font-bold">
+                        <IconSvgApprovalCircle height="18px" />
+                      </span>
+                      <span className="text-emerald-700">
+                        {" "}
+                        {messageServerResponseConfirmation}{" "}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="me-2 rounded-full border-2 border-rose-700 p-0.5 font-bold">
+                        <IconSvgDeleteCircle height="18px" />
+                      </span>
+                      <span className="text-rose-700">
+                        {messageServerResponseError}
+                      </span>
+                    </>
+                  )}
+                </p>
+                <div className="flex justify-center">
+                  <SecondaryButton
+                    onClick={() => handleConfirmAction(false)}
+                    className="btn-secondary w-full max-w-24"
+                  >
+                    Ok
+                  </SecondaryButton>
+                </div>
+              </div>
+            </div>
+          )}
       </>
     )
   } else {
