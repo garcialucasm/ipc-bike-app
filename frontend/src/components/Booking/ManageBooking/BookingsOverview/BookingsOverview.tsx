@@ -21,8 +21,8 @@ import { ErrorBookingsOverview } from "./ErrorBookingsOverview"
 import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
 import PrimaryButton from "@/components/Buttons/PrimaryButton"
 import SecondaryButton from "@/components/Buttons/SecondaryButton"
-import InfoboxSingleBooking from "./modules/InfoboxSingleBooking"
-import { BikeSize } from "@/types/BikeType"
+import InfoboxSingleBookingModal from "./modules/InfoboxSingleBookingModal"
+import TableHeader from "./modules/TableHeader"
 
 const messageInicial = "Confirm Action"
 const messageCancelBooking = "Are you sure to cancel this booking?"
@@ -73,6 +73,7 @@ function BookingsOverview() {
 
   const { activeBookings, error } = bookingData
 
+  /* ---------------- Handle cancel button to redirect to modal --------------- */
   async function handleClickCancelBooking(
     bookingId: number,
     status: BookingStatus,
@@ -104,6 +105,7 @@ function BookingsOverview() {
     }
   }
 
+  /* ---------------- Handle confirm button to redirect to modal --------------- */
   async function handleClickConfirmation(
     bookingId: number,
     status: BookingStatus,
@@ -134,6 +136,8 @@ function BookingsOverview() {
       }))
     }
   }
+
+  /* ------------------------ Handle confirm action modal ------------------------ */
   async function handleConfirmAction(confirm: boolean) {
     if (confirm && confirmAction.bookingId && confirmAction.status) {
       const { bookingId, status } = confirmAction
@@ -193,25 +197,7 @@ function BookingsOverview() {
       <>
         <div className="container-webapp-size relative overflow-x-auto rounded-2xl">
           <table className="w-full text-left text-sm text-slate-500 rtl:text-right">
-            <thead className="bg-blue-800 text-xs uppercase text-slate-100">
-              <tr>
-                <th scope="col" className="px-3 py-3 text-center">
-                  Status
-                </th>
-                <th scope="col" className="py-3">
-                  User
-                </th>
-                <th scope="col" className="py-3">
-                  Bike Type
-                </th>
-                <th scope="col" className="py-3">
-                  Bikes
-                </th>
-                <th scope="col" className="py-3 text-center">
-                  Actions
-                </th>
-              </tr>
-            </thead>
+            <TableHeader />
             <tbody>
               {activeBookings.map((booking: any) => (
                 <tr
@@ -291,37 +277,14 @@ function BookingsOverview() {
               ref={modalRef}
               className="m-8 grid max-w-md gap-y-4 rounded-2xl bg-white p-8"
             >
-              <p
-                className={`flex items-center border-b border-slate-200 pb-4 text-start text-xl font-semibold ${
-                  confirmAction.actionToConfirm === BookingActions.CONFIRM
-                    ? "text-green-700"
-                    : "text-rose-700"
-                }`}
-              >
-                {confirmAction.actionToConfirm === BookingActions.CONFIRM ? (
-                  <span className="me-2 rounded-full border-2 border-green-700 p-0.5 font-bold">
-                    <IconSvgApprovalCircle height="18px" />
-                  </span>
-                ) : (
-                  <span className="me-2 rounded-full border-2 border-rose-700 p-0.5 font-bold">
-                    <IconSvgDeleteCircle height="18px" />
-                  </span>
-                )}
-                {`${confirmAction.actionToConfirm} ${
-                  confirmAction.status === BookingStatus.BOOKED
-                    ? "Booking"
-                    : "Return"
-                } ?`}
-              </p>
-              <p className="text-start">{confirmAction.dialogMessage}</p>
-              <div>
-                <InfoboxSingleBooking
-                  bikeType={confirmAction.bikeType}
-                  userName={confirmAction.userName}
-                  bikeNumbering={confirmAction.bikeNumbering}
-                  bookingStatus={confirmAction.status}
-                />
-              </div>
+              <InfoboxSingleBookingModal
+                bikeType={confirmAction.bikeType}
+                userName={confirmAction.userName}
+                bikeNumbering={confirmAction.bikeNumbering}
+                bookingStatus={confirmAction.status}
+                dialogMessage={confirmAction.dialogMessage}
+                actionToConfirm={confirmAction.actionToConfirm}
+              />
               <div className="flex justify-center">
                 <SecondaryButton
                   onClick={() => handleConfirmAction(false)}
@@ -342,13 +305,7 @@ function BookingsOverview() {
       </>
     )
   } else {
-    return (
-      <>
-        <div className="text-xs">
-          Something unexpected happened. Please try again later.
-        </div>
-      </>
-    )
+    return <ErrorBookingsOverview />
   }
 }
 
