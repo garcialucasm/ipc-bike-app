@@ -24,11 +24,10 @@ const HomeSingleBooking: NextPage = () => {
   const currentSection = bookingData.currentSection
 
   useEffect(() => {
-    settingCurrentSection(SingleBookingSections.selectBikeSize)
     settingBikeSize(BikeSize.STANDARD)
     settingUserData({ firstName: "", lastName: "", roomNumber: "" })
     settingServerResult(null)
-    return
+    settingCurrentSection(SingleBookingSections.selectBikeSize)
   }, [])
 
   return (

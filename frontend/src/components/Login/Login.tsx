@@ -65,8 +65,8 @@ const Login = () => {
           window.location.reload()
         } else {
           setErrorMessages({
-            email: "",
-            password: "Login failed. Please check your username and password.",
+            email: "Login failed.",
+            password: "Please check your username and password.",
           })
         }
       } catch (error) {

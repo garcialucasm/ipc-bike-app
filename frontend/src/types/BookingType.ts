@@ -13,12 +13,10 @@ export enum Booking {
   GROUP = "GROUP",
   CLASSROOM = "CLASSROOM",
 }
-export interface SingleBookingProps {
-  currentSection: SingleBookingSections | null;
-  bikeSize: BikeSize | null;
-  userData: UserData;
-  bookingStatus: BookingStatus | null;
-  serverResult: number | null;
+
+export enum BookingActions {
+  CANCEL = "Cancel",
+  CONFIRM = "Confirm",
 }
 
 export enum SingleBookingSections {
@@ -26,4 +24,19 @@ export enum SingleBookingSections {
   inputUserData = "inputUserData",
   preBookingConfirmation = "preBookingConfirmation",
   bookingConfirmation = "bookingConfirmationStatus",
+}
+
+export interface SingleBookingProps {
+  currentSection: SingleBookingSections | null;
+  bikeSize: BikeSize;
+  userData: UserData;
+  bookingStatus: BookingStatus | null;
+  serverResult: number | null;
+}
+
+export interface SingleBookingDTO {
+  userName: string
+  room: string
+  bikeSize: BikeSize
+  bikeNumbering?: number
 }

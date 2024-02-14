@@ -15,7 +15,7 @@ const SingleBookingProvider = ({ children }: { children: React.ReactNode }) => {
   // Creating state to manage user data and then submit booking
   const [bookingData, setBookingData] = useState<SingleBookingProps>({
     currentSection: SingleBookingSections.selectBikeSize,
-    bikeSize: null,
+    bikeSize: BikeSize.STANDARD,
     userData: { firstName: "", lastName: "", roomNumber: "" },
     bookingStatus: null,
     serverResult: null,

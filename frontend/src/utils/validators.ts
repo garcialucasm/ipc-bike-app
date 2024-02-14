@@ -82,3 +82,8 @@ export function isEmail(s: string): boolean {
 export function toPascalCase(input: string): string {
     return input.replace(/(\w)(\w*)/g, (_, firstChar, rest) => firstChar.toUpperCase() + rest.toLowerCase());
 }
+
+export function joinFistLastName(fName: string, lName: string) {
+    const userName = cleanUpSpaces(fName) + " " + cleanUpSpaces(lName)
+    return userName
+}
