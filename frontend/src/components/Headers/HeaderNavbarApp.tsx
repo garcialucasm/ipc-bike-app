@@ -6,15 +6,14 @@ import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
 
 import { NavigationPaths } from "@/types/NavigationPaths"
-import { logout } from "@/app/auth/authUtils"
 import Button from "@/components/Buttons/Button"
 import { useAuth } from "@/context/auth"
+import { logout } from "@/services/authService"
 import {
   IconSvgBecomeMember,
   IconSvgGroupBooking,
   IconSvgHome,
   IconSvgPersonCircle,
-  IconSvgPersonFilled,
   IconSvgSingleBooking,
 } from "@/components/Others/IconsSvg"
 
@@ -25,11 +24,9 @@ export default function HeaderNavbarApp() {
   const [closedAlert, setClosedAlert] = useState(false)
   function toggleAlertClosed() {
     setClosedAlert(true)
-    console.log(closedAlert.toString())
   }
   function toggleSideBarOpened() {
     setSideBarOpened(!isOpenSideBar)
-    console.log(closedAlert.toString())
   }
   const router = useRouter()
   const accountName = accountData?.accountName
@@ -238,7 +235,7 @@ export default function HeaderNavbarApp() {
             <li>
               <Link
                 href={NavigationPaths.homeAppAdmin}
-                className={`hover:text-slate-900" group flex items-center rounded-2xl p-2 hover:bg-slate-400 hover:text-blue-700 ${
+                className={`hover:text-slate-900" group flex items-center rounded-2xl p-2 hover:bg-slate-300 hover:text-blue-700 ${
                   pathname.includes("/home") && "header-menu-item-current-page"
                 }`}
                 onClick={toggleSideBarOpened}
@@ -250,7 +247,7 @@ export default function HeaderNavbarApp() {
             <li>
               <Link
                 href={NavigationPaths.singleBooking}
-                className={`group flex items-center rounded-2xl p-2 hover:bg-slate-400 hover:text-blue-700 ${
+                className={`group flex items-center rounded-2xl p-2 hover:bg-slate-300 hover:text-blue-700 ${
                   pathname === NavigationPaths.singleBooking &&
                   "header-menu-item-current-page"
                 }`}
@@ -265,7 +262,7 @@ export default function HeaderNavbarApp() {
             <li>
               <Link
                 href={NavigationPaths.groupBooking}
-                className={`group flex items-center rounded-2xl p-2 hover:bg-slate-400 hover:text-blue-700 ${
+                className={`group flex items-center rounded-2xl p-2 hover:bg-slate-300 hover:text-blue-700 ${
                   pathname === NavigationPaths.groupBooking &&
                   "header-menu-item-current-page"
                 }`}
@@ -280,7 +277,7 @@ export default function HeaderNavbarApp() {
             <li>
               <Link
                 href={NavigationPaths.homeAppAdmin}
-                className="group flex items-center rounded-2xl p-2 hover:bg-slate-400 hover:text-blue-700"
+                className="group flex items-center rounded-2xl p-2 hover:bg-emerald-700 hover:text-slate-100"
                 onClick={toggleSideBarOpened}
               >
                 <IconSvgBecomeMember height="28" />

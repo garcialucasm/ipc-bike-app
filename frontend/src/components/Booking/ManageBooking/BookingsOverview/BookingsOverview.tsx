@@ -1,12 +1,12 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
-
-import { BookingStatus } from "@/types/BookingType"
+import React, { useState, useEffect, useRef } from "react"
+import { BookingActions, BookingStatus } from "@/types/BookingType"
 import {
   returnBookingFetchApi,
   approveBookingFetchApi,
   bookingFetchApi,
+  cancelBookingFetchApi,
 } from "@/services/bookingApi"
 import StatusIndicator from "@/components/Others/StatusIndicator"
 import ActionButton from "@/components/Buttons/ActionButton"
@@ -19,8 +19,19 @@ import {
 import { EmptyBookingsOverview } from "./EmptyBookingsOverview"
 import { ErrorBookingsOverview } from "./ErrorBookingsOverview"
 import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
+import PrimaryButton from "@/components/Buttons/PrimaryButton"
+import SecondaryButton from "@/components/Buttons/SecondaryButton"
+import InfoboxSingleBooking from "./modules/InfoboxSingleBooking"
+import { BikeSize } from "@/types/BikeType"
+
+const messageInicial = "Confirm Action"
+const messageCancelBooking = "Are you sure to cancel this booking?"
+const messageCancelReturn = "Are you sure to cancel this bike return?"
+const messageConfirmBooking = "Are you sure to confirm this booking?"
+const messageConfirmReturn = "Are you sure to confirm this bike return?"
 
 function BookingsOverview() {
+  const [reloadData, setReloadData] = useState(false)
   const [bookingData, setBookingData] = useState<{
     activeBookings: any
     error: string | null
@@ -29,9 +40,27 @@ function BookingsOverview() {
     error: null,
   })
 
-  const [reloadData, setReloadData] = useState(false)
-
+  const [confirmAction, setConfirmAction] = useState<{
+    isOpen: boolean
+    bookingId: number | null
+    userName: string | null
+    bikeType: string | null
+    bikeNumbering: string | null
+    status: BookingStatus | null
+    actionToConfirm: BookingActions | null
+    dialogMessage: string
+  }>({
+    isOpen: false,
+    bookingId: null,
+    userName: null,
+    bikeType: null,
+    bikeNumbering: null,
+    status: null,
+    actionToConfirm: null,
+    dialogMessage: messageInicial,
+  })
   const { updatingBikeAvailability } = useBikeAvailabilityContext()
+  const modalRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,49 +69,126 @@ function BookingsOverview() {
     }
 
     fetchData()
-  }, [reloadData]) // Empty dependency array to run the effect only once when the component mounts
+  }, [reloadData])
 
   const { activeBookings, error } = bookingData
 
-  async function handleClickCancelBooking(bookingId: number) {
-    setReloadData(!reloadData)
+  async function handleClickCancelBooking(
+    bookingId: number,
+    status: BookingStatus,
+    bikeType: string,
+    bikeNumbering: string,
+    userName: string
+  ) {
+    const bookingStatus = status.toUpperCase() as BookingStatus
+    setConfirmAction((prev) => ({
+      ...prev,
+      isOpen: true,
+      bookingId: bookingId,
+      bikeType: bikeType,
+      bikeNumbering: bikeNumbering,
+      userName: userName,
+      status: bookingStatus,
+      actionToConfirm: BookingActions.CANCEL,
+    }))
+    if (bookingStatus === BookingStatus.BOOKED) {
+      setConfirmAction((prev) => ({
+        ...prev,
+        dialogMessage: messageCancelBooking,
+      }))
+    } else if (bookingStatus === BookingStatus.DELIVERED) {
+      setConfirmAction((prev) => ({
+        ...prev,
+        dialogMessage: messageCancelReturn,
+      }))
+    }
   }
 
   async function handleClickConfirmation(
     bookingId: number,
-    status: BookingStatus
+    status: BookingStatus,
+    bikeType: string,
+    bikeNumbering: string,
+    userName: string
   ) {
-    let bookingStatus = status.toUpperCase()
+    const bookingStatus = status.toUpperCase() as BookingStatus
+    setConfirmAction((prev) => ({
+      ...prev,
+      isOpen: true,
+      bookingId: bookingId,
+      bikeType: bikeType,
+      bikeNumbering: bikeNumbering,
+      userName: userName,
+      status: bookingStatus,
+      actionToConfirm: BookingActions.CONFIRM,
+    }))
     if (bookingStatus === BookingStatus.BOOKED) {
-      await approveBookingFetchApi(bookingId)
+      setConfirmAction((prev) => ({
+        ...prev,
+        dialogMessage: messageConfirmBooking,
+      }))
     } else if (bookingStatus === BookingStatus.DELIVERED) {
-      await returnBookingFetchApi(bookingId)
+      setConfirmAction((prev) => ({
+        ...prev,
+        dialogMessage: messageConfirmReturn,
+      }))
     }
-    // Set confirmation status to trigger re-render
-    updatingBikeAvailability()
-    setReloadData(!reloadData)
+  }
+  async function handleConfirmAction(confirm: boolean) {
+    if (confirm && confirmAction.bookingId && confirmAction.status) {
+      const { bookingId, status } = confirmAction
+      const bookingStatus = status.toUpperCase() as BookingStatus
+      const actionToConfirm = confirmAction.actionToConfirm
+      if (
+        bookingStatus === BookingStatus.BOOKED &&
+        actionToConfirm === BookingActions.CONFIRM
+      ) {
+        await approveBookingFetchApi(bookingId)
+      } else if (
+        bookingStatus === BookingStatus.DELIVERED &&
+        actionToConfirm === BookingActions.CONFIRM
+      ) {
+        await returnBookingFetchApi(bookingId)
+      } else if (
+        bookingStatus === BookingStatus.BOOKED &&
+        actionToConfirm === BookingActions.CANCEL
+      ) {
+        await cancelBookingFetchApi(bookingId)
+      }
+      updatingBikeAvailability()
+      setReloadData(!reloadData)
+    }
+    setConfirmAction({
+      isOpen: false,
+      bookingId: null,
+      userName: null,
+      bikeType: null,
+      bikeNumbering: null,
+      status: null,
+      actionToConfirm: null,
+      dialogMessage: messageInicial,
+    })
   }
 
-  // Check if activeBookings returned an error
+  const handleModalClick = (e: any) => {
+    if (modalRef.current && !modalRef.current.contains(e.target)) {
+      handleConfirmAction(false)
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleModalClick)
+
+    return () => {
+      document.removeEventListener("mousedown", handleModalClick)
+    }
+  }, [])
+
   if (error) {
-    return (
-      <>
-        <ErrorBookingsOverview />
-      </>
-    )
-  }
-
-  // Check if activeBookings is empty
-  else if (!activeBookings || activeBookings.length === 0) {
-    return (
-      <>
-        <EmptyBookingsOverview />
-      </>
-    )
-  }
-
-  // Check and render table only if there is activeBookings
-  else if (activeBookings.length > 0) {
+    return <ErrorBookingsOverview />
+  } else if (!activeBookings || activeBookings.length === 0) {
+    return <EmptyBookingsOverview />
+  } else if (activeBookings.length > 0) {
     return (
       <>
         <div className="container-webapp-size relative overflow-x-auto rounded-2xl">
@@ -136,7 +242,15 @@ function BookingsOverview() {
                   <td className="flex w-full flex-row items-center justify-center py-4">
                     <div>
                       <ActionButton
-                        onClick={() => handleClickCancelBooking(booking.id)}
+                        onClick={() =>
+                          handleClickCancelBooking(
+                            booking.id,
+                            booking.status,
+                            booking.bikeType,
+                            booking.bike,
+                            booking.user
+                          )
+                        }
                         name="cancel-booking"
                       >
                         <IconSvgDeleteCircle height="24" />
@@ -149,9 +263,15 @@ function BookingsOverview() {
                     </div>
                     <div>
                       <ActionButton
-                        onClick={() =>
-                          handleClickConfirmation(booking.id, booking.status)
-                        }
+                        onClick={() => {
+                          handleClickConfirmation(
+                            booking.id,
+                            booking.status,
+                            booking.bikeType,
+                            booking.bike,
+                            booking.user
+                          )
+                        }}
                         name="approve-booking"
                       >
                         <IconSvgApprovalCircle height="24" />
@@ -163,6 +283,62 @@ function BookingsOverview() {
             </tbody>
           </table>
         </div>
+
+        {/* -------------------------- Confirm action modal -------------------------- */}
+        {confirmAction.isOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50 backdrop-blur">
+            <div
+              ref={modalRef}
+              className="m-8 grid max-w-md gap-y-4 rounded-2xl bg-white p-8"
+            >
+              <p
+                className={`flex items-center border-b border-slate-200 pb-4 text-start text-xl font-semibold ${
+                  confirmAction.actionToConfirm === BookingActions.CONFIRM
+                    ? "text-green-700"
+                    : "text-rose-700"
+                }`}
+              >
+                {confirmAction.actionToConfirm === BookingActions.CONFIRM ? (
+                  <span className="me-2 rounded-full border-2 border-green-700 p-0.5 font-bold">
+                    <IconSvgApprovalCircle height="18px" />
+                  </span>
+                ) : (
+                  <span className="me-2 rounded-full border-2 border-rose-700 p-0.5 font-bold">
+                    <IconSvgDeleteCircle height="18px" />
+                  </span>
+                )}
+                {`${confirmAction.actionToConfirm} ${
+                  confirmAction.status === BookingStatus.BOOKED
+                    ? "Booking"
+                    : "Return"
+                } ?`}
+              </p>
+              <p className="text-start">{confirmAction.dialogMessage}</p>
+              <div>
+                <InfoboxSingleBooking
+                  bikeType={confirmAction.bikeType}
+                  userName={confirmAction.userName}
+                  bikeNumbering={confirmAction.bikeNumbering}
+                  bookingStatus={confirmAction.status}
+                />
+              </div>
+              <div className="flex justify-center">
+                <SecondaryButton
+                  onClick={() => handleConfirmAction(false)}
+                  className="btn-secondary ms-0 w-full max-w-24"
+                >
+                  No
+                </SecondaryButton>
+                <PrimaryButton
+                  onClick={() => handleConfirmAction(true)}
+                  className="btn-primary me-0 w-full max-w-24"
+                >
+                  Yes
+                </PrimaryButton>
+              </div>
+            </div>
+          </div>
+        )}
       </>
     )
   } else {

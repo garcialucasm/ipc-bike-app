@@ -16,11 +16,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [accountData, setAccountData] =
     useState<AccountProps>(initialAccountState)
 
-  const login = (accountDataResponse: AccountProps) => {
+  const useLogin = (accountDataResponse: AccountProps) => {
     setAccountData(accountDataResponse)
   }
 
-  const logout = () => {
+  const useLogout = () => {
     setAccountData(initialAccountState)
   }
 
@@ -35,8 +35,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     <AuthContext.Provider
       value={{
         accountData: accountData,
-        login,
-        logout,
+        useLogin,
+        useLogout,
         settingIsAuthenticated,
       }}
     >

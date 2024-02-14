@@ -6,8 +6,8 @@ import { UserData } from "./UserType";
 // TODO: Just for test
 export type AuthContextProps = {
     accountData: AccountProps | null;
-    login: (accountData: AccountProps) => void;
-    logout: () => void;
+    useLogin: (accountData: AccountProps) => void;
+    useLogout: () => void;
     settingIsAuthenticated: (isAuth: boolean | null) => void;
 };
 

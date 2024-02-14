@@ -67,11 +67,9 @@ function InputStudentBikeSize() {
           )}
         </div>
       </ul>
-      <div className="w-full">
-        <PrimaryButton onClick={handleClickNextStep}>
-          <span>Next</span>
-        </PrimaryButton>
-      </div>
+      <>
+        <PrimaryButton onClick={handleClickNextStep}>Next</PrimaryButton>
+      </>
       <div className="link-secondary w-full">
         <Link href={NavigationPaths.homeApp}>
           <span className="block px-4 py-2">Return</span>

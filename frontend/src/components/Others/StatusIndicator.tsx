@@ -70,17 +70,17 @@ function StatusIndicator(props: {
   return (
     <>
       <span
-        className={`relative flex ${height ?? "h-2.5"} ${
+        className={`relative flex items-center justify-center text-center ${height ?? "h-2.5"} ${
           width ?? "w-2.5 "
         } m-2`}
       >
         <span
-          className={`absolute inline-flex h-full w-full rounded-full opacity-50 ${statusColorClass} ${
+          className={`absolute inline-flex h-full w-full items-center justify-center rounded-full opacity-50 text-center ${statusColorClass} ${
             isStatic ? "" : animationStatusClass
           }`}
         ></span>
         <span
-          className={`relative inline-flex rounded-full ${height ?? "h-2.5"} ${
+          className={`relative inline-flex items-center justify-center rounded-full text-center ${height ?? "h-2.5"} ${
             width ?? "w-2.5"
           } ${statusColorClass}`}
         ></span>

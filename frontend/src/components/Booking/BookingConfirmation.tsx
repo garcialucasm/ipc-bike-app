@@ -1,10 +1,28 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 
 import { IconSvgLoader } from "../Others/IconsSvg"
 import { useSingleBookingContext } from "@/context/singleBooking"
 import { createSingleBookingFetchApi } from "@/services/bookingApi"
 import BookingFailed from "./SingleBooking/modules/BookingFailed"
 import BookingConfirmed from "./SingleBooking/modules/BookingConfirmed"
+import { joinFistLastName } from "@/utils/validators"
+import { SingleBookingDTO, SingleBookingProps } from "@/types/BookingType"
+import { UserData } from "@/types/UserType"
+import { BikeSize } from "@/types/BikeType"
+
+function singleBookingDTO(userData: UserData, bikeSize: BikeSize) {
+  const userName: string = joinFistLastName(
+    userData.firstName,
+    userData.lastName
+  )
+  const room: string = userData.roomNumber
+  const singleBookingData: SingleBookingDTO = {
+    userName: userName,
+    room: room,
+    bikeSize: bikeSize,
+  }
+  return singleBookingData
+}
 
 function BookingConfirmation() {
   const { bookingData, settingServerResult } = useSingleBookingContext()
@@ -14,28 +32,31 @@ function BookingConfirmation() {
     error: null,
   })
 
+  const userData = bookingData.userData
+  const bikeSize = bookingData.bikeSize
+
+  const singleBookingData = useMemo(
+    () => singleBookingDTO(userData, bikeSize),
+    [userData, bikeSize]
+  )
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!bookingData.serverResult) {
-          const response = await createSingleBookingFetchApi(bookingData)
+        const response = await createSingleBookingFetchApi(singleBookingData)
 
-          // TODO: add more info into confirmation container as error or bike chosen
-          // const bikeChosen = response.data?.data.booking.bike
+        // Failed to fetch
+        if (!response.data?.status) {
+          throw new Error("Error fetching API: " + response.error)
+        }
 
-          // Failed to fetch
-          if (!response.data?.status) {
-            throw new Error("Error fetching API: " + response.error)
-          }
-
-          // Successful fetch
-          if (response.data?.status >= 200 && response.data?.status < 300) {
-            settingServerResult(response.data?.status)
-            setResponseState({ data: response.data?.data, error: null })
-          } else {
-            // Handle other response statuses if needed
-            settingServerResult(response.data?.status)
-          }
+        // Successful fetch
+        if (response.data?.status >= 200 && response.data?.status < 300) {
+          settingServerResult(response.data?.status)
+          setResponseState({ data: response.data?.data, error: null })
+        } else {
+          // Handle other response statuses if needed
+          settingServerResult(response.data?.status)
         }
       } catch (error) {
         // Handle errors, e.g., log or display an error message
