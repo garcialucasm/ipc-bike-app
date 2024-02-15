@@ -1,15 +1,14 @@
-"use client"
-
-import { NextPage } from "next"
-
 import withAuth from "@/app/auth/withAuth"
 
-const HomeGroupBooking: NextPage = () => {
-  return (
-    <>
-      <p>Group Booking</p>
-    </>
-  )
+const HomeGroupBooking = () => {
+  const isAuth = withAuth()
+  if (isAuth) {
+    return (
+      <>
+        <p>Group Booking</p>
+      </>
+    )
+  }
 }
 
-export default withAuth(HomeGroupBooking)
+export default HomeGroupBooking

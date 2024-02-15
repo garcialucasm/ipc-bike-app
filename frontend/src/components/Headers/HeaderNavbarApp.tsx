@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
@@ -16,12 +16,18 @@ import {
   IconSvgPersonCircle,
   IconSvgSingleBooking,
 } from "@/components/Others/IconsSvg"
+import { getDecodedToken } from "@/app/auth/authUtils"
+import { toPascalCase } from "@/utils/validators"
 
 export default function HeaderNavbarApp() {
-  const { accountData } = useAuth()
+  const { accountData, useLogin } = useAuth()
   const [isOpenAccountMenu, setIsOpenAccountMenu] = useState(false)
   const [isOpenSideBar, setSideBarOpened] = useState(false)
   const [closedAlert, setClosedAlert] = useState(false)
+
+  /* ---------------- useMemo to memoize the accountData object --------------- */
+  const memoizedAccountData = useMemo(() => accountData, [accountData])
+
   function toggleAlertClosed() {
     setClosedAlert(true)
   }
@@ -29,7 +35,7 @@ export default function HeaderNavbarApp() {
     setSideBarOpened(!isOpenSideBar)
   }
   const router = useRouter()
-  const accountName = accountData?.accountName
+  const accountName = memoizedAccountData?.accountName
   const pathname = usePathname()
 
   //TODO Close the menu when clicks outside
@@ -44,6 +50,23 @@ export default function HeaderNavbarApp() {
         return NavigationPaths.homeWeb
     }
   }
+
+  function setAccountInfo() {
+    const decodedToken = getDecodedToken()
+    if (decodedToken && !memoizedAccountData?.isAuthenticated) {
+      const accountId = decodedToken.id
+      const accountName = toPascalCase(decodedToken.accountName)
+      useLogin({
+        id: accountId,
+        accountName: accountName,
+        isAuthenticated: true,
+      })
+    }
+  }
+
+  useEffect(() => {
+    setAccountInfo()
+  }, [memoizedAccountData])
 
   return (
     <>
@@ -138,6 +161,27 @@ export default function HeaderNavbarApp() {
                               />
                             </svg>
                             <div className="px-2">Profile</div>
+                          </div>
+                        </div>
+                      </Link>
+                      <Link
+                        href={NavigationPaths.register}
+                        className="text-slate-500"
+                      >
+                        <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
+                          <div className="flex w-fit items-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              height="20"
+                              viewBox="0 -960 960 960"
+                              width="20"
+                            >
+                              <path
+                                className="fill-current"
+                                d="M730-400v-130H600v-60h130v-130h60v130h130v60H790v130h-60Zm-370-81q-66 0-108-42t-42-108q0-66 42-108t108-42q66 0 108 42t42 108q0 66-42 108t-108 42ZM40-160v-94q0-35 17.5-63.5T108-360q75-33 133.338-46.5 58.339-13.5 118.5-13.5Q420-420 478-406.5 536-393 611-360q33 15 51 43t18 63v94H40Zm60-60h520v-34q0-16-9-30.5T587-306q-71-33-120-43.5T360-360q-58 0-107.5 10.5T132-306q-15 7-23.5 21.5T100-254v34Zm260-321q39 0 64.5-25.5T450-631q0-39-25.5-64.5T360-721q-39 0-64.5 25.5T270-631q0 39 25.5 64.5T360-541Zm0-90Zm0 411Z"
+                              />
+                            </svg>
+                            <div className="px-2">Register</div>
                           </div>
                         </div>
                       </Link>

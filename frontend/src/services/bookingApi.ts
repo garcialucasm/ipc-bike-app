@@ -22,8 +22,9 @@ export async function bookingFetchApi() {
 //Create Single Booking
 export async function createSingleBookingFetchApi(bookingData: SingleBookingDTO) {
   try {
+    /* ------------------------ handling double requests ------------------------ */
     if (isProcessing) {
-      return { data: null, error: "Processing " };
+      return { data: null, error: "Processing" };
     }
 
     isProcessing = true;
@@ -51,7 +52,7 @@ export async function createSingleBookingFetchApi(bookingData: SingleBookingDTO)
   }
 }
 
-// Approve a booking
+/* ---------------------------- approve a booking --------------------------- */
 export async function approveBookingFetchApi(bookingId: number) {
   try {
     const response = await ApiHeader.post(apiUrls.approveBookingUrl + bookingId);

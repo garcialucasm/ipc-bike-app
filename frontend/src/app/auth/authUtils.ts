@@ -1,3 +1,7 @@
+import jwt, { JwtPayload } from "jsonwebtoken"
+
+const jwtSecretKey = process.env.NEXT_PUBLIC_JWT_SECRET_KEY?.trim()
+
 export interface I_AuthHeader {
     headers: {
         Authorization: string;
@@ -49,3 +53,27 @@ export async function setCookie(name: string, value: string, days: number = 7) {
         throw new Error("Error setting cookie: " + error)
     }
 };
+
+export function getDecodedToken() {
+    /* ---------------------- Get the token from the cookie --------------------- */
+    const token = getTokenFromCookies("ipcBikeApp_authToken")
+
+    try {
+        if (!jwtSecretKey) {
+            throw new Error("Authentication error: JWT_SECRET_KEY is not set.")
+        }
+
+        if (!token) {
+            console.error("Authentication error: Token undefined")
+            return false
+        }
+
+        /* --------------------- Decode and verify the JWT token -------------------- */
+        const decodedToken = jwt.verify(token, jwtSecretKey) as JwtPayload
+
+        return decodedToken
+    } catch (error) {
+        console.error("Authentication error: ", error)
+        return false
+    }
+}

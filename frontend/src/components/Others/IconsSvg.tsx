@@ -125,6 +125,85 @@ export function IconSvgPersonCircle(props: {
   )
 }
 
+// email
+export function IconSvgEmail(props: {
+  height?: string
+  width?: string
+  fillColor?: string
+}) {
+  const { height, width, fillColor } = props
+  return (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 -960 960 960"
+        fill="currentColor"
+        height={height}
+        width={width}
+        className={`${fillColor ?? "fill-current"}`}
+      >
+        <path d="M140-160q-24 0-42-18t-18-42v-520q0-24 18-42t42-18h680q24 0 42 18t18 42v520q0 24-18 42t-42 18H140Zm340-302 340-223v-55L480-522 140-740v55l340 223Z" />
+      </svg>
+    </>
+  )
+}
+
+// password
+export function IconSvgPassword(props: {
+  height?: string
+  width?: string
+  fillColor?: string
+}) {
+  const { height, width, fillColor } = props
+  return (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        height={height}
+        width={width}
+        className={`${fillColor ?? "fill-current"}`}
+      >
+        <path
+          fillRule="evenodd"
+          d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+          clipRule="evenodd"
+        />
+      </svg>
+    </>
+  )
+}
+
+// Fingerprint
+export function IconSvgFingerprint(props: {
+  height?: string
+  width?: string
+  fillColor?: string
+}) {
+  const { height, width, fillColor } = props
+  return (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        height={height}
+        width={width}
+        className={`${fillColor ?? "fill-current"}`}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"
+        />
+      </svg>
+    </>
+  )
+}
+
 // Person
 export function IconSvgPersonFilled(props: {
   height?: string

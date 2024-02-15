@@ -1,6 +1,7 @@
 export enum NavigationPaths {
   login = "/auth/login",
   logout = "/auth/logout",
+  register = "/secure/register",
   homeAppAdmin = "/secure/home/admin",
   homeAppStudent = "/secure/home/student",
   homeApp = "/secure/home",
