@@ -24,6 +24,7 @@ export enum SingleBookingSections {
   selectBikeSize = "selectBikeSize",
   inputUserData = "inputUserData",
   preBookingConfirmation = "preBookingConfirmation",
+  isLoading = "isLoading",
   bookingConfirmation = "bookingConfirmationStatus",
 }
 

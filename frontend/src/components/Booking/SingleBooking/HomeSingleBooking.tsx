@@ -11,6 +11,7 @@ import PreBookingConfirmation from "@/components/Booking/PreBookingConfirmation"
 import BookingConfirmation from "@/components/Booking/BookingConfirmation"
 import { BikeSize } from "@/types/BikeType"
 import Stepper from "@/components/Stepper/Stepper"
+import LoadingComponent from "@/components/Others/LoadingComponent"
 
 const HomeSingleBooking: NextPage = () => {
   const {
@@ -45,6 +46,10 @@ const HomeSingleBooking: NextPage = () => {
 
           {currentSection === SingleBookingSections.preBookingConfirmation && (
             <PreBookingConfirmation />
+          )}
+
+          {currentSection === SingleBookingSections.isLoading && (
+            <LoadingComponent />
           )}
 
           {currentSection === SingleBookingSections.bookingConfirmation && (
