@@ -43,7 +43,9 @@ function RegisterForm() {
 
   async function handleSubmitForm(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault() // Prevent default form submission
-    setErrorMessages(formValidationRegister(formRegisterAccount))
+    const validationErrors = formValidationRegister(formRegisterAccount)
+    setErrorMessages(validationErrors)
+
     if (isFormValid()) {
       setIsLoading(true)
       const response = await registerAccountFetchApi(formRegisterAccount)
@@ -83,12 +85,12 @@ function RegisterForm() {
 
   const isFormValid = () => {
     if (
-      formRegisterAccount.accountName !== "" &&
-      formRegisterAccount.email !== "" &&
-      formRegisterAccount.password !== "" &&
-      errorMessages.accountName === "" &&
-      errorMessages.email === "" &&
-      errorMessages.password === ""
+      formRegisterAccount.accountName &&
+      formRegisterAccount.email &&
+      formRegisterAccount.password &&
+      !errorMessages.accountName &&
+      !errorMessages.email &&
+      !errorMessages.password
     ) {
       return true
     }

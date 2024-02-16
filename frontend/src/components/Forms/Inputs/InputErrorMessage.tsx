@@ -23,9 +23,9 @@ export function InputErrorMessageInvalidPassword() {
         <p>Password requirements:</p>
         <ul className="list-disc pl-5">
           <li>At least 8 characters long</li>
-          <li>Contains at least one uppercase letter</li>
-          <li>Contains at least one lowercase letter</li>
           <li>Contains at least one number</li>
+          <li>Contains at least one lowercase letter</li>
+          <li>Contains at least one uppercase letter</li>
           <li>Contains at least one special character</li>
         </ul>
       </div>

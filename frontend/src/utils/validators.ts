@@ -1,5 +1,7 @@
-import { ErrorMessageLogin, ErrorMessageRegister } from "@/types/ErrorMessageTypes";
+import { ErrorMessageBookingUserData, ErrorMessageLogin, ErrorMessageRegister } from "@/types/ErrorMessageTypes";
 import { cleanUpSpaces } from "./strings";
+import { AccountDTO } from "@/types/AccountType";
+import { UserData } from "@/types/UserType";
 
 export const errorMessagePasswordInvalid = "Invalid password"
 
@@ -87,7 +89,7 @@ export function formValidationLogin(formValues: any) {
     return error;
 };
 
-export function formValidationRegister(formValues: any) {
+export function formValidationRegister(formValues: AccountDTO) {
     let error: ErrorMessageRegister = {
         accountName: "",
         email: "",
@@ -114,3 +116,22 @@ export function formValidationRegister(formValues: any) {
     }
     return error;
 };
+
+
+export function formValidationSingleBooking(formValues: UserData) {
+    let error: ErrorMessageBookingUserData = {
+        firstName: "",
+        lastName: "",
+        roomNumber: "",
+    }
+    //First name input validation
+    error.firstName = validateFormName(formValues.firstName)
+
+    //Last name input validation
+    error.lastName = validateFormName(formValues.lastName)
+
+    //Room number input validation
+    error.roomNumber = validateFormRoomNumber(formValues.roomNumber)
+
+    return error
+}

@@ -3,7 +3,7 @@
 import React from "react"
 import InputErrorMessage from "./InputErrorMessage"
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
-  children: React.ReactNode
+  children?: React.ReactNode
   errorMessage?: string
 }
 
@@ -15,7 +15,7 @@ export default function InputText({
   return (
     <>
       <div className="my-2">
-        <div className={`input-text ${errorMessage && "ring-1 ring-rose-600"}`}>
+        <div className={`input-text min-h-11 ${errorMessage && "ring-1 ring-rose-600"}`}>
           {children}
           <input
             type="text"
