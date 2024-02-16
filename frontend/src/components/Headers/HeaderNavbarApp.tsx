@@ -48,7 +48,6 @@ export default function HeaderNavbarApp() {
 
   function setAccountInfo() {
     const decodedToken = getDecodedToken()
-    console.log("Decoded Token", decodedToken)
     if (decodedToken && !accountData?.isAuthenticated) {
       const accountId = decodedToken.id
       const accountName = toPascalCase(decodedToken.accountName)

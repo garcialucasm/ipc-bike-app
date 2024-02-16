@@ -4,7 +4,7 @@
 
 @layer components {
   .btn-all {
-    @apply m-2 w-full rounded-full;
+    @apply my-2 w-full rounded-full;
   }
   .btn-primary {
     @apply btn-all bg-gradient-to-tr from-blue-800 via-blue-800 to-blue-600 px-4 py-2 font-semibold text-white transition duration-200 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
@@ -38,7 +38,7 @@
     @apply flex h-full w-full max-w-xl;
   }
   .container-page-webapp {
-    @apply container-webapp-size my-6 flex-col items-center rounded-2xl bg-gradient-to-tr from-slate-100 via-slate-100 to-slate-50 px-16 pb-16 pt-8;
+    @apply container-webapp-size my-6 flex-col items-center rounded-2xl bg-slate-100 px-16 pb-16 pt-8;
   }
   .container-subpage-webapp {
     @apply flex w-full flex-col items-center;

@@ -4,11 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 
 import { BikeAvailabilityContextProps } from "@/types/ContextType"
 import { BikeAvailabilityCard, BikeStatus } from "@/types/BikeType"
-import {
-  bikeStatusCounterFetchApi,
-  getBikeAvailability,
-} from "@/services/bikeApi"
-import { ServerResultBikeAvailability } from "@/types/ServerResult"
+import { getBikeAvailability } from "@/services/bikeApi"
 
 // Creating initial state for bike availability data
 export const initialBikeAvailability: BikeAvailabilityCard = {

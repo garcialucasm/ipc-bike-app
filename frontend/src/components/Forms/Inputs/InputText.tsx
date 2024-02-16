@@ -14,8 +14,10 @@ export default function InputText({
 }: Props) {
   return (
     <>
-      <div className="my-2">
-        <div className={`input-text min-h-11 ${errorMessage && "ring-1 ring-rose-600"}`}>
+      <div className="my-2 w-full">
+        <div
+          className={`input-text min-h-11 ${errorMessage && "ring-1 ring-rose-600"}`}
+        >
           {children}
           <input
             type="text"

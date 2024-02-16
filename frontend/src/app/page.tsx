@@ -4,7 +4,7 @@ import { redirect } from "next/navigation"
 import React from "react"
 
 export default function App() {
-  // redirect(NavigationPaths.homeApp)
+  redirect(NavigationPaths.homeApp)
   return (
     <>
       <main className="flex h-screen items-center justify-center text-center align-middle">

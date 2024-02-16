@@ -99,7 +99,7 @@ function RegisterForm() {
   return (
     <form
       className="container-page-webapp my-8"
-      onSubmit={handleSubmitForm} // Use onSubmit event handler
+      onSubmit={handleSubmitForm}
     >
       <div className="container-subpage-webapp">
         {/* ------------------------- render when is loading ------------------------- */}
