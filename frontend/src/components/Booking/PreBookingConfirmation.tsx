@@ -5,6 +5,7 @@ import SecondaryButton from "../Buttons/SecondaryButton"
 import { useSingleBookingContext } from "@/context/singleBooking"
 import { NavigationOptions } from "@/types/NavigationPaths"
 import InfoboxSingleBookingDetails from "./SingleBooking/modules/InfoboxSingleBookingDetails"
+import InstructionLabel from "../Others/InstructionLabel"
 
 function PreBookingConfirmation() {
   const { settingCurrentSection } = useSingleBookingContext()
@@ -38,7 +39,7 @@ function PreBookingConfirmation() {
 
   return (
     <div className="flex w-full flex-col">
-      <h1 className="instruction-label">Booking Details</h1>
+      <InstructionLabel>Booking Details</InstructionLabel>
       <InfoboxSingleBookingDetails />
       <div className="m-4 flex w-full items-center justify-start">
         <input

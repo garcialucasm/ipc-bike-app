@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react"
 
 import { useSingleBookingContext } from "@/context/singleBooking"
 import { SingleBookingSections } from "@/types/BookingType"
-import {
-  validateFirstName,
-  validateLastName,
-  validateRoomNumber,
-} from "@/utils/validators"
+import { validateName, validateRoomNumber } from "@/utils/validators"
 import PrimaryButton from "../../Buttons/PrimaryButton"
 import SecondaryButton from "@/components/Buttons/SecondaryButton"
 import {
@@ -14,6 +10,7 @@ import {
   IconSvgRoomDoor,
 } from "@/components/Others/IconsSvg"
 import { NavigationOptions } from "@/types/NavigationPaths"
+import InstructionLabel from "@/components/Others/InstructionLabel"
 
 interface ErrorMessage {
   showErrorMessages: boolean
@@ -91,10 +88,10 @@ function InputStudentData() {
       roomNumber: "",
     }
     //First name input validation
-    error.firstName = validateFirstName(formValues.firstName)
+    error.firstName = validateName(formValues.firstName)
 
     //Last name input validation
-    error.lastName = validateLastName(formValues.lastName)
+    error.lastName = validateName(formValues.lastName)
 
     //Room number input validation
     error.roomNumber = validateRoomNumber(formValues.roomNumber)
@@ -103,9 +100,7 @@ function InputStudentData() {
 
   return (
     <>
-      <div className="instruction-label text-start">
-        Please, enter cyclist details:
-      </div>
+      <InstructionLabel>Please, enter cyclist details:</InstructionLabel>
       <div className="flex w-full flex-col">
         <div className="flex gap-2">
           <div

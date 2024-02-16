@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
@@ -8,7 +8,6 @@ import { usePathname, useRouter } from "next/navigation"
 import { NavigationPaths } from "@/types/NavigationPaths"
 import Button from "@/components/Buttons/Button"
 import { useAuth } from "@/context/auth"
-import { logout } from "@/services/authService"
 import {
   IconSvgBecomeMember,
   IconSvgGroupBooking,
@@ -17,17 +16,13 @@ import {
   IconSvgSingleBooking,
 } from "@/components/Others/IconsSvg"
 import { getDecodedToken } from "@/app/auth/authUtils"
-import { toPascalCase } from "@/utils/validators"
+import { toPascalCase } from "@/utils/strings"
 
 export default function HeaderNavbarApp() {
   const { accountData, useLogin } = useAuth()
   const [isOpenAccountMenu, setIsOpenAccountMenu] = useState(false)
   const [isOpenSideBar, setSideBarOpened] = useState(false)
   const [closedAlert, setClosedAlert] = useState(false)
-
-  /* ---------------- useMemo to memoize the accountData object --------------- */
-  const memoizedAccountData = useMemo(() => accountData, [accountData])
-
   function toggleAlertClosed() {
     setClosedAlert(true)
   }
@@ -35,7 +30,7 @@ export default function HeaderNavbarApp() {
     setSideBarOpened(!isOpenSideBar)
   }
   const router = useRouter()
-  const accountName = memoizedAccountData?.accountName
+  const accountName = accountData?.accountName
   const pathname = usePathname()
 
   //TODO Close the menu when clicks outside
@@ -53,7 +48,8 @@ export default function HeaderNavbarApp() {
 
   function setAccountInfo() {
     const decodedToken = getDecodedToken()
-    if (decodedToken && !memoizedAccountData?.isAuthenticated) {
+    console.log("Decoded Token", decodedToken)
+    if (decodedToken && !accountData?.isAuthenticated) {
       const accountId = decodedToken.id
       const accountName = toPascalCase(decodedToken.accountName)
       useLogin({
@@ -66,7 +62,7 @@ export default function HeaderNavbarApp() {
 
   useEffect(() => {
     setAccountInfo()
-  }, [memoizedAccountData])
+  }, [])
 
   return (
     <>
@@ -395,3 +391,7 @@ export default function HeaderNavbarApp() {
     </>
   )
 }
+function logout() {
+  throw new Error("Function not implemented.")
+}
+

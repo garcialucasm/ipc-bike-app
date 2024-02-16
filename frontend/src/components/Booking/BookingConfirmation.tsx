@@ -5,13 +5,13 @@ import { useSingleBookingContext } from "@/context/singleBooking"
 import { createSingleBookingFetchApi } from "@/services/bookingApi"
 import BookingFailed from "./SingleBooking/modules/BookingFailed"
 import BookingConfirmed from "./SingleBooking/modules/BookingConfirmed"
-import { joinFistLastName } from "@/utils/validators"
+import { joinFirstLastName } from "@/utils/validators"
 import { SingleBookingDTO, SingleBookingProps } from "@/types/BookingType"
 import { UserData } from "@/types/UserType"
 import { BikeSize } from "@/types/BikeType"
 
 function singleBookingDTO(userData: UserData, bikeSize: BikeSize) {
-  const userName: string = joinFistLastName(
+  const userName: string = joinFirstLastName(
     userData.firstName,
     userData.lastName
   )

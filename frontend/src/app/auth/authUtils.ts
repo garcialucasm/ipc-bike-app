@@ -1,3 +1,4 @@
+import { cookieTokenName } from "@/types/CookieType";
 import jwt, { JwtPayload } from "jsonwebtoken"
 
 const jwtSecretKey = process.env.NEXT_PUBLIC_JWT_SECRET_KEY?.trim()
@@ -75,5 +76,34 @@ export function getDecodedToken() {
     } catch (error) {
         console.error("Authentication error: ", error)
         return false
+    }
+}
+
+/* ------------------ Check token to return if it is valid ------------------ */
+export async function checkAuth() {
+    const token = getTokenFromCookies(cookieTokenName)
+    if (!token) {
+        return false
+    }
+    const isAuth = verifyToken(token)
+    return isAuth
+} 
+
+export function verifyToken(token: string | null) {
+    if (!jwtSecretKey) {
+        console.error("Authentication error: JWT_SECRET_KEY is not set.")
+        return null
+    }
+    if (!token) {
+        console.error("Authentication error: Token undefined")
+        return null
+    }
+    try {
+        // Decode and verify the JWT token
+        const decodedToken = jwt.verify(token, jwtSecretKey) as JwtPayload
+        return decodedToken
+    } catch (error) {
+        console.error("Invalid token: " + error);
+        return null
     }
 }

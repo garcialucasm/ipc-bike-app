@@ -17,7 +17,7 @@ export default function accountController(accountService: IAccountService, route
 
     const router: Router = Router(routerOptions)
 
-    router.post("/register", async (req, res) => {
+    router.post("/secure/register", async (req, res) => {
         const accountName = cleanUpSpaces(req.body.accountName.toLowerCase())
         const email = cleanUpSpaces(req.body.email.toLowerCase())
         const password = req.body.password

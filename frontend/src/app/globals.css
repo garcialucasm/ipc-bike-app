@@ -48,7 +48,7 @@
   }
 
   .input-text {
-    @apply mb-4 mt-1 flex w-full items-center rounded-2xl border border-slate-300 bg-white px-3 py-2 text-sm placeholder-slate-400 shadow-sm
+    @apply flex w-full items-center rounded-2xl border border-slate-300 bg-white px-3 py-2 text-sm placeholder-slate-400 shadow-sm
     invalid:border-pink-500 invalid:text-pink-600 focus:border-sky-500 focus:outline-none
     focus:ring-1 focus:ring-sky-500 focus:invalid:border-pink-500 focus:invalid:ring-pink-500
     disabled:border-slate-200 disabled:bg-slate-50

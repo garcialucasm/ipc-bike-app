@@ -7,7 +7,8 @@ import { SingleBookingSections } from "@/types/BookingType"
 import { useSingleBookingContext } from "@/context/singleBooking"
 import BikeChooserContainer from "./modules/BikeChooserContainer"
 import { NavigationPaths } from "@/types/NavigationPaths"
-import { toPascalCase } from "@/utils/validators"
+import InstructionLabel from "@/components/Others/InstructionLabel"
+import { toPascalCase } from "@/utils/strings"
 
 function InputStudentBikeSize() {
   let defaultBikeSize = BikeSize.STANDARD
@@ -35,7 +36,7 @@ function InputStudentBikeSize() {
 
   return (
     <>
-      <h1 className="instruction-label">Select the bike type</h1>
+      <InstructionLabel>Select the bike type</InstructionLabel>
       <ul className="mb-5 w-full rounded-2xl border border-slate-200 bg-white">
         <BikeChooserContainer bikeSize={radioBikeSizeValue as BikeSize} />
         <div className="flex justify-around rounded-b-2xl border-b bg-gradient-to-b from-white from-40% via-slate-200 via-60% to-slate-200">
