@@ -33,7 +33,7 @@ export interface SingleBookingProps {
   bikeSize: BikeSize;
   userData: UserData;
   bookingStatus: BookingStatus | null;
-  serverResult: number | null;
+  serverResult: number | null | undefined;
 }
 
 export interface SingleBookingDTO {

@@ -161,20 +161,14 @@ function BookingsOverview() {
         const response = await returnBookingFetchApi(bookingId)
         handleServerResponse(response.returnedBooking)
       } else if (
-        bookingStatus === BookingStatus.BOOKED &&
+        (bookingStatus === BookingStatus.BOOKED ||
+          bookingStatus === BookingStatus.DELIVERED) &&
         actionToConfirm === BookingModalActions.CANCEL
       ) {
         const response = await cancelBookingFetchApi(bookingId)
         handleServerResponse(response.canceledBooking)
       }
-      updatingBikeAvailability()
-      setReloadData(!reloadData)
-      setModalAction((prev) => ({
-        ...prev,
-        actionToConfirm: BookingModalActions.CLOSERESPONSE,
-        dialogMessage: messageInicial,
-      }))
-    } else if (!confirm) {
+    } else {
       setModalAction((prev) => ({
         ...prev,
         isOpen: false,
@@ -185,8 +179,16 @@ function BookingsOverview() {
         status: null,
         actionToConfirm: null,
         dialogMessage: messageInicial,
+        serverResult: null,
       }))
     }
+    updatingBikeAvailability()
+    setReloadData(!reloadData)
+    setModalAction((prev) => ({
+      ...prev,
+      actionToConfirm: BookingModalActions.CLOSERESPONSE,
+      dialogMessage: messageInicial,
+    }))
   }
 
   function handleServerResponse(response: boolean | null) {

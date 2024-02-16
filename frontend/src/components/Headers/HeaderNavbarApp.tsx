@@ -15,7 +15,7 @@ import {
   IconSvgPersonCircle,
   IconSvgSingleBooking,
 } from "@/components/Others/IconsSvg"
-import { getDecodedToken } from "@/app/auth/authUtils"
+import { getDecodedToken, logout } from "@/app/auth/authUtils"
 import { toPascalCase } from "@/utils/strings"
 
 export default function HeaderNavbarApp() {
@@ -391,7 +391,3 @@ export default function HeaderNavbarApp() {
     </>
   )
 }
-function logout() {
-  throw new Error("Function not implemented.")
-}
-

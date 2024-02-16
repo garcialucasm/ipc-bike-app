@@ -22,8 +22,8 @@ const withAuth = (): boolean => {
 
     try {
         /* --------------------- Decode and verify the JWT token -------------------- */
-        const decodedToken = jwt.verify(tokenValue, jwtSecretKey) as JwtPayload;
-        console.log("Valid Token", decodedToken);
+        jwt.verify(tokenValue, jwtSecretKey) as JwtPayload;
+
         return true;
     } catch (error) {
         console.error("Authentication error: ", error)

@@ -87,7 +87,7 @@ export async function checkAuth() {
     }
     const isAuth = verifyToken(token)
     return isAuth
-} 
+}
 
 export function verifyToken(token: string | null) {
     if (!jwtSecretKey) {
@@ -105,5 +105,17 @@ export function verifyToken(token: string | null) {
     } catch (error) {
         console.error("Invalid token: " + error);
         return null
+    }
+}
+
+/* ------------------ Clear the authentication token cookie ----------------- */
+export async function logout() {
+    try {
+        await setCookie(cookieTokenName, "", -1);
+
+        return true
+    } catch (error) {
+        console.error("Logout error: " + error);
+        return false
     }
 }

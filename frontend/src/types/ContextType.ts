@@ -17,7 +17,7 @@ export type SingleBookingContextProps = {
     settingCurrentSection: (currentSection: SingleBookingSections) => void;
     settingBikeSize: (bikeSize: BikeSize) => void;
     settingUserData: (userData: UserData) => void;
-    settingServerResult: (serverResult: number | null) => void;
+    settingServerResult: (serverResult: number | undefined | null) => void;
 }
 
 export type BikeAvailabilityContextProps = {
