@@ -8,10 +8,10 @@ import { getBikeAvailability } from "@/services/bikeApi"
 
 // Creating initial state for bike availability data
 export const initialBikeAvailability: BikeAvailabilityCard = {
-  [BikeStatus.BOOKED]: 0,
-  [BikeStatus.INUSE]: 0,
-  [BikeStatus.FREE]: 0,
-  [BikeStatus.DISABLED]: 0,
+  [BikeStatus.BOOKED]: null,
+  [BikeStatus.INUSE]: null,
+  [BikeStatus.FREE]: null,
+  [BikeStatus.DISABLED]: null,
 }
 
 const BikeAvailabilityContext = createContext<BikeAvailabilityContextProps>(
@@ -31,10 +31,10 @@ const BikeAvailabilityProvider = ({
     const serverResult = await getBikeAvailability()
     if (serverResult.data) {
       setBikeAvailabilityData({
-        [BikeStatus.FREE]: serverResult.data[BikeStatus.FREE] | 0,
-        [BikeStatus.BOOKED]: serverResult.data[BikeStatus.BOOKED] | 0,
-        [BikeStatus.INUSE]: serverResult.data[BikeStatus.INUSE] | 0,
-        [BikeStatus.DISABLED]: serverResult.data[BikeStatus.DISABLED] | 0,
+        [BikeStatus.FREE]: serverResult.data[BikeStatus.FREE],
+        [BikeStatus.BOOKED]: serverResult.data[BikeStatus.BOOKED],
+        [BikeStatus.INUSE]: serverResult.data[BikeStatus.INUSE],
+        [BikeStatus.DISABLED]: serverResult.data[BikeStatus.DISABLED],
       })
     } else {
       console.error("Unable to fetch bike counter data")

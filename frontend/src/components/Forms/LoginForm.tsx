@@ -102,7 +102,7 @@ const Login = () => {
         <div className="fixed flex h-16 w-full items-center bg-gradient-to-tr from-blue-950 via-blue-800 to-blue-600 px-4 md:hidden">
           <Link href="/" className="ms-2 flex">
             <Image
-              src="/logo-ipc-alumni-bike-white-h.png"
+              src="/logo-ipc-alumni-bike-white-h2.png"
               className="h-8 w-auto"
               width={300}
               height={399}
@@ -116,7 +116,7 @@ const Login = () => {
         <div className="my-24 flex justify-center bg-white md:w-1/2">
           <form
             onSubmit={handleSubmitForm}
-            className="flex w-1/2 flex-col items-center justify-center bg-white md:w-1/3"
+            className="flex w-1/2 flex-col items-center justify-center bg-white md:w-2/3 lg:w-1/2 2xl:w-1/3"
           >
             <h1 className="mb-1 text-2xl font-bold text-gray-800">Hello! 👋</h1>
             <p className="mb-7 text-sm font-normal text-gray-600">

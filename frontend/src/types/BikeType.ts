@@ -18,8 +18,8 @@ export type AllBikesAvailability = {
 };
 
 export type BikeAvailabilityCard = {
-  [BikeStatus.BOOKED]: number,
-  [BikeStatus.INUSE]: number,
-  [BikeStatus.FREE]: number,
-  [BikeStatus.DISABLED]: number
+  [BikeStatus.BOOKED]: number | null,
+  [BikeStatus.INUSE]: number | null,
+  [BikeStatus.FREE]: number | null,
+  [BikeStatus.DISABLED]: number | null
 };
