@@ -96,7 +96,7 @@ function AvailabilityCard(props: {
           </div>
         </div>
         <span className="px-2 pb-2 text-left text-4xl">
-          {currentBikeCount}
+          {currentBikeCount || 0}
           <span className="px-1 text-xs text-slate-500">{textLabel}</span>
         </span>
         <span className={`h-1.5 ${cardColorByStatus}`}></span>

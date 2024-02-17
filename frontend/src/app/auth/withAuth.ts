@@ -8,7 +8,8 @@ const jwtSecretKey = process.env.NEXT_PUBLIC_JWT_SECRET_KEY?.trim()
 const withAuth = (): boolean => {
 
     if (!jwtSecretKey) {
-        throw new Error("Authentication warning: JWT_SECRET_KEY is not set.");
+        console.error("Authentication warning: JWT_SECRET_KEY is not set.");
+        return false
     }
 
     // Get the token from the cookie
