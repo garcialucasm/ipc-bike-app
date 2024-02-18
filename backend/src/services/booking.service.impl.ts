@@ -60,6 +60,14 @@ export default class BookingService implements IBookingService {
     this.bikeService.changeStatus(bike, BikeStatus.BOOKED)
     this.userService.changeStatus(user, UserStatus.BOOKED)
 
+    /* -------------------------------------------------------------------------- */
+    /* ----------- Skip to confirm booking status during initial tests ---------- */
+    /* -------------------------------------------------------------------------- */
+    if (booking.ID) {
+      await this.approve(booking.ID);
+    }
+    /* -------------------------------------------------------------------------- */
+
     return booking
   }
 
