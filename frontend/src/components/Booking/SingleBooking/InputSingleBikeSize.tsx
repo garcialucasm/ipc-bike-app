@@ -58,7 +58,7 @@ function InputStudentBikeSize() {
                   className={`bike-type-chooser-item rounded-2xl`}
                 >
                   <p
-                    className={`w-full rounded-b-2xl bg-inherit py-2 ${radioBikeSizeValue === size && "rounded-tl-xl"}`}
+                    className={`w-full rounded-b-2xl bg-inherit py-2 ${array.indexOf(radioBikeSizeValue) - index === -1 && "rounded-tl-xl"} ${array.indexOf(radioBikeSizeValue) - index === 1 && "rounded-tr-xl"}`}
                   >
                     {toPascalCase(size)}
                   </p>
