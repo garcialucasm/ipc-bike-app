@@ -90,7 +90,7 @@ function InputStudentData() {
     <>
       <InstructionLabel>Please, enter cyclist details:</InstructionLabel>
       <div className="flex w-full flex-col">
-        <div className="flex gap-2">
+        <div className="sm:flex sm:gap-2">
           <InputText
             placeholder={"First name"}
             name={"firstName"}
@@ -114,7 +114,15 @@ function InputStudentData() {
             onBlur={handleBlur}
             onFocus={handleFocus}
             errorMessage={errorMessages.lastName}
-          ></InputText>
+          >
+            <span className="sm:hidden">
+              <IconSvgPersonFilled
+                fillColor="text-gray-400"
+                width="24"
+                height="24"
+              />
+            </span>
+          </InputText>
         </div>
 
         <InputText

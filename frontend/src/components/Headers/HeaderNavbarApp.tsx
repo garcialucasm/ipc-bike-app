@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
@@ -21,19 +21,22 @@ import { toPascalCase } from "@/utils/strings"
 export default function HeaderNavbarApp() {
   const { accountData, useLogin } = useAuth()
   const [isOpenAccountMenu, setIsOpenAccountMenu] = useState(false)
-  const [isOpenSideBar, setSideBarOpened] = useState(false)
+  const [isSideBarOpened, setIsSideBarOpened] = useState(false)
   const [closedAlert, setClosedAlert] = useState(false)
-  function toggleAlertClosed() {
-    setClosedAlert(true)
-  }
-  function toggleSideBarOpened() {
-    setSideBarOpened(!isOpenSideBar)
-  }
+  const accountMenuRef = useRef(null) // Reference to the dropdown-user container
+  const sidebarMenuRef = useRef(null) // Reference to the sidebar container
   const router = useRouter()
   const accountName = accountData?.accountName
   const pathname = usePathname()
 
-  //TODO Close the menu when clicks outside
+  function toggleAlertClosed() {
+    setClosedAlert(true)
+  }
+
+  function toggleSideBarOpened() {
+    setIsSideBarOpened(!isSideBarOpened)
+  }
+
   function handleClick(buttonClicked: NavigationPaths) {
     switch (buttonClicked) {
       case NavigationPaths.logout:
@@ -63,6 +66,37 @@ export default function HeaderNavbarApp() {
     setAccountInfo()
   }, [])
 
+  /* ------------------- Close the menus when clicks outside ------------------ */
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        accountMenuRef.current &&
+        !(accountMenuRef.current as HTMLElement).contains(
+          event.target as Node
+        ) &&
+        isOpenAccountMenu
+      ) {
+        setIsOpenAccountMenu(false)
+      } else if (
+        sidebarMenuRef.current &&
+        !(sidebarMenuRef.current as HTMLElement).contains(
+          event.target as Node
+        ) &&
+        isSideBarOpened
+      ) {
+        setIsSideBarOpened(false)
+      }
+    }
+    // Add event listener when component mounts
+    document.addEventListener("mousedown", handleClickOutside)
+
+    // Remove event listener when component unmounts
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [isOpenAccountMenu, isSideBarOpened]) // Add dependencies to useEffect
+
+  console.log("rendering Header")
   return (
     <>
       <nav className="fixed top-0 z-50 h-16 w-full bg-gradient-to-tr from-blue-800 via-blue-800 to-blue-600 transition-transform">
@@ -99,6 +133,7 @@ export default function HeaderNavbarApp() {
                   width={300}
                   height={399}
                   alt=""
+                  loading="lazy"
                 />
                 <span className="sr-only self-center whitespace-nowrap text-xl font-semibold sm:text-2xl">
                   IPC Bike App
@@ -122,6 +157,7 @@ export default function HeaderNavbarApp() {
                   </Button>
                 </div>
                 <div
+                  ref={accountMenuRef}
                   className={`border-slate-300text-base right-20 top-4 z-50 min-w-56 list-none rounded-2xl border bg-white ${isOpenAccountMenu ? "absolute" : "hidden"}`}
                   id="dropdown-user"
                 >
@@ -265,8 +301,9 @@ export default function HeaderNavbarApp() {
         </div>
       </nav>
       <aside
+        ref={sidebarMenuRef}
         id="logo-sidebar"
-        className={`fixed left-0 top-0 z-40 mt-[64px] h-screen w-64 bg-gradient-to-b from-slate-200 via-slate-200 to-slate-100 pb-24 pt-8 text-left text-slate-700 transition-transform xl:translate-x-0 ${isOpenSideBar ? "" : "-translate-x-full"}`}
+        className={`fixed left-0 top-0 z-40 mt-[64px] h-screen w-64 bg-gradient-to-b from-slate-200 via-slate-200 to-slate-100 pb-24 pt-8 text-left text-slate-700 transition-transform xl:translate-x-0 ${isSideBarOpened ? "" : "-translate-x-full"}`}
         aria-label="Sidebar"
       >
         <div className="flex h-full flex-col justify-between overflow-y-auto px-3 pb-4">
@@ -321,7 +358,6 @@ export default function HeaderNavbarApp() {
               >
                 <IconSvgBecomeMember height="28" />
                 <span className="ms-3 flex-1 whitespace-nowrap">
-                  {" "}
                   Become a member
                 </span>
               </Link>

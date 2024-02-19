@@ -48,7 +48,7 @@ function AvailabilityCard(props: {
   return (
     <>
       <div
-        className={`px-auto flex w-full flex-col justify-between overflow-hidden rounded-2xl border-l border-r border-t border-slate-100 bg-gradient-to-tr from-slate-100 via-slate-100 to-slate-50 font-semibold ${cardTextColorByStatus}`}
+        className={`px-auto min-w-32 flex w-full flex-col justify-between overflow-hidden rounded-2xl border-l border-r border-t border-slate-100 bg-gradient-to-tr from-slate-100 via-slate-100 to-slate-50 font-semibold ${cardTextColorByStatus}`}
       >
         <span>
           <StatusIndicator

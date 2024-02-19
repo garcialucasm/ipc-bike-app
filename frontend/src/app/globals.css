@@ -16,7 +16,7 @@
     @apply btn-all border border-blue-800 bg-gradient-to-tr from-slate-50 via-white to-white px-4 py-2 font-semibold text-blue-900 transition duration-200 hover:bg-slate-300 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
   }
   .btn-action {
-    @apply mx-0.5 w-fit rounded-full border border-slate-500 bg-white text-slate-500 hover:bg-slate-500 hover:text-white;
+    @apply mx-0.5 w-fit rounded-full border border-slate-500 bg-white text-slate-500 hover:bg-slate-500 hover:text-white transition-all duration-200 hover:shadow-lg;
   }
   .link-primary {
     @apply btn-primary px-0 py-0;
@@ -32,13 +32,13 @@
     @apply mb-3 w-full text-start font-semibold text-slate-700;
   }
   .container-main-webapp {
-    @apply mt-[64px] flex flex-grow flex-col items-center px-6 text-center;
+    @apply mt-[64px] flex flex-grow flex-col items-center px-3 md:px-6 text-center;
   }
   .container-webapp-size {
     @apply flex h-full w-full max-w-xl;
   }
   .container-page-webapp {
-    @apply container-webapp-size my-6 flex-col items-center rounded-2xl bg-slate-100 px-16 pb-16 pt-8;
+    @apply container-webapp-size my-6 flex-col items-center rounded-2xl bg-slate-100 px-8 md:px-16 pb-16 pt-8;
   }
   .container-subpage-webapp {
     @apply flex w-full flex-col items-center;

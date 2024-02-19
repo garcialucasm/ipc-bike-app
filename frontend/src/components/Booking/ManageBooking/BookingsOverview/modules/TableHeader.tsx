@@ -1,17 +1,16 @@
 function TableHeader() {
   return (
     <>
-      {" "}
       <thead className="bg-blue-800 text-xs uppercase text-slate-100">
         <tr>
           <th scope="col" className="px-3 py-3 text-center">
-            Status
+            <span className="hidden md:block">Status</span>
           </th>
           <th scope="col" className="py-3">
             User
           </th>
           <th scope="col" className="py-3">
-            Bike Type
+            <span className="hidden md:block">Bike Type</span>
           </th>
           <th scope="col" className="py-3">
             Bikes

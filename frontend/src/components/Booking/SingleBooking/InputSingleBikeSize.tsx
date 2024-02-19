@@ -19,11 +19,18 @@ function InputStudentBikeSize() {
   const [radioBikeSizeValue, setRadioBikeSizeValue] =
     useState<BikeSize>(defaultBikeSize)
 
+  const [isImageSliding, setIsImageSliding] = useState(false)
+
   if (bookingData.bikeSize) {
     defaultBikeSize = bookingData.bikeSize as BikeSize
   }
 
   function handleRadioChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setIsImageSliding(true)
+    setTimeout(() => {
+      setIsImageSliding(false)
+    }, 500) // Adjust the delay to match the transition duration
+
     const selectedRadio = event.target.value as BikeSize
     setRadioBikeSizeValue(selectedRadio)
   }
@@ -37,10 +44,13 @@ function InputStudentBikeSize() {
   return (
     <>
       <InstructionLabel>Select the bike type</InstructionLabel>
-      <ul className="mb-5 w-full rounded-2xl border border-slate-200 bg-white">
-        <BikeChooserContainer bikeSize={radioBikeSizeValue as BikeSize} />
+      <ul className="mb-5 w-full overflow-hidden rounded-2xl border border-slate-200 bg-white">
+        <BikeChooserContainer
+          bikeSize={radioBikeSizeValue as BikeSize}
+          isImageSliding={isImageSliding}
+        />
         <div className="flex justify-around rounded-b-2xl border-b bg-gradient-to-b from-white from-40% via-slate-200 via-60% to-slate-200">
-          {[BikeSize.STANDARD, BikeSize.CLASSIC, BikeSize.SMALL].map(
+          {["All", BikeSize.STANDARD, BikeSize.CLASSIC, BikeSize.SMALL].map(
             // TODO: Fix curve selection using index and array
             (size, index, array) => (
               <li className={`w-full`} key={size}>
@@ -60,7 +70,7 @@ function InputStudentBikeSize() {
                   <p
                     className={`w-full rounded-b-2xl bg-inherit py-2 ${array.indexOf(radioBikeSizeValue) - index === -1 && "rounded-tl-xl"} ${array.indexOf(radioBikeSizeValue) - index === 1 && "rounded-tr-xl"}`}
                   >
-                    {toPascalCase(size)}
+                    <span className="text-sm">{toPascalCase(size)}</span>
                   </p>
                 </label>
               </li>

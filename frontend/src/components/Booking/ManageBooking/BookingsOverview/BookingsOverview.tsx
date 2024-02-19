@@ -243,10 +243,12 @@ function BookingsOverview() {
                     {booking.user}
                   </td>
                   <td className="py-4 text-slate-500">
-                    {booking.bikeType && booking.bikeType.length > 0
-                      ? booking.bikeType.charAt(0).toUpperCase() +
-                        booking.bikeType.slice(1)
-                      : ""}
+                    <span className="hidden md:inline-block">
+                      {booking.bikeType && booking.bikeType.length > 0
+                        ? booking.bikeType.charAt(0).toUpperCase() +
+                          booking.bikeType.slice(1)
+                        : ""}
+                    </span>
                   </td>
                   <td className="py-4 text-slate-500">{booking.bike}</td>
                   <td className="flex w-full flex-row items-center justify-center py-4">
@@ -267,9 +269,9 @@ function BookingsOverview() {
                       </ActionButton>
                     </div>
                     <div>
-                      <ActionButton>
+                      {/* <ActionButton>
                         <IconSvgEllipsisCircle height="24" />
-                      </ActionButton>
+                      </ActionButton> */}
                     </div>
                     <div>
                       <ActionButton
@@ -345,8 +347,7 @@ function BookingsOverview() {
                         <IconSvgApprovalCircle height="18px" />
                       </span>
                       <span className="text-emerald-700">
-                        {" "}
-                        {messageServerResponseConfirmation}{" "}
+                        {messageServerResponseConfirmation}
                       </span>
                     </>
                   ) : (

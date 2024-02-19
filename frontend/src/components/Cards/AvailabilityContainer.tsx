@@ -8,7 +8,6 @@ import {
   initialBikeAvailability,
   useBikeAvailabilityContext,
 } from "@/context/bikeAvailability"
-import { IconSvgLoader } from "../Others/IconsSvg"
 import LoadingComponent from "../Others/LoadingComponent"
 
 function AvailabilityContainer() {
@@ -23,11 +22,11 @@ function AvailabilityContainer() {
 
   return (
     <>
-      <div className="container-webapp-size my-8 items-center overflow-x-auto">
+      <div className="container-webapp-size items-center overflow-x-auto pt-8">
         {bikeAvailabilityData === initialBikeAvailability ? (
           <LoadingComponent />
         ) : (
-          <div className="flex w-full gap-3 overflow-x-auto">
+          <div className="mb-6 flex w-full gap-3 overflow-x-auto pb-2">
             {[BikeStatus.FREE, BikeStatus.BOOKED, BikeStatus.INUSE].map(
               (bikeStatus) => (
                 <AvailabilityCard
