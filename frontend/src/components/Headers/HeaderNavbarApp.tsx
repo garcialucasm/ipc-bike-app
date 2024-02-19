@@ -96,7 +96,6 @@ export default function HeaderNavbarApp() {
     }
   }, [isOpenAccountMenu, isSideBarOpened]) // Add dependencies to useEffect
 
-  console.log("rendering Header")
   return (
     <>
       <nav className="fixed top-0 z-50 h-16 w-full bg-gradient-to-tr from-blue-800 via-blue-800 to-blue-600 transition-transform">

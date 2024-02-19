@@ -5,7 +5,6 @@ import { AccountDTO } from "@/types/AccountType";
 /* -------------------------- Register new account -------------------------- */
 export async function registerAccountFetchApi(accountData: AccountDTO) {
     try {
-        console.log(accountData)
         const response = await ApiHeader.post(apiUrls.registerAccountUrl, {
             accountName: accountData.accountName,
             email: accountData.email,
