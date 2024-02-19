@@ -4,7 +4,7 @@ import IBikeService from "./bike.service";
 
 export default class BikeService implements IBikeService {
 
-   bikeRepository: IBikeRepository;
+  bikeRepository: IBikeRepository;
 
   validBikeStatusTransitions: Map<BikeStatus, BikeStatus[]>
 
@@ -56,9 +56,17 @@ export default class BikeService implements IBikeService {
     return await this.bikeRepository.update(bike)
   }
 
-
+  /* -- without this statement, findAllAvailable doesnt work with empty size -- */
   findAllAvailable(size?: string): Promise<Bike[]> {
-    return this.bikeRepository.findAll({ currentStatus: BikeStatus.FREE, size: size })
+    const searchCriteria: { currentStatus?: BikeStatus; size?: string } = {
+      currentStatus: BikeStatus.FREE
+    };
+
+    if (size) {
+      searchCriteria.size = size;
+    }
+
+    return this.bikeRepository.findAll(searchCriteria);
   }
 
   countBikesByStatus(): Promise<Map<BikeStatus, number>> {

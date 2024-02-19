@@ -17,7 +17,7 @@ export default class BikeRepository implements IBikeRepository {
 
   findByIdStmt: string = "SELECT * from bike where id=$1"
 
-  findAllStmt: string = "SELECT * FROM bike "
+  findAllStmt: string = `SELECT * FROM "bike"`
   
   countBikesByStatusStmt: string = `SELECT b.current_status, count(b.current_status) FROM bike b
                                         GROUP BY b.current_status`
