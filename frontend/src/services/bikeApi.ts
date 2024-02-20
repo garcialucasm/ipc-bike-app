@@ -1,8 +1,9 @@
+import { Bike, BikeSize } from '@/types/BikeType';
 import { BikeStatus } from '@/types/BikeType';
 import { ApiHeader, apiUrls } from "./api";
-import { ServerResultBikeAvailability } from '@/types/ServerResult';
+import { ServerResultAllBikesAvailable, ServerResultBikeAvailability as ServerResultBikeCounter } from '@/types/ServerResult';
 
-// Bike Status Counter
+/* --------------------------- Bike Status Counter -------------------------- */
 export async function bikeStatusCounterFetchApi() {
     let bikeCountFree: number;
     let bikeCountBooked: number;
@@ -38,7 +39,50 @@ export async function bikeStatusCounterFetchApi() {
     }
 }
 
-export async function getBikeAvailability() {
-    const serverResult: ServerResultBikeAvailability = await bikeStatusCounterFetchApi()
+/* --------------------------- All Bikes Available -------------------------- */
+export async function allBikesAvailableFetchApi() {
+    let allBikes: Bike[];
+    let largeBikes: Bike[];
+    let standardBikes: Bike[];
+    let smallBikes: Bike[];
+
+    try {
+        const response = await ApiHeader.get(apiUrls.allBikesAvailableUrl);
+
+        if (response.status < 200 || response.status >= 300) {
+            throw new Error(`${response.status}: ${response.statusText}`);
+        }
+
+        const data = response.data
+        allBikes = data.allBikes
+        largeBikes = data.largeBikes
+        standardBikes = data.standardBikes
+        smallBikes = data.smallBikes
+
+        return {
+            data: {
+                allBikes: allBikes,
+                largeBikes: largeBikes,
+                standardBikes: standardBikes,
+                smallBikes: smallBikes
+            }, error: null
+        };
+    } catch (error: any) {
+        console.error('Error getting status counter:', error.message);
+        return {
+            data: null, error: `${error.message}`
+        }
+    }
+}
+
+
+
+export async function getBikeStatusCount() {
+    const serverResult: ServerResultBikeCounter = await bikeStatusCounterFetchApi()
+    return serverResult
+}
+
+export async function getAllBikesAvailable() {
+    const serverResult: ServerResultAllBikesAvailable = await allBikesAvailableFetchApi()
     return serverResult
 }

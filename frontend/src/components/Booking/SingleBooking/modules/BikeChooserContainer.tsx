@@ -4,13 +4,13 @@ import Image from "next/image"
 import StatusIndicator from "../../../Others/StatusIndicator"
 
 function BikeChooserContainer(props: {
+  bikeCount: number | undefined
   bikeSize: BikeSize
   isImageSliding: boolean
 }) {
-  const { bikeSize, isImageSliding } = props
+  const { bikeSize, isImageSliding, bikeCount } = props
 
   const [currentImage, setCurrentImage] = useState<string>("")
-  const [bikeSelectedFreeCount, setBikeSelectedFreeCount] = useState<number>(0)
   const [bikeSelectedRecomendation, setBikeSelectedRecomendation] =
     useState<string>("")
   const [bikeSelectedStatusIndicator, setBikeSelectedStatusIndicator] =
@@ -20,23 +20,26 @@ function BikeChooserContainer(props: {
     // Update image after 250ms
     const timeoutId = setTimeout(() => {
       switch (bikeSize) {
-        case BikeSize.STANDARD:
-          setCurrentImage("/bike-type-standard.jpg")
-          setBikeSelectedFreeCount(1)
+        case BikeSize.ALL:
+          setCurrentImage("/bike-type-all.jpg")
           setBikeSelectedRecomendation(
             "Recommended for people 5'4\" | 163 cm or taller."
           )
           break
-        case BikeSize.CLASSIC:
+        case BikeSize.STANDARD:
+          setCurrentImage("/bike-type-standard.jpg")
+          setBikeSelectedRecomendation(
+            "Recommended for people 5'4\" | 163 cm or taller."
+          )
+          break
+        case BikeSize.LARGE:
           setCurrentImage("/bike-type-classic.jpg")
-          setBikeSelectedFreeCount(0)
           setBikeSelectedRecomendation(
             "Recommended for people 5'4\" | 163 cm or taller."
           )
           break
         case BikeSize.SMALL:
           setCurrentImage("/bike-type-folding.jpg")
-          setBikeSelectedFreeCount(2)
           setBikeSelectedRecomendation(
             "Recommended for people 5'4\" | 163 cm or taller."
           )
@@ -48,7 +51,7 @@ function BikeChooserContainer(props: {
           return
       }
 
-      if (bikeSelectedFreeCount > 0) {
+      if (bikeCount && bikeCount > 0) {
         setBikeSelectedStatusIndicator(BikeStatus.FREE)
       } else {
         setBikeSelectedStatusIndicator(BikeStatus.DISABLED)
@@ -65,8 +68,7 @@ function BikeChooserContainer(props: {
           currentStatus={bikeSelectedStatusIndicator}
           isStatic={true}
         />
-        <span className="px-1 font-medium">{bikeSelectedFreeCount}</span>{" "}
-        available
+        <span className="px-1 font-medium">{bikeCount}</span> available
       </div>
       <div
         className={`transform transition-transform duration-500 ease-in-out ${

@@ -1,7 +1,7 @@
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-import { BikeSize } from "@/types/BikeType"
+import { Bike, BikeSize } from "@/types/BikeType"
 import PrimaryButton from "../../Buttons/PrimaryButton"
 import { SingleBookingSections } from "@/types/BookingType"
 import { useSingleBookingContext } from "@/context/singleBooking"
@@ -10,6 +10,7 @@ import { NavigationPaths } from "@/types/NavigationPaths"
 import InstructionLabel from "@/components/Others/InstructionLabel"
 import { toPascalCase } from "@/utils/strings"
 import Button from "@/components/Buttons/Button"
+import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
 
 function InputStudentBikeSize() {
   let defaultBikeSize = BikeSize.STANDARD
@@ -17,11 +18,15 @@ function InputStudentBikeSize() {
   const { bookingData, settingCurrentSection, settingBikeSize } =
     useSingleBookingContext()
 
+  const { allBikesAvailable, updatingAllBikesAvailable } =
+    useBikeAvailabilityContext()
+
+  const [listOfAvailableBikes, setListOfAvailableBikes] = useState<Bike[]>()
+
   const [radioBikeSizeValue, setRadioBikeSizeValue] =
     useState<BikeSize>(defaultBikeSize)
 
   const [isImageSliding, setIsImageSliding] = useState(false)
-
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [selectedBikeNumber, setSelectedBikeNumber] = useState("")
 
@@ -48,6 +53,7 @@ function InputStudentBikeSize() {
 
     const selectedRadio = event.target.value as BikeSize
     setRadioBikeSizeValue(selectedRadio)
+    settingBikeList(selectedRadio)
   }
 
   function handleClickNextStep() {
@@ -56,6 +62,29 @@ function InputStudentBikeSize() {
     settingCurrentSection(SingleBookingSections.inputUserData)
   }
 
+  function settingBikeList(selectedRadio: BikeSize) {
+    let sortedBikes
+    if (selectedRadio === BikeSize.ALL) {
+      sortedBikes = allBikesAvailable.allBikes
+    } else if (selectedRadio === BikeSize.LARGE) {
+      sortedBikes = allBikesAvailable.largeBikes
+    } else if (selectedRadio === BikeSize.STANDARD) {
+      sortedBikes = allBikesAvailable.standardBikes
+    } else if (selectedRadio === BikeSize.SMALL) {
+      sortedBikes = allBikesAvailable.smallBikes
+    }
+
+    // Sort the bikes by numbering
+    sortedBikes = sortedBikes?.sort((a, b) => a.numbering - b.numbering)
+
+    setListOfAvailableBikes(sortedBikes)
+  }
+
+  useEffect(() => {
+    updatingAllBikesAvailable()
+    settingBikeList(radioBikeSizeValue)
+  }, [radioBikeSizeValue])
+
   return (
     <>
       <InstructionLabel>Select the bike type</InstructionLabel>
@@ -63,34 +92,37 @@ function InputStudentBikeSize() {
         <BikeChooserContainer
           bikeSize={radioBikeSizeValue as BikeSize}
           isImageSliding={isImageSliding}
+          bikeCount={listOfAvailableBikes?.length}
         />
         <div className="flex justify-around rounded-b-2xl border-b bg-gradient-to-b from-white from-40% via-slate-200 via-60% to-slate-200">
-          {["All", BikeSize.STANDARD, BikeSize.CLASSIC, BikeSize.SMALL].map(
-            // TODO: Fix curve selection using index and array
-            (size, index, array) => (
-              <li className={`w-full`} key={size}>
-                <input
-                  type="radio"
-                  id={`${size.toLowerCase()}-bike-size`}
-                  name="bike-size"
-                  value={size}
-                  className="peer hidden"
-                  checked={radioBikeSizeValue === size}
-                  onChange={handleRadioChange}
-                />
-                <label
-                  htmlFor={`${size.toLowerCase()}-bike-size`}
-                  className={`bike-type-chooser-item rounded-2xl`}
+          {[
+            BikeSize.ALL,
+            BikeSize.STANDARD,
+            BikeSize.LARGE,
+            BikeSize.SMALL,
+          ].map((size, index, array) => (
+            <li className={`w-full`} key={size}>
+              <input
+                type="radio"
+                id={`${size.toLowerCase()}-bike-size`}
+                name="bike-size"
+                value={size}
+                className="peer hidden"
+                checked={radioBikeSizeValue === size}
+                onChange={handleRadioChange}
+              />
+              <label
+                htmlFor={`${size.toLowerCase()}-bike-size`}
+                className={`bike-type-chooser-item rounded-2xl`}
+              >
+                <p
+                  className={`w-full rounded-b-2xl bg-inherit py-2 ${array.indexOf(radioBikeSizeValue) - index === -1 && "rounded-tl-xl"} ${array.indexOf(radioBikeSizeValue) - index === 1 && "rounded-tr-xl"}`}
                 >
-                  <p
-                    className={`w-full rounded-b-2xl bg-inherit py-2 ${array.indexOf(radioBikeSizeValue) - index === -1 && "rounded-tl-xl"} ${array.indexOf(radioBikeSizeValue) - index === 1 && "rounded-tr-xl"}`}
-                  >
-                    <span className="text-sm">{toPascalCase(size)}</span>
-                  </p>
-                </label>
-              </li>
-            )
-          )}
+                  <span className="text-sm">{toPascalCase(size)}</span>
+                </p>
+              </label>
+            </li>
+          ))}
         </div>
       </ul>
       <InstructionLabel>Select the bike numbering</InstructionLabel>
@@ -102,7 +134,7 @@ function InputStudentBikeSize() {
         onClick={handleDropdownToggle}
       >
         <div className="flex h-full items-center font-semibold text-slate-700">
-          <p className="flex min-h-10 items-center rounded-l-2xl bg-slate-200 px-5">
+          <p className="flex min-h-10 items-center rounded-l-2xl bg-slate-200 px-3">
             Bike Selected
           </p>
           <div className="flex items-center px-5">
@@ -122,9 +154,9 @@ function InputStudentBikeSize() {
         >
           <path
             stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
             d="m1 1 4 4 4-4"
           />
         </svg>
@@ -139,34 +171,33 @@ function InputStudentBikeSize() {
           className="max-h-52 space-y-1 overflow-y-auto p-3 text-sm text-gray-700"
           aria-labelledby="dropdownRadioBgHoverButton"
         >
-          {[14, 15, 16, 17, 14, 15, 16, 17, 14, 15, 16, 17].map(
-            (bikeNumbering) => (
-              <li key={bikeNumbering}>
+          {listOfAvailableBikes &&
+            listOfAvailableBikes.map((bike) => (
+              <li key={bike.numbering}>
                 <div
-                  className={`flex items-center rounded-lg p-2 hover:bg-gray-100 ${selectedBikeNumber === bikeNumbering.toString() && "bg-slate-200 text-blue-700"}`}
+                  className={`flex items-center rounded-lg p-2 hover:bg-gray-100 ${selectedBikeNumber === bike.numbering.toString() && "bg-slate-200 text-blue-700"}`}
                 >
                   <input
-                    id={`default-radio-${bikeNumbering}`}
+                    id={`default-radio-${bike.numbering}`}
                     type="radio"
-                    value={bikeNumbering.toString()}
+                    value={bike.numbering.toString()}
                     name="default-radio"
                     className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-1 focus:ring-blue-500"
-                    checked={selectedBikeNumber === bikeNumbering.toString()}
+                    checked={selectedBikeNumber === bike.numbering.toString()}
                     onChange={handleBikeNumberSelection}
                   />
                   <label
-                    htmlFor={`default-radio-${bikeNumbering}`}
+                    htmlFor={`default-radio-${bike.numbering}`}
                     className="ms-2 w-full rounded text-sm font-medium"
                   >
                     <div className="flex items-center">
                       <p className="ps-5">Bike</p>
-                      <p className="px-2">{bikeNumbering}</p>
+                      <p className="px-2">{bike.numbering}</p>
                     </div>
                   </label>
                 </div>
               </li>
-            )
-          )}
+            ))}
         </ul>
       </div>
       <div className="mt-5 w-full">

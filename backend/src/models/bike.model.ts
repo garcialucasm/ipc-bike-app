@@ -1,10 +1,11 @@
+import { BikeDTO } from "../dto/bike.dto";
 
 enum BikeStatus {
-  BOOKED = "BOOKED", 
+  BOOKED = "BOOKED",
   INUSE = "INUSE",
   DISABLED = "DISABLED",
   FREE = "FREE"
-} 
+}
 
 interface Bike {
   ID?: number;
@@ -15,6 +16,13 @@ interface Bike {
   CreatedAt?: Date;
   UpdatedAt?: Date;
   DeltedAt?: Date;
+}
+
+export type AllBikesAvailableBySize = {
+  allBikes: BikeDTO[] | [],
+  largeBikes: BikeDTO[] | [],
+  standardBikes: BikeDTO[] | [],
+  smallBikes: BikeDTO[] | [],
 }
 
 export { BikeStatus, Bike }

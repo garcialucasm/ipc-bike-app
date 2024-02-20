@@ -8,7 +8,7 @@ import { useAuth } from "@/context/auth"
 
 function DevShowContext() {
   const { bookingData } = useSingleBookingContext()
-  const { bikeAvailabilityData } = useBikeAvailabilityContext()
+  const { bikeStatusCount: bikeStatusCount } = useBikeAvailabilityContext()
   const { accountData } = useAuth()
   const [minimized, setMinimized] = useState(false)
 
@@ -56,44 +56,44 @@ function DevShowContext() {
                 <span className="text-slate-500">{accountData?.accountName}</span>
               </span>
             </p>
-            {(bikeAvailabilityData.FREE !== 0 ||
-              bikeAvailabilityData.BOOKED !== 0 ||
-              bikeAvailabilityData.INUSE !== 0 ||
-              bikeAvailabilityData.DISABLED !== 0) && (
+            {(bikeStatusCount.FREE !== 0 ||
+              bikeStatusCount.BOOKED !== 0 ||
+              bikeStatusCount.INUSE !== 0 ||
+              bikeStatusCount.DISABLED !== 0) && (
               <p className="mt-2 border-b border-white text-center text-xs font-semibold">
                 Bike Availability:{" "}
               </p>
             )}
             {/* Bike availability */}
-            {bikeAvailabilityData.FREE !== 0 && (
+            {bikeStatusCount.FREE !== 0 && (
               <p className="text-xs">
                 Free:{" "}
                 <span className="text-green-500">
-                  {bikeAvailabilityData.FREE}
+                  {bikeStatusCount.FREE}
                 </span>
               </p>
             )}
-            {bikeAvailabilityData.BOOKED !== 0 && (
+            {bikeStatusCount.BOOKED !== 0 && (
               <p className="text-xs">
                 Booked:{" "}
                 <span className="text-yellow-500">
-                  {bikeAvailabilityData.BOOKED}
+                  {bikeStatusCount.BOOKED}
                 </span>
               </p>
             )}
-            {bikeAvailabilityData.INUSE !== 0 && (
+            {bikeStatusCount.INUSE !== 0 && (
               <p className="text-xs">
                 In use:{" "}
                 <span className="text-red-500">
-                  {bikeAvailabilityData.INUSE}
+                  {bikeStatusCount.INUSE}
                 </span>
               </p>
             )}
-            {bikeAvailabilityData.DISABLED !== 0 && (
+            {bikeStatusCount.DISABLED !== 0 && (
               <p className="text-xs">
                 Disabled:{" "}
                 <span className="text-gray-500">
-                  {bikeAvailabilityData.DISABLED}
+                  {bikeStatusCount.DISABLED}
                 </span>
               </p>
             )}

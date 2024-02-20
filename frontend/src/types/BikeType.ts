@@ -7,17 +7,27 @@ export enum BikeStatus {
 
 export enum BikeSize {
   STANDARD = "STANDARD",
-  CLASSIC = "CLASSIC",
+  LARGE = "LARGE",
   SMALL = "SMALL",
+  ALL = "ALL",
 }
 
-export type AllBikesAvailability = {
-  [size in BikeSize]: {
-    [status in BikeStatus]: number;
-  };
-};
+export type Bike = {
+  id: number,
+  numbering: number,
+  currentStatus: string,
+  size: string,
+  isActive: boolean,
+}
 
-export type BikeAvailabilityCard = {
+export type AllBikesAvailable = {
+  allBikes: Bike[] | [],
+  largeBikes: Bike[] | [],
+  standardBikes: Bike[] | [],
+  smallBikes: Bike[] | [],
+}
+
+export type BikeStatusCard = {
   [BikeStatus.BOOKED]: number | null,
   [BikeStatus.INUSE]: number | null,
   [BikeStatus.FREE]: number | null,

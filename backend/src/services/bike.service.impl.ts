@@ -1,4 +1,5 @@
-import { Bike, BikeStatus } from "../models/bike.model";
+import { toBikeDTO } from "../controllers/bike.controller";
+import { AllBikesAvailableBySize, Bike, BikeStatus } from "../models/bike.model";
 import IBikeRepository from "../repositories/bike.repository";
 import IBikeService from "./bike.service";
 
@@ -56,20 +57,37 @@ export default class BikeService implements IBikeService {
     return await this.bikeRepository.update(bike)
   }
 
-  /* -- without this statement, findAllAvailable doesnt work with empty size -- */
   findAllAvailable(size?: string): Promise<Bike[]> {
     const searchCriteria: { currentStatus?: BikeStatus; size?: string } = {
       currentStatus: BikeStatus.FREE
     };
 
+    /* -- without this statement, findAllAvailable doesnt work with empty size -- */
     if (size) {
       searchCriteria.size = size;
     }
+    /* -------------------------------------------------------------------------- */
 
     return this.bikeRepository.findAll(searchCriteria);
   }
 
   countBikesByStatus(): Promise<Map<BikeStatus, number>> {
     return this.bikeRepository.countBikesByStatus()
+  }
+
+  async findAllAvailableBySize(): Promise<AllBikesAvailableBySize> {
+    const allBikes = await this.findAllAvailable();
+    const largeBikes = await this.findAllAvailable("LARGE");
+    const standardBikes = await this.findAllAvailable("STANDARD");
+    const smallBikes = await this.findAllAvailable("SMALL");
+
+    const bikes = {
+      allBikes: allBikes.map((bike: Bike) => toBikeDTO(bike)),
+      largeBikes: largeBikes.map((bike: Bike) => toBikeDTO(bike)),
+      standardBikes: standardBikes.map((bike: Bike) => toBikeDTO(bike)),
+      smallBikes: smallBikes.map((bike: Bike) => toBikeDTO(bike)),
+    };
+
+    return bikes
   }
 }

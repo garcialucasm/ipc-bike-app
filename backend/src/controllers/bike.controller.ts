@@ -12,7 +12,7 @@ function toStatusDTO(status: Map<BikeStatus, number>): BikeStatusDTO {
   }
 }
 
-function toBikeDTO(bike: Bike): BikeDTO {
+export function toBikeDTO(bike: Bike): BikeDTO {
   return {
     id: bike.ID ?? 0,
     numbering: bike.Numbering,
@@ -33,17 +33,22 @@ export default function bikeController(bikeService: IBikeService, routerOptions?
   })
 
   router.get("/all/available", (req, res) => {
-    bikeService.findAllAvailable().then(bikes =>
-      bikes.map(bike => toBikeDTO(bike)))
-      .then(bikes => {
-        res.status(200)
-          .send({ bikes: bikes })
-      }).catch(error => {
-        console.log(error)
-        res.status(401)
-          .send({ error: error.message })
+    bikeService.findAllAvailableBySize()
+      .then(({ allBikes, largeBikes, standardBikes, smallBikes }) => {
+        const bikesResponse = {
+          allBikes: allBikes,
+          largeBikes: largeBikes,
+          standardBikes: standardBikes,
+          smallBikes: smallBikes,
+        };
+  
+        res.status(200).send(bikesResponse);
       })
-  })
+      .catch(error => {
+        console.log(error);
+        res.status(401).send({ error: error.message });
+      });
+  });
 
   return router
 }

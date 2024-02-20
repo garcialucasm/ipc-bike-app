@@ -1,5 +1,5 @@
 import { AccountProps } from "./AccountType";
-import { BikeAvailabilityCard, BikeSize } from "./BikeType";
+import { AllBikesAvailable, BikeStatusCard as BikeStatusCard, BikeSize } from "./BikeType";
 import { SingleBookingProps, SingleBookingSections } from "./BookingType";
 import { UserData } from "./UserType";
 
@@ -21,6 +21,8 @@ export type SingleBookingContextProps = {
 }
 
 export type BikeAvailabilityContextProps = {
-    bikeAvailabilityData: BikeAvailabilityCard;
-    updatingBikeAvailability: () => void
+    bikeStatusCount: BikeStatusCard;
+    allBikesAvailable: AllBikesAvailable;
+    updatingBikeAvailability: () => void;
+    updatingAllBikesAvailable: () => void;
 }
