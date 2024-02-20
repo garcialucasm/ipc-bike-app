@@ -39,8 +39,8 @@ export default class BookingService implements IBookingService {
   }
 
 
-  async createSingleBooking(userName: string, room: string, bikeSize: string): Promise<Booking> {
-    let availableBikes = await this.bikeService.findAllAvailable(bikeSize)
+  async createSingleBooking(userName: string, room: string, bikeNumbering: number): Promise<Booking> {
+    let availableBikes = await this.bikeService.findAllAvailable(undefined, bikeNumbering)
 
     /* --------- Check if the user is already in the process of booking --------- */
     if (usersInBookingProcess.includes(userName)) {
@@ -53,13 +53,13 @@ export default class BookingService implements IBookingService {
 
     try {
       if (availableBikes.length == 0)
-        throw new Error(`There's no available bikes for size ${bikeSize}`)
+        throw new Error(`There's no available bikes for size ${bikeNumbering}`)
 
       let user = await this.userService.getOrCreate(userName, room, this.currentTerm)
 
       this.validateUserForBooking(user)
 
-      let bike = await this.bikeChooser.chooseBike(availableBikes)
+      let bike = availableBikes[0]
 
       this.validateBikeForBooking(bike)
 

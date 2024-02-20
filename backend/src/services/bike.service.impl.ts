@@ -57,14 +57,17 @@ export default class BikeService implements IBikeService {
     return await this.bikeRepository.update(bike)
   }
 
-  findAllAvailable(size?: string): Promise<Bike[]> {
-    const searchCriteria: { currentStatus?: BikeStatus; size?: string } = {
+  findAllAvailable(size?: string, numbering?: number): Promise<Bike[]> {
+    const searchCriteria: { numbering?: number; currentStatus?: BikeStatus; size?: string; } = {
       currentStatus: BikeStatus.FREE
     };
 
     /* -- without this statement, findAllAvailable doesnt work with empty size -- */
     if (size) {
       searchCriteria.size = size;
+    }
+    if (numbering) {
+      searchCriteria.numbering = numbering;
     }
     /* -------------------------------------------------------------------------- */
 

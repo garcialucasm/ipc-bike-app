@@ -1,7 +1,7 @@
 
 import { Router, RouterOptions } from 'express'
 import IBookingService from '../services/booking.service'
-import { validateRoom, validateUserName, validateBikeSize } from '../models/validators'
+import { validateRoom, validateUserName, validateBikeNumbering } from '../models/validators'
 import { BookingDTO, BookingStatusDTO } from '../dto/booking.dto'
 import { Booking, BookingStatus, BookingType } from '../models/booking.model'
 
@@ -44,13 +44,13 @@ export default function bookingController(bookingService: IBookingService, route
   router.post("/create/single", async (req, res) => {
     const userName = req.body.userName
     const room = req.body.room
-    const bikeSize = req.body.bikeSize
+    const bikeNumbering = req.body.bikeNumbering
 
     try {
       validateUserName(userName)
       validateRoom(room)
-      validateBikeSize(bikeSize)
-      bookingService.createSingleBooking(userName, room, bikeSize)
+      validateBikeNumbering(bikeNumbering)
+      bookingService.createSingleBooking(userName, room, bikeNumbering)
         .then(booking => {
           res.status(200)
             .send({ booking: toBookingDTO(booking) })

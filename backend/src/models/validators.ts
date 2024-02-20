@@ -1,4 +1,4 @@
-import { isAlpha, isAlphaNumerical, isEmail } from "../utils/strings"
+import { isAlpha, isAlphaNumerical, isEmail, isNumber, isNumericString } from "../utils/strings"
 
 function validateUserName(name: string) {
   if (!name.length)
@@ -8,12 +8,12 @@ function validateUserName(name: string) {
     throw new Error("User's name is not valid")
 }
 
-function validateBikeSize(bikeSize: string) {
-  if (!bikeSize.length)
-    throw new Error("Bike size cannot be empty")
+function validateBikeNumbering(bikeNumbering: string) {
+  if (!bikeNumbering)
+    throw new Error("Bike numbering cannot be empty")
 
-  if (!isAlpha(bikeSize))
-    throw new Error("Bike size is not valid")
+  if (!isNumericString(bikeNumbering))
+    throw new Error("Bike numbering is not valid")
 }
 
 function validateRoom(room: string) {
@@ -64,4 +64,4 @@ function validatePassword(password: string, requireSpecialChar: boolean = true) 
   // If all checks pass, the password is considered valid
 }
 
-export { validateBikeSize, validateUserName, validateRoom, validateEmail, validatePassword }
+export { validateBikeNumbering, validateUserName, validateRoom, validateEmail, validatePassword }
