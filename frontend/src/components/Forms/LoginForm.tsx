@@ -148,6 +148,7 @@ const Login = () => {
                   onChange={handleChange}
                   onFocus={handleFocus}
                   errorMessage={errorMessages.password}
+                  autoComplete="current-password"
                 >
                   <IconSvgPassword
                     fillColor="text-gray-400"

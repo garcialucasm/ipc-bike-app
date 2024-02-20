@@ -21,7 +21,7 @@ function BikeChooserContainer(props: {
     const timeoutId = setTimeout(() => {
       switch (bikeSize) {
         case BikeSize.ALL:
-          setCurrentImage("/bike-type-all.jpg")
+          setCurrentImage("/bike-type-all.png")
           setBikeSelectedRecomendation(
             "Recommended for people 5'4\" | 163 cm or taller."
           )

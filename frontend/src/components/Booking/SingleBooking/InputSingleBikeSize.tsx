@@ -13,7 +13,7 @@ import Button from "@/components/Buttons/Button"
 import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
 
 function InputStudentBikeSize() {
-  let defaultBikeSize = BikeSize.STANDARD
+  let defaultBikeSize = BikeSize.ALL
 
   const { bookingData, settingCurrentSection, settingBikeSize } =
     useSingleBookingContext()
@@ -81,9 +81,9 @@ function InputStudentBikeSize() {
   }
 
   useEffect(() => {
-    updatingAllBikesAvailable()
+    ;async () => updatingAllBikesAvailable()
     settingBikeList(radioBikeSizeValue)
-  }, [radioBikeSizeValue])
+  }, [radioBikeSizeValue, allBikesAvailable])
 
   return (
     <>
