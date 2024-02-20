@@ -4,7 +4,6 @@ import { createContext, useContext, useState } from "react"
 
 import { SingleBookingContextProps } from "@/types/ContextType"
 import { SingleBookingProps, SingleBookingSections } from "@/types/BookingType"
-import { BikeSize } from "@/types/BikeType"
 import { UserData } from "@/types/UserType"
 
 const SingleBookingContext = createContext<SingleBookingContextProps>(
@@ -15,7 +14,7 @@ const SingleBookingProvider = ({ children }: { children: React.ReactNode }) => {
   // Creating state to manage user data and then submit booking
   const [bookingData, setBookingData] = useState<SingleBookingProps>({
     currentSection: SingleBookingSections.selectBikeSize,
-    bikeSize: BikeSize.STANDARD,
+    bikeNumbering: null,
     userData: { firstName: "", lastName: "", roomNumber: "" },
     bookingStatus: null,
     serverResult: null,
@@ -32,11 +31,11 @@ const SingleBookingProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }
 
-  const settingBikeSize = (bikeSizeSelected: BikeSize) => {
+  const settingBikeNumbering = (bikeNumbering: string | null) => {
     try {
       setBookingData((prevBookingData) => ({
         ...prevBookingData,
-        bikeSize: bikeSizeSelected,
+        bikeNumbering: bikeNumbering,
       }))
     } catch (error) {
       console.error("Error setting Bike Size: " + error)
@@ -70,7 +69,7 @@ const SingleBookingProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         bookingData,
         settingCurrentSection,
-        settingBikeSize,
+        settingBikeNumbering,
         settingUserData,
         settingServerResult,
       }}

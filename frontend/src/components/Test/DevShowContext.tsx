@@ -53,7 +53,9 @@ function DevShowContext() {
               <span>
                 {" "}
                 &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;Name:{" "}
-                <span className="text-slate-500">{accountData?.accountName}</span>
+                <span className="text-slate-500">
+                  {accountData?.accountName}
+                </span>
               </span>
             </p>
             {(bikeStatusCount.FREE !== 0 ||
@@ -68,9 +70,7 @@ function DevShowContext() {
             {bikeStatusCount.FREE !== 0 && (
               <p className="text-xs">
                 Free:{" "}
-                <span className="text-green-500">
-                  {bikeStatusCount.FREE}
-                </span>
+                <span className="text-green-500">{bikeStatusCount.FREE}</span>
               </p>
             )}
             {bikeStatusCount.BOOKED !== 0 && (
@@ -84,9 +84,7 @@ function DevShowContext() {
             {bikeStatusCount.INUSE !== 0 && (
               <p className="text-xs">
                 In use:{" "}
-                <span className="text-red-500">
-                  {bikeStatusCount.INUSE}
-                </span>
+                <span className="text-red-500">{bikeStatusCount.INUSE}</span>
               </p>
             )}
             {bikeStatusCount.DISABLED !== 0 && (
@@ -111,10 +109,12 @@ function DevShowContext() {
                 </span>
               </p>
             )}
-            {bookingData.bikeSize !== null && (
+            {bookingData.bikeNumbering !== null && (
               <p className="text-xs">
-                Bike Size:{" "}
-                <span className="text-yellow-500">{bookingData.bikeSize}</span>
+                Bike Numbering:{" "}
+                <span className="text-yellow-500">
+                  {bookingData.bikeNumbering}
+                </span>
               </p>
             )}
             {bookingData.bookingStatus !== null && (

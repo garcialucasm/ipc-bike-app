@@ -17,7 +17,7 @@ import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
 const HomeSingleBooking: NextPage = () => {
   const {
     bookingData,
-    settingBikeSize,
+    settingBikeNumbering,
     settingCurrentSection,
     settingServerResult,
     settingUserData,
@@ -28,7 +28,7 @@ const HomeSingleBooking: NextPage = () => {
   const currentSection = bookingData.currentSection
 
   useEffect(() => {
-    settingBikeSize(BikeSize.STANDARD)
+    settingBikeNumbering(null)
     settingUserData({ firstName: "", lastName: "", roomNumber: "" })
     settingServerResult(null)
     settingCurrentSection(SingleBookingSections.selectBikeSize)

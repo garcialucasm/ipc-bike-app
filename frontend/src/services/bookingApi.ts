@@ -31,7 +31,7 @@ export async function createSingleBookingFetchApi(bookingData: SingleBookingDTO)
     const response = await ApiHeader.post(apiUrls.createSingleBookingUrl, {
       userName: bookingData.userName,
       room: bookingData.room,
-      bikeSize: bookingData.bikeSize,
+      bikeNumbering: bookingData.bikeNumbering,
     }
     );
 

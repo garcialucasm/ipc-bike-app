@@ -14,7 +14,7 @@ export enum BikeSize {
 
 export type Bike = {
   id: number,
-  numbering: number,
+  numbering: string,
   currentStatus: string,
   size: string,
   isActive: boolean,

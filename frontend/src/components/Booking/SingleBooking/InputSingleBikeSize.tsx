@@ -13,9 +13,7 @@ import Button from "@/components/Buttons/Button"
 import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
 
 function InputStudentBikeSize() {
-  let defaultBikeSize = BikeSize.ALL
-
-  const { bookingData, settingCurrentSection, settingBikeSize } =
+  const { bookingData, settingCurrentSection, settingBikeNumbering } =
     useSingleBookingContext()
 
   const { allBikesAvailable, updatingAllBikesAvailable } =
@@ -23,12 +21,12 @@ function InputStudentBikeSize() {
 
   const [listOfAvailableBikes, setListOfAvailableBikes] = useState<Bike[]>()
 
-  const [radioBikeSizeValue, setRadioBikeSizeValue] =
-    useState<BikeSize>(defaultBikeSize)
+  const [radioBikeSizeValue, setRadioBikeSizeValue] = useState<BikeSize>(
+    BikeSize.ALL
+  )
 
   const [isImageSliding, setIsImageSliding] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const [selectedBikeNumber, setSelectedBikeNumber] = useState("")
 
   function handleDropdownToggle() {
     setIsDropdownOpen(!isDropdownOpen)
@@ -37,12 +35,8 @@ function InputStudentBikeSize() {
   function handleBikeNumberSelection(
     event: React.ChangeEvent<HTMLInputElement>
   ) {
-    setSelectedBikeNumber(event.target.value)
+    settingBikeNumbering(event.target.value)
     setIsDropdownOpen(false)
-  }
-
-  if (bookingData.bikeSize) {
-    defaultBikeSize = bookingData.bikeSize as BikeSize
   }
 
   function handleRadioChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -57,7 +51,7 @@ function InputStudentBikeSize() {
   }
 
   function handleClickNextStep() {
-    settingBikeSize(radioBikeSizeValue)
+    settingBikeNumbering(bookingData.bikeNumbering)
     // TODO create a validation to not let go to next section if bikeCount selected = 0
     settingCurrentSection(SingleBookingSections.inputUserData)
   }
@@ -74,8 +68,7 @@ function InputStudentBikeSize() {
       sortedBikes = allBikesAvailable.smallBikes
     }
 
-    // Sort the bikes by numbering
-    sortedBikes = sortedBikes?.sort((a, b) => a.numbering - b.numbering)
+    /* -------------------- // TODO: Sort the bikes by numbering ------------------- */
 
     setListOfAvailableBikes(sortedBikes)
   }
@@ -87,7 +80,7 @@ function InputStudentBikeSize() {
 
   return (
     <>
-      <InstructionLabel>Select the bike type</InstructionLabel>
+      <InstructionLabel>Select bike type</InstructionLabel>
       <ul className="mb-5 w-full overflow-hidden rounded-2xl border border-slate-200 bg-white">
         <BikeChooserContainer
           bikeSize={radioBikeSizeValue as BikeSize}
@@ -125,7 +118,7 @@ function InputStudentBikeSize() {
           ))}
         </div>
       </ul>
-      <InstructionLabel>Select the bike numbering</InstructionLabel>
+      <InstructionLabel>Select bike number</InstructionLabel>
       <Button
         id="dropdownRadioBgHoverButton"
         data-dropdown-toggle="dropdownRadioBgHover"
@@ -139,7 +132,7 @@ function InputStudentBikeSize() {
           </p>
           <div className="flex items-center px-5">
             <span className="font-extrabold text-blue-800">
-              {selectedBikeNumber}
+              {bookingData.bikeNumbering}
             </span>
           </div>
         </div>
@@ -175,7 +168,7 @@ function InputStudentBikeSize() {
             listOfAvailableBikes.map((bike) => (
               <li key={bike.numbering}>
                 <div
-                  className={`flex items-center rounded-lg p-2 hover:bg-gray-100 ${selectedBikeNumber === bike.numbering.toString() && "bg-slate-200 text-blue-700"}`}
+                  className={`flex items-center rounded-lg p-2 hover:bg-gray-100 ${bookingData.bikeNumbering === bike.numbering.toString() && "bg-slate-200 text-blue-700"}`}
                 >
                   <input
                     id={`default-radio-${bike.numbering}`}
@@ -183,7 +176,9 @@ function InputStudentBikeSize() {
                     value={bike.numbering.toString()}
                     name="default-radio"
                     className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-1 focus:ring-blue-500"
-                    checked={selectedBikeNumber === bike.numbering.toString()}
+                    checked={
+                      bookingData.bikeNumbering === bike.numbering.toString()
+                    }
                     onChange={handleBikeNumberSelection}
                   />
                   <label

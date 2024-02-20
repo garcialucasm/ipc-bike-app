@@ -6,7 +6,7 @@ import { IconSvgBikeStandard, IconSvgPerson } from "../../../Others/IconsSvg"
 function InfoboxSingleBookingDetails() {
   const { bookingData } = useSingleBookingContext()
   const { firstName, lastName, roomNumber } = bookingData.userData
-  const bikeSize = bookingData.bikeSize
+  const bikeSize = bookingData.bikeNumbering
   const fullName = firstName + " " + lastName
 
   return (

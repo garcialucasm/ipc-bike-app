@@ -30,7 +30,7 @@ export enum SingleBookingSections {
 
 export interface SingleBookingProps {
   currentSection: SingleBookingSections | null;
-  bikeSize: BikeSize;
+  bikeNumbering: string;
   userData: UserData;
   bookingStatus: BookingStatus | null;
   serverResult: number | null | undefined;
@@ -39,6 +39,5 @@ export interface SingleBookingProps {
 export interface SingleBookingDTO {
   userName: string
   room: string
-  bikeSize: BikeSize
-  bikeNumbering?: number
+  bikeNumbering: string
 }

@@ -9,9 +9,8 @@ import InstructionLabel from "../Others/InstructionLabel"
 import { createSingleBookingFetchApi } from "@/services/bookingApi"
 import { joinFirstLastName } from "@/utils/validators"
 import { UserData } from "@/types/UserType"
-import { BikeSize } from "@/types/BikeType"
 
-function singleBookingDTO(userData: UserData, bikeSize: BikeSize) {
+function singleBookingDTO(userData: UserData, bikeNumbering: string) {
   const userName: string = joinFirstLastName(
     userData.firstName,
     userData.lastName
@@ -20,7 +19,7 @@ function singleBookingDTO(userData: UserData, bikeSize: BikeSize) {
   const singleBookingData: SingleBookingDTO = {
     userName: userName,
     room: room,
-    bikeSize: bikeSize,
+    bikeNumbering: bikeNumbering,
   }
   return singleBookingData
 }
@@ -28,7 +27,7 @@ function singleBookingDTO(userData: UserData, bikeSize: BikeSize) {
 const PreBookingConfirmation = () => {
   const { bookingData, settingCurrentSection, settingServerResult } =
     useSingleBookingContext()
-  const { userData, bikeSize } = bookingData
+  const { userData, bikeNumbering } = bookingData
   const [isTermsAndConditionsChecked, setIsTermsAndConditionsChecked] =
     useState(false)
   const [itemNeedsAttention, setItemNeedsAttention] = useState(false)
@@ -63,7 +62,7 @@ const PreBookingConfirmation = () => {
   async function createSingleBooking() {
     const bookingFormData: SingleBookingDTO = singleBookingDTO(
       userData,
-      bikeSize
+      bikeNumbering
     )
     try {
       settingCurrentSection(SingleBookingSections.isLoading)
