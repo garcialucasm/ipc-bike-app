@@ -1,5 +1,5 @@
 import { toBikeDTO } from "../controllers/bike.controller";
-import { AllBikesAvailableBySize, Bike, BikeStatus } from "../models/bike.model";
+import { Bike, BikeStatus } from "../models/bike.model";
 import IBikeRepository from "../repositories/bike.repository";
 import IBikeService from "./bike.service";
 
@@ -20,7 +20,7 @@ export default class BikeService implements IBikeService {
     ])
   }
 
-  async createBike(numbering: number, size: string): Promise<Bike> {
+  async createBike(numbering: number, bikeType: string, size: string): Promise<Bike> {
 
     let bikes = await this.bikeRepository.findAll({ numbering: numbering })
 
@@ -30,6 +30,7 @@ export default class BikeService implements IBikeService {
 
     let bike: Bike = {
       Numbering: numbering,
+      BikeType: bikeType,
       Size: size,
       CreatedAt: new Date(),
       IsActive: true,
@@ -78,19 +79,4 @@ export default class BikeService implements IBikeService {
     return this.bikeRepository.countBikesByStatus()
   }
 
-  async findAllAvailableBySize(): Promise<AllBikesAvailableBySize> {
-    const allBikes = await this.findAllAvailable();
-    const largeBikes = await this.findAllAvailable("LARGE");
-    const standardBikes = await this.findAllAvailable("STANDARD");
-    const smallBikes = await this.findAllAvailable("SMALL");
-
-    const bikes = {
-      allBikes: allBikes.map((bike: Bike) => toBikeDTO(bike)),
-      largeBikes: largeBikes.map((bike: Bike) => toBikeDTO(bike)),
-      standardBikes: standardBikes.map((bike: Bike) => toBikeDTO(bike)),
-      smallBikes: smallBikes.map((bike: Bike) => toBikeDTO(bike)),
-    };
-
-    return bikes
-  }
 }

@@ -16,6 +16,7 @@ export function toBikeDTO(bike: Bike): BikeDTO {
   return {
     id: bike.ID ?? 0,
     numbering: bike.Numbering,
+    bikeType: bike.BikeType,
     size: bike.Size,
     currentStatus: bike.CurrentStatus,
     isActive: bike.IsActive,
@@ -33,16 +34,9 @@ export default function bikeController(bikeService: IBikeService, routerOptions?
   })
 
   router.get("/all/available", (req, res) => {
-    bikeService.findAllAvailableBySize()
-      .then(({ allBikes, largeBikes, standardBikes, smallBikes }) => {
-        const bikesResponse = {
-          allBikes: allBikes,
-          largeBikes: largeBikes,
-          standardBikes: standardBikes,
-          smallBikes: smallBikes,
-        };
-  
-        res.status(200).send(bikesResponse);
+    bikeService.findAllAvailable()
+      .then((allBikes) => {
+        res.status(200).send(allBikes);
       })
       .catch(error => {
         console.log(error);

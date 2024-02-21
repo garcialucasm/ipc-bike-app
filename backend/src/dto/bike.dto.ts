@@ -9,7 +9,8 @@ export interface BikeStatusDTO {
 export interface BikeDTO {
   id: number
   numbering: number
-  currentStatus: string
+  bikeType: string
   size: string
+  currentStatus: string
   isActive: boolean
 }

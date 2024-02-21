@@ -42,6 +42,7 @@ function bikeFromRow(row: any): Bike {
     IsActive: row['is_active'] ? new Boolean(row['is_active']).valueOf() : false,
     CurrentStatus: row['current_status'] ? BikeStatus[row['current_status'] as keyof typeof BikeStatus] : BikeStatus.DISABLED,
     Numbering: Number.parseInt(row['numbering']),
+    BikeType: row['bike_type'],
     Size: row['size'],
     CreatedAt: row['created_at'] ? new Date(row['created_at']) : undefined,
     UpdatedAt: row['updated_at'] ? new Date(row['updated_at']) : undefined,

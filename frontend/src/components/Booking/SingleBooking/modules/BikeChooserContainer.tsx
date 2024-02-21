@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react"
-import { BikeSize, BikeStatus } from "@/types/BikeType"
+import { BikeType, BikeStatus } from "@/types/BikeType"
 import Image from "next/image"
 import StatusIndicator from "../../../Others/StatusIndicator"
 
 function BikeChooserContainer(props: {
   bikeCount: number | undefined
-  bikeSize: BikeSize
+  bikeType: BikeType
   isImageSliding: boolean
 }) {
-  const { bikeSize, isImageSliding, bikeCount } = props
+  const { bikeType: bikeType, isImageSliding, bikeCount } = props
 
   const [currentImage, setCurrentImage] = useState<string>("")
   const [bikeSelectedRecomendation, setBikeSelectedRecomendation] =
@@ -19,26 +19,26 @@ function BikeChooserContainer(props: {
   useEffect(() => {
     // Update image after 250ms
     const timeoutId = setTimeout(() => {
-      switch (bikeSize) {
-        case BikeSize.ALL:
+      switch (bikeType) {
+        case BikeType.ALL:
           setCurrentImage("/bike-type-all.png")
           setBikeSelectedRecomendation(
             "Recommended for people 5'4\" | 163 cm or taller."
           )
           break
-        case BikeSize.STANDARD:
+        case BikeType.CITY:
           setCurrentImage("/bike-type-standard.jpg")
           setBikeSelectedRecomendation(
             "Recommended for people 5'4\" | 163 cm or taller."
           )
           break
-        case BikeSize.LARGE:
+        case BikeType.CLASSIC:
           setCurrentImage("/bike-type-classic.jpg")
           setBikeSelectedRecomendation(
             "Recommended for people 5'4\" | 163 cm or taller."
           )
           break
-        case BikeSize.SMALL:
+        case BikeType.FOLDING:
           setCurrentImage("/bike-type-folding.jpg")
           setBikeSelectedRecomendation(
             "Recommended for people 5'4\" | 163 cm or taller."
@@ -46,7 +46,7 @@ function BikeChooserContainer(props: {
           break
         default:
           // Log an error or handle the unknown section
-          console.error(`Unknown bike type: ${bikeSize}`)
+          console.error(`Unknown bike type: ${bikeType}`)
           // Return a default step or handle as appropriate
           return
       }
@@ -59,7 +59,7 @@ function BikeChooserContainer(props: {
     }, 300)
 
     return () => clearTimeout(timeoutId) // Cleanup timeout on component unmount or re-render
-  }, [bikeSize])
+  }, [bikeType])
 
   return (
     <div className="flex flex-col items-center">

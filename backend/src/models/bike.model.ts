@@ -7,22 +7,22 @@ enum BikeStatus {
   FREE = "FREE"
 }
 
+enum BikeType {
+  CLASSIC = "CLASSIC",
+  CITY = "CITY",
+  FOLDING = "FOLDING",
+}
+
 interface Bike {
   ID?: number;
   Numbering: number;
+  BikeType: string;
   Size: string;
   CurrentStatus: BikeStatus;
   IsActive: boolean;
   CreatedAt?: Date;
   UpdatedAt?: Date;
   DeltedAt?: Date;
-}
-
-export type AllBikesAvailableBySize = {
-  allBikes: BikeDTO[] | [],
-  largeBikes: BikeDTO[] | [],
-  standardBikes: BikeDTO[] | [],
-  smallBikes: BikeDTO[] | [],
 }
 
 export { BikeStatus, Bike }

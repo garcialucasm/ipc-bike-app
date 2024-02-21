@@ -39,7 +39,7 @@ beforeEach(() => {
 
 describe('For a valid user', () => {
   beforeEach(async () => {
-    await bikeService.createBike(1, 'medium')
+    await bikeService.createBike(1, 'SMALL', 'CLASSIC')
   })
 
   it('should create a student booking', async () => {

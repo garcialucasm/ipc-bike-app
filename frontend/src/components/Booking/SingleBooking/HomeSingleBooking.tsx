@@ -9,7 +9,6 @@ import InputSingleBikeSize from "@/components/Booking/SingleBooking/InputSingleB
 import InputSingleUserData from "@/components/Booking/SingleBooking/InputSingleUserData"
 import PreBookingConfirmation from "@/components/Booking/PreBookingConfirmation"
 import BookingConfirmation from "@/components/Booking/BookingConfirmation"
-import { BikeSize } from "@/types/BikeType"
 import Stepper from "@/components/Stepper/Stepper"
 import LoadingComponent from "@/components/Others/LoadingComponent"
 import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
@@ -28,7 +27,7 @@ const HomeSingleBooking: NextPage = () => {
   const currentSection = bookingData.currentSection
 
   useEffect(() => {
-    settingBikeNumbering(null)
+    settingBikeNumbering("")
     settingUserData({ firstName: "", lastName: "", roomNumber: "" })
     settingServerResult(null)
     settingCurrentSection(SingleBookingSections.selectBikeSize)

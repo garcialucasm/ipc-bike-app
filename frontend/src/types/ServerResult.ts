@@ -1,4 +1,4 @@
-import { Bike, BikeStatus } from "./BikeType"
+import { BikeDTO, BikeStatus } from "./BikeType"
 
 export type ServerResultBikeAvailability =
     | {
@@ -17,12 +17,7 @@ export type ServerResultBikeAvailability =
 
 export type ServerResultAllBikesAvailable =
     | {
-        data: {
-            allBikes: Bike[]
-            largeBikes: Bike[]
-            standardBikes: Bike[]
-            smallBikes: Bike[]
-        }
+        data: BikeDTO[]
         error: null
     }
     | {

@@ -1,7 +1,7 @@
 import { Bike, BikeStatus } from "../models/bike.model";
 import IBikeRepository from "./bike.repository";
 
-import {Client} from 'pg'
+import { Client } from 'pg'
 import { createWhereClausule } from "./sql.util";
 
 export default class BikeRepository implements IBikeRepository {
@@ -18,9 +18,8 @@ export default class BikeRepository implements IBikeRepository {
   findByIdStmt: string = "SELECT * from bike where id=$1"
 
   findAllStmt: string = `SELECT * FROM "bike"`
-  
-  countBikesByStatusStmt: string = `SELECT b.current_status, count(b.current_status) FROM bike b
-                                        GROUP BY b.current_status`
+
+  countBikesByStatusStmt: string = `SELECT b.current_status, count(b.current_status) FROM bike b GROUP BY b.current_status`
 
   constructor(client: Client) {
     this.client = client
@@ -29,8 +28,8 @@ export default class BikeRepository implements IBikeRepository {
   async save(bike: Bike): Promise<Bike> {
     bike.CreatedAt = new Date()
     const result = await this
-      .client.query(this.insertStmt, [bike.Numbering, bike.Size,
-                     BikeStatus[bike.CurrentStatus], bike.IsActive, bike.CreatedAt]) 
+      .client.query(this.insertStmt, [bike.Numbering, bike.Size, bike.BikeType,
+      BikeStatus[bike.CurrentStatus], bike.IsActive, bike.CreatedAt])
 
     if (result.rowCount == 0)
       throw new Error("save to database have failed")
@@ -46,19 +45,19 @@ export default class BikeRepository implements IBikeRepository {
     bike.UpdatedAt = new Date()
 
     const result = await this
-      .client.query(this.updateStmt, [bike.IsActive, bike.UpdatedAt, 
-                    BikeStatus[bike.CurrentStatus], bike.ID])
+      .client.query(this.updateStmt, [bike.IsActive, bike.UpdatedAt,
+      BikeStatus[bike.CurrentStatus], bike.ID])
 
     if (result.rowCount == 0)
       throw new Error("no result was updated")
 
-    return bike; 
+    return bike;
   }
 
   async delete(bikeId: number): Promise<Bike> {
     const result = await this
       .client.query(this.deleteStmt, [false, new Date(),
-                    BikeStatus[BikeStatus.DISABLED], bikeId])
+        BikeStatus[BikeStatus.DISABLED], bikeId])
 
     if (result.rowCount == 0)
       throw new Error("No bikes updated")
@@ -79,25 +78,26 @@ export default class BikeRepository implements IBikeRepository {
     return this.bikeFromRow(row)
   }
 
-  async findAll(searchCriteria: { 
-      numbering?: number | undefined; 
-      size?: string | undefined;
-      currentStatus?: BikeStatus | undefined; 
+  async findAll(searchCriteria: {
+    numbering?: number | undefined;
+    size?: string | undefined;
+    currentStatus?: BikeStatus | undefined;
   }): Promise<Bike[]> {
-   
+
     let query: string = this.findAllStmt
 
     query += createWhereClausule(searchCriteria)
     let result = await this.client.query(query, Object.values(searchCriteria))
     return result.rows.map(row => this.bikeFromRow(row))
-  } 
+  }
 
-  private bikeFromRow(row: any) : Bike {
+  private bikeFromRow(row: any): Bike {
     let bike: Bike = {
       ID: Number.parseInt(row['id']),
-      IsActive: row['is_active']? new Boolean(row['is_active']).valueOf() : false,
+      IsActive: row['is_active'] ? new Boolean(row['is_active']).valueOf() : false,
       CurrentStatus: row['current_status'] ? BikeStatus[row['current_status'] as keyof typeof BikeStatus] : BikeStatus.DISABLED,
       Numbering: Number.parseInt(row['numbering']),
+      BikeType: row['bike_type'],
       Size: row['size'],
       CreatedAt: row['created_at'] ? new Date(row['created_at']) : undefined,
       UpdatedAt: row['updated_at'] ? new Date(row['updated_at']) : undefined,
@@ -109,10 +109,10 @@ export default class BikeRepository implements IBikeRepository {
 
   async countBikesByStatus(): Promise<Map<BikeStatus, number>> {
     let query: string = this.countBikesByStatusStmt
-    
-    const result =  await this.client.query(query)
+
+    const result = await this.client.query(query)
     let ans: Map<BikeStatus, number> = new Map<BikeStatus, number>()
-    
+
     result.rows.forEach(row => {
       ans.set(BikeStatus[row.current_status as keyof typeof BikeStatus], Number.parseInt(row.count))
     });

@@ -9,22 +9,22 @@ export enum BikeSize {
   STANDARD = "STANDARD",
   LARGE = "LARGE",
   SMALL = "SMALL",
-  ALL = "ALL",
 }
 
-export type Bike = {
-  id: number,
-  numbering: string,
-  currentStatus: string,
-  size: string,
-  isActive: boolean,
+export enum BikeType {
+  ALL = 'ALL',
+  CLASSIC = "CLASSIC",
+  CITY = "CITY",
+  FOLDING = "FOLDING",
 }
 
-export type AllBikesAvailable = {
-  allBikes: Bike[] | [],
-  largeBikes: Bike[] | [],
-  standardBikes: Bike[] | [],
-  smallBikes: Bike[] | [],
+export type BikeDTO = {
+  ID: number,
+  Numbering: string,
+  CurrentStatus: string,
+  Size: string,
+  BikeType: string,
+  IsActive: boolean,
 }
 
 export type BikeStatusCard = {

@@ -327,6 +327,7 @@ export default function HeaderNavbarApp() {
                   "header-menu-item-current-page"
                 }`}
                 onClick={toggleSideBarOpened}
+                prefetch={false}
               >
                 <IconSvgSingleBooking height="28" />
                 <span className="ms-3 flex-1 whitespace-nowrap">

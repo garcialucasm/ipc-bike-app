@@ -1,4 +1,4 @@
-import { Bike, BikeSize } from '@/types/BikeType';
+import { BikeDTO, BikeSize } from '@/types/BikeType';
 import { BikeStatus } from '@/types/BikeType';
 import { ApiHeader, apiUrls } from "./api";
 import { ServerResultAllBikesAvailable, ServerResultBikeAvailability as ServerResultBikeCounter } from '@/types/ServerResult';
@@ -16,7 +16,6 @@ export async function bikeStatusCounterFetchApi() {
         if (response.status < 200 || response.status >= 300) {
             throw new Error(`${response.status}: ${response.statusText}`);
         }
-
         const data = response.data
         bikeCountFree = data.status.free
         bikeCountBooked = data.status.booked
@@ -41,31 +40,17 @@ export async function bikeStatusCounterFetchApi() {
 
 /* --------------------------- All Bikes Available -------------------------- */
 export async function allBikesAvailableFetchApi() {
-    let allBikes: Bike[];
-    let largeBikes: Bike[];
-    let standardBikes: Bike[];
-    let smallBikes: Bike[];
 
     try {
         const response = await ApiHeader.get(apiUrls.allBikesAvailableUrl);
-
         if (response.status < 200 || response.status >= 300) {
             throw new Error(`${response.status}: ${response.statusText}`);
         }
 
         const data = response.data
-        allBikes = data.allBikes
-        largeBikes = data.largeBikes
-        standardBikes = data.standardBikes
-        smallBikes = data.smallBikes
 
         return {
-            data: {
-                allBikes: allBikes,
-                largeBikes: largeBikes,
-                standardBikes: standardBikes,
-                smallBikes: smallBikes
-            }, error: null
+            data: data, error: null
         };
     } catch (error: any) {
         console.error('Error getting status counter:', error.message);

@@ -3,7 +3,6 @@ DROP TABLE IF EXISTS "user" CASCADE;
 DROP TABLE IF EXISTS "bike" CASCADE;
 DROP TABLE IF EXISTS "booking" CASCADE;
 DROP TABLE IF EXISTS "booking_bike" CASCADE;
-DROP TABLE IF EXISTS "account" CASCADE;
 
 -- Create user table
 CREATE TABLE "user" (
@@ -40,9 +39,12 @@ CREATE INDEX "account_search_idx" ON "account" ("email");
 create table "bike" (
   "id" SERIAL PRIMARY KEY,
   "numbering" INT UNIQUE NOT NULL,
+  "bike_type" varchar(20) not null,
   "size" varchar(20) not null,
   "current_status" varchar(20) not null,
   "is_active" boolean not null,
+  "is_classroom_bike" boolean not null,
+  "characteristics" JSONB DEFAULT '{}'::JSONB,
   "created_at" TIMESTAMP,
   "updated_at" TIMESTAMP,
   "deleted_at" TIMESTAMP

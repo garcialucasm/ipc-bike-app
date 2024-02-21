@@ -1,5 +1,5 @@
 import { AccountProps } from "./AccountType";
-import { AllBikesAvailable, BikeStatusCard as BikeStatusCard } from "./BikeType";
+import { BikeDTO, BikeStatusCard as BikeStatusCard } from "./BikeType";
 import { SingleBookingProps, SingleBookingSections } from "./BookingType";
 import { UserData } from "./UserType";
 
@@ -15,14 +15,14 @@ export type AuthContextProps = {
 export type SingleBookingContextProps = {
     bookingData: SingleBookingProps;
     settingCurrentSection: (currentSection: SingleBookingSections) => void;
-    settingBikeNumbering: (bikeNumbering: string | null) => void;
+    settingBikeNumbering: (bikeNumbering: string) => void;
     settingUserData: (userData: UserData) => void;
     settingServerResult: (serverResult: number | undefined | null) => void;
 }
 
 export type BikeAvailabilityContextProps = {
     bikeStatusCount: BikeStatusCard;
-    allBikesAvailable: AllBikesAvailable;
+    allBikesAvailable: BikeDTO[];
     updatingBikeAvailability: () => void;
     updatingAllBikesAvailable: () => void;
 }
