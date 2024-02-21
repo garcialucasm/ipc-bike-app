@@ -45,6 +45,7 @@ export default function accountController(accountService: IAccountService, route
     })
 
     router.post("/register", async (req, res) => {
+      console.log(req.body)
         const accountName = cleanUpSpaces(req.body.accountName.toLowerCase())
         const email = cleanUpSpaces(req.body.email.toLowerCase())
         const password = req.body.password

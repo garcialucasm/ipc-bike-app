@@ -6,7 +6,7 @@ import Link from "next/link"
 
 import { NavigationPaths } from "@/types/NavigationPaths"
 import PrimaryButton from "@/components/Buttons/PrimaryButton"
-import { registerAccountFetchApi } from "@/services/accountApi"
+import { registerFirstAccountFetchApi } from "@/services/accountApi"
 import { AccountDTO } from "@/types/AccountType"
 import {
   errorMessagePasswordInvalid,
@@ -48,7 +48,7 @@ function FirstRegister() {
 
     if (isFormValid()) {
       setIsLoading(true)
-      const response = await registerAccountFetchApi(formRegisterAccount)
+      const response = await registerFirstAccountFetchApi(formRegisterAccount)
       if (response.error) {
         setServerResult(false)
       } else {
