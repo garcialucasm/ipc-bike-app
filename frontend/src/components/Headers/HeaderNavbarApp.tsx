@@ -23,6 +23,7 @@ export default function HeaderNavbarApp() {
   const [isOpenAccountMenu, setIsOpenAccountMenu] = useState(false)
   const [isSideBarOpened, setIsSideBarOpened] = useState(false)
   const [closedAlert, setClosedAlert] = useState(false)
+  const sidebarButtonRef = useRef(null) // Reference to the sidebar button
   const accountMenuRef = useRef(null) // Reference to the dropdown-user container
   const sidebarMenuRef = useRef(null) // Reference to the sidebar container
   const router = useRouter()
@@ -82,7 +83,8 @@ export default function HeaderNavbarApp() {
         !(sidebarMenuRef.current as HTMLElement).contains(
           event.target as Node
         ) &&
-        isSideBarOpened
+        isSideBarOpened &&
+        event.target !== sidebarButtonRef.current
       ) {
         setIsSideBarOpened(false)
       }
@@ -101,7 +103,10 @@ export default function HeaderNavbarApp() {
       <nav className="fixed top-0 z-50 h-16 w-full bg-gradient-to-tr from-blue-800 via-blue-800 to-blue-600 transition-transform">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center justify-start rtl:justify-end">
+            <div
+              className="flex items-center justify-start rtl:justify-end"
+              ref={sidebarButtonRef}
+            >
               <Button
                 onClick={toggleSideBarOpened}
                 data-drawer-target="logo-sidebar"
@@ -302,7 +307,7 @@ export default function HeaderNavbarApp() {
       <aside
         ref={sidebarMenuRef}
         id="logo-sidebar"
-        className={`fixed left-0 top-0 z-40 mt-[64px] h-screen w-64 bg-gradient-to-b from-slate-200 via-slate-200 to-slate-100 pb-24 pt-8 text-left text-slate-700 transition-transform xl:translate-x-0 ${isSideBarOpened ? "" : "-translate-x-full"}`}
+        className={`fixed left-0 top-0 z-40 mt-[64px] h-screen w-64 border-r border-slate-200 bg-slate-50 pb-24 pt-8 text-left text-slate-700 transition-transform xl:translate-x-0 ${isSideBarOpened ? "" : "-translate-x-full"}`}
         aria-label="Sidebar"
       >
         <div className="flex h-full flex-col justify-between overflow-y-auto px-3 pb-4">
@@ -367,7 +372,7 @@ export default function HeaderNavbarApp() {
             {!closedAlert && (
               <div
                 id="dropdown-cta"
-                className="mt-6 hidden w-full rounded-2xl bg-blue-50 p-4 xl:inline-block"
+                className="mt-6 hidden w-full rounded-2xl bg-blue-100 p-4 xl:inline-block"
                 role="alert"
               >
                 <div className="mb-3 flex items-center">

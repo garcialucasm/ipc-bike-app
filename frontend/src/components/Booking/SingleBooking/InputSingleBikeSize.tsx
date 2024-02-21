@@ -13,8 +13,12 @@ import Button from "@/components/Buttons/Button"
 import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
 
 function InputStudentBikeSize() {
-  const { bookingData, settingCurrentSection, settingBikeNumbering } =
-    useSingleBookingContext()
+  const {
+    bookingData,
+    settingCurrentSection,
+    settingBikeNumbering,
+    settingBikeSize,
+  } = useSingleBookingContext()
 
   const { allBikesAvailable, updatingAllBikesAvailable } =
     useBikeAvailabilityContext()
@@ -41,13 +45,18 @@ function InputStudentBikeSize() {
   function handleBikeNumberSelection(
     event: React.ChangeEvent<HTMLInputElement>
   ) {
-    settingBikeNumbering(event.target.value)
+    const combinedValue = event.target.value
+    const [bikeNumbering, bikeSize] = combinedValue.split(",")
+    settingBikeNumbering(bikeNumbering)
+    settingBikeSize(bikeSize)
     setIsDropdownOpen(false)
   }
 
   function handleClickNextStep() {
-    settingBikeNumbering(bookingData.bikeNumbering)
-    settingCurrentSection(SingleBookingSections.inputUserData)
+    if (bookingData.bikeNumbering) {
+      settingBikeNumbering(bookingData.bikeNumbering)
+      settingCurrentSection(SingleBookingSections.inputUserData)
+    }
   }
 
   const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,6 +78,9 @@ function InputStudentBikeSize() {
     value: BikeSize | BikeType
   ) {
     let filteredBikes: BikeDTO[] = []
+
+    settingBikeNumbering("")
+    setIsDropdownOpen(true)
 
     switch (selectedOption) {
       case "size":
@@ -189,10 +201,16 @@ function InputStudentBikeSize() {
           <p className="flex min-h-10 items-center rounded-l-2xl bg-slate-200 px-3">
             Bike Selected
           </p>
-          <div className="flex items-center px-5">
-            <span className="font-extrabold text-blue-800">
+          <div className="flex items-center gap-2 divide-x divide-slate-200 px-4 text-left text-xs font-light text-slate-500">
+            <span className="text-sm font-extrabold text-blue-800">
               {bookingData.bikeNumbering && bookingData.bikeNumbering}
             </span>
+            <p className="ps-2">
+              Type: {bookingData.bikeSize && toPascalCase(bookingData.bikeSize)}
+            </p>
+            <p className="ps-2">
+              Size: {bookingData.bikeSize && toPascalCase(bookingData.bikeSize)}
+            </p>
           </div>
         </div>
         <svg
@@ -233,7 +251,11 @@ function InputStudentBikeSize() {
                     <input
                       id={`default-radio-${bike.Numbering}`}
                       type="radio"
-                      value={bike.Numbering && bike.Numbering.toString()}
+                      value={
+                        bike.Numbering &&
+                        bike.Size &&
+                        `${bike.Numbering},${bike.Size}`
+                      }
                       name="default-radio"
                       className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-1 focus:ring-blue-500"
                       checked={
@@ -247,11 +269,19 @@ function InputStudentBikeSize() {
                     />
                     <label
                       htmlFor={`default-radio-${bike.Numbering}`}
-                      className="ms-2 w-full rounded text-sm font-medium"
+                      className="ms-2 w-full rounded text-sm"
                     >
-                      <div className="flex items-center">
-                        <p className="ps-5">Bike</p>
-                        <p className="px-2">{bike.Numbering}</p>
+                      <div className="flex items-center gap-2 divide-x divide-slate-200 px-4 text-left text-xs font-light text-slate-500">
+                        <p className="min-w-14 text-sm font-medium text-slate-900">
+                          Bike
+                          <span className="ps-2">{bike.Numbering}</span>
+                        </p>
+                        <p className="ps-2">
+                          Type: {bike.BikeType && toPascalCase(bike.BikeType)}
+                        </p>
+                        <p className="ps-2">
+                          Size: {bike.Size && toPascalCase(bike.Size)}
+                        </p>
                       </div>
                     </label>
                   </div>
