@@ -1,17 +1,35 @@
 import React, { useState } from "react"
-import { SingleBookingSections } from "@/types/BookingType"
+import { SingleBookingDTO, SingleBookingSections } from "@/types/BookingType"
 import PrimaryButton from "../Buttons/PrimaryButton"
 import SecondaryButton from "../Buttons/SecondaryButton"
 import { useSingleBookingContext } from "@/context/singleBooking"
 import { NavigationOptions } from "@/types/NavigationPaths"
 import InfoboxSingleBookingDetails from "./SingleBooking/modules/InfoboxSingleBookingDetails"
+import InstructionLabel from "../Others/InstructionLabel"
+import { createSingleBookingFetchApi } from "@/services/bookingApi"
+import { joinFirstLastName } from "@/utils/validators"
+import { UserData } from "@/types/UserType"
 
-function PreBookingConfirmation() {
-  const { settingCurrentSection } = useSingleBookingContext()
+function singleBookingDTO(userData: UserData, bikeNumbering: string) {
+  const userName: string = joinFirstLastName(
+    userData.firstName,
+    userData.lastName
+  )
+  const room: string = userData.roomNumber
+  const singleBookingData: SingleBookingDTO = {
+    userName: userName,
+    room: room,
+    bikeNumbering: bikeNumbering,
+  }
+  return singleBookingData
+}
 
+const PreBookingConfirmation = () => {
+  const { bookingData, settingCurrentSection, settingServerResult } =
+    useSingleBookingContext()
+  const { userData, bikeNumbering } = bookingData
   const [isTermsAndConditionsChecked, setIsTermsAndConditionsChecked] =
     useState(false)
-
   const [itemNeedsAttention, setItemNeedsAttention] = useState(false)
 
   function handleCheckboxChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -29,16 +47,38 @@ function PreBookingConfirmation() {
 
     if (buttonClicked === NavigationOptions.next) {
       if (isTermsAndConditionsChecked) {
-        settingCurrentSection(SingleBookingSections.bookingConfirmation)
+        handleSubmitForm()
       } else {
         setItemNeedsAttention(true) // Trigger attention when Confirm Booking is clicked without checking the checkbox
       }
     }
   }
 
+  function handleSubmitForm() {
+    settingCurrentSection(SingleBookingSections.bookingConfirmation)
+    createSingleBooking()
+  }
+
+  async function createSingleBooking() {
+    const bookingFormData: SingleBookingDTO = singleBookingDTO(
+      userData,
+      bikeNumbering
+    )
+    try {
+      settingCurrentSection(SingleBookingSections.isLoading)
+      const response = await createSingleBookingFetchApi(bookingFormData)
+      const data = response.data
+      settingServerResult(data?.status)
+    } catch (error) {
+      console.error("Error fetching data:", error)
+    } finally {
+      settingCurrentSection(SingleBookingSections.bookingConfirmation)
+    }
+  }
+
   return (
     <div className="flex w-full flex-col">
-      <h1 className="instruction-label">Booking Details</h1>
+      <InstructionLabel>Booking Details</InstructionLabel>
       <InfoboxSingleBookingDetails />
       <div className="m-4 flex w-full items-center justify-start">
         <input

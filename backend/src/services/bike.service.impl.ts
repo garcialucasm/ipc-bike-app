@@ -1,10 +1,11 @@
+import { toBikeDTO } from "../controllers/bike.controller";
 import { Bike, BikeStatus } from "../models/bike.model";
 import IBikeRepository from "../repositories/bike.repository";
 import IBikeService from "./bike.service";
 
 export default class BikeService implements IBikeService {
 
-   bikeRepository: IBikeRepository;
+  bikeRepository: IBikeRepository;
 
   validBikeStatusTransitions: Map<BikeStatus, BikeStatus[]>
 
@@ -19,7 +20,7 @@ export default class BikeService implements IBikeService {
     ])
   }
 
-  async createBike(numbering: number, size: string): Promise<Bike> {
+  async createBike(numbering: number, bikeType: string, size: string): Promise<Bike> {
 
     let bikes = await this.bikeRepository.findAll({ numbering: numbering })
 
@@ -29,6 +30,7 @@ export default class BikeService implements IBikeService {
 
     let bike: Bike = {
       Numbering: numbering,
+      BikeType: bikeType,
       Size: size,
       CreatedAt: new Date(),
       IsActive: true,
@@ -56,12 +58,25 @@ export default class BikeService implements IBikeService {
     return await this.bikeRepository.update(bike)
   }
 
+  findAllAvailable(size?: string, numbering?: number): Promise<Bike[]> {
+    const searchCriteria: { numbering?: number; currentStatus?: BikeStatus; size?: string; } = {
+      currentStatus: BikeStatus.FREE
+    };
 
-  findAllAvailable(size?: string): Promise<Bike[]> {
-    return this.bikeRepository.findAll({ currentStatus: BikeStatus.FREE, size: size })
+    /* -- without this statement, findAllAvailable doesnt work with empty size -- */
+    if (size) {
+      searchCriteria.size = size;
+    }
+    if (numbering) {
+      searchCriteria.numbering = numbering;
+    }
+    /* -------------------------------------------------------------------------- */
+
+    return this.bikeRepository.findAll(searchCriteria);
   }
 
   countBikesByStatus(): Promise<Map<BikeStatus, number>> {
     return this.bikeRepository.countBikesByStatus()
   }
+
 }

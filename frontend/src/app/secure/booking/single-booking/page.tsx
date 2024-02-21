@@ -1,12 +1,10 @@
-"use client"
-
-import { NextPage } from "next"
-
-import withAuth from "@/app/auth/withAuth"
 import HomeSingleBooking from "@/components/Booking/SingleBooking/HomeSingleBooking"
+import withAuth from "@/app/auth/withAuth"
 
-const SingleBooking: NextPage = () => {
-  return <HomeSingleBooking />
+const SingleBooking = () => {
+  const isAuth = withAuth()
+  if (isAuth) {
+    return <HomeSingleBooking />
+  }
 }
-
-export default withAuth(SingleBooking)
+export default SingleBooking

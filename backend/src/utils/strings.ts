@@ -4,9 +4,20 @@ function isLowerCase(s: string): boolean {
   return lowerCaseRegex.test(s)
 }
 
+function isNumber(value: any): boolean {
+  return typeof value === 'number';
+}
+
 function isAlpha(s: string): boolean {
   const alphaRegex = /[a-zA-Z ]+/
   return alphaRegex.test(s)
+}
+
+function isNumericString(value: any): boolean {
+  if (typeof value !== 'string') {
+    return false;
+  }
+  return /^\d+$/.test(value);
 }
 
 function isAlphaNumerical(s: string): boolean {
@@ -51,4 +62,4 @@ function cleanUpSpaces(s: string): string {
   return trimmed;
 }
 
-export { isLowerCase, isAlpha, isAlphaNumerical, toSnakeCase, isEmail, cleanUpSpaces }
+export { isLowerCase, isNumber, isNumericString, isAlpha, isAlphaNumerical, toSnakeCase, isEmail, cleanUpSpaces }

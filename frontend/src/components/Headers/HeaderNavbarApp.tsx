@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
@@ -8,7 +8,6 @@ import { usePathname, useRouter } from "next/navigation"
 import { NavigationPaths } from "@/types/NavigationPaths"
 import Button from "@/components/Buttons/Button"
 import { useAuth } from "@/context/auth"
-import { logout } from "@/services/authService"
 import {
   IconSvgBecomeMember,
   IconSvgGroupBooking,
@@ -16,23 +15,28 @@ import {
   IconSvgPersonCircle,
   IconSvgSingleBooking,
 } from "@/components/Others/IconsSvg"
+import { getDecodedToken, logout } from "@/app/auth/authUtils"
+import { toPascalCase } from "@/utils/strings"
 
 export default function HeaderNavbarApp() {
-  const { accountData } = useAuth()
+  const { accountData, useLogin } = useAuth()
   const [isOpenAccountMenu, setIsOpenAccountMenu] = useState(false)
-  const [isOpenSideBar, setSideBarOpened] = useState(false)
+  const [isSideBarOpened, setIsSideBarOpened] = useState(false)
   const [closedAlert, setClosedAlert] = useState(false)
-  function toggleAlertClosed() {
-    setClosedAlert(true)
-  }
-  function toggleSideBarOpened() {
-    setSideBarOpened(!isOpenSideBar)
-  }
+  const accountMenuRef = useRef(null) // Reference to the dropdown-user container
+  const sidebarMenuRef = useRef(null) // Reference to the sidebar container
   const router = useRouter()
   const accountName = accountData?.accountName
   const pathname = usePathname()
 
-  //TODO Close the menu when clicks outside
+  function toggleAlertClosed() {
+    setClosedAlert(true)
+  }
+
+  function toggleSideBarOpened() {
+    setIsSideBarOpened(!isSideBarOpened)
+  }
+
   function handleClick(buttonClicked: NavigationPaths) {
     switch (buttonClicked) {
       case NavigationPaths.logout:
@@ -44,6 +48,53 @@ export default function HeaderNavbarApp() {
         return NavigationPaths.homeWeb
     }
   }
+
+  function setAccountInfo() {
+    const decodedToken = getDecodedToken()
+    if (decodedToken && !accountData?.isAuthenticated) {
+      const accountId = decodedToken.id
+      const accountName = toPascalCase(decodedToken.accountName)
+      useLogin({
+        id: accountId,
+        accountName: accountName,
+        isAuthenticated: true,
+      })
+    }
+  }
+
+  useEffect(() => {
+    setAccountInfo()
+  }, [])
+
+  /* ------------------- Close the menus when clicks outside ------------------ */
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        accountMenuRef.current &&
+        !(accountMenuRef.current as HTMLElement).contains(
+          event.target as Node
+        ) &&
+        isOpenAccountMenu
+      ) {
+        setIsOpenAccountMenu(false)
+      } else if (
+        sidebarMenuRef.current &&
+        !(sidebarMenuRef.current as HTMLElement).contains(
+          event.target as Node
+        ) &&
+        isSideBarOpened
+      ) {
+        setIsSideBarOpened(false)
+      }
+    }
+    // Add event listener when component mounts
+    document.addEventListener("mousedown", handleClickOutside)
+
+    // Remove event listener when component unmounts
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [isOpenAccountMenu, isSideBarOpened]) // Add dependencies to useEffect
 
   return (
     <>
@@ -81,6 +132,7 @@ export default function HeaderNavbarApp() {
                   width={300}
                   height={399}
                   alt=""
+                  loading="lazy"
                 />
                 <span className="sr-only self-center whitespace-nowrap text-xl font-semibold sm:text-2xl">
                   IPC Bike App
@@ -104,6 +156,7 @@ export default function HeaderNavbarApp() {
                   </Button>
                 </div>
                 <div
+                  ref={accountMenuRef}
                   className={`border-slate-300text-base right-20 top-4 z-50 min-w-56 list-none rounded-2xl border bg-white ${isOpenAccountMenu ? "absolute" : "hidden"}`}
                   id="dropdown-user"
                 >
@@ -138,6 +191,27 @@ export default function HeaderNavbarApp() {
                               />
                             </svg>
                             <div className="px-2">Profile</div>
+                          </div>
+                        </div>
+                      </Link>
+                      <Link
+                        href={NavigationPaths.register}
+                        className="text-slate-500"
+                      >
+                        <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
+                          <div className="flex w-fit items-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              height="20"
+                              viewBox="0 -960 960 960"
+                              width="20"
+                            >
+                              <path
+                                className="fill-current"
+                                d="M730-400v-130H600v-60h130v-130h60v130h130v60H790v130h-60Zm-370-81q-66 0-108-42t-42-108q0-66 42-108t108-42q66 0 108 42t42 108q0 66-42 108t-108 42ZM40-160v-94q0-35 17.5-63.5T108-360q75-33 133.338-46.5 58.339-13.5 118.5-13.5Q420-420 478-406.5 536-393 611-360q33 15 51 43t18 63v94H40Zm60-60h520v-34q0-16-9-30.5T587-306q-71-33-120-43.5T360-360q-58 0-107.5 10.5T132-306q-15 7-23.5 21.5T100-254v34Zm260-321q39 0 64.5-25.5T450-631q0-39-25.5-64.5T360-721q-39 0-64.5 25.5T270-631q0 39 25.5 64.5T360-541Zm0-90Zm0 411Z"
+                              />
+                            </svg>
+                            <div className="px-2">Register</div>
                           </div>
                         </div>
                       </Link>
@@ -226,8 +300,9 @@ export default function HeaderNavbarApp() {
         </div>
       </nav>
       <aside
+        ref={sidebarMenuRef}
         id="logo-sidebar"
-        className={`fixed left-0 top-0 z-40 mt-[64px] h-screen w-64 bg-gradient-to-b from-slate-200 via-slate-200 to-slate-100 pb-24 pt-8 text-left text-slate-700 transition-transform xl:translate-x-0 ${isOpenSideBar ? "" : "-translate-x-full"}`}
+        className={`fixed left-0 top-0 z-40 mt-[64px] h-screen w-64 bg-gradient-to-b from-slate-200 via-slate-200 to-slate-100 pb-24 pt-8 text-left text-slate-700 transition-transform xl:translate-x-0 ${isSideBarOpened ? "" : "-translate-x-full"}`}
         aria-label="Sidebar"
       >
         <div className="flex h-full flex-col justify-between overflow-y-auto px-3 pb-4">
@@ -252,6 +327,7 @@ export default function HeaderNavbarApp() {
                   "header-menu-item-current-page"
                 }`}
                 onClick={toggleSideBarOpened}
+                prefetch={false}
               >
                 <IconSvgSingleBooking height="28" />
                 <span className="ms-3 flex-1 whitespace-nowrap">
@@ -282,7 +358,6 @@ export default function HeaderNavbarApp() {
               >
                 <IconSvgBecomeMember height="28" />
                 <span className="ms-3 flex-1 whitespace-nowrap">
-                  {" "}
                   Become a member
                 </span>
               </Link>

@@ -1,4 +1,4 @@
-import { BikeStatus } from "./BikeType"
+import { BikeDTO, BikeStatus } from "./BikeType"
 
 export type ServerResultBikeAvailability =
     | {
@@ -14,3 +14,18 @@ export type ServerResultBikeAvailability =
         data: null
         error: string
     }
+
+export type ServerResultAllBikesAvailable =
+    | {
+        data: BikeDTO[]
+        error: null
+    }
+    | {
+        data: null
+        error: string
+    }
+
+export enum ServerResult {
+    CONFIRMED = 'CONFIRMED',
+    ERROR = 'ERROR'
+}

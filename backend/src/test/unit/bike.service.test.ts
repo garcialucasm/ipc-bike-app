@@ -7,8 +7,8 @@ import BikeService from "../../services/bike.service.impl";
 import MockBikeRepository from "./bike.fixtures";
 
 
-let bikeRepository: IBikeRepository 
-let bikeService: IBikeService 
+let bikeRepository: IBikeRepository
+let bikeService: IBikeService
 
 beforeEach(() => {
   bikeRepository = new MockBikeRepository()
@@ -18,7 +18,7 @@ beforeEach(() => {
 describe("test creating a bike", () => {
 
   it("returns a valid bike", async () => {
-    let bike = await bikeService.createBike(1, "small")
+    let bike = await bikeService.createBike(1, "small", 'CLASSIC')
 
     assert.ok(bike.IsActive)
     assert.equal(bike.CurrentStatus, BikeStatus.FREE)
@@ -28,8 +28,8 @@ describe("test creating a bike", () => {
   })
 
   it("returns an exception for negative numbering", async () => {
-    try{ 
-      await bikeService.createBike(-1, "small")
+    try {
+      await bikeService.createBike(-1, "small", 'CLASSIC')
       assert.fail("should fail")
     } catch (error) {
       assert.ok(error)
@@ -37,8 +37,8 @@ describe("test creating a bike", () => {
   })
 
   it("returns an exception for empty string", async () => {
-    try{ 
-      await bikeService.createBike(1, "")
+    try {
+      await bikeService.createBike(1, "", 'CLASSIC')
       assert.fail("should fail")
     } catch (error) {
       assert.ok(error)
@@ -47,7 +47,7 @@ describe("test creating a bike", () => {
 })
 
 describe("test change bike status", async () => {
-  let bike: Bike = await bikeService.createBike(1, "small")
+  let bike: Bike = await bikeService.createBike(1, "small", 'CLASSIC')
 
   beforeEach(async () => {
     bike.CurrentStatus = BikeStatus.FREE
@@ -64,10 +64,10 @@ describe("test change bike status", async () => {
     let updatedBike = await bikeService.changeStatus(bike, BikeStatus.DISABLED)
     assert.ok(updatedBike.UpdatedAt)
     assert.ok(updatedBike.IsActive)
-    assert.equal(BikeStatus.DISABLED, updatedBike.CurrentStatus)  
+    assert.equal(BikeStatus.DISABLED, updatedBike.CurrentStatus)
   })
 
-  it("from FREE to INUSE returns an error", async () => { 
+  it("from FREE to INUSE returns an error", async () => {
     try {
       let updatedBike = await bikeService.changeStatus(bike, BikeStatus.INUSE)
       assert.fail("should throw an exception")
@@ -89,7 +89,7 @@ describe("test change bike status", async () => {
   })
 
 
-  it("from BOOKED to DISABLED returns an error", async () => { 
+  it("from BOOKED to DISABLED returns an error", async () => {
     bike.CurrentStatus = BikeStatus.BOOKED
     try {
       let updatedBike = await bikeService.changeStatus(bike, BikeStatus.DISABLED)
@@ -100,13 +100,13 @@ describe("test change bike status", async () => {
   })
 
 
-  it("from DISABLED to FREE is ok",async () => {
+  it("from DISABLED to FREE is ok", async () => {
     bike.CurrentStatus = BikeStatus.DISABLED
     let updatedBike = await bikeService.changeStatus(bike, BikeStatus.FREE)
     assert.equal(BikeStatus.FREE, updatedBike.CurrentStatus)
   })
 
-  it("from DISABLED to INUSE returns an error", async () => { 
+  it("from DISABLED to INUSE returns an error", async () => {
     bike.CurrentStatus = BikeStatus.DISABLED
     try {
       let updatedBike = await bikeService.changeStatus(bike, BikeStatus.INUSE)
@@ -116,7 +116,7 @@ describe("test change bike status", async () => {
     }
   })
 
-  it("from DISABLED to BOOKED returns an error", async () => { 
+  it("from DISABLED to BOOKED returns an error", async () => {
     bike.CurrentStatus = BikeStatus.DISABLED
     try {
       let updatedBike = await bikeService.changeStatus(bike, BikeStatus.BOOKED)
@@ -128,13 +128,13 @@ describe("test change bike status", async () => {
 })
 
 
-describe("find all available bikes",async () => {
+describe("find all available bikes", async () => {
   beforeEach(async () => {
-    bikeService.createBike(1, "small")    
-    let bike1 = await bikeService.createBike(2, "big")
-    let bike2 = await bikeService.createBike(3, "small")    
-    bikeService.createBike(4, "big")
-    let bike3 = await bikeService.createBike(5, "small")
+    bikeService.createBike(1, "small", 'CLASSIC')
+    let bike1 = await bikeService.createBike(2, "big", 'CLASSIC')
+    let bike2 = await bikeService.createBike(3, "small", 'CLASSIC')
+    bikeService.createBike(4, "big", 'CLASSIC')
+    let bike3 = await bikeService.createBike(5, "small", 'CLASSIC')
 
     bikeService.changeStatus(bike1, BikeStatus.BOOKED)
     bikeService.changeStatus(bike2, BikeStatus.BOOKED)

@@ -8,6 +8,9 @@ import IBikeService from "./bike.service";
 import IBookingService from "./booking.service";
 import IUserService from "./user.service";
 
+/* --- Define an array to store names of users with booking in process --- */
+const usersInBookingProcess: string[] = [];
+
 export default class BookingService implements IBookingService {
 
   bookingRepository: IBookingRepository;
@@ -35,32 +38,67 @@ export default class BookingService implements IBookingService {
     this.currentTerm = currentTerm
   }
 
-  async createSingleBooking(userName: string, room: string, bikeSize: string): Promise<Booking> {
-    let availableBikes = await this.bikeService.findAllAvailable(bikeSize)
 
-    if (availableBikes.length == 0)
-      throw new Error(`There's no available bikes for size ${bikeSize}`)
+  async createSingleBooking(userName: string, room: string, bikeNumbering: number): Promise<Booking> {
+    let availableBikes = await this.bikeService.findAllAvailable(undefined, bikeNumbering)
 
-    let user = await this.userService.getOrCreate(userName, room, this.currentTerm)
-
-    this.validateUserForBooking(user)
-
-    let bike = await this.bikeChooser.chooseBike(availableBikes)
-
-    let booking: Booking = {
-      Bike: [bike],
-      User: user,
-      Status: BookingStatus.BOOKED,
-      ReturnedCondition: "",
-      BikeCount: 1,
-      Type: BookingType.SINGLE
+    /* --------- Check if the user is already in the process of booking --------- */
+    if (usersInBookingProcess.includes(userName)) {
+      /* --------- If the user is already in the process, wait for a delay -------- */
+      await this.delay(1000 * 5);
     }
 
-    booking = await this.bookingRepository.save(booking)
-    this.bikeService.changeStatus(bike, BikeStatus.BOOKED)
-    this.userService.changeStatus(user, UserStatus.BOOKED)
+    /* ------------- Add the user to the array usersInBookingProcess ------------ */
+    usersInBookingProcess.push(userName);
 
-    return booking
+    try {
+      if (availableBikes.length == 0)
+        throw new Error(`There's no available bikes for size ${bikeNumbering}`)
+
+      let user = await this.userService.getOrCreate(userName, room, this.currentTerm)
+
+      this.validateUserForBooking(user)
+
+      let bike = availableBikes[0]
+
+      this.validateBikeForBooking(bike)
+
+      let booking: Booking = {
+        Bike: [bike],
+        User: user,
+        Status: BookingStatus.BOOKED,
+        ReturnedCondition: "",
+        BikeCount: 1,
+        Type: BookingType.SINGLE
+      }
+
+      booking = await this.bookingRepository.save(booking)
+      this.bikeService.changeStatus(bike, BikeStatus.BOOKED)
+      this.userService.changeStatus(user, UserStatus.BOOKED)
+
+      /* -------------------------------------------------------------------------- */
+      /* ----------- Skip to confirm booking status during initial tests ---------- */
+      /* -------------------------------------------------------------------------- */
+      if (booking.ID) {
+        await this.approve(booking.ID);
+      }
+      /* -------------------------------------------------------------------------- */
+
+      return booking
+    } catch (error) {
+      /* ----------- If an error occurs, remove the user from the array ----------- */
+      const index = usersInBookingProcess.indexOf(userName);
+      if (index !== -1) {
+        usersInBookingProcess.splice(index, 1);
+      }
+      throw error;
+    } finally {
+      /* ------- Whether the booking result, remove the user from the array ------- */
+      const index = usersInBookingProcess.indexOf(userName);
+      if (index !== -1) {
+        usersInBookingProcess.splice(index, 1);
+      }
+    }
   }
 
   private validateUserForBooking(user: User) {
@@ -73,6 +111,16 @@ export default class BookingService implements IBookingService {
       throw new Error("User is already using a bike")
     if (user.Type !== UserType.STUDENT)
       throw new Error("User is not a student")
+  }
+
+  private validateBikeForBooking(bike: Bike) {
+    // TODO consider if this should be in another component, and if we should create customized errors
+    if (!bike.IsActive)
+      throw new Error("Bike is inactive")
+    if (bike.CurrentStatus === BikeStatus.BOOKED)
+      throw new Error("Bike is already booked")
+    if (bike.CurrentStatus === BikeStatus.INUSE)
+      throw new Error("Bike is already in using")
   }
 
   async approve(bookingId: number): Promise<Booking> {
@@ -131,6 +179,11 @@ export default class BookingService implements IBookingService {
 
   countBookingsByStatus(): Promise<Map<BookingStatus, number>> {
     return this.bookingRepository.countBookingsByStatus()
+  }
+
+  /* ---------------------- Function to introduce a delay --------------------- */
+  private async delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
 }

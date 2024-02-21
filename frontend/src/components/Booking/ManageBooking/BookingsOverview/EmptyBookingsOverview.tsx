@@ -32,6 +32,7 @@ export function EmptyBookingsOverview() {
             <Link
               className="font-medium text-blue-800"
               href={NavigationPaths.singleBooking}
+              prefetch={false}
             >
               Single Booking
             </Link>{" "}

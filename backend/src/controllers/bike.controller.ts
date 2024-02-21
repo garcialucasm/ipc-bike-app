@@ -1,9 +1,9 @@
 import { Router, RouterOptions } from 'express'
 import IBikeService from '../services/bike.service'
-import { BikeStatus } from '../models/bike.model'
-import BikeStatusDTO from '../dto/bike.dto'
+import { Bike, BikeStatus } from '../models/bike.model'
+import { BikeDTO, BikeStatusDTO } from '../dto/bike.dto'
 
-function toStatusDTO(status: Map<BikeStatus, number>) : BikeStatusDTO { 
+function toStatusDTO(status: Map<BikeStatus, number>): BikeStatusDTO {
   return {
     free: status.get(BikeStatus.FREE),
     inuse: status.get(BikeStatus.INUSE),
@@ -12,15 +12,37 @@ function toStatusDTO(status: Map<BikeStatus, number>) : BikeStatusDTO {
   }
 }
 
+export function toBikeDTO(bike: Bike): BikeDTO {
+  return {
+    id: bike.ID ?? 0,
+    numbering: bike.Numbering,
+    bikeType: bike.BikeType,
+    size: bike.Size,
+    currentStatus: bike.CurrentStatus,
+    isActive: bike.IsActive,
+  }
+}
+
 export default function bikeController(bikeService: IBikeService, routerOptions?: RouterOptions) {
 
   const router: Router = Router(routerOptions)
- 
+
   router.get('/status', (req, res) => {
     bikeService.countBikesByStatus().then(bikeStatus => {
-      res.status(200).send({status: toStatusDTO(bikeStatus)})
+      res.status(200).send({ status: toStatusDTO(bikeStatus) })
     })
   })
+
+  router.get("/all/available", (req, res) => {
+    bikeService.findAllAvailable()
+      .then((allBikes) => {
+        res.status(200).send(allBikes);
+      })
+      .catch(error => {
+        console.log(error);
+        res.status(401).send({ error: error.message });
+      });
+  });
 
   return router
 }

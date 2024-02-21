@@ -16,9 +16,9 @@ function AvailabilityCard(props: {
 }) {
   const selectedStatus = props.selectedStatus as BikeStatus
 
-  const { bikeAvailabilityData } = useBikeAvailabilityContext()
+  const { bikeStatusCount: bikeStatusCount } = useBikeAvailabilityContext()
 
-  const currentBikeCount = bikeAvailabilityData[selectedStatus]
+  const currentBikeCount = bikeStatusCount[selectedStatus]
 
   let cardTextColorByStatus = "bg-slate-200 text-slate-600"
   let cardColorByStatus = "bg-slate-600"
@@ -48,7 +48,7 @@ function AvailabilityCard(props: {
   return (
     <>
       <div
-        className={`px-auto flex w-full flex-col justify-between overflow-hidden rounded-2xl border-l border-r border-t border-slate-100 bg-gradient-to-tr from-slate-100 via-slate-100 to-slate-50 font-semibold ${cardTextColorByStatus}`}
+        className={`px-auto min-w-32 flex w-full flex-col justify-between overflow-hidden rounded-2xl border-l border-r border-t border-slate-100 bg-gradient-to-tr from-slate-100 via-slate-100 to-slate-50 font-semibold ${cardTextColorByStatus}`}
       >
         <span>
           <StatusIndicator
@@ -96,7 +96,7 @@ function AvailabilityCard(props: {
           </div>
         </div>
         <span className="px-2 pb-2 text-left text-4xl">
-          {currentBikeCount}
+          {currentBikeCount || 0}
           <span className="px-1 text-xs text-slate-500">{textLabel}</span>
         </span>
         <span className={`h-1.5 ${cardColorByStatus}`}></span>

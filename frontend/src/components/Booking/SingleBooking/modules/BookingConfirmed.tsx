@@ -24,7 +24,7 @@ function BookingConfirmed() {
       <PrimaryButton
         className={
           showNextSteps
-            ? `${"my-2 w-full rounded-3xl bg-gradient-to-tr from-blue-800 via-blue-800 to-blue-700 px-4 py-2 font-semibold text-white shadow-md transition duration-700"}`
+            ? `${"my-2 w-full rounded-3xl bg-gradient-to-tr from-blue-800 via-blue-800 to-blue-700 px-4 py-2 font-semibold text-white transition duration-700"}`
             : "btn-primary"
         }
         onClick={() => setShowNextSteps(!showNextSteps)}

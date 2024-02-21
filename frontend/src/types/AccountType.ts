@@ -3,3 +3,9 @@ export type AccountProps = {
     accountName: string | null;
     isAuthenticated: boolean | null;
 }
+
+export type AccountDTO = {
+    accountName: string;
+    email: string;
+    password: string;
+}

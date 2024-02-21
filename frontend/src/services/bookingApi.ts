@@ -1,6 +1,5 @@
 import { ApiHeader, apiUrls } from "./api";
-import { SingleBookingDTO, SingleBookingProps } from "@/types/BookingType";
-import { cleanUpSpaces } from "@/utils/validators";
+import { SingleBookingDTO } from "@/types/BookingType";
 
 // TODO: Handle the double requirement in a better way. Maybe by stacking.
 // Flag to track whether an action is in progress
@@ -22,8 +21,9 @@ export async function bookingFetchApi() {
 //Create Single Booking
 export async function createSingleBookingFetchApi(bookingData: SingleBookingDTO) {
   try {
+    /* ------------------------ handling double requests ------------------------ */
     if (isProcessing) {
-      return { data: null, error: "Processing " };
+      return { data: null, error: "Processing" };
     }
 
     isProcessing = true;
@@ -31,7 +31,7 @@ export async function createSingleBookingFetchApi(bookingData: SingleBookingDTO)
     const response = await ApiHeader.post(apiUrls.createSingleBookingUrl, {
       userName: bookingData.userName,
       room: bookingData.room,
-      bikeSize: bookingData.bikeSize,
+      bikeNumbering: bookingData.bikeNumbering,
     }
     );
 
@@ -51,7 +51,7 @@ export async function createSingleBookingFetchApi(bookingData: SingleBookingDTO)
   }
 }
 
-// Approve a booking
+/* ---------------------------- approve a booking --------------------------- */
 export async function approveBookingFetchApi(bookingId: number) {
   try {
     const response = await ApiHeader.post(apiUrls.approveBookingUrl + bookingId);
@@ -80,7 +80,7 @@ export async function cancelBookingFetchApi(bookingId: number) {
 
     return { canceledBooking, error: null };
   } catch (error: any) {
-    console.error('Error approving a booking:', error.message);
+    console.error('Error canceling a booking:', error.message);
     return { canceledBooking: null, error: `${error.message}` };
   }
 };

@@ -26,8 +26,8 @@ export default class UserRepository implements IUserRepository {
   async save(user: User): Promise<User> {
     user.CreatedAt = new Date()
 
-    let result = await this.client.query(this.insertUserStmt, [user.Name, user.Type, 
-                                         user.Room, user.Term, user.Status, user.IsActive, user.CreatedAt])
+    let result = await this.client.query(this.insertUserStmt, [user.Name, user.Type,
+    user.Room, user.Term, user.Status, user.IsActive, user.CreatedAt])
 
     let [row] = result.rows
 

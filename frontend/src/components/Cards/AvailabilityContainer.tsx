@@ -4,11 +4,17 @@ import React, { useEffect } from "react"
 
 import { BikeStatus } from "@/types/BikeType"
 import AvailabilityCard from "./AvailabilityCard"
-import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
+import {
+  initialBikeStatusCount,
+  useBikeAvailabilityContext,
+} from "@/context/bikeAvailability"
+import LoadingComponent from "../Others/LoadingComponent"
 
 function AvailabilityContainer() {
-  const { updatingBikeAvailability: getBikeAvailability } =
-    useBikeAvailabilityContext()
+  const {
+    bikeStatusCount: bikeStatusCount,
+    updatingBikeAvailability: getBikeAvailability,
+  } = useBikeAvailabilityContext()
 
   useEffect(() => {
     getBikeAvailability()
@@ -16,14 +22,21 @@ function AvailabilityContainer() {
 
   return (
     <>
-      <div className="container-webapp-size my-8 items-center overflow-x-auto">
-        <div className="flex w-full gap-3 overflow-x-auto">
-          {[BikeStatus.FREE, BikeStatus.BOOKED, BikeStatus.INUSE].map(
-            (bikeStatus) => (
-              <AvailabilityCard key={bikeStatus} selectedStatus={bikeStatus} />
-            )
-          )}
-        </div>
+      <div className="container-webapp-size items-center overflow-x-auto pt-8">
+        {bikeStatusCount === initialBikeStatusCount ? (
+          <LoadingComponent />
+        ) : (
+          <div className="mb-6 flex w-full gap-3 overflow-x-auto pb-2">
+            {[BikeStatus.FREE, BikeStatus.BOOKED, BikeStatus.INUSE].map(
+              (bikeStatus) => (
+                <AvailabilityCard
+                  key={bikeStatus}
+                  selectedStatus={bikeStatus}
+                />
+              )
+            )}
+          </div>
+        )}
       </div>
     </>
   )

@@ -14,29 +14,30 @@ export enum Booking {
   CLASSROOM = "CLASSROOM",
 }
 
-export enum BookingActions {
+export enum BookingModalActions {
   CANCEL = "Cancel",
   CONFIRM = "Confirm",
+  CLOSERESPONSE = "Close",
 }
 
 export enum SingleBookingSections {
   selectBikeSize = "selectBikeSize",
   inputUserData = "inputUserData",
   preBookingConfirmation = "preBookingConfirmation",
+  isLoading = "isLoading",
   bookingConfirmation = "bookingConfirmationStatus",
 }
 
 export interface SingleBookingProps {
   currentSection: SingleBookingSections | null;
-  bikeSize: BikeSize;
+  bikeNumbering: string;
   userData: UserData;
   bookingStatus: BookingStatus | null;
-  serverResult: number | null;
+  serverResult: number | null | undefined;
 }
 
 export interface SingleBookingDTO {
   userName: string
   room: string
-  bikeSize: BikeSize
-  bikeNumbering?: number
+  bikeNumbering: string
 }

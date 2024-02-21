@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 
 import { useSingleBookingContext } from "@/context/singleBooking"
 import { SingleBookingSections } from "@/types/BookingType"
-import {
-  validateFirstName,
-  validateLastName,
-  validateRoomNumber,
-} from "@/utils/validators"
+import { formValidationSingleBooking } from "@/utils/validators"
 import PrimaryButton from "../../Buttons/PrimaryButton"
 import SecondaryButton from "@/components/Buttons/SecondaryButton"
 import {
@@ -14,168 +10,133 @@ import {
   IconSvgRoomDoor,
 } from "@/components/Others/IconsSvg"
 import { NavigationOptions } from "@/types/NavigationPaths"
-
-interface ErrorMessage {
-  showErrorMessages: boolean
-  firstName: string
-  lastName: string
-  roomNumber: string
-}
+import InstructionLabel from "@/components/Others/InstructionLabel"
+import InputText from "@/components/Forms/Inputs/InputText"
 
 function InputStudentData() {
   const { bookingData, settingCurrentSection, settingUserData } =
     useSingleBookingContext()
 
-  const bookingUserData = bookingData.userData
+  const userData = bookingData.userData
 
   const [errorMessages, setErrorMessages] = useState({
-    showErrorMessages: false,
     firstName: "",
     lastName: "",
     roomNumber: "",
   })
 
-  useEffect(() => {
-    // Run the validation when sendUserDataState changes
-    setErrorMessages(validateForm(bookingUserData))
-  }, [bookingData])
+  function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+    const { name } = e.currentTarget
+    const buttonClicked: NavigationOptions = name as NavigationOptions
 
-  // Update the context bookingUserData (first name, last name, room number) when input is changed
-  function handleUserDataChange(event: {
-    target: { value: any; name: string }
-  }) {
-    const { value, name } = event.target
+    if (buttonClicked === NavigationOptions.next) {
+      handleNextButtonClick()
+    }
+
+    if (buttonClicked === NavigationOptions.return) {
+      handleReturnButtonClick()
+    }
+  }
+
+  function handleNextButtonClick() {
+    const validationErrors = formValidationSingleBooking(userData)
+    setErrorMessages(validationErrors)
+
+    if (isFormValid()) {
+      settingCurrentSection(SingleBookingSections.preBookingConfirmation)
+    }
+  }
+
+  function handleReturnButtonClick() {
+    settingCurrentSection(SingleBookingSections.selectBikeSize)
+  }
+
+  /* -------- Update the context bookingUserData when input is changed -------- */
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     settingUserData({
-      ...bookingUserData,
-      [name]: value,
+      ...userData,
+      [e.target.name]: e.target.value,
     })
   }
 
-  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
-    const { name } = event.currentTarget
-    const buttonClicked: NavigationOptions = name as NavigationOptions
+  const handleFocus = () => {
+    setErrorMessages({
+      firstName: "",
+      lastName: "",
+      roomNumber: "",
+    })
+  }
 
-    // Run validation and update error messages
-    setErrorMessages(validateForm(bookingUserData))
+  const handleBlur = () => {
+    setErrorMessages(formValidationSingleBooking(userData))
+  }
 
-    // Check conditions for navigation
+  const isFormValid = () => {
     if (
-      bookingUserData &&
-      buttonClicked === NavigationOptions.next &&
-      bookingUserData.firstName &&
-      bookingUserData.lastName &&
-      bookingUserData.roomNumber &&
+      userData &&
+      userData.firstName &&
+      userData.lastName &&
+      userData.roomNumber &&
       !errorMessages.firstName &&
       !errorMessages.lastName &&
       !errorMessages.roomNumber
     ) {
-      // Navigate if all conditions are met
-      settingCurrentSection(SingleBookingSections.preBookingConfirmation)
-    } else {
-      // Show error messages
-      setErrorMessages((prevErrorMessages) => ({
-        ...prevErrorMessages,
-        showErrorMessages: true,
-      }))
+      return true
     }
-    if (buttonClicked === NavigationOptions.return) {
-      settingCurrentSection(SingleBookingSections.selectBikeSize)
-    }
-  }
-
-  const validateForm = (formValues: any) => {
-    let error: ErrorMessage = {
-      showErrorMessages: false,
-      firstName: "",
-      lastName: "",
-      roomNumber: "",
-    }
-    //First name input validation
-    error.firstName = validateFirstName(formValues.firstName)
-
-    //Last name input validation
-    error.lastName = validateLastName(formValues.lastName)
-
-    //Room number input validation
-    error.roomNumber = validateRoomNumber(formValues.roomNumber)
-    return error
+    return false
   }
 
   return (
     <>
-      <div className="instruction-label text-start">
-        Please, enter cyclist details:
-      </div>
+      <InstructionLabel>Please, enter cyclist details:</InstructionLabel>
       <div className="flex w-full flex-col">
-        <div className="flex gap-2">
-          <div
-            className={`input-text  ${
-              errorMessages.firstName != "" &&
-              errorMessages.showErrorMessages === true
-                ? "ring-1 ring-red-500"
-                : ""
-            }`}
+        <div className="sm:flex sm:gap-2">
+          <InputText
+            placeholder={"First name"}
+            name={"firstName"}
+            value={userData.firstName}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            errorMessage={errorMessages.firstName}
           >
             <IconSvgPersonFilled
               fillColor="text-gray-400"
               width="24"
               height="24"
-            />
-            <input
-              placeholder="First name"
-              name="firstName"
-              onChange={handleUserDataChange}
-              type="text"
-              value={bookingUserData.firstName}
-              className={`w-full border-none pl-2 outline-none`}
-            />
-          </div>
-          <div
-            className={`input-text  ${
-              errorMessages.lastName != "" &&
-              errorMessages.showErrorMessages === true
-                ? "ring-1 ring-red-500"
-                : ""
-            }`}
+            />{" "}
+          </InputText>
+          <InputText
+            placeholder={"Last Name"}
+            name={"lastName"}
+            value={userData.lastName}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            errorMessage={errorMessages.lastName}
           >
-            <input
-              name="lastName"
-              onChange={handleUserDataChange}
-              type="text"
-              value={bookingUserData.lastName}
-              placeholder="Last name"
-              className="w-full border-none pl-2 outline-none"
-            />
-          </div>
+            <span className="sm:hidden">
+              <IconSvgPersonFilled
+                fillColor="text-gray-400"
+                width="24"
+                height="24"
+              />
+            </span>
+          </InputText>
         </div>
-        <div
-          className={`input-text  ${
-            errorMessages.roomNumber != "" &&
-            errorMessages.showErrorMessages === true
-              ? "ring-1 ring-red-500"
-              : ""
-          }`}
+
+        <InputText
+          placeholder={"Room number"}
+          name={"roomNumber"}
+          value={userData.roomNumber}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          onFocus={handleFocus}
+          errorMessage={errorMessages.roomNumber}
         >
           <IconSvgRoomDoor fillColor="text-gray-400" width="24" height="24" />
-          <input
-            name="roomNumber"
-            onChange={handleUserDataChange}
-            type="text"
-            placeholder="Room Number"
-            value={bookingUserData.roomNumber}
-            className="w-full border-none pl-2 outline-none"
-          />
-        </div>
+        </InputText>
       </div>
-      <span className="text-wrap px-1 text-xs text-red-600">
-        {errorMessages.showErrorMessages && errorMessages.firstName}
-      </span>
-      <span className="text-wrap px-1 text-xs text-red-600">
-        {errorMessages.showErrorMessages && errorMessages.lastName}
-      </span>
-      <span className="text-wrap px-1 text-xs text-red-600">
-        {errorMessages.showErrorMessages && errorMessages.roomNumber}
-      </span>
       <>
         <PrimaryButton onClick={handleClick} name={NavigationOptions.next}>
           Next

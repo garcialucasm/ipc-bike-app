@@ -1,21 +1,17 @@
 "use client"
 
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useState } from "react"
 
 import { BikeAvailabilityContextProps } from "@/types/ContextType"
-import { BikeAvailabilityCard, BikeStatus } from "@/types/BikeType"
-import {
-  bikeStatusCounterFetchApi,
-  getBikeAvailability,
-} from "@/services/bikeApi"
-import { ServerResultBikeAvailability } from "@/types/ServerResult"
+import { BikeStatusCard, BikeStatus, BikeDTO } from "@/types/BikeType"
+import { getAllBikesAvailable, getBikeStatusCount } from "@/services/bikeApi"
 
-// Creating initial state for bike availability data
-export const initialBikeAvailability: BikeAvailabilityCard = {
-  [BikeStatus.BOOKED]: 0,
-  [BikeStatus.INUSE]: 0,
-  [BikeStatus.FREE]: 0,
-  [BikeStatus.DISABLED]: 0,
+/* ------------ Creating initial state for bike status counter ----------- */
+export const initialBikeStatusCount: BikeStatusCard = {
+  [BikeStatus.BOOKED]: null,
+  [BikeStatus.INUSE]: null,
+  [BikeStatus.FREE]: null,
+  [BikeStatus.DISABLED]: null,
 }
 
 const BikeAvailabilityContext = createContext<BikeAvailabilityContextProps>(
@@ -27,18 +23,28 @@ const BikeAvailabilityProvider = ({
 }: {
   children: React.ReactNode
 }) => {
-  // Creating state to manage bike availability data
-  const [bikeAvailabilityData, setBikeAvailabilityData] =
-    useState<BikeAvailabilityCard>(initialBikeAvailability)
+  /* ------------- Creating state to manage bike status count ------------ */
+  const [bikeStatusCount, setBikeStatusCount] = useState<BikeStatusCard>(
+    initialBikeStatusCount
+  )
+
+  const [allBikesAvailable, setAllBikesAvailable] = useState<BikeDTO[]>([]);
+
+  const updatingAllBikesAvailable = async () => {
+    const serverResult = await getAllBikesAvailable()
+    if (serverResult.data) {
+      setAllBikesAvailable(serverResult.data)
+    }
+  }
 
   const updatingBikeAvailability = async () => {
-    const serverResult = await getBikeAvailability()
+    const serverResult = await getBikeStatusCount()
     if (serverResult.data) {
-      setBikeAvailabilityData({
-        [BikeStatus.FREE]: serverResult.data[BikeStatus.FREE] | 0,
-        [BikeStatus.BOOKED]: serverResult.data[BikeStatus.BOOKED] | 0,
-        [BikeStatus.INUSE]: serverResult.data[BikeStatus.INUSE] | 0,
-        [BikeStatus.DISABLED]: serverResult.data[BikeStatus.DISABLED] | 0,
+      setBikeStatusCount({
+        [BikeStatus.FREE]: serverResult.data[BikeStatus.FREE],
+        [BikeStatus.BOOKED]: serverResult.data[BikeStatus.BOOKED],
+        [BikeStatus.INUSE]: serverResult.data[BikeStatus.INUSE],
+        [BikeStatus.DISABLED]: serverResult.data[BikeStatus.DISABLED],
       })
     } else {
       console.error("Unable to fetch bike counter data")
@@ -48,8 +54,10 @@ const BikeAvailabilityProvider = ({
   return (
     <BikeAvailabilityContext.Provider
       value={{
-        bikeAvailabilityData,
+        bikeStatusCount: bikeStatusCount,
+        allBikesAvailable: allBikesAvailable,
         updatingBikeAvailability,
+        updatingAllBikesAvailable,
       }}
     >
       <>{children}</>

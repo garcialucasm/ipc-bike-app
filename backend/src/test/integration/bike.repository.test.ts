@@ -1,7 +1,7 @@
 import assert from 'assert'
 import { Client } from 'pg'
 import IBikeRepository from '../../repositories/bike.repository'
-import { Bike, BikeStatus } from '../../models/bike.model' 
+import { Bike, BikeStatus } from '../../models/bike.model'
 import BikeRepository from '../../repositories/bike.repository.impl'
 import cleanupDb from './database.util'
 
@@ -13,18 +13,18 @@ const client = new Client({
   port: 5432,
 })
 
-describe('IBikeRepository Integration Tests', function() {
+describe('IBikeRepository Integration Tests', function () {
   let bikeRepository: IBikeRepository;
 
 
   before(async function () {
     await client.connect()
-    bikeRepository = new BikeRepository(client); 
-    await bikeRepository.save({Numbering: 1, Size: "medium", CurrentStatus: BikeStatus.FREE, IsActive: true})
-    await bikeRepository.save({Numbering: 2, Size: "small", CurrentStatus: BikeStatus.INUSE, IsActive: true})
-    await bikeRepository.save({Numbering: 3, Size: "small", CurrentStatus: BikeStatus.BOOKED, IsActive: true})
-    await bikeRepository.save({Numbering: 4, Size: "medium", CurrentStatus: BikeStatus.INUSE, IsActive: true})
-    await bikeRepository.save({Numbering: 5, Size: "small", CurrentStatus: BikeStatus.DISABLED, IsActive: false})
+    bikeRepository = new BikeRepository(client);
+    await bikeRepository.save({ Numbering: 1, Size: "medium", BikeType: 'classic', CurrentStatus: BikeStatus.FREE, IsActive: true })
+    await bikeRepository.save({ Numbering: 2, Size: "small", BikeType: 'classic', CurrentStatus: BikeStatus.INUSE, IsActive: true })
+    await bikeRepository.save({ Numbering: 3, Size: "small", BikeType: 'classic', CurrentStatus: BikeStatus.BOOKED, IsActive: true })
+    await bikeRepository.save({ Numbering: 4, Size: "medium", BikeType: 'classic', CurrentStatus: BikeStatus.INUSE, IsActive: true })
+    await bikeRepository.save({ Numbering: 5, Size: "small", BikeType: 'classic', CurrentStatus: BikeStatus.DISABLED, IsActive: false })
   });
 
   after(function () {
@@ -32,12 +32,13 @@ describe('IBikeRepository Integration Tests', function() {
     client.end()
   })
 
-  let savedBike: Bike 
+  let savedBike: Bike
 
-  it('should save a bike to the database', function() {
+  it('should save a bike to the database', function () {
     const bike: Bike = {
       Numbering: 123,
       Size: 'medium',
+      BikeType: 'classic',
       CurrentStatus: BikeStatus.FREE,
       IsActive: true
     }
@@ -51,7 +52,7 @@ describe('IBikeRepository Integration Tests', function() {
     })
   })
 
-  it('should update a bike in the database', function() {
+  it('should update a bike in the database', function () {
     const bikeToUpdate: Bike = savedBike
 
     bikeToUpdate.CurrentStatus = BikeStatus.INUSE
@@ -61,7 +62,7 @@ describe('IBikeRepository Integration Tests', function() {
     })
   });
 
-  it('should find a bike by ID', function() {
+  it('should find a bike by ID', function () {
     assert.ok(savedBike.ID)
     const bikeIdToFind = savedBike.ID
     return bikeRepository.findById(bikeIdToFind).then(foundBike => {
@@ -69,14 +70,14 @@ describe('IBikeRepository Integration Tests', function() {
     })
   });
 
-  it('should find all the bikes', function() {
+  it('should find all the bikes', function () {
     return bikeRepository.findAll({}).then(bikes => {
       assert.ok(Array.isArray(bikes))
       assert.equal(6, bikes.length)
     })
   })
 
-  it('should find bikes by search criteria', function() {
+  it('should find bikes by search criteria', function () {
     const searchCriteria = {
       numbering: 123,
       size: 'medium',
@@ -92,7 +93,7 @@ describe('IBikeRepository Integration Tests', function() {
   });
 
 
-  it('should delete a bike from the database', function() {
+  it('should delete a bike from the database', function () {
     assert.ok(savedBike.ID)
     return bikeRepository.delete(savedBike.ID).then(deletedBike => {
       assert.strictEqual(deletedBike.ID, savedBike.ID);

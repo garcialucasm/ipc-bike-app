@@ -1,18 +1,17 @@
-"use client"
-
-import { NextPage } from "next"
-
-import withAuth from "@/app/auth/withAuth"
 import BookingsOverview from "@/components/Booking/ManageBooking/BookingsOverview/BookingsOverview"
 import AvailabilityContainer from "@/components/Cards/AvailabilityContainer"
+import withAuth from "@/app/auth/withAuth"
 
-const HomeAdmin: NextPage = () => {
-  return (
-    <>
-      <AvailabilityContainer />
-      <BookingsOverview />
-    </>
-  )
+const HomeAdmin = () => {
+  const isAuth = withAuth()
+  if (isAuth) {
+    return (
+      <>
+        <AvailabilityContainer />
+        <BookingsOverview />
+      </>
+    )
+  }
 }
 
-export default withAuth(HomeAdmin)
+export default HomeAdmin

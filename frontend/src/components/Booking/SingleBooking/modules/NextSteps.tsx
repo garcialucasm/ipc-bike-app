@@ -1,7 +1,7 @@
 function NextSteps() {
   return (
     <>
-      <div className="flex flex-col border w-full items-center rounded-2xl p-2 mt-3 sm:mb-3 shadow-md text-left text-sm">
+      <div className="flex flex-col border w-full items-center rounded-2xl p-2 mt-3 sm:mb-3 text-left text-sm">
         <div className="w-full">
           <span className="font-black">1. </span>
           <span className="font-semibold">Handover</span> of the bike keys from
@@ -11,7 +11,7 @@ function NextSteps() {
           <span className="text-3xl">🚲</span> + 🔑 → 🙋‍♀️
         </div>
       </div>
-      <div className="flex flex-col border w-full items-center rounded-2xl p-2 sm:mb-3 shadow-md text-left text-sm">
+      <div className="flex flex-col border w-full items-center rounded-2xl p-2 sm:mb-3 text-left text-sm">
         <div className="w-full">
           <span className="font-black">2. </span> Be{" "}
           <span className="font-semibold">responsible</span>, follow the{" "}

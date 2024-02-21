@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect, useRef } from "react"
-import { BookingActions, BookingStatus } from "@/types/BookingType"
+import { BookingModalActions, BookingStatus } from "@/types/BookingType"
 import {
   returnBookingFetchApi,
   approveBookingFetchApi,
@@ -21,14 +21,17 @@ import { ErrorBookingsOverview } from "./ErrorBookingsOverview"
 import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
 import PrimaryButton from "@/components/Buttons/PrimaryButton"
 import SecondaryButton from "@/components/Buttons/SecondaryButton"
-import InfoboxSingleBooking from "./modules/InfoboxSingleBooking"
-import { BikeSize } from "@/types/BikeType"
+import InfoboxSingleBookingModal from "./modules/InfoboxSingleBookingModal"
+import TableHeader from "./modules/TableHeader"
+import { ServerResult } from "@/types/ServerResult"
 
 const messageInicial = "Confirm Action"
 const messageCancelBooking = "Are you sure to cancel this booking?"
 const messageCancelReturn = "Are you sure to cancel this bike return?"
 const messageConfirmBooking = "Are you sure to confirm this booking?"
 const messageConfirmReturn = "Are you sure to confirm this bike return?"
+const messageServerResponseConfirmation = "Action confirmed!"
+const messageServerResponseError = "Oops... Something went wrong!"
 
 function BookingsOverview() {
   const [reloadData, setReloadData] = useState(false)
@@ -40,15 +43,16 @@ function BookingsOverview() {
     error: null,
   })
 
-  const [confirmAction, setConfirmAction] = useState<{
+  const [modalAction, setModalAction] = useState<{
     isOpen: boolean
     bookingId: number | null
     userName: string | null
     bikeType: string | null
     bikeNumbering: string | null
     status: BookingStatus | null
-    actionToConfirm: BookingActions | null
+    actionToConfirm: BookingModalActions | null
     dialogMessage: string
+    serverResult: ServerResult | null
   }>({
     isOpen: false,
     bookingId: null,
@@ -58,6 +62,7 @@ function BookingsOverview() {
     status: null,
     actionToConfirm: null,
     dialogMessage: messageInicial,
+    serverResult: null,
   })
   const { updatingBikeAvailability } = useBikeAvailabilityContext()
   const modalRef = useRef<HTMLDivElement>(null)
@@ -73,6 +78,7 @@ function BookingsOverview() {
 
   const { activeBookings, error } = bookingData
 
+  /* ---------------- Handle cancel button to redirect to modal --------------- */
   async function handleClickCancelBooking(
     bookingId: number,
     status: BookingStatus,
@@ -81,7 +87,7 @@ function BookingsOverview() {
     userName: string
   ) {
     const bookingStatus = status.toUpperCase() as BookingStatus
-    setConfirmAction((prev) => ({
+    setModalAction((prev) => ({
       ...prev,
       isOpen: true,
       bookingId: bookingId,
@@ -89,21 +95,22 @@ function BookingsOverview() {
       bikeNumbering: bikeNumbering,
       userName: userName,
       status: bookingStatus,
-      actionToConfirm: BookingActions.CANCEL,
+      actionToConfirm: BookingModalActions.CANCEL,
     }))
     if (bookingStatus === BookingStatus.BOOKED) {
-      setConfirmAction((prev) => ({
+      setModalAction((prev) => ({
         ...prev,
         dialogMessage: messageCancelBooking,
       }))
     } else if (bookingStatus === BookingStatus.DELIVERED) {
-      setConfirmAction((prev) => ({
+      setModalAction((prev) => ({
         ...prev,
         dialogMessage: messageCancelReturn,
       }))
     }
   }
 
+  /* ---------------- Handle confirm button to redirect to modal --------------- */
   async function handleClickConfirmation(
     bookingId: number,
     status: BookingStatus,
@@ -112,7 +119,7 @@ function BookingsOverview() {
     userName: string
   ) {
     const bookingStatus = status.toUpperCase() as BookingStatus
-    setConfirmAction((prev) => ({
+    setModalAction((prev) => ({
       ...prev,
       isOpen: true,
       bookingId: bookingId,
@@ -120,54 +127,75 @@ function BookingsOverview() {
       bikeNumbering: bikeNumbering,
       userName: userName,
       status: bookingStatus,
-      actionToConfirm: BookingActions.CONFIRM,
+      actionToConfirm: BookingModalActions.CONFIRM,
     }))
     if (bookingStatus === BookingStatus.BOOKED) {
-      setConfirmAction((prev) => ({
+      setModalAction((prev) => ({
         ...prev,
         dialogMessage: messageConfirmBooking,
       }))
     } else if (bookingStatus === BookingStatus.DELIVERED) {
-      setConfirmAction((prev) => ({
+      setModalAction((prev) => ({
         ...prev,
         dialogMessage: messageConfirmReturn,
       }))
     }
   }
+
+  /* ------------------------ Handle confirm action modal ------------------------ */
   async function handleConfirmAction(confirm: boolean) {
-    if (confirm && confirmAction.bookingId && confirmAction.status) {
-      const { bookingId, status } = confirmAction
+    if (confirm && modalAction.bookingId && modalAction.status) {
+      const { bookingId, status } = modalAction
       const bookingStatus = status.toUpperCase() as BookingStatus
-      const actionToConfirm = confirmAction.actionToConfirm
+      const actionToConfirm = modalAction.actionToConfirm
       if (
         bookingStatus === BookingStatus.BOOKED &&
-        actionToConfirm === BookingActions.CONFIRM
+        actionToConfirm === BookingModalActions.CONFIRM
       ) {
-        await approveBookingFetchApi(bookingId)
+        const response = await approveBookingFetchApi(bookingId)
+        handleServerResponse(response.approvedBooking)
       } else if (
         bookingStatus === BookingStatus.DELIVERED &&
-        actionToConfirm === BookingActions.CONFIRM
+        actionToConfirm === BookingModalActions.CONFIRM
       ) {
-        await returnBookingFetchApi(bookingId)
+        const response = await returnBookingFetchApi(bookingId)
+        handleServerResponse(response.returnedBooking)
       } else if (
-        bookingStatus === BookingStatus.BOOKED &&
-        actionToConfirm === BookingActions.CANCEL
+        (bookingStatus === BookingStatus.BOOKED ||
+          bookingStatus === BookingStatus.DELIVERED) &&
+        actionToConfirm === BookingModalActions.CANCEL
       ) {
-        await cancelBookingFetchApi(bookingId)
+        const response = await cancelBookingFetchApi(bookingId)
+        handleServerResponse(response.canceledBooking)
       }
-      updatingBikeAvailability()
-      setReloadData(!reloadData)
+    } else {
+      setModalAction((prev) => ({
+        ...prev,
+        isOpen: false,
+        bookingId: null,
+        userName: null,
+        bikeType: null,
+        bikeNumbering: null,
+        status: null,
+        actionToConfirm: null,
+        dialogMessage: messageInicial,
+        serverResult: null,
+      }))
     }
-    setConfirmAction({
-      isOpen: false,
-      bookingId: null,
-      userName: null,
-      bikeType: null,
-      bikeNumbering: null,
-      status: null,
-      actionToConfirm: null,
+    updatingBikeAvailability()
+    setReloadData(!reloadData)
+    setModalAction((prev) => ({
+      ...prev,
+      actionToConfirm: BookingModalActions.CLOSERESPONSE,
       dialogMessage: messageInicial,
-    })
+    }))
+  }
+
+  function handleServerResponse(response: boolean | null) {
+    setModalAction((prev) => ({
+      ...prev,
+      serverResult: response ? ServerResult.CONFIRMED : ServerResult.ERROR,
+    }))
   }
 
   const handleModalClick = (e: any) => {
@@ -193,25 +221,7 @@ function BookingsOverview() {
       <>
         <div className="container-webapp-size relative overflow-x-auto rounded-2xl">
           <table className="w-full text-left text-sm text-slate-500 rtl:text-right">
-            <thead className="bg-blue-800 text-xs uppercase text-slate-100">
-              <tr>
-                <th scope="col" className="px-3 py-3 text-center">
-                  Status
-                </th>
-                <th scope="col" className="py-3">
-                  User
-                </th>
-                <th scope="col" className="py-3">
-                  Bike Type
-                </th>
-                <th scope="col" className="py-3">
-                  Bikes
-                </th>
-                <th scope="col" className="py-3 text-center">
-                  Actions
-                </th>
-              </tr>
-            </thead>
+            <TableHeader />
             <tbody>
               {activeBookings.map((booking: any) => (
                 <tr
@@ -233,10 +243,12 @@ function BookingsOverview() {
                     {booking.user}
                   </td>
                   <td className="py-4 text-slate-500">
-                    {booking.bikeType && booking.bikeType.length > 0
-                      ? booking.bikeType.charAt(0).toUpperCase() +
-                        booking.bikeType.slice(1)
-                      : ""}
+                    <span className="hidden md:inline-block">
+                      {booking.bikeType && booking.bikeType.length > 0
+                        ? booking.bikeType.charAt(0).toUpperCase() +
+                          booking.bikeType.slice(1)
+                        : ""}
+                    </span>
                   </td>
                   <td className="py-4 text-slate-500">{booking.bike}</td>
                   <td className="flex w-full flex-row items-center justify-center py-4">
@@ -257,9 +269,9 @@ function BookingsOverview() {
                       </ActionButton>
                     </div>
                     <div>
-                      <ActionButton>
+                      {/* <ActionButton>
                         <IconSvgEllipsisCircle height="24" />
-                      </ActionButton>
+                      </ActionButton> */}
                     </div>
                     <div>
                       <ActionButton
@@ -284,71 +296,86 @@ function BookingsOverview() {
           </table>
         </div>
 
-        {/* -------------------------- Confirm action modal -------------------------- */}
-        {confirmAction.isOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50 backdrop-blur">
-            <div
-              ref={modalRef}
-              className="m-8 grid max-w-md gap-y-4 rounded-2xl bg-white p-8"
-            >
-              <p
-                className={`flex items-center border-b border-slate-200 pb-4 text-start text-xl font-semibold ${
-                  confirmAction.actionToConfirm === BookingActions.CONFIRM
-                    ? "text-green-700"
-                    : "text-rose-700"
-                }`}
+        {/* -------------------------- Modal: Confirm action -------------------------- */}
+        {modalAction.isOpen &&
+          modalAction.actionToConfirm !== BookingModalActions.CLOSERESPONSE && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50 backdrop-blur">
+              <div
+                ref={modalRef}
+                className="m-8 grid min-w-72 max-w-md gap-y-4 rounded-2xl bg-white p-8"
               >
-                {confirmAction.actionToConfirm === BookingActions.CONFIRM ? (
-                  <span className="me-2 rounded-full border-2 border-green-700 p-0.5 font-bold">
-                    <IconSvgApprovalCircle height="18px" />
-                  </span>
-                ) : (
-                  <span className="me-2 rounded-full border-2 border-rose-700 p-0.5 font-bold">
-                    <IconSvgDeleteCircle height="18px" />
-                  </span>
-                )}
-                {`${confirmAction.actionToConfirm} ${
-                  confirmAction.status === BookingStatus.BOOKED
-                    ? "Booking"
-                    : "Return"
-                } ?`}
-              </p>
-              <p className="text-start">{confirmAction.dialogMessage}</p>
-              <div>
-                <InfoboxSingleBooking
-                  bikeType={confirmAction.bikeType}
-                  userName={confirmAction.userName}
-                  bikeNumbering={confirmAction.bikeNumbering}
-                  bookingStatus={confirmAction.status}
+                <InfoboxSingleBookingModal
+                  bikeType={modalAction.bikeType}
+                  userName={modalAction.userName}
+                  bikeNumbering={modalAction.bikeNumbering}
+                  bookingStatus={modalAction.status}
+                  dialogMessage={modalAction.dialogMessage}
+                  actionToConfirm={modalAction.actionToConfirm}
                 />
-              </div>
-              <div className="flex justify-center">
-                <SecondaryButton
-                  onClick={() => handleConfirmAction(false)}
-                  className="btn-secondary ms-0 w-full max-w-24"
-                >
-                  No
-                </SecondaryButton>
-                <PrimaryButton
-                  onClick={() => handleConfirmAction(true)}
-                  className="btn-primary me-0 w-full max-w-24"
-                >
-                  Yes
-                </PrimaryButton>
+                <div className="flex justify-end gap-x-3">
+                  <PrimaryButton
+                    onClick={() => handleConfirmAction(true)}
+                    className="btn-primary ms-0 w-full max-w-24"
+                  >
+                    Yes
+                  </PrimaryButton>
+                  <SecondaryButton
+                    onClick={() => handleConfirmAction(false)}
+                    className="btn-secondary w-full max-w-16"
+                  >
+                    No
+                  </SecondaryButton>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+
+        {/* -------------------------- Modal: Server response -------------------------- */}
+        {modalAction.isOpen &&
+          modalAction.actionToConfirm == BookingModalActions.CLOSERESPONSE && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50 backdrop-blur">
+              <div
+                ref={modalRef}
+                className="m-8 grid min-w-72 max-w-md gap-y-4 rounded-2xl bg-white p-8"
+              >
+                <p
+                  className={`flex items-center border-b border-slate-200 pb-4 text-start text-xl font-semibold`}
+                >
+                  {modalAction.serverResult === ServerResult.CONFIRMED ? (
+                    <>
+                      <span className="me-2 rounded-full border-2 border-green-700 p-0.5 font-bold">
+                        <IconSvgApprovalCircle height="18px" />
+                      </span>
+                      <span className="text-emerald-700">
+                        {messageServerResponseConfirmation}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="me-2 rounded-full border-2 border-rose-700 p-0.5 font-bold">
+                        <IconSvgDeleteCircle height="18px" />
+                      </span>
+                      <span className="text-rose-700">
+                        {messageServerResponseError}
+                      </span>
+                    </>
+                  )}
+                </p>
+                <div className="flex justify-center">
+                  <SecondaryButton
+                    onClick={() => handleConfirmAction(false)}
+                    className="btn-secondary w-full max-w-24"
+                  >
+                    Ok
+                  </SecondaryButton>
+                </div>
+              </div>
+            </div>
+          )}
       </>
     )
   } else {
-    return (
-      <>
-        <div className="text-xs">
-          Something unexpected happened. Please try again later.
-        </div>
-      </>
-    )
+    return <ErrorBookingsOverview />
   }
 }
 

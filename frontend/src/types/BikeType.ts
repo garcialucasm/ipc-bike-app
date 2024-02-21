@@ -7,19 +7,29 @@ export enum BikeStatus {
 
 export enum BikeSize {
   STANDARD = "STANDARD",
-  CLASSIC = "CLASSIC",
+  LARGE = "LARGE",
   SMALL = "SMALL",
 }
 
-export type AllBikesAvailability = {
-  [size in BikeSize]: {
-    [status in BikeStatus]: number;
-  };
-};
+export enum BikeType {
+  ALL = 'ALL',
+  CLASSIC = "CLASSIC",
+  CITY = "CITY",
+  FOLDING = "FOLDING",
+}
 
-export type BikeAvailabilityCard = {
-  [BikeStatus.BOOKED]: number,
-  [BikeStatus.INUSE]: number,
-  [BikeStatus.FREE]: number,
-  [BikeStatus.DISABLED]: number
+export type BikeDTO = {
+  ID: number,
+  Numbering: string,
+  CurrentStatus: string,
+  Size: string,
+  BikeType: string,
+  IsActive: boolean,
+}
+
+export type BikeStatusCard = {
+  [BikeStatus.BOOKED]: number | null,
+  [BikeStatus.INUSE]: number | null,
+  [BikeStatus.FREE]: number | null,
+  [BikeStatus.DISABLED]: number | null
 };
