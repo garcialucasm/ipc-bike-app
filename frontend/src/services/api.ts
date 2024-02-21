@@ -12,6 +12,7 @@ export const apiUrls = {
 
   /* ------------------------------ Account Service ------------------------------ */
   registerAccountUrl: "/auth/secure/register",
+  firstRegisterAccountUrl: "/auth/register",
 
   /* ----------------------------- Booking Service ---------------------------- */
   activeBookingsUrl: "/secure/booking/all",
