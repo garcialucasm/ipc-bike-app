@@ -26,7 +26,7 @@ import accountController from "./controllers/account.controller"
 import { checkAuth } from "./utils/auth"
 
 let db = getClient()
-
+db.connect()
 
 const currentTerm = 'spring 2023'
 
@@ -45,7 +45,10 @@ const accountService: IAccountService = new AccountService(accountRepository)
 
 const app = express()
 app.use(cors())
-app.use(bodyParser.json())
+//app.use(bodyParser.urlencoded({
+//  extended: true
+//}));
+app.use(express.json())
 
 app.use('/api/secure/*', checkAuth)
 

@@ -12,6 +12,8 @@ export default function getClient() {
     throw new Error("could not find database password, please verify your configuration")
   }
 
+  console.log(`dbBdbPassword: ${dbPassword}`)
+
   return new Client({
     host: process.env.IPC_BIKES_HOST,
     user: process.env.IPC_BIKES_USER,
