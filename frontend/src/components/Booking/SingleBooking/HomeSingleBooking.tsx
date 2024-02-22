@@ -12,6 +12,7 @@ import BookingConfirmation from "@/components/Booking/BookingConfirmation"
 import Stepper from "@/components/Stepper/Stepper"
 import LoadingComponent from "@/components/Others/LoadingComponent"
 import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
+import ContainerSingleComponent from "@/components/Containers/ContainerSingleComponent"
 
 const HomeSingleBooking: NextPage = () => {
   const {
@@ -36,30 +37,28 @@ const HomeSingleBooking: NextPage = () => {
 
   return (
     <>
-      <div className="container-page-webapp">
-        <div className="container-subpage-webapp">
-          <Stepper />
-          {currentSection === SingleBookingSections.selectBikeSize && (
-            <InputSingleBikeSize />
-          )}
+      <Stepper />
+      <ContainerSingleComponent>
+        {currentSection === SingleBookingSections.selectBikeSize && (
+          <InputSingleBikeSize />
+        )}
 
-          {currentSection === SingleBookingSections.inputUserData && (
-            <InputSingleUserData />
-          )}
+        {currentSection === SingleBookingSections.inputUserData && (
+          <InputSingleUserData />
+        )}
 
-          {currentSection === SingleBookingSections.preBookingConfirmation && (
-            <PreBookingConfirmation />
-          )}
+        {currentSection === SingleBookingSections.preBookingConfirmation && (
+          <PreBookingConfirmation />
+        )}
 
-          {currentSection === SingleBookingSections.isLoading && (
-            <LoadingComponent />
-          )}
+        {currentSection == SingleBookingSections.isLoading && (
+          <LoadingComponent />
+        )}
 
-          {currentSection === SingleBookingSections.bookingConfirmation && (
-            <BookingConfirmation />
-          )}
-        </div>
-      </div>
+        {currentSection === SingleBookingSections.bookingConfirmation && (
+          <BookingConfirmation />
+        )}
+      </ContainerSingleComponent>
     </>
   )
 }

@@ -4,6 +4,7 @@ import Link from "next/link"
 import SecondaryButton from "@/components/Buttons/SecondaryButton"
 import { NavigationPaths } from "@/types/NavigationPaths"
 import { IconSvgLoader } from "@/components/Others/IconsSvg"
+import ContainerSingleComponent from "@/components/Containers/ContainerSingleComponent"
 
 export function EmptyBookingsOverview() {
   const [loading, setLoading] = useState(true)
@@ -19,7 +20,7 @@ export function EmptyBookingsOverview() {
   }, [])
 
   return (
-    <div className="container-page-webapp text-slate-600">
+    <ContainerSingleComponent>
       {loading ? (
         // Display loader icon while loading
         <IconSvgLoader height={"48"} fillColor="text-blue-800" />
@@ -55,6 +56,6 @@ export function EmptyBookingsOverview() {
           </span>
         </>
       )}
-    </div>
+    </ContainerSingleComponent>
   )
 }

@@ -212,14 +212,12 @@ function BookingsOverview() {
     }
   }, [])
 
-  if (error) {
-    return <ErrorBookingsOverview />
-  } else if (!activeBookings || activeBookings.length === 0) {
+  if (!activeBookings || activeBookings.length === 0) {
     return <EmptyBookingsOverview />
   } else if (activeBookings.length > 0) {
     return (
       <>
-        <div className="container-webapp-size relative overflow-x-auto rounded-2xl">
+        <div className="w-full overflow-x-auto rounded-2xl">
           <table className="w-full text-left text-sm text-slate-500 rtl:text-right">
             <TableHeader />
             <tbody>

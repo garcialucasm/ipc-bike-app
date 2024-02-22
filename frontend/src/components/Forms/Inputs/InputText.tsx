@@ -16,7 +16,7 @@ export default function InputText({
     <>
       <div className="my-2 w-full">
         <div
-          className={`input-text min-h-11 ${errorMessage && "ring-1 ring-rose-600"}`}
+          className={`${errorMessage && "ring-1 ring-rose-400"} flex min-h-11 w-full items-center rounded-2xl border border-slate-300 bg-white px-3 py-2 text-sm`}
         >
           {children}
           <input

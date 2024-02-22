@@ -154,7 +154,7 @@ function InputStudentBikeSize() {
               />
               <label
                 htmlFor={`${bikeType.toLowerCase()}-bike-size`}
-                className={`bike-type-chooser-item rounded-2xl`}
+                className={`cursor-pointer rounded-2xl bg-slate-200 font-bold text-slate-500 hover:bg-slate-50 hover:text-blue-500 peer-checked:rounded-b-2xl peer-checked:border-blue-600 peer-checked:bg-white peer-checked:font-black peer-checked:text-blue-600`}
               >
                 <p
                   className={`w-full rounded-b-2xl bg-inherit py-2 ${array.indexOf(radioBikeTypeValue) - index === -1 && "rounded-tl-xl"} ${array.indexOf(radioBikeTypeValue) - index === 1 && "rounded-tr-xl"}`}
@@ -168,7 +168,7 @@ function InputStudentBikeSize() {
       </ul>
       <InstructionLabel>Select bike number</InstructionLabel>
       <Button
-        className={`${isLoad ? "hidden" : "flex min-h-10 w-full items-center justify-between rounded-2xl border border-slate-200 bg-white px-5 text-sm"}`}
+        className={`${!isLoad && !bookingData.bikeNumbering ? "flex min-h-10 w-full items-center justify-between rounded-2xl border border-slate-200 bg-white px-5 text-sm" : "hidden"}`}
         type="button"
         onClick={handleIsLoad}
       >
@@ -199,11 +199,11 @@ function InputStudentBikeSize() {
       >
         <div className="flex h-full items-center font-semibold text-slate-700">
           <p className="flex min-h-10 items-center rounded-l-2xl bg-slate-200 px-3">
-            Bike Selected
+            Selected
           </p>
-          <div className="flex items-center gap-2 divide-x divide-slate-200 px-4 text-left text-xs font-light text-slate-500">
+          <div className="flex items-center gap-2 divide-x divide-slate-400 px-4 text-left text-xs font-normal text-slate-600">
             <span className="text-sm font-extrabold text-blue-800">
-              {bookingData.bikeNumbering && bookingData.bikeNumbering}
+              Bike {bookingData.bikeNumbering && bookingData.bikeNumbering}
             </span>
             <p className="ps-2">
               Type: {bookingData.bikeSize && toPascalCase(bookingData.bikeSize)}
@@ -236,7 +236,7 @@ function InputStudentBikeSize() {
       {listOfFilteredBikes && isLoad && (
         <div
           id="dropdownRadioBgHover"
-          className={`${isDropdownOpen ? "z-10 mt-5 block w-full divide-y divide-gray-100 overflow-hidden rounded-2xl bg-white shadow" : "hidden"}`}
+          className={`${isDropdownOpen ? "z-10 mt-1 block w-full divide-y divide-gray-100 overflow-hidden rounded-2xl bg-white shadow" : "hidden"}`}
         >
           <ul
             className={`${isDropdownOpen ? "max-h-52 space-y-1 overflow-y-auto p-3 text-sm text-gray-700" : "hidden"}`}
@@ -248,6 +248,8 @@ function InputStudentBikeSize() {
                   <div
                     className={`flex items-center rounded-lg p-2 hover:bg-gray-100 ${bookingData.bikeNumbering && bike.Numbering && bookingData.bikeNumbering === bike.Numbering.toString() && "bg-slate-200 text-blue-700"}`}
                   >
+                    <div className="px-5">
+
                     <input
                       id={`default-radio-${bike.Numbering}`}
                       type="radio"
@@ -262,17 +264,18 @@ function InputStudentBikeSize() {
                         bookingData.bikeNumbering &&
                         bike.Numbering &&
                         bookingData.bikeNumbering === bike.Numbering.toString()
-                          ? true
-                          : undefined
+                        ? true
+                        : undefined
                       }
                       onChange={handleBikeNumberSelection}
-                    />
+                      />
+                      </div>
                     <label
                       htmlFor={`default-radio-${bike.Numbering}`}
                       className="ms-2 w-full rounded text-sm"
                     >
-                      <div className="flex items-center gap-2 divide-x divide-slate-200 px-4 text-left text-xs font-light text-slate-500">
-                        <p className="min-w-14 text-sm font-medium text-slate-900">
+                      <div className="flex items-center gap-2 divide-x divide-slate-400 px-4 text-left text-xs font-normal text-slate-600">
+                        <p className="min-w-14 text-sm font-bold text-slate-900">
                           Bike
                           <span className="ps-2">{bike.Numbering}</span>
                         </p>

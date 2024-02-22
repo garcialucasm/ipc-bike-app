@@ -22,11 +22,11 @@ function AvailabilityContainer() {
 
   return (
     <>
-      <div className="container-webapp-size items-center overflow-x-auto pt-8">
+      <div className="items-center overflow-x-auto w-full">
         {bikeStatusCount === initialBikeStatusCount ? (
           <LoadingComponent />
         ) : (
-          <div className="mb-6 flex w-full gap-3 overflow-x-auto pb-2">
+          <div className="flex w-full gap-4 overflow-x-auto pb-2">
             {[BikeStatus.FREE, BikeStatus.BOOKED, BikeStatus.INUSE].map(
               (bikeStatus) => (
                 <AvailabilityCard

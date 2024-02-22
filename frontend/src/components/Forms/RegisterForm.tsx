@@ -22,6 +22,7 @@ import {
   formValidationRegister,
 } from "@/utils/validators"
 import { InputErrorMessageInvalidPassword } from "./Inputs/InputErrorMessage"
+import ContainerSingleComponent from "../Containers/ContainerSingleComponent"
 
 const initialAccountData: AccountDTO = {
   accountName: "",
@@ -97,11 +98,8 @@ function RegisterForm() {
   }
 
   return (
-    <form
-      className="container-page-webapp my-8"
-      onSubmit={handleSubmitForm}
-    >
-      <div className="container-subpage-webapp">
+    <ContainerSingleComponent>
+      <form className="h-full w-full" onSubmit={handleSubmitForm}>
         {/* ------------------------- render when is loading ------------------------- */}
         {isLoading && <IconSvgLoader height={"48"} fillColor="text-blue-800" />}
 
@@ -180,8 +178,8 @@ function RegisterForm() {
             <span className="block px-4 py-2">Return</span>
           </Link>
         </div>
-      </div>
-    </form>
+      </form>
+    </ContainerSingleComponent>
   )
 }
 
