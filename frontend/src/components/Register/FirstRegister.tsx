@@ -22,11 +22,13 @@ import {
   IconSvgPersonFilled,
 } from "../Others/IconsSvg"
 import ActionResult from "../ActionResult/ActionResult"
+import SecondaryButton from "../Buttons/SecondaryButton"
 
 const initialAccountData: AccountDTO = {
   accountName: "",
   email: "",
   password: "",
+  passwordConfirmation: "",
 }
 const initialErrorMessages: ErrorMessageRegister = {
   accountName: "",
@@ -49,10 +51,10 @@ function FirstRegister() {
     if (isFormValid()) {
       setIsLoading(true)
       const response = await registerAccountFetchApi(formRegisterAccount)
-      if (response.error) {
-        setServerResult(false)
-      } else {
+      if (!response.error) {
         setServerResult(true)
+      } else {
+        setServerResult(false)
       }
       setIsLoading(false)
     }
@@ -88,6 +90,7 @@ function FirstRegister() {
       formRegisterAccount.accountName &&
       formRegisterAccount.email &&
       formRegisterAccount.password &&
+      formRegisterAccount.passwordConfirmation &&
       !errorMessages.accountName &&
       !errorMessages.email &&
       !errorMessages.password
@@ -124,7 +127,7 @@ function FirstRegister() {
             </span>
           </Link>
         </div>
-        <div className="flex items-center justify-center bg-white py-10 md:w-1/2">
+        <div className="mt-[64px] flex items-center justify-center bg-white py-10 md:mt-0 md:w-1/2">
           <form onSubmit={handleSubmitForm} className="bg-white">
             <h1 className="mb-1 text-2xl font-bold text-gray-800">Hello! 👋</h1>
             <p className="mb-7 text-sm font-normal text-gray-600">Welcome</p>
@@ -138,9 +141,26 @@ function FirstRegister() {
               <>
                 <ActionResult isConfirmed={serverResult} />
                 {!serverResult && (
-                  <PrimaryButton onClick={handleCleanStates}>
-                    Try again
-                  </PrimaryButton>
+                  <div className="my-4 w-full">
+                    <PrimaryButton onClick={handleCleanStates}>
+                      Try again
+                    </PrimaryButton>
+                  </div>
+                )}
+                {serverResult && (
+                  <div className="my-4 flex w-full flex-col gap-y-4">
+                    <div className="link-primary w-full">
+                      {/* TODO:-------------------- Create an automatic login process ------------------- */}
+                      <Link href={NavigationPaths.login}>
+                        <span className="block px-4 py-2 text-center">
+                          Login
+                        </span>
+                      </Link>
+                    </div>
+                    <SecondaryButton onClick={handleCleanStates}>
+                      Register again
+                    </SecondaryButton>
+                  </div>
                 )}
               </>
             )}
@@ -148,7 +168,7 @@ function FirstRegister() {
             {/* ------------------------- render before submit ------------------------- */}
             {!isLoading && serverResult === null && (
               <>
-                <div className="flex w-full flex-col">
+                <div className="flex w-full flex-col gap-y-4">
                   <InputText
                     placeholder={"Name"}
                     name={"accountName"}
@@ -195,11 +215,29 @@ function FirstRegister() {
                       height="24"
                     />
                   </InputText>
+                  <InputText
+                    name="passwordConfirmation"
+                    type="password"
+                    placeholder="Confirm Password"
+                    value={formRegisterAccount.passwordConfirmation}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    onFocus={handleFocus}
+                    errorMessage={errorMessages.password}
+                  >
+                    <IconSvgPassword
+                      fillColor="text-gray-400"
+                      width="24"
+                      height="24"
+                    />
+                  </InputText>
                   {errorMessages.password === errorMessagePasswordInvalid && (
                     <InputErrorMessageInvalidPassword />
                   )}
                 </div>
-                <PrimaryButton type="submit">Register</PrimaryButton>
+                <div className="mb-4 mt-8 w-full">
+                  <PrimaryButton type="submit">Register</PrimaryButton>
+                </div>
               </>
             )}
             <div className="link-secondary w-full">

@@ -77,10 +77,10 @@ const PreBookingConfirmation = () => {
   }
 
   return (
-    <div className="flex w-full flex-col">
+    <>
       <InstructionLabel>Booking Details</InstructionLabel>
       <InfoboxSingleBookingDetails />
-      <div className="m-4 flex w-full items-center justify-start">
+      <div className="flex w-full items-center justify-center sm:justify-start px-4">
         <input
           id="default-checkbox"
           type="checkbox"
@@ -106,7 +106,7 @@ const PreBookingConfirmation = () => {
       <SecondaryButton onClick={handleClick} name={NavigationOptions.return}>
         <span>Return</span>
       </SecondaryButton>
-    </div>
+    </>
   )
 }
 

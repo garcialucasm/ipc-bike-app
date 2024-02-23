@@ -5,7 +5,7 @@ import { NextPage } from "next"
 
 import { SingleBookingSections } from "@/types/BookingType"
 import { useSingleBookingContext } from "@/context/singleBooking"
-import InputSingleBikeSize from "@/components/Booking/SingleBooking/InputSingleBikeSize"
+import InputSingleBike from "@/components/Booking/SingleBooking/InputSingleBike"
 import InputSingleUserData from "@/components/Booking/SingleBooking/InputSingleUserData"
 import PreBookingConfirmation from "@/components/Booking/PreBookingConfirmation"
 import BookingConfirmation from "@/components/Booking/BookingConfirmation"
@@ -18,6 +18,7 @@ const HomeSingleBooking: NextPage = () => {
   const {
     bookingData,
     settingBikeNumbering,
+    settingBikeType,
     settingCurrentSection,
     settingServerResult,
     settingUserData,
@@ -29,6 +30,7 @@ const HomeSingleBooking: NextPage = () => {
 
   useEffect(() => {
     settingBikeNumbering("")
+    settingBikeType("")
     settingUserData({ firstName: "", lastName: "", roomNumber: "" })
     settingServerResult(null)
     settingCurrentSection(SingleBookingSections.selectBikeSize)
@@ -40,7 +42,7 @@ const HomeSingleBooking: NextPage = () => {
       <Stepper />
       <ContainerSingleComponent>
         {currentSection === SingleBookingSections.selectBikeSize && (
-          <InputSingleBikeSize />
+          <InputSingleBike />
         )}
 
         {currentSection === SingleBookingSections.inputUserData && (

@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import Image from "next/image"
 
 import { useSingleBookingContext } from "@/context/singleBooking"
 import { SingleBookingSections } from "@/types/BookingType"
@@ -88,55 +89,62 @@ function InputStudentData() {
 
   return (
     <>
-      <InstructionLabel>Please, enter cyclist details:</InstructionLabel>
-      <div className="flex w-full flex-col">
-        <div className="sm:flex sm:gap-2">
-          <InputText
-            placeholder={"First name"}
-            name={"firstName"}
-            value={userData.firstName}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            onFocus={handleFocus}
-            errorMessage={errorMessages.firstName}
-          >
+      <InstructionLabel>Please, enter cyclist information:</InstructionLabel>
+      <div className="rounded-2xl bg-white p-2">
+        <Image
+          src="/flat-illustration-people-cycling.jpg"
+          className="rouded-2xl w-auto"
+          width={720}
+          height={423}
+          alt=""
+        />
+      </div>
+      <div className="flex flex-col sm:flex-row sm:gap-2 w-full gap-y-4">
+        <InputText
+          placeholder={"First name"}
+          name={"firstName"}
+          value={userData.firstName}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          onFocus={handleFocus}
+          errorMessage={errorMessages.firstName}
+        >
+          <IconSvgPersonFilled
+            fillColor="text-gray-400"
+            width="24"
+            height="24"
+          />{" "}
+        </InputText>
+        <InputText
+          placeholder={"Last Name"}
+          name={"lastName"}
+          value={userData.lastName}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          onFocus={handleFocus}
+          errorMessage={errorMessages.lastName}
+        >
+          <span className="sm:hidden">
             <IconSvgPersonFilled
               fillColor="text-gray-400"
               width="24"
               height="24"
-            />{" "}
-          </InputText>
-          <InputText
-            placeholder={"Last Name"}
-            name={"lastName"}
-            value={userData.lastName}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            onFocus={handleFocus}
-            errorMessage={errorMessages.lastName}
-          >
-            <span className="sm:hidden">
-              <IconSvgPersonFilled
-                fillColor="text-gray-400"
-                width="24"
-                height="24"
-              />
-            </span>
-          </InputText>
-        </div>
-
-        <InputText
-          placeholder={"Room number"}
-          name={"roomNumber"}
-          value={userData.roomNumber}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          onFocus={handleFocus}
-          errorMessage={errorMessages.roomNumber}
-        >
-          <IconSvgRoomDoor fillColor="text-gray-400" width="24" height="24" />
+            />
+          </span>
         </InputText>
       </div>
+
+      <InputText
+        placeholder={"Room number"}
+        name={"roomNumber"}
+        value={userData.roomNumber}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        onFocus={handleFocus}
+        errorMessage={errorMessages.roomNumber}
+      >
+        <IconSvgRoomDoor fillColor="text-gray-400" width="24" height="24" />
+      </InputText>
       <>
         <PrimaryButton onClick={handleClick} name={NavigationOptions.next}>
           Next

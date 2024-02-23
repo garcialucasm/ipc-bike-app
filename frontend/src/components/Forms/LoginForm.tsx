@@ -113,7 +113,7 @@ const Login = () => {
             </span>
           </Link>
         </div>
-        <div className="my-24 flex justify-center bg-white md:w-1/2">
+        <div className="mt-[64px] flex items-center justify-center bg-white py-10 md:mt-0 md:w-1/2">
           <form
             onSubmit={handleSubmitForm}
             className="flex w-1/2 flex-col items-center justify-center bg-white md:w-2/3 lg:w-1/2 2xl:w-1/3"
@@ -125,7 +125,7 @@ const Login = () => {
             {isLoading ? (
               <IconSvgLoader height={"48"} fillColor="text-blue-800" />
             ) : (
-              <>
+              <div className="flex w-full flex-col gap-y-4">
                 <InputText
                   name="email"
                   placeholder="Email"
@@ -156,7 +156,7 @@ const Login = () => {
                     height="24"
                   />
                 </InputText>
-                <div className="mt-4 w-full py-2">
+                <div className="mt-4 w-full py-2 flex flex-col gap-y-4">
                   <PrimaryButton
                     type="submit"
                     name={NavigationPaths.homeAppAdmin}
@@ -173,7 +173,7 @@ const Login = () => {
                 <span className="text ps-1-slate-500 ml-2 cursor-pointer text-xs hover:text-blue-500">
                   Forgot Password ?
                 </span>
-              </>
+              </div>
             )}
           </form>
         </div>

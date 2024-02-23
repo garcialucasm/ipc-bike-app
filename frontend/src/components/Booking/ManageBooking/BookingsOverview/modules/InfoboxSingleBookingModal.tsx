@@ -63,7 +63,7 @@ function InfoboxSingleBookingModal(BookingData: InfoboxSingleBookingProps) {
               <p className="px-3 text-xs font-semibold leading-loose">
                 Status:{" "}
                 <span
-                  className={`${bookingStatus === BookingStatus.BOOKED ? "text-yellow-500" : "text-rose-700"}`}
+                  className={`${bookingStatus === BookingStatus.BOOKED ? "text-yellow-500" : "text-rose-500"} font-extrabold`}
                 >
                   {bookingStatus}
                 </span>

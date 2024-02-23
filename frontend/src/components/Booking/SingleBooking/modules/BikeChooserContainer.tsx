@@ -21,7 +21,7 @@ function BikeChooserContainer(props: {
     const timeoutId = setTimeout(() => {
       switch (bikeType) {
         case BikeType.ALL:
-          setCurrentImage("/bike-type-all.png")
+          setCurrentImage("/bike-type-all.jpg")
           setBikeSelectedRecomendation(
             "Recommended for people 5'4\" | 163 cm or taller."
           )
@@ -62,8 +62,8 @@ function BikeChooserContainer(props: {
   }, [bikeType])
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="flex flex-row items-center px-3 py-2 text-xs text-slate-400">
+    <div className="flex flex-col items-center py-2">
+      <div className="flex flex-row items-center px-3 text-xs text-slate-400">
         <StatusIndicator
           currentStatus={bikeSelectedStatusIndicator}
           isStatic={true}
@@ -77,15 +77,15 @@ function BikeChooserContainer(props: {
       >
         <Image
           src={currentImage}
-          className="my-2 max-h-36 w-auto py-2"
-          width={300}
-          height={399}
+          className="max-h-36 sm:max-h-48 w-auto py-2"
+          width={720}
+          height={432}
           alt=""
         />
       </div>
-      <div className="w-full pb-4 text-xs text-slate-500">
+      {/* <div className="w-full pb-4 text-xs text-slate-500">
         {bikeSelectedRecomendation}
-      </div>
+      </div> */}
     </div>
   )
 }

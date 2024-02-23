@@ -32,6 +32,7 @@ export interface SingleBookingProps {
   currentSection: SingleBookingSections | null;
   bikeNumbering: string;
   bikeSize: string | null;
+  bikeType: string | null;
   userData: UserData;
   bookingStatus: BookingStatus | null;
   serverResult: number | null | undefined;

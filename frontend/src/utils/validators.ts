@@ -113,6 +113,8 @@ export function formValidationRegister(formValues: AccountDTO) {
         error.password = "Password must have at least 8 characters";
     } else if (!isPasswordValid(formValues.password)) {
         error.password = errorMessagePasswordInvalid
+    } else if (formValues.password !== formValues.passwordConfirmation) {
+        error.password = "Password do not match";
     }
     return error;
 };

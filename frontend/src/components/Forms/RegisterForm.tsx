@@ -28,6 +28,7 @@ const initialAccountData: AccountDTO = {
   accountName: "",
   email: "",
   password: "",
+  passwordConfirmation: "",
 }
 const initialErrorMessages: ErrorMessageRegister = {
   accountName: "",
@@ -89,6 +90,7 @@ function RegisterForm() {
       formRegisterAccount.accountName &&
       formRegisterAccount.email &&
       formRegisterAccount.password &&
+      formRegisterAccount.passwordConfirmation &&
       !errorMessages.accountName &&
       !errorMessages.email &&
       !errorMessages.password
@@ -98,8 +100,8 @@ function RegisterForm() {
   }
 
   return (
-    <ContainerSingleComponent>
-      <form className="h-full w-full" onSubmit={handleSubmitForm}>
+    <form className="h-full w-full" onSubmit={handleSubmitForm}>
+      <ContainerSingleComponent>
         {/* ------------------------- render when is loading ------------------------- */}
         {isLoading && <IconSvgLoader height={"48"} fillColor="text-blue-800" />}
 
@@ -119,57 +121,67 @@ function RegisterForm() {
         {!isLoading && serverResult === null && (
           <>
             <InstructionLabel>Please, enter the account data:</InstructionLabel>
-            <div className="flex w-full flex-col">
-              <InputText
-                placeholder={"Name"}
-                name={"accountName"}
-                value={formRegisterAccount.accountName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                onFocus={handleFocus}
-                errorMessage={errorMessages.accountName}
-              >
-                <IconSvgPersonFilled
-                  fillColor="text-gray-400"
-                  width="24"
-                  height="24"
-                />
-              </InputText>
-              <InputText
-                name="email"
-                placeholder="Email"
-                value={formRegisterAccount.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                onFocus={handleFocus}
-                errorMessage={errorMessages.email}
-              >
-                <IconSvgEmail
-                  fillColor="text-gray-400"
-                  width="24"
-                  height="24"
-                />
-              </InputText>
-              <InputText
-                name="password"
-                type="password"
-                placeholder="Password"
-                value={formRegisterAccount.password}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                onFocus={handleFocus}
-                errorMessage={errorMessages.password}
-              >
-                <IconSvgPassword
-                  fillColor="text-gray-400"
-                  width="24"
-                  height="24"
-                />
-              </InputText>
-              {errorMessages.password === errorMessagePasswordInvalid && (
-                <InputErrorMessageInvalidPassword />
-              )}
-            </div>
+            <InputText
+              placeholder={"Name"}
+              name={"accountName"}
+              value={formRegisterAccount.accountName}
+              onChange={handleChange}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              errorMessage={errorMessages.accountName}
+            >
+              <IconSvgPersonFilled
+                fillColor="text-gray-400"
+                width="24"
+                height="24"
+              />
+            </InputText>
+            <InputText
+              name="email"
+              placeholder="Email"
+              value={formRegisterAccount.email}
+              onChange={handleChange}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              errorMessage={errorMessages.email}
+            >
+              <IconSvgEmail fillColor="text-gray-400" width="24" height="24" />
+            </InputText>
+            <InputText
+              name="password"
+              type="password"
+              placeholder="Password"
+              value={formRegisterAccount.password}
+              onChange={handleChange}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              errorMessage={errorMessages.password}
+            >
+              <IconSvgPassword
+                fillColor="text-gray-400"
+                width="24"
+                height="24"
+              />
+            </InputText>
+            <InputText
+              name="passwordConfirmation"
+              type="password"
+              placeholder="Confirm Password"
+              value={formRegisterAccount.passwordConfirmation}
+              onChange={handleChange}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              errorMessage={errorMessages.password}
+            >
+              <IconSvgPassword
+                fillColor="text-gray-400"
+                width="24"
+                height="24"
+              />
+            </InputText>
+            {errorMessages.password === errorMessagePasswordInvalid && (
+              <InputErrorMessageInvalidPassword />
+            )}
             <PrimaryButton type="submit">Register</PrimaryButton>
           </>
         )}
@@ -178,8 +190,8 @@ function RegisterForm() {
             <span className="block px-4 py-2">Return</span>
           </Link>
         </div>
-      </form>
-    </ContainerSingleComponent>
+      </ContainerSingleComponent>
+    </form>
   )
 }
 

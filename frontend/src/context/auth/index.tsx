@@ -7,7 +7,7 @@ import { AuthContextProps } from "@/types/ContextType"
 
 export const initialAccountState = {
   id: null,
-  accountName: null,
+  accountName: '',
   isAuthenticated: false,
 }
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps)
@@ -16,7 +16,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [accountData, setAccountData] =
     useState<AccountProps>(initialAccountState)
 
-  const useLogin = (accountDataResponse: AccountProps) => {
+  const settingAccountData = (accountDataResponse: AccountProps) => {
     setAccountData(accountDataResponse)
   }
 
@@ -35,7 +35,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     <AuthContext.Provider
       value={{
         accountData: accountData,
-        useLogin,
+        settingAccountData,
         useLogout,
         settingIsAuthenticated,
       }}

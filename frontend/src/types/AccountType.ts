@@ -8,4 +8,5 @@ export type AccountDTO = {
     accountName: string;
     email: string;
     password: string;
+    passwordConfirmation?: string;
 }

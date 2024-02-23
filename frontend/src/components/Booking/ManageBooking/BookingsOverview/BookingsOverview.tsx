@@ -311,18 +311,18 @@ function BookingsOverview() {
                   actionToConfirm={modalAction.actionToConfirm}
                 />
                 <div className="flex justify-end gap-x-3">
-                  <PrimaryButton
-                    onClick={() => handleConfirmAction(true)}
-                    className="btn-primary ms-0 w-full max-w-24"
-                  >
-                    Yes
-                  </PrimaryButton>
                   <SecondaryButton
                     onClick={() => handleConfirmAction(false)}
                     className="btn-secondary w-full max-w-16"
                   >
                     No
                   </SecondaryButton>
+                  <PrimaryButton
+                    onClick={() => handleConfirmAction(true)}
+                    className="btn-primary ms-0 w-full max-w-24"
+                  >
+                    Yes
+                  </PrimaryButton>
                 </div>
               </div>
             </div>

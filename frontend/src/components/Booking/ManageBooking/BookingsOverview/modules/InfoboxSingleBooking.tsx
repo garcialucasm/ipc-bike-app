@@ -7,18 +7,15 @@ import {
 
 interface InfoboxSingleBookingProps {
   userName: string | null
+  bikeSize: string | null
   bikeType: string | null
   bikeNumbering?: string | null
   bookingStatus?: string | null
 }
 
 function InfoboxSingleBooking(BookingData: InfoboxSingleBookingProps) {
-  const {
-    bikeType: bikeSize,
-    userName,
-    bikeNumbering,
-    bookingStatus,
-  } = BookingData
+  const { bikeType, bikeSize, userName, bikeNumbering, bookingStatus } =
+    BookingData
 
   return (
     <div className="flex w-full flex-col gap-3 text-slate-700">
@@ -31,7 +28,7 @@ function InfoboxSingleBooking(BookingData: InfoboxSingleBookingProps) {
             <p className="px-3 font-extrabold capitalize leading-4 text-blue-800">
               {userName}
             </p>
-            <p className="px-3 text-xs font-semibold leading-loose">
+            <p className="px-3 text-xs font-extrabold leading-loose">
               Status: {bookingStatus}
             </p>
           </div>
@@ -53,7 +50,7 @@ function InfoboxSingleBooking(BookingData: InfoboxSingleBookingProps) {
             <span className="grow px-3 text-xs">
               <span className="font-semibold leading-loose">
                 Bike selected:{" "}
-                <span className="text-xl font-bold absolute text-blue-800 -translate-y-1">
+                <span className="text-xl font-bold text-blue-800">
                   {" "}
                   {bikeNumbering}
                 </span>
