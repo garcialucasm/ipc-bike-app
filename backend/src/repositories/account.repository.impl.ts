@@ -25,7 +25,7 @@ export default class AccountRepository implements IAccountRepository {
       const hash = account.Hash
       const isActive = account.IsActive
       const createdAt = new Date()
-
+      console.log(`AccountRepository.save(${email})`)
       let result = await this.client.query(this.insertAccountStmt, [name, email, hash, isActive, createdAt])
 
       let [row] = result.rows
@@ -41,12 +41,16 @@ export default class AccountRepository implements IAccountRepository {
   }
 
   async findByEmail(email: string): Promise<Account | null> {
+    console.log(`AccountRepository.findByEmail(${email})`)
     try {
       let result = await this.client.query(this.findByEmailStmt, [email])
 
-      let account = result.rows[0]
-
-      return account
+      if (result.rows.length) {
+        let account = result.rows[0]
+        return accountFromRow(account)
+      } else {
+        return null;
+      }
     } catch (error) {
       throw new Error("Couldn't find account by email")
     }

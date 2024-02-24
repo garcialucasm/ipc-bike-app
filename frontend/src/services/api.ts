@@ -2,9 +2,11 @@ import axios from "axios";
 
 import { authHeader } from "@/app/auth/authUtils";
 
+const host: string = process.env.IPC_BIKES_HOST ?? 'localhost';
+const port: string = process.env.IPC_BIKES_PORT ?? '3000';
 
 /* --------------------------------- api.js --------------------------------- */
-const apiUrl = 'http://localhost:3000';
+const apiUrl = `http://${host}:${port}/api/`;
 
 export const apiUrls = {
   /* ------------------------------ Auth Service ------------------------------ */
