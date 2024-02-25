@@ -17,7 +17,6 @@ function BikeChooserContainer(props: {
     useState<BikeStatus>(BikeStatus.DISABLED)
 
   useEffect(() => {
-    // Update image after 250ms
     const timeoutId = setTimeout(() => {
       switch (bikeType) {
         case BikeType.ALL:
@@ -56,7 +55,7 @@ function BikeChooserContainer(props: {
       } else {
         setBikeSelectedStatusIndicator(BikeStatus.DISABLED)
       }
-    }, 300)
+    }, 350)
 
     return () => clearTimeout(timeoutId) // Cleanup timeout on component unmount or re-render
   }, [bikeType])
@@ -72,7 +71,7 @@ function BikeChooserContainer(props: {
       </div>
       <div
         className={`transform transition-transform duration-500 ease-in-out ${
-          isImageSliding ? "translate-x-[350px]" : "translate-x-0"
+          isImageSliding ? "translate-x-[450px]" : "translate-x-0"
         }`}
       >
         <Image

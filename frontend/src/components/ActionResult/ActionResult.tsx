@@ -7,12 +7,12 @@ function ActionResult(props: { isConfirmed: boolean }) {
   const isConfirmed = props.isConfirmed
   return (
     <>
-      <div className="flex p-8 mb-8">
+      <div className="mb-8 flex p-8">
         {isConfirmed ? (
           <>
             {/* ------------------------- render action confirmed ------------------------ */}
-            <span className="me-2 rounded-full border-2 border-green-700 p-0.5 font-bold">
-              {isConfirmed && <IconSvgApprovalCircle height="18px" /> }
+            <span className="me-2 max-h-[26px] rounded-full border-2 border-green-700 p-0.5 font-bold text-emerald-700">
+              {isConfirmed && <IconSvgApprovalCircle height="18px" />}
             </span>
             <span className="text-emerald-700">
               {messageServerResponseConfirmation}
@@ -21,7 +21,7 @@ function ActionResult(props: { isConfirmed: boolean }) {
         ) : (
           <>
             {/* ------------------------- render action failed ------------------------ */}
-            <span className="me-2 rounded-full border-2 border-rose-700 p-0.5 font-bold">
+            <span className="me-2 max-h-[26px] rounded-full border-2 border-rose-700 p-0.5 font-bold text-rose-700">
               <IconSvgDeleteCircle height="18px" />
             </span>
             <span className="text-rose-700">{messageServerResponseError}</span>

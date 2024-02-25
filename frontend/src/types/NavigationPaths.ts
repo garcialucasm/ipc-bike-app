@@ -6,7 +6,7 @@ export enum NavigationPaths {
   homeAppStudent = "/secure/home/student",
   homeApp = "/secure/home",
   /* ------------------- // TODO: Redirect to home web page ------------------- */
-  homeWeb = "/website",
+  homeWeb = "/",
   /* ----------------- // TODO: Redirect to the rules web page ---------------- */
   rules = "/secure/home",
   singleBooking = "/secure/booking/single-booking",

@@ -128,12 +128,17 @@ function FirstRegister() {
           </Link>
         </div>
         <div className="mt-[64px] flex items-center justify-center bg-white py-10 md:mt-0 md:w-1/2">
-          <form onSubmit={handleSubmitForm} className="bg-white">
+          <form
+            onSubmit={handleSubmitForm}
+            className="flex w-1/2 flex-col items-center justify-center bg-white md:w-2/3 lg:w-1/2 2xl:w-1/3"
+          >
             <h1 className="mb-1 text-2xl font-bold text-gray-800">Hello! 👋</h1>
             <p className="mb-7 text-sm font-normal text-gray-600">Welcome</p>
             {/* ------------------------- render when is loading ------------------------- */}
             {isLoading && (
-              <IconSvgLoader height={"48"} fillColor="text-blue-800" />
+              <div className="flex items-center justify-center">
+                <IconSvgLoader height={"48"} fillColor="text-blue-800" />
+              </div>
             )}
 
             {/* ------------------------- render after submit ------------------------- */}
