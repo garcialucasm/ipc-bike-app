@@ -29,7 +29,7 @@ export async function registerAccountFetchApi(accountData: AccountDTO) {
 /* -------------------------- First Register new account -------------------------- */
 export async function registerFirstAccountFetchApi(accountData: AccountDTO) {
     try {
-        const response = await ApiHeader.post(apiUrls.registerAccountUrl, {
+        const response = await ApiHeader.post(apiUrls.firstRegisterAccountUrl, {
             accountName: accountData.accountName,
             email: accountData.email,
             password: accountData.password,
