@@ -1,4 +1,4 @@
-import { BikeSize } from "./BikeType";
+import { ServerResult } from "./ServerResult";
 import { UserData } from "./UserType";
 
 export enum BookingStatus {
@@ -35,7 +35,7 @@ export interface SingleBookingProps {
   bikeType: string | null;
   userData: UserData;
   bookingStatus: BookingStatus | null;
-  serverResult: number | null | undefined;
+  serverResult: ServerResult | null;
 }
 
 export interface SingleBookingDTO {

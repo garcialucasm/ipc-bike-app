@@ -23,7 +23,6 @@ import PrimaryButton from "@/components/Buttons/PrimaryButton"
 import SecondaryButton from "@/components/Buttons/SecondaryButton"
 import InfoboxSingleBookingModal from "./modules/InfoboxSingleBookingModal"
 import TableHeader from "./modules/TableHeader"
-import { ServerResultModalAction } from "@/types/ServerResult"
 
 const messageInicial = "Confirm Action"
 const messageCancelBooking = "Are you sure to cancel this booking?"
@@ -52,7 +51,8 @@ function BookingsOverview() {
     status: BookingStatus | null
     actionToConfirm: BookingModalActions | null
     dialogMessage: string
-    serverResult: ServerResultModalAction | null
+    isConfirmed: boolean | null
+    resultMessage: string
   }>({
     isOpen: false,
     bookingId: null,
@@ -62,7 +62,8 @@ function BookingsOverview() {
     status: null,
     actionToConfirm: null,
     dialogMessage: messageInicial,
-    serverResult: null,
+    isConfirmed: null,
+    resultMessage: "",
   })
   const { updatingBikeAvailability } = useBikeAvailabilityContext()
   const modalRef = useRef<HTMLDivElement>(null)
@@ -153,20 +154,20 @@ function BookingsOverview() {
         actionToConfirm === BookingModalActions.CONFIRM
       ) {
         const response = await approveBookingFetchApi(bookingId)
-        handleServerResponse(response.approvedBooking)
+        handleServerResponse(response)
       } else if (
         bookingStatus === BookingStatus.DELIVERED &&
         actionToConfirm === BookingModalActions.CONFIRM
       ) {
         const response = await returnBookingFetchApi(bookingId)
-        handleServerResponse(response.returnedBooking)
+        handleServerResponse(response)
       } else if (
         (bookingStatus === BookingStatus.BOOKED ||
           bookingStatus === BookingStatus.DELIVERED) &&
         actionToConfirm === BookingModalActions.CANCEL
       ) {
         const response = await cancelBookingFetchApi(bookingId)
-        handleServerResponse(response.canceledBooking)
+        handleServerResponse(response)
       }
     } else {
       setModalAction((prev) => ({
@@ -179,11 +180,10 @@ function BookingsOverview() {
         status: null,
         actionToConfirm: null,
         dialogMessage: messageInicial,
-        serverResult: null,
+        isConfirmed: null,
       }))
     }
     updatingBikeAvailability()
-    setReloadData(!reloadData)
     setModalAction((prev) => ({
       ...prev,
       actionToConfirm: BookingModalActions.CLOSERESPONSE,
@@ -191,11 +191,28 @@ function BookingsOverview() {
     }))
   }
 
-  function handleServerResponse(response: boolean | null) {
-    setModalAction((prev) => ({
-      ...prev,
-      serverResult: response ? ServerResultModalAction.CONFIRMED : ServerResultModalAction.ERROR,
-    }))
+  function handleServerResponse(response: any) {
+    if (response.data) {
+      // If the request is successful, proceed with the desired actions
+      setModalAction((prev) => ({
+        ...prev,
+        isConfirmed: true,
+        resultMessage: "Action Confirmed!",
+      }))
+    } else if (response.error) {
+      setModalAction((prev) => ({
+        ...prev,
+        isConfirmed: false,
+        resultMessage: response.error,
+      }))
+    } else {
+      // Handle unexpected errors or errors when trying to fetch data
+      setModalAction((prev) => ({
+        ...prev,
+        isConfirmed: false,
+        resultMessage: "Sorry. Something unexpected happened!",
+      }))
+    }
   }
 
   const handleModalClick = (e: any) => {
@@ -339,13 +356,15 @@ function BookingsOverview() {
                 <p
                   className={`flex items-center border-b border-slate-200 pb-4 text-start text-xl font-semibold`}
                 >
-                  {modalAction.serverResult === ServerResultModalAction.CONFIRMED ? (
+                  {modalAction.isConfirmed ? (
                     <>
                       <span className="me-2 rounded-full border-2 border-green-700 p-0.5 font-bold">
                         <IconSvgApprovalCircle height="18px" />
                       </span>
                       <span className="text-emerald-700">
-                        {messageServerResponseConfirmation}
+                        {modalAction.resultMessage !== ""
+                          ? modalAction.resultMessage
+                          : messageServerResponseConfirmation}
                       </span>
                     </>
                   ) : (
@@ -354,14 +373,18 @@ function BookingsOverview() {
                         <IconSvgDeleteCircle height="18px" />
                       </span>
                       <span className="text-rose-700">
-                        {messageServerResponseError}
+                        {modalAction.resultMessage !== ""
+                          ? modalAction.resultMessage
+                          : messageServerResponseError}
                       </span>
                     </>
                   )}
                 </p>
                 <div className="flex justify-center">
                   <SecondaryButton
-                    onClick={() => handleConfirmAction(false)}
+                    onClick={() => {
+                      handleConfirmAction(false), setReloadData(!reloadData)
+                    }}
                     className="btn-secondary w-full max-w-24"
                   >
                     Ok

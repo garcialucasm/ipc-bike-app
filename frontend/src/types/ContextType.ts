@@ -1,6 +1,7 @@
 import { AccountProps } from "./AccountType";
-import { BikeDTO, BikeSize, BikeStatusCard as BikeStatusCard } from "./BikeType";
+import { BikeDTO, BikeStatusCard as BikeStatusCard } from "./BikeType";
 import { SingleBookingProps, SingleBookingSections } from "./BookingType";
+import { ServerResult } from "./ServerResult";
 import { UserData } from "./UserType";
 
 // TODO: Just for test
@@ -19,7 +20,7 @@ export type SingleBookingContextProps = {
     settingBikeType: (bikeType: string) => void;
     settingBikeNumbering: (bikeNumbering: string) => void;
     settingUserData: (userData: UserData) => void;
-    settingServerResult: (serverResult: number | undefined | null) => void;
+    settingServerResult: (serverResult: ServerResult) => void;
 }
 
 export type BikeAvailabilityContextProps = {

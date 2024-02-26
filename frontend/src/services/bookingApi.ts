@@ -35,16 +35,23 @@ export async function createSingleBookingFetchApi(bookingData: SingleBookingDTO)
     }
     );
 
-    if (response.status < 200 || response.status >= 300) {
-      throw new Error(`${response.status}: ${response.statusText}`);
-    }
-
-    const data = response
-    return { data: data, error: null };
+    return { data: response.data, error: null };
   } catch (error: any) {
-    console.error('Error creating single booking:', error.message);
-    return {
-      data: null, error: `${error.message}`
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.error('Error response data:', error.response.data.error);
+      return { data: null, error: error.response.data.error };
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+      // http.ClientRequest in node.js
+      console.error('Error request:', error.request);
+      return { data: null, error: 'No response received' };
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.error('Error:', error.message);
+      return { data: null, error: error.message };
     }
   } finally {
     isProcessing = false;
@@ -56,15 +63,24 @@ export async function approveBookingFetchApi(bookingId: number) {
   try {
     const response = await ApiHeader.post(apiUrls.approveBookingUrl + bookingId);
 
-    if (response.status < 200 || response.status >= 300) {
-      throw new Error(`${response.status}: ${response.statusText}`);
-    }
-    const approvedBooking = true
-
-    return { approvedBooking, error: null };
+    return { data: response.data, error: null };
   } catch (error: any) {
-    console.error('Error approving a booking:', error.message);
-    return { approvedBooking: null, error: `${error.message}` };
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.error('Error response data:', error.response.data.error);
+      return { data: null, error: error.response.data.error };
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+      // http.ClientRequest in node.js
+      console.error('Error request:', error.request);
+      return { data: null, error: 'No response received' };
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.error('Error:', error.message);
+      return { data: null, error: error.message };
+    }
   }
 };
 
@@ -73,15 +89,24 @@ export async function cancelBookingFetchApi(bookingId: number) {
   try {
     const response = await ApiHeader.post(apiUrls.cancelBookingUrl + bookingId);
 
-    if (response.status < 200 || response.status >= 300) {
-      throw new Error(`${response.status}: ${response.statusText}`);
-    }
-    const canceledBooking = true
-
-    return { canceledBooking, error: null };
+    return { data: response.data, error: null };
   } catch (error: any) {
-    console.error('Error canceling a booking:', error.message);
-    return { canceledBooking: null, error: `${error.message}` };
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.error('Error response data:', error.response.data.error);
+      return { data: null, error: error.response.data.error };
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+      // http.ClientRequest in node.js
+      console.error('Error request:', error.request);
+      return { data: null, error: 'No response received' };
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.error('Error:', error.message);
+      return { data: null, error: error.message };
+    }
   }
 };
 
@@ -90,15 +115,23 @@ export async function returnBookingFetchApi(bookingId: number) {
   try {
     const response = await ApiHeader.post(apiUrls.returnBookingUrl + bookingId);
 
-    if (response.status < 200 || response.status >= 300) {
-      throw new Error(`${response.status}: ${response.statusText}`);
-    }
-
-    const returnedBooking = true
-
-    return { returnedBooking, error: null };
+    return { data: response.data, error: null };
   } catch (error: any) {
-    console.error('Error approving a return:', error.message);
-    return { returnedBooking: null, error: `${error.message}` };
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.error('Error response data:', error.response.data.error);
+      return { data: null, error: error.response.data.error };
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+      // http.ClientRequest in node.js
+      console.error('Error request:', error.request);
+      return { data: null, error: 'No response received' };
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.error('Error:', error.message);
+      return { data: null, error: error.message };
+    }
   }
 };

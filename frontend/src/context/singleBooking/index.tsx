@@ -5,7 +5,7 @@ import { createContext, useContext, useState } from "react"
 import { SingleBookingContextProps } from "@/types/ContextType"
 import { SingleBookingProps, SingleBookingSections } from "@/types/BookingType"
 import { UserData } from "@/types/UserType"
-import { BikeSize } from "@/types/BikeType"
+import { ServerResult } from "@/types/ServerResult"
 
 const SingleBookingContext = createContext<SingleBookingContextProps>(
   {} as SingleBookingContextProps
@@ -78,7 +78,7 @@ const SingleBookingProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }
 
-  const settingServerResult = (serverResult: any) => {
+  const settingServerResult = (serverResult: ServerResult) => {
     try {
       setBookingData((prevBookingData) => ({
         ...prevBookingData,

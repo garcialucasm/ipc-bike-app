@@ -10,7 +10,7 @@ function ActionResult(props: {
     personalizedMessage === "" ? "Action confirmed!" : personalizedMessage
   const messageServerResponseError =
     personalizedMessage === ""
-      ? "Oops... Something went wrong!"
+      ? "Oops... Something unexpected happened."
       : personalizedMessage
   const isConfirmed = props.isConfirmed
   return (
