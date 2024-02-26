@@ -148,7 +148,7 @@ function DevShowContext() {
               <p className="text-xs">
                 Server Result:{" "}
                 <span className="text-blue-500">
-                  {bookingData.serverResult}
+                  {bookingData.serverResult.resultMessage}
                 </span>
               </p>
             )}

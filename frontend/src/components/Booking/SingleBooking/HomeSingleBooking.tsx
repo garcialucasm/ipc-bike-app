@@ -32,7 +32,7 @@ const HomeSingleBooking: NextPage = () => {
     settingBikeNumbering("")
     settingBikeType("")
     settingUserData({ firstName: "", lastName: "", roomNumber: "" })
-    settingServerResult(null)
+    settingServerResult({ isConfirmed: null, resultMessage: "" })
     settingCurrentSection(SingleBookingSections.selectBikeSize)
     updatingAllBikesAvailable()
   }, [])
