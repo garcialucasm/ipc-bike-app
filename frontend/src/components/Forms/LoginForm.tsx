@@ -184,9 +184,9 @@ const Login = () => {
                     <span>Return</span>
                   </SecondaryButton>
                 </div>
-                <span className="text ps-1-slate-500 ml-2 cursor-pointer text-xs hover:text-blue-500">
+                {/* <span className="text ps-1-slate-500 ml-2 cursor-pointer text-xs hover:text-blue-500">
                   Forgot Password ?
-                </span>
+                </span> */}
               </div>
             )}
           </form>

@@ -189,8 +189,8 @@ export default function HeaderNavbarApp() {
                           </p>
                         </div>
                         <Link
-                          href=""
-                          className="text-slate-500"
+                          href={NavigationPaths.profile}
+                          className="text-slate-400"
                           onClick={() => setIsOpenedAccountMenu(false)}
                         >
                           <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
@@ -212,7 +212,7 @@ export default function HeaderNavbarApp() {
                         </Link>
                         <Link
                           href={NavigationPaths.register}
-                          className="text-slate-500"
+                          className="text-slate-700"
                           onClick={() => setIsOpenedAccountMenu(false)}
                         >
                           <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
@@ -233,8 +233,8 @@ export default function HeaderNavbarApp() {
                           </div>
                         </Link>
                         <Link
-                          href=""
-                          className="text-slate-500"
+                          href={NavigationPaths.inventory}
+                          className="text-slate-400"
                           onClick={() => setIsOpenedAccountMenu(false)}
                         >
                           <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
@@ -255,8 +255,8 @@ export default function HeaderNavbarApp() {
                           </div>
                         </Link>
                         <Link
-                          href=""
-                          className="text-slate-500"
+                          href={NavigationPaths.statistics}
+                          className="text-slate-400"
                           onClick={() => setIsOpenedAccountMenu(false)}
                         >
                           <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
@@ -277,8 +277,8 @@ export default function HeaderNavbarApp() {
                           </div>
                         </Link>
                         <Link
-                          href=""
-                          className="text-slate-500"
+                          href={NavigationPaths.settings}
+                          className="text-slate-400"
                           onClick={() => setIsOpenedAccountMenu(false)}
                         >
                           <div className="block px-10 py-2 hover:bg-slate-200 hover:text-blue-700">
@@ -368,7 +368,7 @@ export default function HeaderNavbarApp() {
                 </span>
               </Link>
             </li>
-            <li>
+            <li className="text-slate-400">
               <Link
                 href={NavigationPaths.groupBooking}
                 className={`group flex items-center rounded-2xl p-2 ${
@@ -384,7 +384,7 @@ export default function HeaderNavbarApp() {
                 </span>
               </Link>
             </li>
-            <li>
+            <li className="text-slate-400">
               <Link
                 href={NavigationPaths.homeAppAdmin}
                 className="group flex items-center rounded-2xl p-2 hover:bg-emerald-700 hover:text-slate-100"
@@ -439,9 +439,10 @@ export default function HeaderNavbarApp() {
                 </p>
                 <a
                   className="text-sm font-medium text-blue-800 underline hover:text-blue-900"
-                  href="#"
+                  href={NavigationPaths.homeWeb}
+                  target="_blank"
                 >
-                  Link to Feedback Form
+                  Link to Feedback Forms
                 </a>
               </div>
             )}
