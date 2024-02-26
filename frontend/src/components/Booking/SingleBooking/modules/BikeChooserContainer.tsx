@@ -76,10 +76,11 @@ function BikeChooserContainer(props: {
       >
         <Image
           src={currentImage}
-          className="max-h-36 sm:max-h-48 w-auto py-2"
+          className="max-h-36 w-auto py-2 sm:max-h-48"
           width={720}
           height={432}
           alt=""
+          priority
         />
       </div>
       {/* <div className="w-full pb-4 text-xs text-slate-500">

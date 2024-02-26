@@ -45,20 +45,34 @@ const Login = () => {
   const handleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    try {
-      const response = await login(formLoginData.email, formLoginData.password)
-      if (response.data) {
-        setIsLoading(true)
-        await setCookie("ipcBikeApp_authToken", response.data.account.token)
-        window.location.reload()
-      } else {
-        setErrorMessages({
-          email: "Login failed.",
-          password: "Please check your email and password.",
-        })
+    const response = await login(formLoginData.email, formLoginData.password)
+
+    if (response.data) {
+      // If the request is successful, proceed with the desired actions
+      setIsLoading(true)
+      await setCookie("ipcBikeApp_authToken", response.data.account.token)
+      window.location.reload()
+    } else if (response.error) {
+      // If there is an error response from the server, handle specific error messages
+      switch (response.error) {
+        case 401:
+          setErrorMessages({
+            email: "Login failed.",
+            password: "Please check your email and password.",
+          })
+          break
+        // Add more cases based on specific error status codes if needed
+        default:
+          setErrorMessages({
+            email: "",
+            password:
+              "Oops! Something went wrong. Please try again in a few moments.",
+          })
+          break
       }
-    } catch (error) {
-      console.log("Authentication error: ", error)
+    } else {
+      // Handle unexpected errors or errors when trying to fetch data
+      console.error("Authentication error: error when trying to fetch data ")
       setErrorMessages({
         email: "",
         password:
@@ -156,7 +170,7 @@ const Login = () => {
                     height="24"
                   />
                 </InputText>
-                <div className="mt-4 w-full py-2 flex flex-col gap-y-4">
+                <div className="mt-4 flex w-full flex-col gap-y-4 py-2">
                   <PrimaryButton
                     type="submit"
                     name={NavigationPaths.homeAppAdmin}

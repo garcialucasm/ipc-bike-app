@@ -25,7 +25,12 @@ export type ServerResultAllBikesAvailable =
         error: string
     }
 
-export enum ServerResult {
+export enum ServerResultModalAction {
     CONFIRMED = 'CONFIRMED',
     ERROR = 'ERROR'
+}
+
+export type ServerResult = {
+    isConfirmed: boolean | null
+    resultMessage: string
 }

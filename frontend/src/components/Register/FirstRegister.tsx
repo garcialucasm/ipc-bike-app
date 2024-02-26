@@ -6,7 +6,7 @@ import Link from "next/link"
 
 import { NavigationPaths } from "@/types/NavigationPaths"
 import PrimaryButton from "@/components/Buttons/PrimaryButton"
-import { registerAccountFetchApi } from "@/services/accountApi"
+import { registerFirstAccountFetchApi } from "@/services/accountApi"
 import { AccountDTO } from "@/types/AccountType"
 import {
   errorMessagePasswordInvalid,
@@ -23,6 +23,7 @@ import {
 } from "../Others/IconsSvg"
 import ActionResult from "../ActionResult/ActionResult"
 import SecondaryButton from "../Buttons/SecondaryButton"
+import { ServerResult } from "@/types/ServerResult"
 
 const initialAccountData: AccountDTO = {
   accountName: "",
@@ -36,9 +37,15 @@ const initialErrorMessages: ErrorMessageRegister = {
   password: "",
 }
 
+const inicialServerResult: ServerResult = {
+  isConfirmed: null,
+  resultMessage: "",
+}
+
 function FirstRegister() {
   const [isLoading, setIsLoading] = useState(false)
-  const [serverResult, setServerResult] = useState<boolean | null>(null)
+  const [serverResult, setServerResult] =
+    useState<ServerResult>(inicialServerResult)
   const [formRegisterAccount, setFormRegisterAccount] =
     useState<AccountDTO>(initialAccountData)
   const [errorMessages, setErrorMessages] = useState(initialErrorMessages)
@@ -50,14 +57,27 @@ function FirstRegister() {
 
     if (isFormValid()) {
       setIsLoading(true)
-      const response = await registerAccountFetchApi(formRegisterAccount)
-      if (!response.error) {
-        setServerResult(true)
-      } else {
-        setServerResult(false)
+      const response = await registerFirstAccountFetchApi(formRegisterAccount)
+      if (response.data) {
+        // If the request is successful, proceed with the desired actions
+        setServerResult({
+          isConfirmed: true,
+          resultMessage: "Successfully registered",
+        })
+      } else if (response.error) {
+        setServerResult({
+          isConfirmed: false,
+          resultMessage: response.error,
+        })
       }
-      setIsLoading(false)
+    } else {
+      // Handle unexpected errors or errors when trying to fetch data
+      setServerResult({
+        isConfirmed: false,
+        resultMessage: "Unexpected error. Please try again later.",
+      })
     }
+    setIsLoading(false)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -70,7 +90,7 @@ function FirstRegister() {
   const handleCleanStates = (): void => {
     setFormRegisterAccount(initialAccountData)
     setIsLoading(false)
-    setServerResult(null)
+    setServerResult(inicialServerResult)
   }
 
   const handleBlur = () => {
@@ -142,17 +162,20 @@ function FirstRegister() {
             )}
 
             {/* ------------------------- render after submit ------------------------- */}
-            {!isLoading && serverResult !== null && (
+            {!isLoading && serverResult.isConfirmed !== null && (
               <>
-                <ActionResult isConfirmed={serverResult} />
-                {!serverResult && (
+                <ActionResult
+                  isConfirmed={serverResult.isConfirmed}
+                  personalizedMessage={serverResult.resultMessage as string}
+                />
+                {serverResult.isConfirmed === false && (
                   <div className="my-4 w-full">
                     <PrimaryButton onClick={handleCleanStates}>
                       Try again
                     </PrimaryButton>
                   </div>
                 )}
-                {serverResult && (
+                {serverResult.isConfirmed && (
                   <div className="my-4 flex w-full flex-col gap-y-4">
                     <div className="link-primary w-full">
                       {/* TODO:-------------------- Create an automatic login process ------------------- */}
@@ -163,7 +186,7 @@ function FirstRegister() {
                       </Link>
                     </div>
                     <SecondaryButton onClick={handleCleanStates}>
-                      Register again
+                      Register another user
                     </SecondaryButton>
                   </div>
                 )}
@@ -171,7 +194,7 @@ function FirstRegister() {
             )}
 
             {/* ------------------------- render before submit ------------------------- */}
-            {!isLoading && serverResult === null && (
+            {!isLoading && serverResult.isConfirmed === null && (
               <>
                 <div className="flex w-full flex-col gap-y-4">
                   <InputText

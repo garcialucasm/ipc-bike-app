@@ -23,7 +23,7 @@ import PrimaryButton from "@/components/Buttons/PrimaryButton"
 import SecondaryButton from "@/components/Buttons/SecondaryButton"
 import InfoboxSingleBookingModal from "./modules/InfoboxSingleBookingModal"
 import TableHeader from "./modules/TableHeader"
-import { ServerResult } from "@/types/ServerResult"
+import { ServerResultModalAction } from "@/types/ServerResult"
 
 const messageInicial = "Confirm Action"
 const messageCancelBooking = "Are you sure to cancel this booking?"
@@ -52,7 +52,7 @@ function BookingsOverview() {
     status: BookingStatus | null
     actionToConfirm: BookingModalActions | null
     dialogMessage: string
-    serverResult: ServerResult | null
+    serverResult: ServerResultModalAction | null
   }>({
     isOpen: false,
     bookingId: null,
@@ -194,7 +194,7 @@ function BookingsOverview() {
   function handleServerResponse(response: boolean | null) {
     setModalAction((prev) => ({
       ...prev,
-      serverResult: response ? ServerResult.CONFIRMED : ServerResult.ERROR,
+      serverResult: response ? ServerResultModalAction.CONFIRMED : ServerResultModalAction.ERROR,
     }))
   }
 
@@ -339,7 +339,7 @@ function BookingsOverview() {
                 <p
                   className={`flex items-center border-b border-slate-200 pb-4 text-start text-xl font-semibold`}
                 >
-                  {modalAction.serverResult === ServerResult.CONFIRMED ? (
+                  {modalAction.serverResult === ServerResultModalAction.CONFIRMED ? (
                     <>
                       <span className="me-2 rounded-full border-2 border-green-700 p-0.5 font-bold">
                         <IconSvgApprovalCircle height="18px" />

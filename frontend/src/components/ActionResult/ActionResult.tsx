@@ -1,9 +1,17 @@
 import React from "react"
 import { IconSvgApprovalCircle, IconSvgDeleteCircle } from "../Others/IconsSvg"
 
-function ActionResult(props: { isConfirmed: boolean }) {
-  const messageServerResponseConfirmation = "Action confirmed!"
-  const messageServerResponseError = "Oops... Something went wrong!"
+function ActionResult(props: {
+  isConfirmed: boolean
+  personalizedMessage?: string
+}) {
+  const personalizedMessage = props.personalizedMessage
+  const messageServerResponseConfirmation =
+    personalizedMessage === "" ? "Action confirmed!" : personalizedMessage
+  const messageServerResponseError =
+    personalizedMessage === ""
+      ? "Oops... Something went wrong!"
+      : personalizedMessage
   const isConfirmed = props.isConfirmed
   return (
     <>
