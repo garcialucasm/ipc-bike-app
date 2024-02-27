@@ -51,7 +51,7 @@ const Login = () => {
       // If the request is successful, proceed with the desired actions
       setIsLoading(true)
       await setCookie("ipcBikeApp_authToken", response.data.account.token)
-      window.location.reload()
+      window.location.replace(NavigationPaths.homeApp);
     } else if (response.error) {
       // If there is an error response from the server, handle specific error messages
       switch (response.error) {
