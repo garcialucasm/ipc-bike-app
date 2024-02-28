@@ -1,8 +1,9 @@
 import React from "react"
 
 import { useSingleBookingContext } from "@/context/singleBooking"
-import { IconSvgBikeStandard, IconSvgPerson } from "../../../Others/IconsSvg"
+import { IconSvgBikeStandard } from "../../../Others/IconsSvg"
 import { toPascalCase } from "@/utils/strings"
+import { User } from "@phosphor-icons/react"
 
 function InfoboxSingleBookingDetails() {
   const { bookingData } = useSingleBookingContext()
@@ -17,7 +18,7 @@ function InfoboxSingleBookingDetails() {
       <div className="flex w-full items-center rounded-2xl border bg-white p-3 sm:mb-3">
         <div className="flex">
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-400">
-            <IconSvgPerson fillColor="text-white" height="42" width="42" />
+            <User size={36} className="text-white" />
           </div>
           <div className="flex flex-col justify-start text-left text-slate-600">
             <span className="px-3 font-extrabold capitalize leading-4 text-blue-800">

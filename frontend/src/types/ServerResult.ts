@@ -30,6 +30,11 @@ export enum ServerResultModalAction {
     ERROR = 'ERROR'
 }
 
+export const initialServerResult: ServerResult = {
+    isConfirmed: null,
+    resultMessage: "",
+}
+
 export type ServerResult = {
     isConfirmed: boolean | null
     resultMessage: string

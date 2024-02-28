@@ -18,6 +18,7 @@ export enum BookingModalActions {
   CANCEL = "Cancel",
   CONFIRM = "Confirm",
   CLOSERESPONSE = "Close",
+  INFO = "Info",
 }
 
 export enum SingleBookingSections {

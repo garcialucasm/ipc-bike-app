@@ -4,6 +4,7 @@ import {
   IconSvgBikeStandard,
   IconSvgPerson,
 } from "@/components/Others/IconsSvg"
+import { User } from "@phosphor-icons/react"
 
 interface InfoboxSingleBookingProps {
   userName: string | null
@@ -22,7 +23,7 @@ function InfoboxSingleBooking(BookingData: InfoboxSingleBookingProps) {
       <div className="flex w-full items-center rounded-2xl border bg-white p-3 shadow-md">
         <div className="flex">
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-400">
-            <IconSvgPerson fillColor="text-white" height="42" width="42" />
+            <User size={36} className="text-white" />
           </div>
           <div className="flex flex-col justify-start text-left">
             <p className="px-3 font-extrabold capitalize leading-4 text-blue-800">

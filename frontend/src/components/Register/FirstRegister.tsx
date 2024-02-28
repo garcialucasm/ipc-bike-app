@@ -37,7 +37,7 @@ const initialErrorMessages: ErrorMessageRegister = {
   password: "",
 }
 
-const inicialServerResult: ServerResult = {
+const initialServerResult: ServerResult = {
   isConfirmed: null,
   resultMessage: "",
 }
@@ -45,7 +45,7 @@ const inicialServerResult: ServerResult = {
 function FirstRegister() {
   const [isLoading, setIsLoading] = useState(false)
   const [serverResult, setServerResult] =
-    useState<ServerResult>(inicialServerResult)
+    useState<ServerResult>(initialServerResult)
   const [formRegisterAccount, setFormRegisterAccount] =
     useState<AccountDTO>(initialAccountData)
   const [errorMessages, setErrorMessages] = useState(initialErrorMessages)
@@ -90,7 +90,7 @@ function FirstRegister() {
   const handleCleanStates = (): void => {
     setFormRegisterAccount(initialAccountData)
     setIsLoading(false)
-    setServerResult(inicialServerResult)
+    setServerResult(initialServerResult)
   }
 
   const handleBlur = () => {
@@ -164,10 +164,12 @@ function FirstRegister() {
             {/* ------------------------- render after submit ------------------------- */}
             {!isLoading && serverResult.isConfirmed !== null && (
               <>
-                <ActionResult
-                  isConfirmed={serverResult.isConfirmed}
-                  personalizedMessage={serverResult.resultMessage as string}
-                />
+                <div className="mb-8 flex p-8">
+                  <ActionResult
+                    isConfirmed={serverResult.isConfirmed}
+                    personalizedMessage={serverResult.resultMessage as string}
+                  />
+                </div>
                 {serverResult.isConfirmed === false && (
                   <div className="my-4 w-full">
                     <PrimaryButton onClick={handleCleanStates}>

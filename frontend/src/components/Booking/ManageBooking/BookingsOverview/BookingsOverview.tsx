@@ -1,6 +1,8 @@
 "use client"
 
 import React, { useState, useEffect, useRef } from "react"
+import { Info, UserCircle } from "@phosphor-icons/react"
+
 import { BookingModalActions, BookingStatus } from "@/types/BookingType"
 import {
   returnBookingFetchApi,
@@ -9,13 +11,7 @@ import {
   cancelBookingFetchApi,
 } from "@/services/bookingApi"
 import StatusIndicator from "@/components/Others/StatusIndicator"
-import ActionButton from "@/components/Buttons/ActionButton"
-import {
-  IconSvgDeleteCircle,
-  IconSvgApprovalCircle,
-  IconSvgPersonThin,
-  IconSvgEllipsisCircle,
-} from "@/components/Others/IconsSvg"
+import ActionButton from "@/components/Buttons/modules/ActionButton"
 import { EmptyBookingsOverview } from "./EmptyBookingsOverview"
 import { ErrorBookingsOverview } from "./ErrorBookingsOverview"
 import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
@@ -23,14 +19,16 @@ import PrimaryButton from "@/components/Buttons/PrimaryButton"
 import SecondaryButton from "@/components/Buttons/SecondaryButton"
 import InfoboxSingleBookingModal from "./modules/InfoboxSingleBookingModal"
 import TableHeader from "./modules/TableHeader"
+import ActionResult from "@/components/ActionResult/ActionResult"
+import ActionButtonCancel from "@/components/Buttons/ActionButtonCancel"
+import ActionButtonConfirm from "@/components/Buttons/ActionButtonConfirm"
+import ActionButtonInfo from "@/components/Buttons/ActionButtonInfo"
 
-const messageInicial = "Confirm Action"
+const messageinitial = "Confirm Action"
 const messageCancelBooking = "Are you sure to cancel this booking?"
 const messageCancelReturn = "Are you sure to cancel this bike return?"
 const messageConfirmBooking = "Are you sure to confirm this booking?"
 const messageConfirmReturn = "Are you sure to confirm this bike return?"
-const messageServerResponseConfirmation = "Action confirmed!"
-const messageServerResponseError = "Oops... Something went wrong!"
 
 function BookingsOverview() {
   const [reloadData, setReloadData] = useState(false)
@@ -61,7 +59,7 @@ function BookingsOverview() {
     bikeNumbering: null,
     status: null,
     actionToConfirm: null,
-    dialogMessage: messageInicial,
+    dialogMessage: messageinitial,
     isConfirmed: null,
     resultMessage: "",
   })
@@ -80,7 +78,7 @@ function BookingsOverview() {
   const { activeBookings, error } = bookingData
 
   /* ---------------- Handle cancel button to redirect to modal --------------- */
-  async function handleClickCancelBooking(
+  async function handleClickCancellation(
     bookingId: number,
     status: BookingStatus,
     bikeType: string,
@@ -179,7 +177,7 @@ function BookingsOverview() {
         bikeNumbering: null,
         status: null,
         actionToConfirm: null,
-        dialogMessage: messageInicial,
+        dialogMessage: messageinitial,
         isConfirmed: null,
       }))
     }
@@ -187,7 +185,7 @@ function BookingsOverview() {
     setModalAction((prev) => ({
       ...prev,
       actionToConfirm: BookingModalActions.CLOSERESPONSE,
-      dialogMessage: messageInicial,
+      dialogMessage: messageinitial,
     }))
   }
 
@@ -249,12 +247,7 @@ function BookingsOverview() {
                     </div>
                   </th>
                   <td className="flex items-center py-4 font-medium">
-                    <div className="mr-2 rounded-full border border-slate-500 bg-white">
-                      <IconSvgPersonThin
-                        height="20"
-                        fillColor="text-slate-500"
-                      />
-                    </div>
+                    <UserCircle size={28} className="me-2 text-slate-500" />
                     {booking.user}
                   </td>
                   <td className="py-4 text-slate-500">
@@ -268,9 +261,9 @@ function BookingsOverview() {
                   <td className="py-4 text-slate-500">{booking.bike}</td>
                   <td className="flex w-full flex-row items-center justify-center py-4">
                     <div>
-                      <ActionButton
+                      <ActionButtonCancel
                         onClick={() =>
-                          handleClickCancelBooking(
+                          handleClickCancellation(
                             booking.id,
                             booking.status,
                             booking.bikeType,
@@ -279,17 +272,24 @@ function BookingsOverview() {
                           )
                         }
                         name="cancel-booking"
-                      >
-                        <IconSvgDeleteCircle height="24" />
-                      </ActionButton>
+                      ></ActionButtonCancel>
                     </div>
+                    {/* <div>
+                      <ActionButtonInfo
+                        onClick={() =>
+                          handleClickConfirmation(
+                            booking.id,
+                            booking.status,
+                            booking.bikeType,
+                            booking.bike,
+                            booking.user
+                          )
+                        }
+                        name="info-booking"
+                      ></ActionButtonInfo>
+                    </div> */}
                     <div>
-                      {/* <ActionButton>
-                        <IconSvgEllipsisCircle height="24" />
-                      </ActionButton> */}
-                    </div>
-                    <div>
-                      <ActionButton
+                      <ActionButtonConfirm
                         onClick={() => {
                           handleClickConfirmation(
                             booking.id,
@@ -300,9 +300,7 @@ function BookingsOverview() {
                           )
                         }}
                         name="approve-booking"
-                      >
-                        <IconSvgApprovalCircle height="24" />
-                      </ActionButton>
+                      ></ActionButtonConfirm>
                     </div>
                   </td>
                 </tr>
@@ -356,28 +354,11 @@ function BookingsOverview() {
                 <p
                   className={`flex items-center border-b border-slate-200 pb-4 text-start text-xl font-semibold`}
                 >
-                  {modalAction.isConfirmed ? (
-                    <>
-                      <span className="me-2 rounded-full border-2 border-green-700 p-0.5 font-bold">
-                        <IconSvgApprovalCircle height="18px" />
-                      </span>
-                      <span className="text-emerald-700">
-                        {modalAction.resultMessage !== ""
-                          ? modalAction.resultMessage
-                          : messageServerResponseConfirmation}
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="me-2 rounded-full border-2 border-rose-700 p-0.5 font-bold">
-                        <IconSvgDeleteCircle height="18px" />
-                      </span>
-                      <span className="text-rose-700">
-                        {modalAction.resultMessage !== ""
-                          ? modalAction.resultMessage
-                          : messageServerResponseError}
-                      </span>
-                    </>
+                  {modalAction.isConfirmed !== null && (
+                    <ActionResult
+                      isConfirmed={modalAction.isConfirmed}
+                      personalizedMessage={modalAction.resultMessage as string}
+                    />
                   )}
                 </p>
                 <div className="flex justify-center">

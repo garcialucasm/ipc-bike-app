@@ -20,6 +20,8 @@ export enum NavigationPaths {
   homeWeb = "/web",
   /* ----------------- // TODO: Redirect to the rules web page ---------------- */
   rules = "/web/rules",
+  /* ----------------- // TODO: Redirect to the become member web page ---------------- */
+  becomeMember = "/web/become-member",
 }
 
 export enum NavigationOptions {

@@ -23,7 +23,7 @@ import {
 } from "@/utils/validators"
 import { InputErrorMessageInvalidPassword } from "./Inputs/InputErrorMessage"
 import ContainerSingleComponent from "../Containers/ContainerSingleComponent"
-import { ServerResult } from "@/types/ServerResult"
+import { ServerResult, initialServerResult } from "@/types/ServerResult"
 
 const initialAccountData: AccountDTO = {
   accountName: "",
@@ -37,15 +37,10 @@ const initialErrorMessages: ErrorMessageRegister = {
   password: "",
 }
 
-const inicialServerResult: ServerResult = {
-  isConfirmed: null,
-  resultMessage: "",
-}
-
 function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [serverResult, setServerResult] =
-    useState<ServerResult>(inicialServerResult)
+    useState<ServerResult>(initialServerResult)
   const [formRegisterAccount, setFormRegisterAccount] =
     useState<AccountDTO>(initialAccountData)
   const [errorMessages, setErrorMessages] = useState(initialErrorMessages)
@@ -90,7 +85,7 @@ function RegisterForm() {
   const handleCleanStates = (): void => {
     setFormRegisterAccount(initialAccountData)
     setIsLoading(false)
-    setServerResult(inicialServerResult)
+    setServerResult(initialServerResult)
   }
 
   const handleBlur = () => {
@@ -127,17 +122,17 @@ function RegisterForm() {
 
         {/* ------------------------- render after submit ------------------------- */}
         {!isLoading && serverResult.isConfirmed !== null && (
-          <>
-            <ActionResult
-              isConfirmed={serverResult.isConfirmed}
-              personalizedMessage={serverResult.resultMessage as string}
-            />
-            {serverResult.isConfirmed === false && (
-              <PrimaryButton onClick={handleCleanStates}>
-                Try again
-              </PrimaryButton>
-            )}
-          </>
+            <div className="mb-8 flex p-8">
+              <ActionResult
+                isConfirmed={serverResult.isConfirmed}
+                personalizedMessage={serverResult.resultMessage as string}
+              />
+              {serverResult.isConfirmed === false && (
+                <PrimaryButton onClick={handleCleanStates}>
+                  Try again
+                </PrimaryButton>
+              )}
+            </div>
         )}
 
         {/* ------------------------- render before submit ------------------------- */}
