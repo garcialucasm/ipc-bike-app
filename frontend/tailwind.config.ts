@@ -9,22 +9,11 @@ const config: Config = {
   theme: {
     extend: {
       fontSize: {
-        xxs: '0.5rem',
+        xxs: '0.6rem',
       },
       colors: {
-        'color-primary': 'var(--color-primary)',
-        'color-primary-hover': 'var(--color-primary-hover)',
-        'color-primary-dark': 'var(--color-primary-dark)',
-        // 'color-primary-light': '',
-        'color-secondary': 'var(--color-secondary)',
-        // 'color-secondary-dark': '',
-        // 'color-secondary-light': '',
-        'color-tertiary': 'var(--color-tertiary)',
-      },
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        'primary': 'var(--primary)',
+        'primary-hover': 'var(--primary-hover)',
       },
     },
   },

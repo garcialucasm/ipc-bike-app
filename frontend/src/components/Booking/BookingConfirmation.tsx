@@ -6,12 +6,12 @@ import BookingConfirmed from "./SingleBooking/modules/BookingConfirmed"
 
 function BookingConfirmation() {
   const { bookingData } = useSingleBookingContext()
-  const serverResult = bookingData.serverResult
+  const isConfirmed = bookingData.serverResult?.isConfirmed
 
-  return serverResult && serverResult >= 200 && serverResult < 300 ? (
+  return isConfirmed && isConfirmed ? (
     <BookingConfirmed />
   ) : (
-    <BookingFailed />
+    <BookingFailed errorMessage={bookingData.serverResult?.resultMessage} />
   )
 }
 export default BookingConfirmation

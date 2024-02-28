@@ -4,34 +4,32 @@ import {
   IconSvgBikeStandard,
   IconSvgPerson,
 } from "@/components/Others/IconsSvg"
+import { User } from "@phosphor-icons/react"
 
 interface InfoboxSingleBookingProps {
   userName: string | null
+  bikeSize: string | null
   bikeType: string | null
   bikeNumbering?: string | null
   bookingStatus?: string | null
 }
 
 function InfoboxSingleBooking(BookingData: InfoboxSingleBookingProps) {
-  const {
-    bikeType: bikeSize,
-    userName,
-    bikeNumbering,
-    bookingStatus,
-  } = BookingData
+  const { bikeType, bikeSize, userName, bikeNumbering, bookingStatus } =
+    BookingData
 
   return (
     <div className="flex w-full flex-col gap-3 text-slate-700">
       <div className="flex w-full items-center rounded-2xl border bg-white p-3 shadow-md">
         <div className="flex">
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-400">
-            <IconSvgPerson fillColor="text-white" height="42" width="42" />
+            <User size={36} className="text-white" />
           </div>
           <div className="flex flex-col justify-start text-left">
             <p className="px-3 font-extrabold capitalize leading-4 text-blue-800">
               {userName}
             </p>
-            <p className="px-3 text-xs font-semibold leading-loose">
+            <p className="px-3 text-xs font-extrabold leading-loose">
               Status: {bookingStatus}
             </p>
           </div>
@@ -53,7 +51,7 @@ function InfoboxSingleBooking(BookingData: InfoboxSingleBookingProps) {
             <span className="grow px-3 text-xs">
               <span className="font-semibold leading-loose">
                 Bike selected:{" "}
-                <span className="text-xl font-bold absolute text-blue-800 -translate-y-1">
+                <span className="text-xl font-bold text-blue-800">
                   {" "}
                   {bikeNumbering}
                 </span>

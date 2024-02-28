@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 
 import { SingleBookingSections } from "@/types/BookingType"
 import { useSingleBookingContext } from "@/context/singleBooking"
@@ -6,26 +6,19 @@ import { useSingleBookingContext } from "@/context/singleBooking"
 function Stepper() {
   const { bookingData } = useSingleBookingContext()
 
-  const [rerender, setRerender] = useState(false)
-
   const currentSection = bookingData.currentSection
-
-  useEffect(() => {
-    // Update rerender whenever currentSection changes
-    setRerender((prev) => !prev)
-  }, [currentSection])
 
   return (
     <>
-      <ol className="flex w-full items-center py-5">
+      <ol className="flex w-full items-center">
         <li
           className={`flex w-full items-center after:inline-block after:h-1 after:w-full after:border-4 after:border-b after:content-['']
           ${
             currentSection === SingleBookingSections.bookingConfirmation ||
             currentSection === SingleBookingSections.inputUserData ||
             currentSection === SingleBookingSections.preBookingConfirmation
-              ? "stepper-is-done-bar"
-              : "stepper-is-waiting-bar"
+              ? "stepper-bar-is-done"
+              : "stepper-bar-is-waiting"
           }`}
         >
           <span
@@ -34,8 +27,8 @@ function Stepper() {
               currentSection === SingleBookingSections.inputUserData ||
               currentSection === SingleBookingSections.preBookingConfirmation ||
               currentSection === SingleBookingSections.selectBikeSize
-                ? "stepper-is-done-icon"
-                : "stepper-is-waiting-icon"
+                ? "stepper-icon-is-done"
+                : "stepper-icon-is-waiting"
             }`}
           >
             <svg
@@ -59,16 +52,16 @@ function Stepper() {
           className={`flex w-full items-center after:inline-block after:h-1 after:w-full after:border-4 after:border-b after:content-[''] ${
             currentSection === SingleBookingSections.bookingConfirmation ||
             currentSection === SingleBookingSections.preBookingConfirmation
-              ? "stepper-is-done-bar"
-              : "stepper-is-waiting-bar"
+              ? "stepper-bar-is-done"
+              : "stepper-bar-is-waiting"
           }`}
         >
           <span
             className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full md:h-12 md:w-12 ${
               currentSection === SingleBookingSections.bookingConfirmation ||
               currentSection === SingleBookingSections.preBookingConfirmation
-                ? "stepper-is-done-icon"
-                : "stepper-is-waiting-icon"
+                ? "stepper-icon-is-done"
+                : "stepper-icon-is-waiting"
             }`}
           >
             <svg
@@ -88,8 +81,8 @@ function Stepper() {
           <span
             className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full md:h-12 md:w-12 ${
               currentSection === SingleBookingSections.bookingConfirmation
-                ? "stepper-is-done-icon"
-                : "stepper-is-waiting-icon"
+                ? "stepper-icon-is-done"
+                : "stepper-icon-is-waiting"
             }`}
           >
             <svg

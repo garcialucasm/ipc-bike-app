@@ -12,16 +12,23 @@ export async function registerAccountFetchApi(accountData: AccountDTO) {
         }
         );
 
-        if (response.status < 200 || response.status >= 300) {
-            throw new Error(`${response.status}: ${response.statusText}`);
-        }
-
-        const data = response
-        return { data: data, error: null };
+        return { data: response.data, error: null };
     } catch (error: any) {
-        console.error('Error registering new account booking:', error.message);
-        return {
-            data: null, error: `${error.message}`
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.error('Error response data:', error.response.data.error);
+            return { data: null, error: error.response.data.error };
+        } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.error('Error request:', error.request);
+            return { data: null, error: 'No response received' };
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            console.error('Error:', error.message);
+            return { data: null, error: error.message };
         }
     }
 }
@@ -29,23 +36,30 @@ export async function registerAccountFetchApi(accountData: AccountDTO) {
 /* -------------------------- First Register new account -------------------------- */
 export async function registerFirstAccountFetchApi(accountData: AccountDTO) {
     try {
-        const response = await ApiHeader.post(apiUrls.registerAccountUrl, {
+        const response = await ApiHeader.post(apiUrls.firstRegisterAccountUrl, {
             accountName: accountData.accountName,
             email: accountData.email,
             password: accountData.password,
         }
         );
 
-        if (response.status < 200 || response.status >= 300) {
-            throw new Error(`${response.status}: ${response.statusText}`);
-        }
-
-        const data = response
-        return { data: data, error: null };
+        return { data: response.data, error: null };
     } catch (error: any) {
-        console.error('Error registering new account booking:', error.message);
-        return {
-            data: null, error: `${error.message}`
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.error('Error response data:', error.response.data.error);
+            return { data: null, error: error.response.data.error };
+        } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.error('Error request:', error.request);
+            return { data: null, error: 'No response received' };
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            console.error('Error:', error.message);
+            return { data: null, error: error.message };
         }
     }
 }
@@ -53,17 +67,28 @@ export async function registerFirstAccountFetchApi(accountData: AccountDTO) {
 /* --------------------------- Handle Login action -------------------------- */
 export async function login(email: string, password: string) {
     try {
-        const response = await ApiHeader.post(apiUrls.loginUrl,
-            {
-                email: email,
-                password: password,
-            })
-        return { data: response.data, error: null };
+        const response = await ApiHeader.post(apiUrls.loginUrl, {
+            email: email,
+            password: password,
+        });
 
+        return { data: response.data, error: null };
     } catch (error: any) {
-        console.error('Error authenticating:', error.message);
-        return {
-            data: null, error: `${error.message}`
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.error('Error response data:', error.response.status);
+            return { data: null, error: error.response.status };
+        } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.error('Error request:', error.request);
+            return { data: null, error: 'No response received' };
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            console.error('Error:', error.message);
+            return { data: null, error: error.message };
         }
     }
 }

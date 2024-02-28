@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { IconSvgLoader } from "@/components/Others/IconsSvg"
 import SecondaryButton from "@/components/Buttons/SecondaryButton"
+import ContainerSingleComponent from "@/components/Containers/ContainerSingleComponent"
 
 export function ErrorBookingsOverview() {
   const [loading, setLoading] = useState(true)
@@ -8,7 +9,7 @@ export function ErrorBookingsOverview() {
   useEffect(() => {
     const loaderTimeout = setTimeout(() => {
       setLoading(false)
-    }, 5000) // 5 seconds timeout
+    }, 2000)
 
     return () => {
       clearTimeout(loaderTimeout)
@@ -17,7 +18,7 @@ export function ErrorBookingsOverview() {
 
   return (
     <>
-      <div className="container-page-webapp">
+      <ContainerSingleComponent>
         {loading ? (
           // Display loader icon while loading
           <IconSvgLoader height={"48"} fillColor="text-blue-800" />
@@ -39,7 +40,7 @@ export function ErrorBookingsOverview() {
             </span>
           </>
         )}
-      </div>
+      </ContainerSingleComponent>
     </>
   )
 }

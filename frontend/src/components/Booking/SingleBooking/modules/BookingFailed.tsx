@@ -4,12 +4,18 @@ import { IconSvgFeedbackError } from "@/components/Others/IconsSvg"
 import InfoboxSingleBookingDetails from "./InfoboxSingleBookingDetails"
 import { NavigationPaths } from "@/types/NavigationPaths"
 
-function BookingFailed() {
+function BookingFailed(props: { errorMessage?: string }) {
+  const errorMessage = props.errorMessage
   return (
     <>
       <div className="w-full pb-3">
         <div className="flex items-center justify-center py-3">
-          <div className="px-2 font-bold">Booking Failed</div>{" "}
+          <div className="px-2 font-bold">
+            Booking Failed:{" "}
+            {errorMessage !== ""
+              ? errorMessage
+              : "Something unexpected happened."}
+          </div>{" "}
           <IconSvgFeedbackError
             fillColor="text-rose-500"
             height={"36"}

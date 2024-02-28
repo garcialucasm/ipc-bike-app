@@ -45,20 +45,34 @@ const Login = () => {
   const handleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    try {
-      const response = await login(formLoginData.email, formLoginData.password)
-      if (response.data) {
-        setIsLoading(true)
-        await setCookie("ipcBikeApp_authToken", response.data.account.token)
-        window.location.reload()
-      } else {
-        setErrorMessages({
-          email: "Login failed.",
-          password: "Please check your email and password.",
-        })
+    const response = await login(formLoginData.email, formLoginData.password)
+
+    if (response.data) {
+      // If the request is successful, proceed with the desired actions
+      setIsLoading(true)
+      await setCookie("ipcBikeApp_authToken", response.data.account.token)
+      window.location.replace(NavigationPaths.homeApp);
+    } else if (response.error) {
+      // If there is an error response from the server, handle specific error messages
+      switch (response.error) {
+        case 401:
+          setErrorMessages({
+            email: "Login failed.",
+            password: "Please check your email and password.",
+          })
+          break
+        // Add more cases based on specific error status codes if needed
+        default:
+          setErrorMessages({
+            email: "",
+            password:
+              "Oops! Something went wrong. Please try again in a few moments.",
+          })
+          break
       }
-    } catch (error) {
-      console.log("Authentication error: ", error)
+    } else {
+      // Handle unexpected errors or errors when trying to fetch data
+      console.error("Authentication error: error when trying to fetch data ")
       setErrorMessages({
         email: "",
         password:
@@ -113,7 +127,7 @@ const Login = () => {
             </span>
           </Link>
         </div>
-        <div className="my-24 flex justify-center bg-white md:w-1/2">
+        <div className="mt-[64px] flex items-center justify-center bg-white py-10 md:mt-0 md:w-1/2">
           <form
             onSubmit={handleSubmitForm}
             className="flex w-1/2 flex-col items-center justify-center bg-white md:w-2/3 lg:w-1/2 2xl:w-1/3"
@@ -125,7 +139,7 @@ const Login = () => {
             {isLoading ? (
               <IconSvgLoader height={"48"} fillColor="text-blue-800" />
             ) : (
-              <>
+              <div className="flex w-full flex-col gap-y-4">
                 <InputText
                   name="email"
                   placeholder="Email"
@@ -156,7 +170,7 @@ const Login = () => {
                     height="24"
                   />
                 </InputText>
-                <div className="mt-4 w-full py-2">
+                <div className="mt-4 flex w-full flex-col gap-y-4 py-2">
                   <PrimaryButton
                     type="submit"
                     name={NavigationPaths.homeAppAdmin}
@@ -170,10 +184,10 @@ const Login = () => {
                     <span>Return</span>
                   </SecondaryButton>
                 </div>
-                <span className="text ps-1-slate-500 ml-2 cursor-pointer text-xs hover:text-blue-500">
+                {/* <span className="text ps-1-slate-500 ml-2 cursor-pointer text-xs hover:text-blue-500">
                   Forgot Password ?
-                </span>
-              </>
+                </span> */}
+              </div>
             )}
           </form>
         </div>

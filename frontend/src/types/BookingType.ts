@@ -1,4 +1,4 @@
-import { BikeSize } from "./BikeType";
+import { ServerResult } from "./ServerResult";
 import { UserData } from "./UserType";
 
 export enum BookingStatus {
@@ -18,6 +18,7 @@ export enum BookingModalActions {
   CANCEL = "Cancel",
   CONFIRM = "Confirm",
   CLOSERESPONSE = "Close",
+  INFO = "Info",
 }
 
 export enum SingleBookingSections {
@@ -32,9 +33,10 @@ export interface SingleBookingProps {
   currentSection: SingleBookingSections | null;
   bikeNumbering: string;
   bikeSize: string | null;
+  bikeType: string | null;
   userData: UserData;
   bookingStatus: BookingStatus | null;
-  serverResult: number | null | undefined;
+  serverResult: ServerResult | null;
 }
 
 export interface SingleBookingDTO {

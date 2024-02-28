@@ -20,14 +20,15 @@ export default class AccountService implements IAccountService {
   }
 
   async registerAccount(name: string, email: string, password: string): Promise<Account> {
+    console.log("registerAccount")
     let account: Account
 
-    const users = await this.accountRepository.findByEmail(email)
+    const user = await this.accountRepository.findByEmail(email)
 
-    if (users) {
+    if (user) {
       throw new Error("E-mail already registered");
     }
-
+    console.log("Encripting password")
     const hash = await bcrypt.hash(password, saltRounds);
 
     account = {

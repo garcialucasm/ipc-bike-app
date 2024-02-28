@@ -1,12 +1,8 @@
 import React from "react"
 
-import {
-  IconSvgApprovalCircle,
-  IconSvgBikeStandard,
-  IconSvgDeleteCircle,
-  IconSvgPerson,
-} from "@/components/Others/IconsSvg"
+import { IconSvgBikeStandard } from "@/components/Others/IconsSvg"
 import { BookingModalActions, BookingStatus } from "@/types/BookingType"
+import { CheckCircle, User, XCircle } from "@phosphor-icons/react"
 
 interface InfoboxSingleBookingProps {
   userName: string | null
@@ -37,12 +33,12 @@ function InfoboxSingleBookingModal(BookingData: InfoboxSingleBookingProps) {
         }`}
       >
         {actionToConfirm === BookingModalActions.CONFIRM ? (
-          <span className="me-2 rounded-full border-2 border-green-700 p-0.5 font-bold">
-            <IconSvgApprovalCircle height="18px" />
+          <span className="me-2 font-bold text-emerald-700">
+            <CheckCircle size={42} weight="fill" />
           </span>
         ) : (
-          <span className="me-2 rounded-full border-2 border-rose-700 p-0.5 font-bold">
-            <IconSvgDeleteCircle height="18px" />
+          <span className="me-2 font-bold text-rose-700">
+            <XCircle size={42} weight="fill" />
           </span>
         )}
         {`${actionToConfirm} ${
@@ -54,7 +50,7 @@ function InfoboxSingleBookingModal(BookingData: InfoboxSingleBookingProps) {
         <div className="flex w-full items-center rounded-2xl border bg-white p-3">
           <div className="flex">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-400">
-              <IconSvgPerson fillColor="text-white" height="42" width="42" />
+              <User size={36} className="text-white" />
             </div>
             <div className="flex flex-col justify-start text-left">
               <p className="px-3 font-extrabold capitalize leading-4 text-blue-800">
@@ -63,7 +59,7 @@ function InfoboxSingleBookingModal(BookingData: InfoboxSingleBookingProps) {
               <p className="px-3 text-xs font-semibold leading-loose">
                 Status:{" "}
                 <span
-                  className={`${bookingStatus === BookingStatus.BOOKED ? "text-yellow-500" : "text-rose-700"}`}
+                  className={`${bookingStatus === BookingStatus.BOOKED ? "text-yellow-500" : "text-rose-500"} font-extrabold`}
                 >
                   {bookingStatus}
                 </span>

@@ -67,8 +67,7 @@ const PreBookingConfirmation = () => {
     try {
       settingCurrentSection(SingleBookingSections.isLoading)
       const response = await createSingleBookingFetchApi(bookingFormData)
-      const data = response.data
-      settingServerResult(data?.status)
+      handleServerResponse(response)
     } catch (error) {
       console.error("Error fetching data:", error)
     } finally {
@@ -76,11 +75,32 @@ const PreBookingConfirmation = () => {
     }
   }
 
+  function handleServerResponse(response: any) {
+    if (response.data) {
+      // If the request is successful, proceed with the desired actions
+      settingServerResult({
+        isConfirmed: true,
+        resultMessage: "Action Confirmed!",
+      })
+    } else if (response.error) {
+      settingServerResult({
+        isConfirmed: false,
+        resultMessage: response.error,
+      })
+    } else {
+      // Handle unexpected errors or errors when trying to fetch data
+      settingServerResult({
+        isConfirmed: false,
+        resultMessage: "Something unexpected happened.",
+      })
+    }
+  }
+
   return (
-    <div className="flex w-full flex-col">
+    <>
       <InstructionLabel>Booking Details</InstructionLabel>
       <InfoboxSingleBookingDetails />
-      <div className="m-4 flex w-full items-center justify-start">
+      <div className="flex w-full items-center justify-center px-4 sm:justify-start">
         <input
           id="default-checkbox"
           type="checkbox"
@@ -106,7 +126,7 @@ const PreBookingConfirmation = () => {
       <SecondaryButton onClick={handleClick} name={NavigationOptions.return}>
         <span>Return</span>
       </SecondaryButton>
-    </div>
+    </>
   )
 }
 

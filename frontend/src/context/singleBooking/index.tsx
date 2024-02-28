@@ -5,7 +5,7 @@ import { createContext, useContext, useState } from "react"
 import { SingleBookingContextProps } from "@/types/ContextType"
 import { SingleBookingProps, SingleBookingSections } from "@/types/BookingType"
 import { UserData } from "@/types/UserType"
-import { BikeSize } from "@/types/BikeType"
+import { ServerResult } from "@/types/ServerResult"
 
 const SingleBookingContext = createContext<SingleBookingContextProps>(
   {} as SingleBookingContextProps
@@ -16,7 +16,8 @@ const SingleBookingProvider = ({ children }: { children: React.ReactNode }) => {
   const [bookingData, setBookingData] = useState<SingleBookingProps>({
     currentSection: SingleBookingSections.selectBikeSize,
     bikeNumbering: "",
-    bikeSize: null,
+    bikeSize: "",
+    bikeType: "",
     userData: { firstName: "", lastName: "", roomNumber: "" },
     bookingStatus: null,
     serverResult: null,
@@ -40,7 +41,18 @@ const SingleBookingProvider = ({ children }: { children: React.ReactNode }) => {
         bikeNumbering: bikeNumbering,
       }))
     } catch (error) {
-      console.error("Error setting Bike Size: " + error)
+      console.error("Error setting Bike Numbering: " + error)
+    }
+  }
+
+  const settingBikeType = (bikeType: string) => {
+    try {
+      setBookingData((prevBookingData) => ({
+        ...prevBookingData,
+        bikeType: bikeType,
+      }))
+    } catch (error) {
+      console.error("Error setting Bike Type: " + error)
     }
   }
 
@@ -66,7 +78,7 @@ const SingleBookingProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }
 
-  const settingServerResult = (serverResult: any) => {
+  const settingServerResult = (serverResult: ServerResult) => {
     try {
       setBookingData((prevBookingData) => ({
         ...prevBookingData,
@@ -83,6 +95,7 @@ const SingleBookingProvider = ({ children }: { children: React.ReactNode }) => {
         bookingData,
         settingCurrentSection,
         settingBikeSize,
+        settingBikeType,
         settingBikeNumbering,
         settingUserData,
         settingServerResult,

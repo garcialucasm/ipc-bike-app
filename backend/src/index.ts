@@ -20,13 +20,13 @@ import BikeService from "./services/bike.service.impl"
 import IBikeChooser from "./services/bike.chooser"
 import RandomBikeChooser from "./services/random.bike.chooser"
 import IUserService from "./services/user.service"
-import db from "./db/index"
+import getClient from "./db/index"
 import bikeController from "./controllers/bike.controller"
 import accountController from "./controllers/account.controller"
 import { checkAuth } from "./utils/auth"
 
+let db = getClient()
 db.connect()
-
 
 const currentTerm = 'spring 2023'
 
@@ -45,13 +45,16 @@ const accountService: IAccountService = new AccountService(accountRepository)
 
 const app = express()
 app.use(cors())
-app.use(bodyParser.json())
+//app.use(bodyParser.urlencoded({
+//  extended: true
+//}));
+app.use(express.json())
 
-app.use('/secure/*', checkAuth)
+app.use('/api/secure/*', checkAuth)
 
-app.use('/secure/booking/', bookingController(bookingService))
-app.use('/secure/bike/', bikeController(bikeService))
-app.use('/auth/', accountController(accountService))
+app.use('/api/secure/booking/', bookingController(bookingService))
+app.use('/api/secure/bike/', bikeController(bikeService))
+app.use('/api/auth/', accountController(accountService))
 
 app.get("/", async (req, res) => {
   return res.status(200).send({ Response: "IPC - Alumni Bike" })

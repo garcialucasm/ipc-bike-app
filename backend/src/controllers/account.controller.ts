@@ -28,7 +28,7 @@ export default function accountController(accountService: IAccountService, route
             //validatePassword(password)
 
             accountService.registerAccount(accountName, email, password)
-                .then(() => {
+                .then((account) => {
                     res.status(200)
                         .send("Successfully registered")
                 }).catch(error => {
@@ -55,7 +55,7 @@ export default function accountController(accountService: IAccountService, route
             //validatePassword(password)
 
             accountService.registerAccount(accountName, email, password)
-                .then(() => {
+                .then((account) => {
                     res.status(200)
                         .send("Successfully registered")
                 }).catch(error => {
@@ -82,6 +82,7 @@ export default function accountController(accountService: IAccountService, route
                     res.status(200)
                         .send({ account: toAccountDTO(account) })
                     console.info("Authenticated successfully")
+
                 }).catch(error => {
                     console.error(error)
                     res.status(401)
