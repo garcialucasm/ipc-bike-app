@@ -122,7 +122,7 @@ function RegisterForm() {
 
         {/* ------------------------- render after submit ------------------------- */}
         {!isLoading && serverResult.isConfirmed !== null && (
-            <div className="mb-8 flex p-8">
+            <div className="mb-8 flex p-8 items-center">
               <ActionResult
                 isConfirmed={serverResult.isConfirmed}
                 personalizedMessage={serverResult.resultMessage as string}

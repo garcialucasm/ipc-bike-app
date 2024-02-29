@@ -8,7 +8,7 @@ interface Props {
 export default function InputErrorMessage({ children, ...attributes }: Props) {
   return (
     <p
-      className="text-wrap px-4 py-1 text-start text-xs text-red-600 transition duration-1000"
+      className="text-wrap px-4 text-start text-xs text-red-600 transition duration-1000"
       {...attributes}
     >
       {children}

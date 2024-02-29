@@ -11,7 +11,8 @@ export function middleware(request: NextRequest) {
     const token = request.cookies.get(cookieTokenName)?.value
 
     if (request.nextUrl.pathname.includes(securedRoutes) && !token) {
-        const loginURL = new URL(NavigationPaths.login, request.nextUrl.origin)
-        return NextResponse.redirect(loginURL.toString())
+        // const loginURL = new URL(NavigationPaths.login, request.nextUrl.origin)
+        // return NextResponse.redirect(loginURL.toString())
+        console.error("Token invalid")
     }
 }

@@ -23,9 +23,9 @@ export default function accountController(accountService: IAccountService, route
         const password = req.body.password
 
         try {
-            //validateUserName(accountName)
-            //validateEmail(email)
-            //validatePassword(password)
+            validateUserName(accountName)
+            validateEmail(email)
+            validatePassword(password)
 
             accountService.registerAccount(accountName, email, password)
                 .then((account) => {
@@ -50,9 +50,9 @@ export default function accountController(accountService: IAccountService, route
         const password = req.body.password
 
         try {
-            //validateUserName(accountName)
-            //validateEmail(email)
-            //validatePassword(password)
+            validateUserName(accountName)
+            validateEmail(email)
+            validatePassword(password)
 
             accountService.registerAccount(accountName, email, password)
                 .then((account) => {
@@ -76,7 +76,7 @@ export default function accountController(accountService: IAccountService, route
         const password = req.body.password
 
         try {
-            // validateEmail(email)
+            validateEmail(email)
             accountService.login(email, password)
                 .then((account) => {
                     res.status(200)

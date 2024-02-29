@@ -90,7 +90,7 @@ function InputStudentData() {
   return (
     <>
       <InstructionLabel>Please, enter cyclist information:</InstructionLabel>
-      <div className="flex w-full items-center justify-center rounded-2xl bg-white p-2">
+      <div className="flex w-full rounded-2xl gap-y-4 bg-white p-2 items-center justify-center text-start">
         <Image
           src="/flat-illustration-people-cycling.jpg"
           className="rouded-2xl w-auto"

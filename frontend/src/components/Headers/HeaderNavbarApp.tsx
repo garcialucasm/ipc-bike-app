@@ -54,7 +54,7 @@ export default function HeaderNavbarApp() {
     switch (buttonClicked) {
       case NavigationPaths.logout:
         logout()
-        router.push("/")
+        window.location.replace(NavigationPaths.login)
         return NavigationPaths.homeAppAdmin
       default:
         console.error(`Unknown section: ${buttonClicked}`)
@@ -147,8 +147,8 @@ export default function HeaderNavbarApp() {
               </Button>
               <Link href="/" className="ms-2 flex md:me-24">
                 <Image
-                  src="/logo-ipc-white.png"
-                  className="h-6 w-auto xl:h-8"
+                  src="/logo-ipc-alumni-bike-white-h2.png"
+                  className="h-8 w-auto xl:h-8"
                   width={300}
                   height={399}
                   alt=""
@@ -338,7 +338,7 @@ export default function HeaderNavbarApp() {
             </li>
             <li className="text-slate-400">
               <Link
-                href={NavigationPaths.homeAppAdmin}
+                href={NavigationPaths.becomeMember}
                 className="group flex items-center rounded-2xl p-2 hover:bg-emerald-700 hover:text-slate-100"
                 onClick={toggleSideBarOpened}
               >

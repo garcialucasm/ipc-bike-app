@@ -17,7 +17,7 @@ const BottomNavbar = () => {
         <ul className="main-app-size grid h-full w-full grid-cols-4 items-center justify-between divide-x-2 divide-slate-100 text-center">
           <Link href={NavigationPaths.homeAppAdmin}>
             <li
-              className={`flex h-14 w-full flex-col items-center justify-center border-t-4 sm:h-16 ${pathname.includes("home") ? "border-blue-700 text-blue-700" : "border-slate-50"}`}
+              className={`flex h-14 w-full flex-col items-center justify-center border-t-4 sm:h-16 ${pathname.includes("home") ? "border-blue-700 text-blue-700" : "border-slate-100"}`}
             >
               <HouseSimple size={28} />
               <span className="block text-xxs">Home</span>
@@ -25,7 +25,7 @@ const BottomNavbar = () => {
           </Link>
           <Link href={NavigationPaths.singleBooking}>
             <li
-              className={`flex h-14 w-full flex-col items-center justify-center border-t-4 sm:h-16 ${pathname === NavigationPaths.singleBooking ? "border-blue-700 text-blue-700" : "border-slate-50"}`}
+              className={`flex h-14 w-full flex-col items-center justify-center border-t-4 sm:h-16 ${pathname === NavigationPaths.singleBooking ? "border-blue-700 text-blue-700" : "border-slate-100"}`}
             >
               <PersonSimpleBike size={28} />
               <span className="block text-xxs">Single Booking</span>
@@ -33,7 +33,7 @@ const BottomNavbar = () => {
           </Link>
           <Link href={NavigationPaths.groupBooking}>
             <li
-              className={`flex h-14 w-full flex-col items-center justify-center border-t-4 sm:h-16 ${pathname === NavigationPaths.groupBooking ? "border-blue-700 text-blue-700" : "border-slate-50"}`}
+              className={`flex h-14 w-full flex-col items-center justify-center border-t-4 sm:h-16 ${pathname === NavigationPaths.groupBooking ? "border-blue-700 text-blue-700" : "border-slate-100"}`}
             >
               <Users size={28} />
               <span className="block text-xxs">Group Booking</span>
@@ -41,7 +41,7 @@ const BottomNavbar = () => {
           </Link>
           <Link href={NavigationPaths.becomeMember}>
             <li
-              className={`flex h-14 w-full flex-col items-center justify-center border-t-4 sm:h-16 ${pathname === NavigationPaths.becomeMember ? "border-blue-700 text-blue-700" : "border-slate-50"}`}
+              className={`flex h-14 w-full flex-col items-center justify-center border-t-4 sm:h-16 ${pathname === NavigationPaths.becomeMember ? "border-blue-700 text-blue-700" : "border-slate-100"}`}
             >
               <HandHeart size={28} />
               <span className="block text-xxs">Become a Member</span>
