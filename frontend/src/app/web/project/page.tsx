@@ -9,18 +9,17 @@ import {
 import React from "react"
 
 const getData = async () => {
-  const username = "garcia.lucasm@gmail.com"
-  const password =
-    "ATATT3xFfGF00fAICbTxw2EWAteJqwD6HAu9iSMDdKkIm9Wvv-x6WW9R3ZySkBV9Ya0g0G9vydJyCUlq7ek1ORr5WWXp3Aq_XFWmKmJif2aJt1Ngil7092mw6SNtKe9cYi5F6F3AdkNyJI6fSkNCSRIx9twwiMHEfn52aiKC1LUX74EdiOxjYf4=F5497514"
+  const username = process.env.JIRA_USERNAME
+  const token = process.env.JIRA_TOKEN
 
   const headers = new Headers()
-  headers.set("Authorization", "Basic " + btoa(`${username}:${password}`))
+  headers.set("Authorization", "Basic " + btoa(`${username}:${token}`))
 
   const options = {
     method: "GET",
     headers: headers,
     // Adjust 'maxResults' as needed, but be aware of API rate limits
-    query: `jql=project=IB&issuetype=story&startAt=0&maxResults=200`,
+    query: `jql=project=IB&startAt=0&maxResults=200`,
   }
 
   const res = await fetch(
@@ -39,24 +38,22 @@ const Project = async () => {
 
   const renderIssues = (status: string) => {
     return data.issues
-      .filter(
-        (issue: any) =>
-          issue.fields.status.name === status &&
-          issue.fields.issuetype.name === "Story"
-      )
+      .filter((issue: any) => issue.fields.status.name === status)
       .map((issue: any) => (
         <div key={issue.id} className="mb-4">
           <div
             className={`flex flex-col gap-y-2 rounded bg-gray-800 p-4 ${issue.fields.customfield_10021 && "border border-rose-500"}`}
           >
             <h2 className="">{issue.fields.summary}</h2>
-            {issue.fields.parent && issue.fields.parent.fields && (
-              <span
-                className={`w-fit rounded px-2 py-1 text-xs ${issue.fields.parent.fields.summary == "Alpha Release" ? "bg-blue-200 text-blue-700" : issue.fields.parent.fields.summary == "Beta Release" ? "bg-blue-700 text-blue-200" : issue.fields.parent.fields.summary == "Release Candidate" ? "bg-emerald-200 text-emerald-700" : issue.fields.parent.fields.summary == "Stable Release" ? "bg-emerald-700 text-emerald-200" : "bg-slate-200 text-slate-700"}`}
-              >
-                {issue.fields.parent.fields.summary}
-              </span>
-            )}
+            {issue.fields.parent &&
+              issue.fields.parent.fields &&
+              issue.fields.parent.fields.summary.includes("Release") && (
+                <span
+                  className={`w-fit rounded px-2 py-1 text-xs ${issue.fields.parent.fields.summary == "Alpha Release" ? "bg-blue-200 text-blue-700" : issue.fields.parent.fields.summary == "Beta Release" ? "bg-blue-700 text-blue-200" : issue.fields.parent.fields.summary == "Release Candidate" ? "bg-emerald-200 text-emerald-700" : issue.fields.parent.fields.summary == "Stable Release" ? "bg-emerald-700 text-emerald-200" : "bg-slate-200 text-slate-700"}`}
+                >
+                  {issue.fields.parent.fields.summary}
+                </span>
+              )}
             {/* <span
               className={`w-fit rounded px-1 py-1 text-xs ${issue.fields.status.name == "To Do" && "bg-blue-200 text-blue-700"} ${issue.fields.status.name == "In Progress" && "bg-rose-200 text-rose-700"} ${issue.fields.status.name == "Done" && "bg-emerald-200 text-emerald-700"}`}
             >
