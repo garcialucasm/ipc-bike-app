@@ -24,9 +24,6 @@ const initialErrorMessages: ErrorMessageLogin = {
 }
 
 const Login = () => {
-  useEffect(() => {
-    isAuthRedirection()
-  }, [])
   const router = useRouter()
   const [formLoginData, setFormLoginData] = useState({
     email: "",
@@ -34,13 +31,6 @@ const Login = () => {
   })
   const [errorMessages, setErrorMessages] = useState(initialErrorMessages)
   const [isLoading, setIsLoading] = useState(false)
-
-  async function isAuthRedirection() {
-    const isAuth = checkAuth()
-    if (await isAuth) {
-      router.replace(NavigationPaths.homeApp)
-    }
-  }
 
   const handleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -51,7 +41,7 @@ const Login = () => {
       // If the request is successful, proceed with the desired actions
       setIsLoading(true)
       await setCookie("ipcBikeApp_authToken", response.data.account.token)
-      window.location.replace(NavigationPaths.homeApp);
+      window.location.replace(NavigationPaths.homeApp)
     } else if (response.error) {
       // If there is an error response from the server, handle specific error messages
       switch (response.error) {
@@ -99,6 +89,17 @@ const Login = () => {
     })
   }
 
+  async function isAuthRedirection() {
+    const isAuth = await checkAuth()
+    if (isAuth) {
+      window.location.replace(NavigationPaths.homeApp)
+    }
+  }
+
+  useEffect(() => {
+    isAuthRedirection()
+  }, [])
+
   return (
     <>
       <div className="h-screen md:flex">
@@ -141,12 +142,15 @@ const Login = () => {
             ) : (
               <div className="flex w-full flex-col gap-y-4">
                 <InputText
+                  id="email"
+                  type="email"
                   name="email"
                   placeholder="Email"
                   value={formLoginData.email}
                   onChange={handleChange}
                   onFocus={handleFocus}
                   errorMessage={errorMessages.email}
+                  autoComplete="email"
                 >
                   <IconSvgEmail
                     fillColor="text-gray-400"
@@ -155,8 +159,9 @@ const Login = () => {
                   />
                 </InputText>
                 <InputText
-                  name="password"
+                  id="password"
                   type="password"
+                  name="password"
                   placeholder="Password"
                   value={formLoginData.password}
                   onChange={handleChange}
