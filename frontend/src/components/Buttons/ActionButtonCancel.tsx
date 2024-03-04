@@ -7,7 +7,7 @@ export default function ActionButtonCancel({ ...atributes }) {
   return (
     <ActionButton {...atributes}>
       <XCircle
-        size={28}
+        size={32}
         className="rounded-full hover:border-2 hover:bg-rose-600 hover:text-white"
       />
     </ActionButton>

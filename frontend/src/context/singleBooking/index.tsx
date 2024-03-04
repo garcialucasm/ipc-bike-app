@@ -24,6 +24,7 @@ const SingleBookingProvider = ({ children }: { children: React.ReactNode }) => {
   })
 
   const settingCurrentSection = (section: SingleBookingSections) => {
+    window.scrollTo({ top: 0 })
     try {
       setBookingData((prevBookingData) => ({
         ...prevBookingData,

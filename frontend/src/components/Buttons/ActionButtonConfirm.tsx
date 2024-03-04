@@ -7,7 +7,7 @@ export default function ActionButtonConfirm({ ...atributes }) {
   return (
     <ActionButton {...atributes}>
       <CheckCircle
-        size={28}
+        size={32}
         className="rounded-full hover:border-2 hover:bg-emerald-600 hover:text-white"
       />
     </ActionButton>

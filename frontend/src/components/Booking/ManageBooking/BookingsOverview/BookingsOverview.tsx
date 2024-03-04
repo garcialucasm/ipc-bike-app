@@ -11,7 +11,6 @@ import {
   cancelBookingFetchApi,
 } from "@/services/bookingApi"
 import StatusIndicator from "@/components/Others/StatusIndicator"
-import ActionButton from "@/components/Buttons/modules/ActionButton"
 import { EmptyBookingsOverview } from "./EmptyBookingsOverview"
 import { ErrorBookingsOverview } from "./ErrorBookingsOverview"
 import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
@@ -29,6 +28,7 @@ const messageCancelBooking = "Are you sure to cancel this booking?"
 const messageCancelReturn = "Are you sure to cancel this bike return?"
 const messageConfirmBooking = "Are you sure to confirm this booking?"
 const messageConfirmReturn = "Are you sure to confirm this bike return?"
+const messageInfoBooking = "Current booking selected"
 
 function BookingsOverview() {
   const [reloadData, setReloadData] = useState(false)
@@ -76,6 +76,31 @@ function BookingsOverview() {
   }, [reloadData])
 
   const { activeBookings, error } = bookingData
+
+  /* ---------------- Handle info button to redirect to modal --------------- */
+  async function handleClickInfo(
+    bookingId: number,
+    status: BookingStatus,
+    bikeType: string,
+    bikeNumbering: string,
+    userName: string
+  ) {
+    const bookingStatus = status.toUpperCase() as BookingStatus
+    setModalAction((prev) => ({
+      ...prev,
+      isOpen: true,
+      bookingId: bookingId,
+      bikeType: bikeType,
+      bikeNumbering: bikeNumbering,
+      userName: userName,
+      status: bookingStatus,
+      actionToConfirm: BookingModalActions.INFO,
+    }))
+    setModalAction((prev) => ({
+      ...prev,
+      dialogMessage: messageInfoBooking,
+    }))
+  }
 
   /* ---------------- Handle cancel button to redirect to modal --------------- */
   async function handleClickCancellation(
@@ -192,10 +217,14 @@ function BookingsOverview() {
   function handleServerResponse(response: any) {
     if (response.data) {
       // If the request is successful, proceed with the desired actions
+      let actionMessage: string = "Action confirmed"
+      if (modalAction.actionToConfirm === BookingModalActions.CANCEL) {
+        actionMessage = "Booking canceled"
+      }
       setModalAction((prev) => ({
         ...prev,
         isConfirmed: true,
-        resultMessage: "Action Confirmed!",
+        resultMessage: actionMessage,
       }))
     } else if (response.error) {
       setModalAction((prev) => ({
@@ -246,7 +275,18 @@ function BookingsOverview() {
                       <StatusIndicator currentStatus={booking.status} />
                     </div>
                   </th>
-                  <td className="flex items-center py-4 font-medium">
+                  <td
+                    className="flex items-center py-4 font-medium"
+                    onClick={() =>
+                      handleClickInfo(
+                        booking.id,
+                        booking.status,
+                        booking.bikeType,
+                        booking.bike,
+                        booking.user
+                      )
+                    }
+                  >
                     <UserCircle size={28} className="me-2 text-slate-500" />
                     {booking.user}
                   </td>
@@ -261,6 +301,20 @@ function BookingsOverview() {
                   <td className="py-4 text-slate-500">{booking.bike}</td>
                   <td className="flex w-full flex-row items-center justify-center py-4">
                     <div>
+                      <ActionButtonInfo
+                        onClick={() =>
+                          handleClickInfo(
+                            booking.id,
+                            booking.status,
+                            booking.bikeType,
+                            booking.bike,
+                            booking.user
+                          )
+                        }
+                        name="info-booking"
+                      ></ActionButtonInfo>
+                    </div>
+                    <div>
                       <ActionButtonCancel
                         onClick={() =>
                           handleClickCancellation(
@@ -274,20 +328,6 @@ function BookingsOverview() {
                         name="cancel-booking"
                       ></ActionButtonCancel>
                     </div>
-                    {/* <div>
-                      <ActionButtonInfo
-                        onClick={() =>
-                          handleClickConfirmation(
-                            booking.id,
-                            booking.status,
-                            booking.bikeType,
-                            booking.bike,
-                            booking.user
-                          )
-                        }
-                        name="info-booking"
-                      ></ActionButtonInfo>
-                    </div> */}
                     <div>
                       <ActionButtonConfirm
                         onClick={() => {
@@ -330,14 +370,18 @@ function BookingsOverview() {
                     onClick={() => handleConfirmAction(false)}
                     className="btn-secondary w-full max-w-16"
                   >
-                    No
+                    {modalAction.actionToConfirm !== BookingModalActions.INFO
+                      ? "No"
+                      : "Ok"}
                   </SecondaryButton>
-                  <PrimaryButton
-                    onClick={() => handleConfirmAction(true)}
-                    className="btn-primary ms-0 w-full max-w-24"
-                  >
-                    Yes
-                  </PrimaryButton>
+                  {modalAction.actionToConfirm !== BookingModalActions.INFO && (
+                    <PrimaryButton
+                      onClick={() => handleConfirmAction(true)}
+                      className="btn-primary ms-0 w-full max-w-24"
+                    >
+                      Yes
+                    </PrimaryButton>
+                  )}
                 </div>
               </div>
             </div>
