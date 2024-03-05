@@ -1,8 +1,9 @@
 import withAuth from "@/app/auth/withAuth"
 import UnderConstruction from "@/components/Others/UnderConstruction"
 
-const HomeGroupBooking = () => {
-  const isAuth = withAuth()
+const HomeGroupBookingPage = () => {
+  const componentName = HomeGroupBookingPage.name
+  const isAuth = withAuth(componentName)
   if (isAuth) {
     return (
       <>
@@ -12,4 +13,4 @@ const HomeGroupBooking = () => {
   }
 }
 
-export default HomeGroupBooking
+export default HomeGroupBookingPage

@@ -1,7 +1,10 @@
 import FirstRegister from "@/components/Register/FirstRegister"
+import withAuth from "../withAuth"
 
-const RegisterPage = () => {
+const FirstRegisterPage = () => {
+  const componentName = FirstRegisterPage.name
+  withAuth(componentName)
   return <FirstRegister />
 }
 
-export default RegisterPage
+export default FirstRegisterPage

@@ -1,10 +1,10 @@
 import BookingsOverview from "@/components/Booking/ManageBooking/BookingsOverview/BookingsOverview"
 import AvailabilityContainer from "@/components/Cards/AvailabilityContainer"
 import withAuth from "@/app/auth/withAuth"
-import ContainerSingleComponent from "@/components/Containers/ContainerSingleComponent"
 
-const HomeAdmin = () => {
-  const isAuth = withAuth()
+const HomeAdminPage = () => {
+  const componentName = HomeAdminPage.name
+  const isAuth = withAuth(componentName)
   if (isAuth) {
     return (
       <>
@@ -15,4 +15,4 @@ const HomeAdmin = () => {
   }
 }
 
-export default HomeAdmin
+export default HomeAdminPage

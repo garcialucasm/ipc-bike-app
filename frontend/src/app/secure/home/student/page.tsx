@@ -1,7 +1,8 @@
 import withAuth from "@/app/auth/withAuth"
 
-const HomeStudent = () => {
-  const isAuth = withAuth()
+const HomeStudentPage = () => {
+  const componentName = HomeStudentPage.name
+  const isAuth = withAuth(componentName)
   if (isAuth) {
     return (
       <>
@@ -10,4 +11,4 @@ const HomeStudent = () => {
     )
   }
 }
-export default HomeStudent
+export default HomeStudentPage

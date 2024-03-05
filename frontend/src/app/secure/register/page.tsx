@@ -1,12 +1,13 @@
 import withAuth from "@/app/auth/withAuth"
 import RegisterForm from "@/components/Forms/RegisterForm"
 
-const RegisterAccount = () => {
-  const isAuth = withAuth()
+const RegisterAccountPage = () => {
+  const componentName = RegisterAccountPage.name
+  const isAuth = withAuth(componentName)
 
   if (isAuth) {
     return <RegisterForm />
   }
 }
 
-export default RegisterAccount
+export default RegisterAccountPage
