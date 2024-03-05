@@ -1,4 +1,3 @@
-import React from "react"
 import { Bicycle } from "@phosphor-icons/react/dist/ssr/Bicycle"
 import { IdentificationCard } from "@phosphor-icons/react/dist/ssr/IdentificationCard"
 import { ClipboardText } from "@phosphor-icons/react/dist/ssr/ClipboardText"

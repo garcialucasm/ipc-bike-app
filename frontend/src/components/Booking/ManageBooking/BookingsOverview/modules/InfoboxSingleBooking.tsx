@@ -1,4 +1,3 @@
-import React from "react"
 import { User } from "@phosphor-icons/react/dist/ssr/User"
 
 import { IconSvgBikeStandard } from "@/components/Others/IconsSvg"

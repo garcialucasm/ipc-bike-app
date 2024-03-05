@@ -1,4 +1,3 @@
-import React from "react"
 import { User } from "@phosphor-icons/react/dist/ssr/User"
 
 import { useSingleBookingContext } from "@/context/singleBooking"

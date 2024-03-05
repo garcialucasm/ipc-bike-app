@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef } from "react"
 import { UserCircle } from "@phosphor-icons/react/dist/ssr/UserCircle"
 
 import { BookingModalActions, BookingStatus } from "@/types/BookingType"
@@ -11,7 +11,6 @@ import {
   cancelBookingFetchApi,
 } from "@/services/bookingApi"
 import StatusIndicator from "@/components/Others/StatusIndicator"
-import ActionButton from "@/components/Buttons/modules/ActionButton"
 import { EmptyBookingsOverview } from "./EmptyBookingsOverview"
 import { ErrorBookingsOverview } from "./ErrorBookingsOverview"
 import { useBikeAvailabilityContext } from "@/context/bikeAvailability"

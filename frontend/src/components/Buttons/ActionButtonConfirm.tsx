@@ -1,4 +1,3 @@
-import React from "react"
 import { CheckCircle } from "@phosphor-icons/react/dist/ssr/CheckCircle"
 
 import ActionButton from "./modules/ActionButton"

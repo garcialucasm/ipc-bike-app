@@ -1,5 +1,3 @@
-import React from "react"
-
 // Home
 export function IconSvgHome(props: { height?: string; fillColor?: string }) {
   const { height, fillColor } = props
