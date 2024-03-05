@@ -1,7 +1,7 @@
 "use client"
 
-import React, { useState, useEffect, useRef } from "react"
-import { Info, UserCircle } from "@phosphor-icons/react"
+import { useState, useEffect, useRef } from "react"
+import { UserCircle } from "@phosphor-icons/react/dist/ssr/UserCircle"
 
 import { BookingModalActions, BookingStatus } from "@/types/BookingType"
 import {
