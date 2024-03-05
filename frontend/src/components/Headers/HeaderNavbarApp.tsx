@@ -4,20 +4,18 @@ import React, { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
-import {
-  PersonSimpleBike,
-  Users,
-  HandHeart,
-  House,
-  UserCircle,
-  XCircle,
-  User,
-  UserCirclePlus,
-  Bicycle,
-  ChartLine,
-  Gear,
-  SignOut,
-} from "@phosphor-icons/react"
+import { PersonSimpleBike } from "@phosphor-icons/react/dist/ssr/PersonSimpleBike"
+import { Users } from "@phosphor-icons/react/dist/ssr/Users"
+import { HandHeart } from "@phosphor-icons/react/dist/ssr/HandHeart"
+import { House } from "@phosphor-icons/react/dist/ssr/House"
+import { UserCircle } from "@phosphor-icons/react/dist/ssr/UserCircle"
+import { XCircle } from "@phosphor-icons/react/dist/ssr/XCircle"
+import { User } from "@phosphor-icons/react/dist/ssr/User"
+import { UserCirclePlus } from "@phosphor-icons/react/dist/ssr/UserCirclePlus"
+import { Bicycle } from "@phosphor-icons/react/dist/ssr/Bicycle"
+import { ChartLine } from "@phosphor-icons/react/dist/ssr/ChartLine"
+import { Gear } from "@phosphor-icons/react/dist/ssr/Gear"
+import { SignOut } from "@phosphor-icons/react/dist/ssr/SignOut"
 
 import { NavigationPaths } from "@/types/NavigationPaths"
 import Button from "@/components/Buttons/Button"

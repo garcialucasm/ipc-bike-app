@@ -1,8 +1,10 @@
 import React from "react"
+import { Bicycle } from "@phosphor-icons/react/dist/ssr/Bicycle"
+import { IdentificationCard } from "@phosphor-icons/react/dist/ssr/IdentificationCard"
+import { ClipboardText } from "@phosphor-icons/react/dist/ssr/ClipboardText"
 
 import { SingleBookingSections } from "@/types/BookingType"
 import { useSingleBookingContext } from "@/context/singleBooking"
-import { Bicycle, ClipboardText, IdentificationCard } from "@phosphor-icons/react"
 
 function Stepper() {
   const { bookingData } = useSingleBookingContext()

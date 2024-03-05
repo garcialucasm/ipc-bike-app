@@ -1,5 +1,5 @@
 import React from "react"
-import { Info } from "@phosphor-icons/react"
+import { Info } from "@phosphor-icons/react/dist/ssr/Info"
 
 import ActionButton from "./modules/ActionButton"
 

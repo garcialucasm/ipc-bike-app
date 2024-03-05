@@ -1,13 +1,12 @@
 import React from "react"
 import Link from "next/link"
-import { NavigationPaths } from "@/types/NavigationPaths"
-import {
-  PersonSimpleBike,
-  Users,
-  HandHeart,
-  HouseSimple,
-} from "@phosphor-icons/react"
 import { usePathname } from "next/navigation"
+import { HouseSimple } from "@phosphor-icons/react/dist/ssr/HouseSimple"
+import { PersonSimpleBike } from "@phosphor-icons/react/dist/ssr/PersonSimpleBike"
+import { Users } from "@phosphor-icons/react/dist/ssr/Users"
+import { HandHeart } from "@phosphor-icons/react/dist/ssr/HandHeart"
+
+import { NavigationPaths } from "@/types/NavigationPaths"
 
 const BottomNavbar = () => {
   const pathname = usePathname()

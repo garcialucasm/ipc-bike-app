@@ -1,9 +1,9 @@
 import React from "react"
+import { User } from "@phosphor-icons/react/dist/ssr/User"
 
 import { useSingleBookingContext } from "@/context/singleBooking"
-import { IconSvgBikeStandard } from "../../../Others/IconsSvg"
 import { toPascalCase } from "@/utils/strings"
-import { User } from "@phosphor-icons/react"
+import { IconSvgBikeStandard } from "@/components/Others/IconsSvg"
 
 function InfoboxSingleBookingDetails() {
   const { bookingData } = useSingleBookingContext()

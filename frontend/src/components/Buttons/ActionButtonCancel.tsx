@@ -1,5 +1,5 @@
 import React from "react"
-import { XCircle } from "@phosphor-icons/react"
+import { XCircle } from "@phosphor-icons/react/dist/ssr/XCircle"
 
 import ActionButton from "./modules/ActionButton"
 

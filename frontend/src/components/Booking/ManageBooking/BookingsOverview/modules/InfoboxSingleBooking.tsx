@@ -1,10 +1,7 @@
 import React from "react"
+import { User } from "@phosphor-icons/react/dist/ssr/User"
 
-import {
-  IconSvgBikeStandard,
-  IconSvgPerson,
-} from "@/components/Others/IconsSvg"
-import { User } from "@phosphor-icons/react"
+import { IconSvgBikeStandard } from "@/components/Others/IconsSvg"
 
 interface InfoboxSingleBookingProps {
   userName: string | null
