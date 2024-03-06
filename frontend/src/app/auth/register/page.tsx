@@ -1,9 +1,9 @@
 import FirstRegister from "@/components/Register/FirstRegister"
-import withAuth from "../withAuth"
+import { logger } from "@/logger"
 
 const FirstRegisterPage = () => {
   const componentName = FirstRegisterPage.name
-  withAuth(componentName)
+  logger.info(`Page ${componentName} called`)
   return <FirstRegister />
 }
 

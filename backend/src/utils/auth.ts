@@ -8,18 +8,18 @@ dotenv.config()
 let publicJwtKey: string = ""
 
 if (process.env.PUBLIC_JWT_KEY_FILE) {
-  publicJwtKey  = fs.readFileSync(process.env.PUBLIC_JWT_KEY_FILE, 'utf8')
+    publicJwtKey = fs.readFileSync(process.env.PUBLIC_JWT_KEY_FILE, 'utf8')
 } else if (process.env.PUBLIC_JWT_KEY) {
-  publicJwtKey = process.env.PUBLIC_JWT_KEY;
+    publicJwtKey = process.env.PUBLIC_JWT_KEY;
 }
 
-let privateJwtKey: string = "" 
+let privateJwtKey: string = ""
 
 if (process.env.PRIVATE_JWT_KEY_FILE) {
-  privateJwtKey  = fs.readFileSync(process.env.PRIVATE_JWT_KEY_FILE, 'utf8')
+    privateJwtKey = fs.readFileSync(process.env.PRIVATE_JWT_KEY_FILE, 'utf8')
 } else if (process.env.PRIVATE_JWT_KEY) {
-  privateJwtKey = process.env.PRIVATE_JWT_KEY;
-} 
+    privateJwtKey = process.env.PRIVATE_JWT_KEY;
+}
 
 if (publicJwtKey === "") {
     throw new Error("JWT PUBLIC KEY is not set. Please configure it.");

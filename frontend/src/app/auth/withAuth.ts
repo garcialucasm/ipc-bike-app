@@ -26,7 +26,7 @@ const withAuth = (componentName: string): boolean => {
         /* --------------------- Decode and verify the JWT token -------------------- */
         jwt.verify(tokenValue, jwtSecretKey) as JwtPayload;
         const decodedToken = jwt.verify(tokenValue, jwtSecretKey) as JwtPayload
-        logger.info(`Page ${componentName} called by user: ${decodedToken?.accountName}`)
+        logger.info(`Page ${componentName} called by user id: ${decodedToken?.id}`)
 
         return true;
     } catch (error) {

@@ -1,10 +1,10 @@
+import { logger } from "@/logger"
 import { NavigationPaths } from "@/types/NavigationPaths"
 import Image from "next/image"
-import withAuth from "../auth/withAuth"
 
 const HomeWebPage = () => {
   const componentName = HomeWebPage.name
-  withAuth(componentName)
+  logger.info(`Page ${componentName} called`)
   return (
     <>
       <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-tr from-gray-900 via-black to-gray-900 p-24 text-white">

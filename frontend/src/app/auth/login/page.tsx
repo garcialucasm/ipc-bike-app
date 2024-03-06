@@ -1,9 +1,9 @@
 import Login from "@/components/Forms/LoginForm"
-import withAuth from "../withAuth"
+import { logger } from "@/logger"
 
 const LoginPage = () => {
   const componentName = LoginPage.name
-  withAuth(componentName)
+  logger.info(`Page ${componentName} called`)
   return <Login />
 }
 

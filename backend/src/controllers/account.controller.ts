@@ -3,6 +3,7 @@ import IAccountService from '../services/account.service'
 import { validateEmail, validatePassword, validateUserName } from "../models/validators";
 import { AccountDTO } from "../dto/account.dto";
 import { cleanUpSpaces } from "../utils/strings";
+import { logger } from '../logger';
 
 
 function toAccountDTO(account: AccountDTO): AccountDTO {
@@ -17,7 +18,9 @@ export default function accountController(accountService: IAccountService, route
 
     const router: Router = Router(routerOptions)
 
+    /* ----------------------------- Secure Register ---------------------------- */
     router.post("/secure/register", async (req, res) => {
+        logger.info("Account Controller called: POST /secure/register")
         const accountName = cleanUpSpaces(req.body.accountName.toLowerCase())
         const email = cleanUpSpaces(req.body.email.toLowerCase())
         const password = req.body.password
@@ -29,22 +32,28 @@ export default function accountController(accountService: IAccountService, route
 
             accountService.registerAccount(accountName, email, password)
                 .then((account) => {
+                    logger.debug(`Account Controller called: registerAccount for user ${account.AccountName}`)
                     res.status(200)
                         .send("Successfully registered")
                 }).catch(error => {
+                    logger.error(`Account Controller called: registerAccount error | ${error}`)
                     console.error(error)
                     res.status(401)
                         .send({ error: error.message })
                 })
         }
         catch (error: any) {
+            logger.error(`Account Controller called: POST /secure/register error | ${error}`)
             console.error(error)
             res.status(401)
                 .send({ error: error.message })
         }
     })
+    /* -------------------------------------------------------------------------- */
 
+    /* ----------------------------- First Register ----------------------------- */
     router.post("/register", async (req, res) => {
+        logger.info("Account Controller called: POST /register")
         const accountName = cleanUpSpaces(req.body.accountName.toLowerCase())
         const email = cleanUpSpaces(req.body.email.toLowerCase())
         const password = req.body.password
@@ -56,22 +65,28 @@ export default function accountController(accountService: IAccountService, route
 
             accountService.registerAccount(accountName, email, password)
                 .then((account) => {
+                    logger.debug(`Account Controller called: firstRegisterAccount for user ${account.AccountName}`)
                     res.status(200)
                         .send("Successfully registered")
                 }).catch(error => {
+                    logger.error(`Account Controller called: firstRegisterAccount error | ${error}`)
                     console.error(error)
                     res.status(401)
                         .send({ error: error.message })
                 })
         }
         catch (error: any) {
+            logger.error(`Account Controller called: POST /register error | ${error}`)
             console.error(error)
             res.status(401)
                 .send({ error: error.message })
         }
     })
+    /* -------------------------------------------------------------------------- */
 
+    /* ---------------------------------- Login --------------------------------- */
     router.post("/login", async (req, res) => {
+        logger.info("Account Controller called: POST /login")
         const email = cleanUpSpaces(req.body.email.toLowerCase())
         const password = req.body.password
 
@@ -79,22 +94,27 @@ export default function accountController(accountService: IAccountService, route
             validateEmail(email)
             accountService.login(email, password)
                 .then((account) => {
+                    logger.debug(`Login successfully completed by the account id: ${account.id}`)
                     res.status(200)
                         .send({ account: toAccountDTO(account) })
-                    console.info("Authenticated successfully")
 
                 }).catch(error => {
+                    logger.error(`Account Controller called: login error | ${error}`)
+                    logger.debug(`Login error: ${error}`)
                     console.error(error)
                     res.status(401)
                         .send({ error: error.message })
                 })
         }
         catch (error: any) {
+            logger.error(`Account Controller called: POST /login error | ${error}`)
+            logger.debug(`Login error: ${error}`)
             console.error(error)
             res.status(401)
                 .send({ error: error.message })
         }
     })
+    /* -------------------------------------------------------------------------- */
 
     return router
 }
