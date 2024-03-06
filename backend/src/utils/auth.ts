@@ -2,6 +2,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import dotenv from "dotenv"
 import * as fs from 'fs';
+import { logger } from '../logger';
 
 dotenv.config()
 
@@ -34,9 +35,11 @@ export interface CustomRequest extends Request {
 }
 
 export const checkAuth = async (req: Request, res: Response, next: NextFunction) => {
+    logger.debug("Auth called: checkAuth")
     try {
         const token = req.header('Authorization')?.replace('Bearer ', '');
         if (!token) {
+            logger.debug("Auth called: checkAuth error | No token found")
             throw new Error('No token found');
         }
 
@@ -44,14 +47,17 @@ export const checkAuth = async (req: Request, res: Response, next: NextFunction)
         (req as CustomRequest).token = decoded;
         next();
     } catch (err) {
+        logger.debug(`Auth called: checkAuth error | ${err}`)
         res.status(401).send('Please authenticate');
     }
 };
 
 export function generateAsyncToken(payload: { id: string, accountName: string }): Promise<string> {
+    logger.debug(`Auth called: generateAsyncToken`)
     return new Promise((resolve, reject) => {
 
         if (!privateJwtKey) {
+            logger.debug(`Auth called: generateAsyncToken error | JWT PRIVATE KEY rejected`)
             reject(new Error("JWT PRIVATE KEY rejected."));
             return;
         }
@@ -59,7 +65,7 @@ export function generateAsyncToken(payload: { id: string, accountName: string })
         jwt.sign(payload, privateJwtKey, { algorithm: 'RS256' }, (err, token) => {
             if (err) {
                 reject(err);
-                console.error('Error generating token:', err);
+                logger.debug(`Auth called: generateAsyncToken error | Error generating token | ${err}`)
             } else {
                 if (token) {
                     resolve(token);

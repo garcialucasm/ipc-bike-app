@@ -1,7 +1,7 @@
-import { toBikeDTO } from "../controllers/bike.controller";
 import { Bike, BikeStatus } from "../models/bike.model";
 import IBikeRepository from "../repositories/bike.repository";
 import IBikeService from "./bike.service";
+import { logger } from '../logger'
 
 export default class BikeService implements IBikeService {
 
@@ -21,6 +21,7 @@ export default class BikeService implements IBikeService {
   }
 
   async createBike(numbering: number, bikeType: string, size: string): Promise<Bike> {
+    logger.debug("Bike Service called: createBike")
 
     let bikes = await this.bikeRepository.findAll({ numbering: numbering })
 
@@ -41,6 +42,7 @@ export default class BikeService implements IBikeService {
   }
 
   async changeStatus(bike: Bike, status: BikeStatus): Promise<Bike> {
+    logger.debug("Bike Service called: changeStatus")
 
     if (bike.CurrentStatus === undefined)
       throw new Error()
@@ -59,6 +61,8 @@ export default class BikeService implements IBikeService {
   }
 
   findAllAvailable(size?: string, numbering?: number): Promise<Bike[]> {
+    logger.debug("Bike Service called: findAllAvailable")
+
     const searchCriteria: { numbering?: number; currentStatus?: BikeStatus; size?: string; } = {
       currentStatus: BikeStatus.FREE
     };
@@ -76,6 +80,8 @@ export default class BikeService implements IBikeService {
   }
 
   countBikesByStatus(): Promise<Map<BikeStatus, number>> {
+    logger.debug("Bike Service called: countBikesByStatus")
+
     return this.bikeRepository.countBikesByStatus()
   }
 
