@@ -1,5 +1,10 @@
 import { BikeDTO, BikeStatus } from "./BikeType"
 
+export type ServerResultActiveBookings =
+    {
+        activeBookings: any, error: string | null
+    }
+
 export type ServerResultBikeAvailability =
     | {
         data: {

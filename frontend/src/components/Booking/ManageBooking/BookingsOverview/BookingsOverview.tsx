@@ -29,7 +29,8 @@ const messageCancelReturn = "Are you sure to cancel this bike return?"
 const messageConfirmBooking = "Are you sure to confirm this booking?"
 const messageConfirmReturn = "Are you sure to confirm this bike return?"
 
-function BookingsOverview() {
+function BookingsOverview(props: { data: any }) {
+  const dataFetched = props.data
   const [reloadData, setReloadData] = useState(false)
   const [bookingData, setBookingData] = useState<{
     activeBookings: any
@@ -66,13 +67,8 @@ function BookingsOverview() {
   const modalRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await bookingFetchApi()
-      setBookingData(result)
-    }
-
-    fetchData()
-  }, [reloadData])
+    setBookingData(dataFetched)
+  }, [reloadData, dataFetched])
 
   const { activeBookings, error } = bookingData
 

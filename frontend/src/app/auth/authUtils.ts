@@ -23,11 +23,11 @@ export function authHeader(): I_AuthHeader {
 export function getTokenFromCookies(name: string) {
     try {
         if (typeof document !== 'undefined') {
-            const cookies = document.cookie.split(';');
+            const allCookies = document.cookie.split(';');
             const cookieName = `${name}=`;
 
-            for (let i = 0; i < cookies.length; i++) {
-                let cookie = cookies[i].trim();
+            for (let i = 0; i < allCookies.length; i++) {
+                let cookie = allCookies[i].trim();
                 if (cookie.startsWith(cookieName)) {
                     return decodeURIComponent(cookie.substring(cookieName.length, cookie.length));
                 }
