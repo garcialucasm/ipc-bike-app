@@ -17,6 +17,19 @@ export async function bookingFetchApi() {
   }
 };
 
+/* --------- // TODO: replace allBookingsFetchApi to bookingFetchApi -------- */
+// Show all bookings
+export async function allBookingsFetchApi(showInactive: boolean = true) {
+  try {
+    const response = await ApiHeader.get(showInactive ? apiUrls.allBookingsUrl : apiUrls.activeBookingsUrl);
+    const allBookings = response.data.bookings;
+    return { allBookings, error: null };
+  } catch (error: any) {
+    console.error(`Error getting ${showInactive ? 'inactive' : 'active'} bookings:`, error.message);
+    return { allBookings: null, error: `${error.message}` };
+  }
+};
+
 
 //Create Single Booking
 export async function createSingleBookingFetchApi(bookingData: SingleBookingDTO) {
