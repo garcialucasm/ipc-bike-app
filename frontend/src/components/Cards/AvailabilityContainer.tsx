@@ -9,32 +9,32 @@ import {
   useBikeAvailabilityContext,
 } from "@/context/bikeAvailability"
 import LoadingComponent from "../Others/LoadingComponent"
+import { useAuth } from "@/context/auth"
 
 function AvailabilityContainer() {
+  const { accountData } = useAuth()
+  const isAuth = accountData?.isAuthenticated || false
   const {
     bikeStatusCount: bikeStatusCount,
     updatingBikeAvailability: getBikeAvailability,
   } = useBikeAvailabilityContext()
 
   useEffect(() => {
-    getBikeAvailability()
-  }, [])
+    if (isAuth) {
+      getBikeAvailability()
+    }
+  }, [isAuth])
 
   return (
     <>
-      <div className="items-center overflow-x-auto w-full">
+      <div className="w-full items-center overflow-x-auto">
         {bikeStatusCount === initialBikeStatusCount ? (
           <LoadingComponent />
         ) : (
           <div className="flex w-full gap-4 overflow-x-auto pb-2">
-            {[BikeStatus.FREE, BikeStatus.INUSE].map(
-              (bikeStatus) => (
-                <AvailabilityCard
-                  key={bikeStatus}
-                  selectedStatus={bikeStatus}
-                />
-              )
-            )}
+            {[BikeStatus.FREE, BikeStatus.INUSE].map((bikeStatus) => (
+              <AvailabilityCard key={bikeStatus} selectedStatus={bikeStatus} />
+            ))}
           </div>
         )}
       </div>

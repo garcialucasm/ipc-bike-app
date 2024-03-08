@@ -22,6 +22,7 @@ import ActionResult from "@/components/ActionResult/ActionResult"
 import ActionButtonCancel from "@/components/Buttons/ActionButtonCancel"
 import ActionButtonConfirm from "@/components/Buttons/ActionButtonConfirm"
 import ActionButtonInfo from "@/components/Buttons/ActionButtonInfo"
+import { useAuth } from "@/context/auth"
 
 const messageinitial = "Confirm Action"
 const messageCancelBooking = "Are you sure to cancel this booking?"
@@ -31,6 +32,8 @@ const messageConfirmReturn = "Are you sure to confirm this bike return?"
 const messageInfoBooking = "Current booking selected"
 
 function BookingsOverview() {
+  const { accountData } = useAuth()
+  const isAuth = accountData?.isAuthenticated || false
   const [reloadData, setReloadData] = useState(false)
   const [bookingData, setBookingData] = useState<{
     activeBookings: any
@@ -65,15 +68,6 @@ function BookingsOverview() {
   })
   const { updatingBikeAvailability } = useBikeAvailabilityContext()
   const modalRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await bookingFetchApi()
-      setBookingData(result)
-    }
-
-    fetchData()
-  }, [reloadData])
 
   const { activeBookings, error } = bookingData
 
@@ -255,6 +249,18 @@ function BookingsOverview() {
       document.removeEventListener("mousedown", handleModalClick)
     }
   }, [])
+
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await bookingFetchApi()
+      setBookingData(result)
+    }
+
+    if (isAuth) {
+      fetchData()
+    }
+  }, [reloadData, isAuth])
 
   if (!activeBookings || activeBookings.length === 0) {
     return <EmptyBookingsOverview />
