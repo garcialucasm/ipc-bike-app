@@ -1,7 +1,7 @@
 import { cookieTokenName } from "@/types/CookieType";
 import jwt, { JwtPayload } from "jsonwebtoken"
 
-const jwtSecretKey = process.env.NEXT_PUBLIC_JWT_SECRET_KEY?.trim()
+const jwtSecretKey = process.env.NEXT_PUBLIC_JWT_KEY?.trim()
 
 export interface I_AuthHeader {
     headers: {

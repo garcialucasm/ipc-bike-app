@@ -3,7 +3,7 @@ import jwt, { JwtPayload } from "jsonwebtoken"
 import { cookies } from 'next/headers';
 import { redirect } from "next/navigation";
 
-const jwtSecretKey = process.env.NEXT_PUBLIC_JWT_SECRET_KEY?.trim()
+const jwtSecretKey = process.env.NEXT_PUBLIC_JWT_KEY?.trim()
 
 const withAuth = (): boolean => {
 
