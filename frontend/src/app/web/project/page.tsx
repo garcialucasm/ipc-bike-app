@@ -1,4 +1,6 @@
 import ContainerWebpage from "@/components/Containers/ContainerWebpage"
+import TitleLabelWeb from "@/components/Others/TitleLabelWeb"
+import VersionInformation from "@/components/Web/VersionInformation"
 import {
   Bookmarks,
   Bug,
@@ -98,27 +100,32 @@ const Project = async () => {
 
   return (
     <ContainerWebpage>
-      <div className="mx-4 flex flex-wrap gap-x-4 gap-y-8 text-sm">
-        <div className="flex-1 rounded-xl bg-gray-900 px-1 py-4 text-white">
-          <span className="mb-4 flex items-center justify-between px-4">
-            <h1 className="font-bold">TO DO</h1>
-            <Stack size={24} />
-          </span>
-          <div>{renderIssues("To Do")}</div>
-        </div>
-        <div className="flex-1 rounded-xl bg-gray-900 px-1 py-4 text-white">
-          <span className="mb-4 flex items-center justify-between px-4">
-            <h1 className="font-bold">IN PROGRESS</h1>
-            <Gear size={24} className="animate-spin " />
-          </span>
-          <div>{renderIssues("In Progress")}</div>
-        </div>
-        <div className="flex-1 rounded-xl bg-gray-900 px-1 py-4 text-white">
-          <span className="mb-4 flex items-center justify-between px-4">
-            <h1 className="font-bold">DONE</h1>
-            <CheckFat size={24} />
-          </span>
-          <div>{renderIssues("Done")}</div>
+      <div className="flex flex-col gap-y-8">
+        <TitleLabelWeb>Release Notes and Feature Overview</TitleLabelWeb>
+        <VersionInformation />
+        <TitleLabelWeb>Development Overview and Issues Tracker</TitleLabelWeb>
+        <div className="flex flex-wrap gap-x-4 gap-y-8 text-sm">
+          <div className="flex-1 rounded-xl bg-gray-900 px-1 py-4 text-white">
+            <span className="mb-4 flex items-center justify-between px-4">
+              <h1 className="font-bold">TO DO</h1>
+              <Stack size={24} />
+            </span>
+            <div>{renderIssues("To Do")}</div>
+          </div>
+          <div className="flex-1 rounded-xl bg-gray-900 px-1 py-4 text-white">
+            <span className="mb-4 flex items-center justify-between px-4">
+              <h1 className="font-bold">IN PROGRESS</h1>
+              <Gear size={24} className="animate-spin " />
+            </span>
+            <div>{renderIssues("In Progress")}</div>
+          </div>
+          <div className="flex-1 rounded-xl bg-gray-900 px-1 py-4 text-white">
+            <span className="mb-4 flex items-center justify-between px-4">
+              <h1 className="font-bold">DONE</h1>
+              <CheckFat size={24} />
+            </span>
+            <div>{renderIssues("Done")}</div>
+          </div>
         </div>
       </div>
     </ContainerWebpage>
