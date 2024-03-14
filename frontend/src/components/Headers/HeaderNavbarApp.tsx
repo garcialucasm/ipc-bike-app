@@ -142,7 +142,7 @@ export default function HeaderNavbarApp() {
                   ></path>
                 </svg>
               </Button>
-              <Link href="/" className="ms-2 flex md:me-24">
+              <Link href={NavigationPaths.homeWeb} className="ms-2 flex md:me-24">
                 <Image
                   src="/logo-ipc-alumni-bike-white-h2.png"
                   className="h-8 w-auto xl:h-8"

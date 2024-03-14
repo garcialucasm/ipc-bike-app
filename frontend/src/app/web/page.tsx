@@ -1,12 +1,8 @@
 "use client"
 
-import { NavigationPaths } from "@/types/NavigationPaths"
 import Image from "next/image"
-import { usePathname } from "next/navigation"
 
 const HomeWebPage = () => {
-  const pathname = usePathname()
-
   return (
     <>
       <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-tr from-gray-900 via-black to-gray-900 p-24 pt-[69px] text-white">

@@ -1,17 +1,15 @@
+import { Bookmarks } from "@phosphor-icons/react/dist/ssr/Bookmarks"
+import { Bug } from "@phosphor-icons/react/dist/ssr/Bug"
+import { CheckFat } from "@phosphor-icons/react/dist/ssr/CheckFat"
+import { CheckSquare } from "@phosphor-icons/react/dist/ssr/CheckSquare"
+import { Flag } from "@phosphor-icons/react/dist/ssr/Flag"
+import { Gear } from "@phosphor-icons/react/dist/ssr/Gear"
+import { Heart } from "@phosphor-icons/react/dist/ssr/Heart"
+import { Stack } from "@phosphor-icons/react/dist/ssr/Stack"
+
 import ContainerWebpage from "@/components/Containers/ContainerWebpage"
 import TitleLabelWeb from "@/components/Others/TitleLabelWeb"
 import VersionInformation from "@/components/Web/VersionInformation"
-import {
-  Bookmarks,
-  Bug,
-  CheckFat,
-  CheckSquare,
-  Flag,
-  Gear,
-  Heart,
-  Stack,
-} from "@phosphor-icons/react/dist/ssr"
-import React from "react"
 
 const getData = async () => {
   const username = process.env.JIRA_USERNAME

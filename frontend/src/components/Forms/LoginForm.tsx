@@ -114,7 +114,7 @@ const Login = () => {
           <p className="mt-1 text-white">Book, Ride, Explore: All for Free</p>
         </div>
         <div className="fixed flex h-16 w-full items-center bg-gradient-to-tr from-blue-950 via-blue-800 to-blue-600 px-4 md:hidden">
-          <Link href="/" className="ms-2 flex">
+          <Link href={NavigationPaths.homeWeb} className="ms-2 flex">
             <Image
               src="/logo-ipc-alumni-bike-white-h2.png"
               className="h-8 w-auto"

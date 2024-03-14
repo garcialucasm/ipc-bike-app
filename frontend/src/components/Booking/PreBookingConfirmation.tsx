@@ -3,7 +3,7 @@ import { SingleBookingDTO, SingleBookingSections } from "@/types/BookingType"
 import PrimaryButton from "../Buttons/PrimaryButton"
 import SecondaryButton from "../Buttons/SecondaryButton"
 import { useSingleBookingContext } from "@/context/singleBooking"
-import { NavigationOptions } from "@/types/NavigationPaths"
+import { NavigationOptions, NavigationPaths } from "@/types/NavigationPaths"
 import InfoboxSingleBookingDetails from "./SingleBooking/modules/InfoboxSingleBookingDetails"
 import InstructionLabel from "../Others/InstructionLabel"
 import { createSingleBookingFetchApi } from "@/services/bookingApi"
@@ -115,7 +115,7 @@ const PreBookingConfirmation = () => {
           className="ms-2 text-sm text-gray-700"
         >
           I agree to the{" "}
-          <a href="/" target="_blank">
+          <a href={NavigationPaths.termsAndConditions} target="_blank">
             <span className="text-blue-700">terms and conditions</span>.
           </a>
         </label>

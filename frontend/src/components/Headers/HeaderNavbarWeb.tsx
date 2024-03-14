@@ -48,7 +48,7 @@ export default function HeaderNavbarWeb() {
               </svg>
             </Button>
             <Link
-              href="/"
+              href={NavigationPaths.homeWeb}
               className={`ms-2 flex lg:me-24`}
             >
               <Image
@@ -83,7 +83,7 @@ export default function HeaderNavbarWeb() {
               <li>
                 <Link
                   href={NavigationPaths.homeWeb}
-                  className={`block rounded px-3 py-2 hover:bg-gray-950 lg:bg-transparent lg:p-0 ${
+                  className={`block rounded px-3 py-2 hover:text-blue-300 lg:bg-transparent lg:p-0 ${
                     pathname === NavigationPaths.homeWeb
                       ? "text-blue-500"
                       : "text-white"
@@ -96,7 +96,7 @@ export default function HeaderNavbarWeb() {
               <li>
                 <Link
                   href={NavigationPaths.project}
-                  className={`block rounded px-3 py-2 hover:bg-gray-950 lg:bg-transparent lg:p-0 ${
+                  className={`block rounded px-3 py-2 hover:text-blue-300 lg:bg-transparent lg:p-0 ${
                     pathname === NavigationPaths.project
                       ? "text-blue-500"
                       : "text-white"
@@ -109,7 +109,7 @@ export default function HeaderNavbarWeb() {
               <li>
                 <Link
                   href={NavigationPaths.rules}
-                  className={`block rounded px-3 py-2 hover:bg-gray-950 lg:bg-transparent lg:p-0 ${
+                  className={`block rounded px-3 py-2 hover:text-blue-300 lg:bg-transparent lg:p-0 ${
                     pathname === NavigationPaths.rules
                       ? "text-blue-500"
                       : "text-white"
@@ -122,7 +122,7 @@ export default function HeaderNavbarWeb() {
               <li>
                 <Link
                   href={NavigationPaths.about}
-                  className={`block rounded px-3 py-2 hover:bg-gray-950 lg:bg-transparent lg:p-0 ${
+                  className={`block rounded px-3 py-2 hover:text-blue-300 lg:bg-transparent lg:p-0 ${
                     pathname === NavigationPaths.about
                       ? "text-blue-500"
                       : "text-white"
@@ -135,7 +135,7 @@ export default function HeaderNavbarWeb() {
               <li>
                 <Link
                   href={NavigationPaths.contact}
-                  className={`block rounded px-3 py-2 hover:bg-gray-950 lg:bg-transparent lg:p-0 ${
+                  className={`block rounded px-3 py-2 hover:text-blue-300 lg:bg-transparent lg:p-0 ${
                     pathname === NavigationPaths.contact
                       ? "text-blue-500"
                       : "text-white"
