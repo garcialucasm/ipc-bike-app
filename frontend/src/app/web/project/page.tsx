@@ -23,6 +23,15 @@ const getData = async () => {
     // Adjust 'maxResults' as needed, but be aware of API rate limits
     query: `jql=project=IB&startAt=0&maxResults=200`,
   }
+  console.error("Something went wrong")
+
+  if (!username) {
+    console.error("Jira API error: Undefined Jira Username.")
+  }
+
+  if (!token) {
+    console.error("Jira API error: Undefined Jira Token")
+  }
 
   const res = await fetch(
     "https://ipc-bikes.atlassian.net/rest/api/2/search",
