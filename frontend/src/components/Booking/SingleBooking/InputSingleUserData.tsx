@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { useState } from "react"
 
 import { useSingleBookingContext } from "@/context/singleBooking"
 import { SingleBookingSections } from "@/types/BookingType"
