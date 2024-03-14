@@ -1,7 +1,7 @@
-import { NavigationPaths } from "@/types/NavigationPaths"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import React from "react"
+
+import { NavigationPaths } from "@/types/NavigationPaths"
 
 export default function App() {
   redirect(NavigationPaths.homeApp)

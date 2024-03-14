@@ -1,8 +1,10 @@
-import React from "react"
+import { CheckCircle } from "@phosphor-icons/react/dist/ssr/CheckCircle"
+import { XCircle } from "@phosphor-icons/react/dist/ssr/XCircle"
+import { User } from "@phosphor-icons/react/dist/ssr/User"
+import { Info } from "@phosphor-icons/react/dist/ssr/Info"
 
 import { IconSvgBikeStandard } from "@/components/Others/IconsSvg"
 import { BookingModalActions, BookingStatus } from "@/types/BookingType"
-import { CheckCircle, Info, User, XCircle } from "@phosphor-icons/react"
 
 interface InfoboxSingleBookingProps {
   userName: string | null

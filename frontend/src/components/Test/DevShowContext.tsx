@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import { useState } from "react"
 
 import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
 import { useSingleBookingContext } from "@/context/singleBooking"

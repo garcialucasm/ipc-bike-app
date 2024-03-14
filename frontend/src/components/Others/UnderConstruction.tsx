@@ -1,5 +1,4 @@
 import { NavigationPaths } from "@/types/NavigationPaths"
-import React from "react"
 import ContainerSingleComponent from "../Containers/ContainerSingleComponent"
 
 function UnderConstruction() {

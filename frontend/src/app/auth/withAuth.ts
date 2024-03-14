@@ -3,11 +3,11 @@ import jwt, { JwtPayload } from "jsonwebtoken"
 import { cookies } from 'next/headers';
 import { redirect } from "next/navigation";
 
-const jwtSecretKey = process.env.NEXT_PUBLIC_JWT_SECRET_KEY?.trim()
+const jwtPublicKey = process.env.NEXT_PUBLIC_JWT_KEY?.trim()
 
 const withAuth = (): boolean => {
 
-    if (!jwtSecretKey) {
+    if (!jwtPublicKey) {
         console.error("Authentication warning: JWT_SECRET_KEY is not set.");
         return false
     }
@@ -23,7 +23,7 @@ const withAuth = (): boolean => {
 
     try {
         /* --------------------- Decode and verify the JWT token -------------------- */
-        jwt.verify(tokenValue, jwtSecretKey) as JwtPayload;
+        jwt.verify(tokenValue, jwtPublicKey) as JwtPayload;
 
         return true;
     } catch (error) {

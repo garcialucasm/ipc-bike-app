@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { SingleBookingDTO, SingleBookingSections } from "@/types/BookingType"
 import PrimaryButton from "../Buttons/PrimaryButton"
 import SecondaryButton from "../Buttons/SecondaryButton"

@@ -1,7 +1,6 @@
 import { BikeStatus } from "@/types/BikeType"
 import { BookingStatus } from "@/types/BookingType"
 import { UserStatus } from "@/types/UserType"
-import React from "react"
 
 enum StatusColorClass {
   GREEN = "bg-emerald-500",

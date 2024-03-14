@@ -1,4 +1,3 @@
-import React from "react"
 import { IconSvgLoader } from "./IconsSvg"
 import ContainerSingleComponent from "../Containers/ContainerSingleComponent"
 

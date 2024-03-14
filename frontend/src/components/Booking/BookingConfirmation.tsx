@@ -1,5 +1,3 @@
-import React from "react"
-
 import { useSingleBookingContext } from "@/context/singleBooking"
 import BookingFailed from "./SingleBooking/modules/BookingFailed"
 import BookingConfirmed from "./SingleBooking/modules/BookingConfirmed"
