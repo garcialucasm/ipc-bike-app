@@ -9,16 +9,21 @@ import {
   useBikeAvailabilityContext,
 } from "@/context/bikeAvailability"
 import LoadingComponent from "../Others/LoadingComponent"
+import { useAuth } from "@/context/auth"
 
 function AvailabilityContainer() {
+  const { accountData } = useAuth()
+  const isAuth = accountData?.isAuthenticated || false
   const {
     bikeStatusCount: bikeStatusCount,
     updatingBikeAvailability: getBikeAvailability,
   } = useBikeAvailabilityContext()
 
   useEffect(() => {
-    getBikeAvailability()
-  }, [])
+    if (isAuth) {
+      getBikeAvailability()
+    }
+  }, [isAuth])
 
   return (
     <>

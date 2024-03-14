@@ -1,6 +1,7 @@
 import { CheckCircle } from "@phosphor-icons/react/dist/ssr/CheckCircle"
 import { XCircle } from "@phosphor-icons/react/dist/ssr/XCircle"
 import { User } from "@phosphor-icons/react/dist/ssr/User"
+import { Info } from "@phosphor-icons/react/dist/ssr/Info"
 
 import { IconSvgBikeStandard } from "@/components/Others/IconsSvg"
 import { BookingModalActions, BookingStatus } from "@/types/BookingType"
@@ -26,26 +27,34 @@ function InfoboxSingleBookingModal(BookingData: InfoboxSingleBookingProps) {
 
   return (
     <>
+      {/* ------------------------------- Modal Title ------------------------------ */}
       <p
         className={`flex items-center border-b border-slate-200 pb-4 text-start text-xl font-semibold ${
-          actionToConfirm === BookingModalActions.CONFIRM
-            ? "text-green-700"
-            : "text-rose-700"
-        }`}
+          actionToConfirm === BookingModalActions.CONFIRM && "text-green-700"
+        } ${actionToConfirm === BookingModalActions.CANCEL && "text-rose-700"}
+        `}
       >
-        {actionToConfirm === BookingModalActions.CONFIRM ? (
+        {actionToConfirm === BookingModalActions.INFO && (
+          <span className="me-2 font-bold text-blue-700">
+            <Info size={42} weight="fill" />
+          </span>
+        )}
+        {actionToConfirm === BookingModalActions.CONFIRM && (
           <span className="me-2 font-bold text-emerald-700">
             <CheckCircle size={42} weight="fill" />
           </span>
-        ) : (
+        )}
+        {actionToConfirm === BookingModalActions.CANCEL && (
           <span className="me-2 font-bold text-rose-700">
             <XCircle size={42} weight="fill" />
           </span>
         )}
-        {`${actionToConfirm} ${
-          bookingStatus === BookingStatus.BOOKED ? "Booking" : "Return"
-        } ?`}
+        {`${actionToConfirm}`}{" "}
+        {actionToConfirm !== BookingModalActions.INFO &&
+          (bookingStatus === BookingStatus.BOOKED ? "Booking?" : "Return?")}
       </p>
+      {/* -------------------------------------------------------------------------- */}
+
       <p className="text-start">{dialogMessage}</p>
       <div className="flex w-full flex-col gap-3 text-slate-600">
         <div className="flex w-full items-center rounded-2xl border bg-white p-3">

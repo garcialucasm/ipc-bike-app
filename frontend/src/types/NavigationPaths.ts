@@ -15,13 +15,15 @@ export enum NavigationPaths {
   settings = "/secure/settings",
   /* -------------------------------------------------------------------------- */
 
-
-  /* ------------------- // TODO: Redirect to home web page ------------------- */
+  /* -------------------------------- Web page -------------------------------- */
   homeWeb = "/web",
-  /* ----------------- // TODO: Redirect to the rules web page ---------------- */
+  about = "/web/about",
+  contact = "/web/contact",
+  project = "/web/project",
   rules = "/web/rules",
-  /* ----------------- // TODO: Redirect to the become member web page ---------------- */
   becomeMember = "/secure/member",
+  /* -------------------------------------------------------------------------- */
+
 }
 
 export enum NavigationOptions {

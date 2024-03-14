@@ -207,11 +207,11 @@ function InputSingleBike() {
           <p className="flex min-h-10 items-center rounded-l-2xl bg-slate-200 px-3">
             Selected
           </p>
-          <div className="flex items-center gap-2 divide-x divide-slate-400 px-2 sm:px-4 text-left text-xs font-normal text-slate-600">
+          <div className="flex items-center gap-2 divide-x divide-slate-400 px-2 text-left text-xs font-normal text-slate-600 sm:px-4">
             <span className="text-sm font-extrabold text-blue-800">
               Bike {bookingData.bikeNumbering && bookingData.bikeNumbering}
             </span>
-            <p className="ps-2 hidden sm:inline-block">
+            <p className="hidden ps-2 sm:inline-block">
               Type: {bookingData.bikeType && toPascalCase(bookingData.bikeType)}
             </p>
             <p className="ps-2">
@@ -286,7 +286,7 @@ function InputSingleBike() {
                           Bike
                           <span className="ps-2">{bike.Numbering}</span>
                         </p>
-                        <p className="ps-2 hidden sm:inline-block">
+                        <p className="hidden ps-2 sm:inline-block">
                           Type: {bike.BikeType && toPascalCase(bike.BikeType)}
                         </p>
                         <p className="ps-2">

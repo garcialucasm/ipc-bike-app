@@ -6,7 +6,7 @@ export default function ActionButtonInfo({ ...atributes }) {
   return (
     <ActionButton {...atributes}>
       <Info
-        size={28}
+        size={32}
         className="rounded-full hover:border-2 hover:bg-blue-600 hover:text-white"
       />
     </ActionButton>

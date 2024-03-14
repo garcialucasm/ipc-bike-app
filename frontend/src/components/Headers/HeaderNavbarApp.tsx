@@ -22,7 +22,6 @@ import Button from "@/components/Buttons/Button"
 import { useAuth } from "@/context/auth"
 import { getDecodedToken, logout } from "@/app/auth/authUtils"
 import { toPascalCase } from "@/utils/strings"
-import BottomNavbar from "./BottomNavbar"
 
 export default function HeaderNavbarApp() {
   const { accountData, settingAccountData: settingAccountData } = useAuth()
@@ -409,7 +408,6 @@ export default function HeaderNavbarApp() {
           </div>
         </div>
       </aside>
-      <BottomNavbar />
     </>
   )
 }

@@ -1,17 +1,22 @@
+"use client"
+
 import { NavigationPaths } from "@/types/NavigationPaths"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 
 const HomeWebPage = () => {
+  const pathname = usePathname()
+
   return (
     <>
-      <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-tr from-gray-900 via-black to-gray-900 p-24 text-white">
-        <div className="z-10 w-full max-w-6xl items-center justify-between font-mono text-sm lg:flex">
+      <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-tr from-gray-900 via-black to-gray-900 p-24 pt-[69px] text-white">
+        <div className="z-10 my-8 w-full max-w-6xl items-center justify-between font-mono text-sm lg:flex">
           <a
             href="https://github.com/garcialucasm/ipc-alumni-bike"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <p className="fixed left-0 top-0 flex w-full justify-center border-b border-neutral-800 bg-zinc-800/30 bg-gradient-to-b from-inherit pb-6 pt-8 backdrop-blur-2xl hover:border-blue-700 hover:bg-blue-950/30  lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:bg-zinc-800/30 lg:p-4">
+            <p className="hidden w-full justify-center border-b border-neutral-800 bg-zinc-800/30 bg-gradient-to-b from-inherit pb-6 pt-8 backdrop-blur-2xl hover:border-blue-700 hover:bg-blue-950/30 lg:static  lg:flex lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:bg-zinc-800/30 lg:p-4">
               Github project 👉
               <code className="ps-1 font-mono font-bold text-blue-500">
                 /ipc-alumni-bike
@@ -20,7 +25,7 @@ const HomeWebPage = () => {
           </a>
           <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-black via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
             <div
-              className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
+              className="pointer-events-auto flex place-items-center gap-2 p-8 lg:p-0"
               rel="noopener noreferrer"
             >
               By{" "}
@@ -41,7 +46,7 @@ const HomeWebPage = () => {
           </div>
         </div>
 
-        <div className="after:bg-gradient-conic relative flex place-items-center before:absolute before:h-[450px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-to-br before:from-transparent before:to-blue-700 before:opacity-10 before:blur-2xl before:content-[''] after:absolute after:h-[180px] after:w-full after:translate-x-1/3 after:from-sky-900 after:via-[#0141ff] after:opacity-40 after:blur-2xl after:content-[''] sm:before:w-[680px] sm:after:w-[240px] before:lg:h-[360px]">
+        <div className="after:bg-gradient-conic relative my-8 flex place-items-center before:absolute before:h-[450px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-to-br before:from-transparent before:to-blue-700 before:opacity-10 before:blur-2xl before:content-[''] after:absolute after:h-[180px] after:w-full after:translate-x-1/3 after:from-sky-900 after:via-[#0141ff] after:opacity-40 after:blur-2xl after:content-[''] sm:before:w-[680px] sm:after:w-[240px] before:lg:h-[360px]">
           <Image
             className="relative drop-shadow-[0_0_0.3rem_#ffffff70]"
             src="/logo-ipc-alumni-bike-white.png"
@@ -51,22 +56,6 @@ const HomeWebPage = () => {
             priority
           />
         </div>
-
-        <a
-          href={NavigationPaths.homeApp}
-          className="group rounded-lg border border-transparent px-4 py-4 text-white transition-colors hover:border-blue-700 hover:bg-blue-950/30 hover:text-blue-500"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2
-            className={`flex items-center font-semibold text-white drop-shadow-[0_0_0.3rem_#ffffff70]`}
-          >
-            Try now
-            <span className="inline-block ps-2 transition-transform group-hover:translate-x-2 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-        </a>
 
         <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-6xl lg:grid-cols-4 lg:text-left">
           <a
