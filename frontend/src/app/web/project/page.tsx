@@ -111,7 +111,8 @@ const Project = async () => {
 
   return (
     <ContainerWebpage>
-      <div className="flex flex-col gap-y-8">
+      <div className="flex flex-col gap-y-8 text-white">
+        <div>username: {username}</div>
         <TitleLabelWeb>Release Notes and Feature Overview</TitleLabelWeb>
         <VersionInformation />
         <TitleLabelWeb>Development Overview and Issues Tracker</TitleLabelWeb>
