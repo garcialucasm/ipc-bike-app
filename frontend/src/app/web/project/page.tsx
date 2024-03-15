@@ -12,8 +12,8 @@ import TitleLabelWeb from "@/components/Others/TitleLabelWeb"
 import VersionInformation from "@/components/Web/VersionInformation"
 
 const getData = async () => {
-  const username = process.env.JIRA_USERNAME
-  const token = process.env.JIRA_TOKEN
+  const username = process.env.JIRA_USERNAME?.trim()
+  const token = process.env.JIRA_TOKEN?.trim()
 
   const headers = new Headers()
   headers.set("Authorization", "Basic " + btoa(`${username}:${token}`))
@@ -46,6 +46,10 @@ const getData = async () => {
 
 const Project = async () => {
   const data = await getData()
+  const username = process.env.JIRA_USERNAME
+  console.log("data")
+  console.log(data)
+  console.log(`username: ${username}`)
 
   const renderIssues = (status: string) => {
     return data.issues
@@ -107,7 +111,8 @@ const Project = async () => {
 
   return (
     <ContainerWebpage>
-      <div className="flex flex-col gap-y-8">
+      <div className="flex flex-col gap-y-8 text-white">
+        <div>username: {username}</div>
         <TitleLabelWeb>Release Notes and Feature Overview</TitleLabelWeb>
         <VersionInformation />
         <TitleLabelWeb>Development Overview and Issues Tracker</TitleLabelWeb>
