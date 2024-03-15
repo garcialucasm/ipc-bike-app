@@ -10,6 +10,7 @@ import { Stack } from "@phosphor-icons/react/dist/ssr/Stack"
 import ContainerWebpage from "@/components/Containers/ContainerWebpage"
 import TitleLabelWeb from "@/components/Others/TitleLabelWeb"
 import VersionInformation from "@/components/Web/VersionInformation"
+import withAuth from "@/app/auth/withAuth"
 
 const getData = async () => {
   const username = process.env.JIRA_USERNAME?.trim()
@@ -45,6 +46,7 @@ const getData = async () => {
 }
 
 const Project = async () => {
+  const isAuth = withAuth()
   const data = await getData()
   const username = process.env.JIRA_USERNAME
   console.log("data")

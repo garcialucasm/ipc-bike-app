@@ -1,8 +1,4 @@
-interface Props {
-  children: React.ReactNode
-}
-
-function ContainerWebpage({ children }: Props) {
+function ContainerWebpage({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div
