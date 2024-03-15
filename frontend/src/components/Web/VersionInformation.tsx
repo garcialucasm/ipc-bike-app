@@ -9,8 +9,8 @@ const versionInformation = {
     interface: "Access only to the Key Keeper",
     features: [
       "Login System",
-      "User registration",
-      "Bike chooser",
+      "User Registration",
+      "Bike Chooser",
       "Create Single Booking",
       "Approve, Return or Cancel Bookings",
       "Interface for previous or canceled bookings",
@@ -66,8 +66,8 @@ fetch(
 function VersionInformation() {
   return (
     <div className="mb-4 flex flex-wrap gap-x-4 gap-y-8 text-sm">
-      <div className="min-w-64 flex-1 rounded-xl border border-gray-500 bg-gray-900 text-white">
-        <span className="flex items-center justify-between border-b border-gray-500 p-4">
+      <div className="min-w-64 flex-1 rounded-xl border bg-gray-900 border-gray-600 text-white">
+        <span className="flex items-center justify-between border-b border-gray-600 p-4">
           <h1 className="font-bold">EXPECTED FEATURES</h1>
           <Stack size={24} />
         </span>
@@ -82,8 +82,8 @@ function VersionInformation() {
           ))}
         </ul>
       </div>
-      <div className="min-w-64 flex-1 rounded-xl border border-gray-500 bg-gray-900 text-white">
-        <span className="flex items-center justify-between border-b border-gray-500 p-4">
+      <div className="min-w-64 flex-1 rounded-xl border bg-gray-900 border-gray-600 text-white">
+        <span className="flex items-center justify-between border-b border-gray-600 p-4">
           <h1 className="font-bold">
             NEXT VERSION{" "}
             <span className="px-2 text-xs font-light italic">
@@ -103,8 +103,8 @@ function VersionInformation() {
           ))}
         </ul>
       </div>
-      <div className="min-w-64 flex-1 rounded-xl border border-gray-500 bg-gray-900 text-white">
-        <span className="flex items-center justify-between border-b border-gray-500 p-4">
+      <div className="min-w-64 flex-1 rounded-xl border bg-gray-900 border-green-600 text-white">
+        <span className="flex items-center justify-between border-b border-gray-600 p-4">
           <h1 className="font-bold">
             CURRENT VERSION{" "}
             <span className="px-2 text-xs font-light italic">

@@ -23,7 +23,6 @@ const getData = async () => {
     // Adjust 'maxResults' as needed, but be aware of API rate limits
     query: `jql=project=IB&startAt=0&maxResults=200`,
   }
-  console.error("Something went wrong")
 
   if (!username) {
     console.error("Jira API error: Undefined Jira Username.")
@@ -38,6 +37,7 @@ const getData = async () => {
     options
   )
 
+  console.log(`Jira API Fetching status: ${res.status}`)
   if (!res.ok) {
     console.error("Something went wrong")
   }
@@ -112,22 +112,22 @@ const Project = async () => {
         <VersionInformation />
         <TitleLabelWeb>Development Overview and Issues Tracker</TitleLabelWeb>
         <div className="flex flex-wrap gap-x-4 gap-y-8 text-sm">
-          <div className="flex-1 rounded-xl bg-gray-900 px-1 py-4 text-white">
-            <span className="mb-4 flex items-center justify-between px-4">
+          <div className="flex-1 rounded-xl border border-gray-600 p-4 text-white">
+            <span className="mb-4 flex items-center justify-between">
               <h1 className="font-bold">TO DO</h1>
               <Stack size={24} />
             </span>
             <div>{renderIssues("To Do")}</div>
           </div>
-          <div className="flex-1 rounded-xl bg-gray-900 px-1 py-4 text-white">
-            <span className="mb-4 flex items-center justify-between px-4">
+          <div className="flex-1 rounded-xl border border-gray-600 p-4 text-white">
+            <span className="mb-4 flex items-center justify-between">
               <h1 className="font-bold">IN PROGRESS</h1>
               <Gear size={24} className="animate-spin " />
             </span>
             <div>{renderIssues("In Progress")}</div>
           </div>
-          <div className="flex-1 rounded-xl bg-gray-900 px-1 py-4 text-white">
-            <span className="mb-4 flex items-center justify-between px-4">
+          <div className="flex-1 rounded-xl border border-gray-600 p-4 text-white">
+            <span className="mb-4 flex items-center justify-between">
               <h1 className="font-bold">DONE</h1>
               <CheckFat size={24} />
             </span>
