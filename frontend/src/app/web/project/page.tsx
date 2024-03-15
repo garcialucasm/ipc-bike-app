@@ -46,6 +46,10 @@ const getData = async () => {
 
 const Project = async () => {
   const data = await getData()
+  const username = process.env.JIRA_USERNAME
+  console.log("data")
+  console.log(data)
+  console.log(`username: ${username}`)
 
   const renderIssues = (status: string) => {
     return data.issues
