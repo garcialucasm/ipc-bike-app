@@ -22,7 +22,7 @@ const getData = async () => {
     method: "GET",
     headers: headers,
     // Adjust 'maxResults' as needed, but be aware of API rate limits
-    query: `jql=project=IB&startAt=0&maxResults=200`,
+    query: `jql=project=IB`,
   }
 
   if (!username) {
