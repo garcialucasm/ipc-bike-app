@@ -202,7 +202,7 @@ function PreviousBookingsOverview() {
             <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50 backdrop-blur">
               <div
                 ref={modalRef}
-                className="m-8 grid min-w-72 max-w-md gap-y-4 rounded-2xl bg-white p-8"
+                className="m-8 grid min-w-96 max-w-md gap-y-4 rounded-2xl bg-white p-8"
               >
                 <InfoboxSingleBookingModal
                   bikeType={modalAction.bikeType}
