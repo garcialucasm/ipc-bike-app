@@ -12,8 +12,8 @@ import TitleLabelWeb from "@/components/Others/TitleLabelWeb"
 import VersionInformation from "@/components/Web/VersionInformation"
 
 const getData = async () => {
-  const username = process.env.JIRA_USERNAME
-  const token = process.env.JIRA_TOKEN
+  const username = process.env.JIRA_USERNAME?.trim()
+  const token = process.env.JIRA_TOKEN?.trim()
 
   const headers = new Headers()
   headers.set("Authorization", "Basic " + btoa(`${username}:${token}`))
@@ -21,7 +21,7 @@ const getData = async () => {
     method: "GET",
     headers: headers,
     // Adjust 'maxResults' as needed, but be aware of API rate limits
-    query: `jql=project=IB&startAt=0&maxResults=200`,
+    query: `jql=project=IB`,
   }
 
   if (!username) {
@@ -39,7 +39,7 @@ const getData = async () => {
 
   console.log(`Jira API Fetching status: ${res.status}`)
   if (!res.ok) {
-    console.error("Something went wrong")
+    console.error("Jira API Fetching: Something went wrong")
   }
   return res.json()
 }
