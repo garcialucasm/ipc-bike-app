@@ -67,6 +67,7 @@ export default class BookingService implements IBookingService {
         Bike: [bike],
         User: user,
         Status: BookingStatus.BOOKED,
+        CreatedAt: new Date(),
         ReturnedCondition: "",
         BikeCount: 1,
         Type: BookingType.SINGLE
