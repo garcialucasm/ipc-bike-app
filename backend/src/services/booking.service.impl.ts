@@ -126,6 +126,7 @@ export default class BookingService implements IBookingService {
 
   async approve(bookingId: number): Promise<Booking> {
     let booking: Booking = await this.bookingRepository.findById(bookingId)
+    booking.ConfirmedAt = new Date()
     booking.User = await this.userService.changeStatus(booking.User, UserStatus.INUSE)
     booking.Bike[0] = await this.bikeService.changeStatus(booking.Bike[0], BikeStatus.INUSE)
     let updatedBooking = await this.changeStatus(booking, BookingStatus.DELIVERED)
@@ -135,6 +136,7 @@ export default class BookingService implements IBookingService {
 
   async returnBike(bookingId: number): Promise<Booking> {
     let booking: Booking = await this.bookingRepository.findById(bookingId)
+    booking.ReturnedAt = new Date()
     booking.User = await this.userService.changeStatus(booking.User, UserStatus.FREE)
     booking.Bike[0] = await this.bikeService.changeStatus(booking.Bike[0], BikeStatus.FREE)
     let updatedBooking = await this.changeStatus(booking, BookingStatus.RETURNED)

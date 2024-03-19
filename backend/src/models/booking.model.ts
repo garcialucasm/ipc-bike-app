@@ -3,14 +3,14 @@ import { Bike } from "./bike.model";
 import { User } from "./user.model";
 
 enum BookingStatus {
-  BOOKED = "BOOKED", 
+  BOOKED = "BOOKED",
   DELIVERED = "DELIVERED",
-  RETURNED = "RETURNED", 
+  RETURNED = "RETURNED",
   CANCELED = "CANCELED"
 }
 
 enum BookingType {
-  SINGLE = "SINGLE", 
+  SINGLE = "SINGLE",
   GROUP = "GROUP",
   CLASSROOM = "CLASSROOM"
 }
@@ -24,9 +24,9 @@ interface Booking {
   Type: BookingType;
   CreatedAt?: Date;
   ConfirmedAt?: Date;
-  ReturnedAt?: Date
-  ReturnedCondition: string
-  Notes?: string
+  ReturnedAt?: Date;
+  ReturnedCondition: string;
+  Notes?: string;
 }
 
 export { BookingStatus, BookingType, Booking };
