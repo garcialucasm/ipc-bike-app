@@ -6,37 +6,39 @@ const versionInformation = {
   currentVersion: {
     lastUpdate: "",
     versionNumber: "0.0.3",
-    interface: "Access only to the Key Keeper",
+    interface: "Access only to the Student Council",
     features: [
       "Login System",
       "User Registration",
       "Bike Chooser",
       "Create Single Booking",
       "Approve, Return or Cancel Bookings",
-      "Interface for previous or canceled bookings",
       "Interface to see bike availability",
       "Project Webpage",
     ],
   },
   nextVersion: {
-    versionNumber: "0.2.0",
-    interfaces: ["Key Keeper", "Admin"],
+    versionNumber: "0.1.0",
+    interfaces: ["Student Council", "Admin"],
     features: [
-      "Inventory management interface",
-      "Different interfaces for admin and key keeper",
+      "Interface for previous or canceled bookings",
+      "Bike inventory management interface",
+      "Different interfaces and permissions for admin and student council",
       "User management interface for admin",
     ],
   },
   expectedVersion: {
     versionNumber: "",
-    interfaces: ["Key Keeper", "Admin", "Student"],
+    interfaces: ["Student Council", "Admin", "Student"],
     features: [
-      "Student interface",
-      "Manage Profile",
-      "Book by selecting a specific date",
+      "Interface for the common students",
+      "Calendar booking feature",
       "Booking expiration",
+      "Manage Profile",
+      "Bike usage statistics",
       "Group Booking",
       "Class Booking",
+      "Custom Settings",
     ],
   },
 }
@@ -66,7 +68,7 @@ fetch(
 function VersionInformation() {
   return (
     <div className="mb-4 flex flex-wrap gap-x-4 gap-y-8 text-sm">
-      <div className="min-w-64 flex-1 rounded-xl border bg-gray-900 border-gray-600 text-white">
+      <div className="min-w-64 flex-1 rounded-xl border border-gray-600 bg-gray-900 text-white">
         <span className="flex items-center justify-between border-b border-gray-600 p-4">
           <h1 className="font-bold">EXPECTED FEATURES</h1>
           <Stack size={24} />
@@ -82,7 +84,7 @@ function VersionInformation() {
           ))}
         </ul>
       </div>
-      <div className="min-w-64 flex-1 rounded-xl border bg-gray-900 border-gray-600 text-white">
+      <div className="min-w-64 flex-1 rounded-xl border border-gray-600 bg-gray-900 text-white">
         <span className="flex items-center justify-between border-b border-gray-600 p-4">
           <h1 className="font-bold">
             NEXT VERSION{" "}
@@ -103,7 +105,7 @@ function VersionInformation() {
           ))}
         </ul>
       </div>
-      <div className="min-w-64 flex-1 rounded-xl border bg-gray-900 border-green-600 text-white">
+      <div className="min-w-64 flex-1 rounded-xl border border-green-600 bg-gray-900 text-white">
         <span className="flex items-center justify-between border-b border-gray-600 p-4">
           <h1 className="font-bold">
             CURRENT VERSION{" "}
