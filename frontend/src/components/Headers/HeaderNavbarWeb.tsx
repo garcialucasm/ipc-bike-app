@@ -69,7 +69,7 @@ export default function HeaderNavbarWeb() {
               href={NavigationPaths.login}
               className="rounded-full btn-primary text-sm"
             >
-              Log in <span className="ps-2">-&gt;</span>
+              Go to App <span className="ps-2">-&gt;</span>
             </Link>
           </div>
           <div

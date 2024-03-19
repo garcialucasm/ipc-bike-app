@@ -16,6 +16,7 @@ import { Bicycle } from "@phosphor-icons/react/dist/ssr/Bicycle"
 import { ChartLine } from "@phosphor-icons/react/dist/ssr/ChartLine"
 import { Gear } from "@phosphor-icons/react/dist/ssr/Gear"
 import { SignOut } from "@phosphor-icons/react/dist/ssr/SignOut"
+import { Info } from "@phosphor-icons/react/dist/ssr/Info"
 
 import { NavigationPaths } from "@/types/NavigationPaths"
 import Button from "@/components/Buttons/Button"
@@ -142,7 +143,10 @@ export default function HeaderNavbarApp() {
                   ></path>
                 </svg>
               </Button>
-              <Link href={NavigationPaths.homeWeb} className="ms-2 flex md:me-24">
+              <Link
+                href={NavigationPaths.homeWeb}
+                className="ms-2 flex md:me-24"
+              >
                 <Image
                   src="/logo-ipc-alumni-bike-white-h2.png"
                   className="h-8 w-auto xl:h-8"
@@ -245,6 +249,19 @@ export default function HeaderNavbarApp() {
                             </div>
                           </div>
                         </Link>
+                        <a
+                          href={NavigationPaths.project}
+                          target="_blank"
+                          className="text-slate-700"
+                          onClick={() => setIsOpenedAccountMenu(false)}
+                        >
+                          <div className="block px-10 py-2 hover:bg-slate-200 hover:text-blue-700">
+                            <div className="flex w-fit items-center">
+                              <Info size={20} />
+                              <div className="px-2">About</div>
+                            </div>
+                          </div>
+                        </a>
                         <Link
                           href={NavigationPaths.settings}
                           className="text-slate-400"
