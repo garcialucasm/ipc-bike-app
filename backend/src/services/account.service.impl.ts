@@ -2,14 +2,13 @@ import bcrypt from "bcrypt";
 import { Account } from "../models/account.model";
 import IAccountRepository from "../repositories/account.repository";
 import IAccountService from "./account.service";
-import dotenv from "dotenv"
 import { generateAsyncToken } from "../utils/auth";
 import { AccountDTO } from "../dto/account.dto";
-import { logger } from "../logger";
+import { getLogger } from "../logger";
 
 const saltRounds = 8
 
-dotenv.config()
+const logger = getLogger('AccountService')
 
 export default class AccountService implements IAccountService {
 
@@ -20,14 +19,13 @@ export default class AccountService implements IAccountService {
   }
 
   async registerAccount(name: string, email: string, password: string): Promise<Account> {
-    logger.debug("Account Service called: registerAccount")
-    console.log("registerAccount")
+    logger.debug("registerAccount")
     let account: Account
 
     const user = await this.accountRepository.findByEmail(email)
 
     if (user) {
-      logger.warn("Account Service called: registerAccount | E-mail already registered")
+      logger.warn("E-mail already registered")
       throw new Error("E-mail already registered");
     }
     console.log("Encripting password")
@@ -41,16 +39,16 @@ export default class AccountService implements IAccountService {
     } as Account
 
     account = await this.accountRepository.save(account)
-    logger.silly("Account Service called: registerAccount | registered successfully")
+    logger.silly("registered successfully")
     return account
   }
 
   async login(loginEmail: string, loginPassword: string): Promise<AccountDTO> {
-    logger.debug("Account Service called: login")
+    logger.debug("login")
 
     try {
       if (!loginEmail) {
-        logger.error("Account Service called: Login | Email is not provided")
+        logger.error("Email is not provided")
         throw new Error("Email is not provided");
       }
 
@@ -59,24 +57,24 @@ export default class AccountService implements IAccountService {
       const storedPassword = foundAccount.Hash
       const storedId = foundAccount.ID
       const storedAccountName = foundAccount.AccountName
-
+      console.log(process.env)
       if (!storedEmail) {
-        logger.silly("Account Service called: Login | Email is not correct or does not exist")
+        logger.silly("Email is not correct or does not exist")
         throw new Error("Email is not correct or does not exist");
       }
 
       if (!storedPassword) {
-        logger.error("Account Service called: Login | Password is not provided")
+        logger.error("Password is not provided")
         throw new Error("Password is not provided");
       }
 
       if (!storedId) {
-        logger.error("Account Service called: Login | Id does not exist")
+        logger.error("Id does not exist")
         throw new Error("Id does not exist");
       }
 
       if (!storedAccountName) {
-        logger.error("Account Service called: Login | Account name is not valid or does not exist")
+        logger.error("Account name is not valid or does not exist")
         throw new Error("Account name is not valid or does not exist");
       }
 
@@ -87,17 +85,17 @@ export default class AccountService implements IAccountService {
 
         return { id: storedId, accountName: storedAccountName, token: asyncToken };
       } else {
-        logger.silly("Account Service called: Login | Password is not correct")
+        logger.silly("Password is not correct")
         throw new Error('Password is not correct');
       }
     } catch (error) {
-      logger.error(`Account Service called: Login error | ${error}`)
+      logger.debug(error)
       throw error;
     }
   }
 
   async findByEmail(email: string): Promise<Account | null> {
-    logger.debug("Account Service called: findByEmail")
+    logger.debug("findByEmail")
     let result = this.accountRepository.findByEmail(email)
     return result
   }
