@@ -1,3 +1,15 @@
+export interface Bike {
+  id?: number;
+  numbering: string;
+  bikeType: string;
+  size: string;
+  currentStatus: BikeStatus;
+  isActive: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  deletedAt?: string;
+}
+
 export enum BikeStatus {
   FREE = "FREE",
   BOOKED = "BOOKED",

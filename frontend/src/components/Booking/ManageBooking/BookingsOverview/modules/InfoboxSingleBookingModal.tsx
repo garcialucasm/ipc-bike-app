@@ -3,28 +3,22 @@ import { XCircle } from "@phosphor-icons/react/dist/ssr/XCircle"
 import { User } from "@phosphor-icons/react/dist/ssr/User"
 import { Info } from "@phosphor-icons/react/dist/ssr/Info"
 
-import { IconSvgBikeStandard } from "@/components/Others/IconsSvg"
-import { BookingModalActions, BookingStatus } from "@/types/BookingType"
+import {
+  Booking,
+  BookingModalActions,
+  BookingStatus,
+} from "@/types/BookingType"
+import { formatDateString } from "@/utils/strings"
+import { Bicycle } from "@phosphor-icons/react/dist/ssr/Bicycle"
 
 interface InfoboxSingleBookingProps {
-  userName: string | null
-  bikeType: string | null
-  bikeNumbering?: string | null
-  bookingStatus?: string | null
+  booking: Booking
   dialogMessage?: string | null
   actionToConfirm?: string | null
 }
 
 function InfoboxSingleBookingModal(BookingData: InfoboxSingleBookingProps) {
-  const {
-    bikeType: bikeSize,
-    userName,
-    bikeNumbering,
-    bookingStatus,
-    dialogMessage,
-    actionToConfirm,
-  } = BookingData
-
+  const { booking, dialogMessage, actionToConfirm } = BookingData
   return (
     <>
       {/* ------------------------------- Modal Title ------------------------------ */}
@@ -51,57 +45,84 @@ function InfoboxSingleBookingModal(BookingData: InfoboxSingleBookingProps) {
         )}
         {`${actionToConfirm}`}{" "}
         {actionToConfirm !== BookingModalActions.INFO &&
-          (bookingStatus === BookingStatus.BOOKED ? "Booking?" : "Return?")}
+          (booking.status === BookingStatus.BOOKED ? "Booking?" : "Return?")}
       </p>
       {/* -------------------------------------------------------------------------- */}
 
       <p className="text-start">{dialogMessage}</p>
-      <div className="flex w-full flex-col gap-3 text-slate-600">
-        <div className="flex w-full items-center rounded-2xl border bg-white p-3">
-          <div className="flex">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-400">
-              <User size={36} className="text-white" />
+      <div className="flex w-full flex-col gap-3 text-sm text-slate-600">
+        <div className="flex w-full items-start rounded-2xl border p-3">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-300">
+            <User size={32} className="text-white" />
+          </div>
+          <div className="flex flex-col justify-start px-3 text-left">
+            <p className="font-extrabold capitalize text-blue-800">
+              {booking.user}
+            </p>
+            <div className="font-semibold">Room: {booking.room}</div>
+          </div>
+        </div>
+        <div className="flex w-full items-start rounded-2xl border p-3">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-300 p-1">
+            <Bicycle size={32} className="text-white" />
+          </div>
+          <div className="flex flex-col justify-start px-3 text-left">
+            <div className="font-extrabold capitalize text-blue-800">
+              Bike {booking.bike}
             </div>
-            <div className="flex flex-col justify-start text-left">
-              <p className="px-3 font-extrabold capitalize leading-4 text-blue-800">
-                {userName}
-              </p>
-              <p className="px-3 text-xs font-semibold leading-loose">
+            <span className="grow">
+              <p className="text-start font-semibold">
                 Status:{" "}
                 <span
-                  className={`${bookingStatus === BookingStatus.BOOKED ? "text-yellow-500" : "text-rose-500"} font-extrabold`}
+                  className={`${booking.status === BookingStatus.BOOKED ? "text-yellow-500" : "text-rose-500"} font-extrabold capitalize`}
                 >
-                  {bookingStatus}
+                  {booking.status}
                 </span>
               </p>
-            </div>
+            </span>
           </div>
         </div>
-        <div className="flex w-full items-center rounded-2xl border bg-white p-3">
-          <div className="flex">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-400 p-1">
-              <IconSvgBikeStandard
-                height="42"
-                width="42"
-                fillColor="fill-white"
-              />
-            </div>
-            <div className="flex flex-col justify-start text-left">
-              <span className="px-3 font-extrabold capitalize leading-4 text-blue-800">
-                {bikeSize}
-              </span>
-              <span className="grow px-3 text-xs">
-                <span className="font-semibold leading-loose">
-                  Bike selected:{" "}
-                  <span className="text-lg font-bold leading-4 text-blue-800">
-                    {" "}
-                    {bikeNumbering}
-                  </span>
-                </span>
-              </span>
-            </div>
-          </div>
-        </div>
+      </div>
+      <div className="text-left text-sm font-semibold">
+        {booking.createdAt && (
+          <p className="flex items-center">
+            <CheckCircle
+              size={16}
+              className="me-1 text-green-600"
+              weight="fill"
+            />{" "}
+            Created:
+            <span className="px-1 font-normal">
+              {formatDateString(booking.createdAt)}
+            </span>
+          </p>
+        )}
+        {booking.confirmedAt && (
+          <p className="flex items-center">
+            <CheckCircle
+              size={16}
+              className="me-1 text-green-600"
+              weight="fill"
+            />{" "}
+            Confirmed:
+            <span className="px-1 font-normal">
+              {formatDateString(booking.confirmedAt)}
+            </span>
+          </p>
+        )}
+        {booking.returnedAt && (
+          <p className="flex items-center">
+            <CheckCircle
+              size={16}
+              className="me-1 text-green-600"
+              weight="fill"
+            />{" "}
+            Returned:
+            <span className="px-1 font-normal">
+              {formatDateString(booking.returnedAt)}
+            </span>
+          </p>
+        )}
       </div>
     </>
   )

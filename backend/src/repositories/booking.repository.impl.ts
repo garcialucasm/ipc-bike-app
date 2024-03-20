@@ -13,6 +13,10 @@ function toObj(properties: string[], values: any[]) {
 function populateBookingFromRows(rows: any[], offset: number) : Booking {
     let booking: Booking = bookingFromRow(rows[offset])
 
+    booking.CreatedAt = rows[offset]['bk.created_at'] ? new Date(rows[offset]['bk.created_at']) : undefined
+    booking.ConfirmedAt = rows[offset]['bk.confirmed_at'] ? new Date(rows[offset]['bk.confirmed_at']) : undefined
+    booking.ReturnedAt = rows[offset]['bk.returned_at'] ? new Date(rows[offset]['bk.returned_at']) : undefined
+
     switch (booking.Type) {
         case BookingType.SINGLE:
             booking.Bike.push(bikeFromRow(filterPropertiesWithPrefix(rows[offset], 'b')))
