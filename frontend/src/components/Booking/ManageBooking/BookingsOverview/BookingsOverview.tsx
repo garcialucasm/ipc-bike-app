@@ -11,7 +11,7 @@ import {
 import {
   returnBookingFetchApi,
   approveBookingFetchApi,
-  bookingFetchApi,
+  allBookingsFetchApi,
   cancelBookingFetchApi,
 } from "@/services/bookingApi"
 import StatusIndicator from "@/components/Others/StatusIndicator"
@@ -41,10 +41,10 @@ function BookingsOverview() {
   const isAuth = accountData?.isAuthenticated || false
   const [reloadData, setReloadData] = useState(false)
   const [bookingData, setBookingData] = useState<{
-    activeBookings: any
+    allBookings: any
     error: string | null
   }>({
-    activeBookings: null,
+    allBookings: null,
     error: null,
   })
 
@@ -80,7 +80,7 @@ function BookingsOverview() {
   const { updatingBikeAvailability } = useBikeAvailabilityContext()
   const modalRef = useRef<HTMLDivElement>(null)
 
-  const { activeBookings, error } = bookingData
+  const { allBookings: allBookings, error } = bookingData
 
   /* ---------------- Handle info button to redirect to modal --------------- */
   async function handleClickInfo(booking: Booking) {
@@ -232,7 +232,7 @@ function BookingsOverview() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await bookingFetchApi()
+      const result = await allBookingsFetchApi(false)
       setBookingData(result)
     }
 
@@ -241,16 +241,16 @@ function BookingsOverview() {
     }
   }, [reloadData, isAuth])
 
-  if (!activeBookings || activeBookings.length === 0) {
+  if (!allBookings || allBookings.length === 0) {
     return <EmptyBookingsOverview />
-  } else if (activeBookings.length > 0) {
+  } else if (allBookings.length > 0) {
     return (
       <>
         <div className="w-full overflow-x-auto rounded-2xl">
           <table className="w-full text-left text-sm text-slate-500 rtl:text-right">
             <TableHeader />
             <tbody>
-              {activeBookings.map((booking: any) => (
+              {allBookings.map((booking: any) => (
                 <tr
                   key={booking.id}
                   className="whitespace-nowrap border-b-2 border-white bg-slate-100 py-4 text-slate-900"
