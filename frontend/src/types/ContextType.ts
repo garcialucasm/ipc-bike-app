@@ -4,7 +4,6 @@ import { SingleBookingProps, SingleBookingSections } from "./BookingType";
 import { ServerResult } from "./ServerResult";
 import { UserData } from "./UserType";
 
-// TODO: Just for test
 export type AuthContextProps = {
     accountData: AccountProps | null;
     settingAccountData: (accountData: AccountProps) => void;
