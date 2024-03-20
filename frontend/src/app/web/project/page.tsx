@@ -22,6 +22,7 @@ const getData = async () => {
     headers: headers,
     // Adjust 'maxResults' as needed, but be aware of API rate limits
     query: `jql=project=IB`,
+    cache: "no-store",
   }
 
   if (!username) {
@@ -32,10 +33,10 @@ const getData = async () => {
     console.error("Jira API error: Undefined Jira Token")
   }
 
-  const res = await fetch(
-    "https://ipc-bikes.atlassian.net/rest/api/2/search",
-    options
-  )
+  const res = await fetch("https://ipc-bikes.atlassian.net/rest/api/2/search", {
+    ...options,
+    cache: "no-store", // Set cache option here
+  })
 
   console.log(`Jira API Fetching status: ${res.status}`)
   if (!res.ok) {
@@ -125,6 +126,7 @@ const Project = async () => {
               <Gear size={24} className="animate-spin " />
             </span>
             <div>{renderIssues("In Progress")}</div>
+            <div>{renderIssues("IN REVIEW")}</div>
           </div>
           <div className="flex-1 rounded-xl border border-gray-600 p-4 text-white">
             <span className="mb-4 flex items-center justify-between">
