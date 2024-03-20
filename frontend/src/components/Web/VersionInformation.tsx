@@ -44,7 +44,7 @@ const versionInformation = {
 }
 
 const repoOwner = "garcialucasm"
-const repoName = "ipc-alumni-bike"
+const repoName = "ipc-bike-app"
 const branchName = "main"
 let formattedDate: any
 

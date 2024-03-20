@@ -8,14 +8,14 @@ function HomeWeb() {
       <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-tr from-gray-900 via-black to-gray-900 p-24 pt-[69px] text-white">
         <div className="z-10 my-8 w-full max-w-6xl items-center justify-between font-mono text-sm lg:flex">
           <a
-            href="https://github.com/garcialucasm/ipc-alumni-bike"
+            href="https://github.com/garcialucasm/ipc-bike-app"
             target="_blank"
             rel="noopener noreferrer"
           >
             <p className="hidden w-full justify-center border-b border-neutral-800 bg-zinc-800/30 bg-gradient-to-b from-inherit pb-6 pt-8 backdrop-blur-2xl hover:border-blue-700 hover:bg-blue-950/30 lg:static  lg:flex lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:bg-zinc-800/30 lg:p-4">
               Github project 👉
               <code className="ps-1 font-mono font-bold text-blue-500">
-                /ipc-alumni-bike
+                /ipc-bike-app
               </code>
             </p>
           </a>
