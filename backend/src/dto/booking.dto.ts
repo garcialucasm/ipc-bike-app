@@ -11,6 +11,8 @@ interface BookingDTO {
   id: number
   status: string
   user: string
+  room: string
+  term: string
   bikeType: string | string[]
   bike: string | string[]
   createdAt: Date | null

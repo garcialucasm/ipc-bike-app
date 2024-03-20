@@ -1,3 +1,16 @@
+export interface User {
+  id?: number,
+  type: UserType,
+  name: string,
+  room: string,
+  term: string,
+  status: UserStatus,
+  isActive?: Boolean,
+  createdAt?: Date,
+  updatedAt?: Date,
+  deletedAt?: Date,
+}
+
 export enum UserType {
   STUDENT = "STUDENT",
   PROFESSOR = "PROFESSOR",
@@ -9,10 +22,8 @@ export enum UserStatus {
   INUSE = "INUSE",
   FREE = "FREE",
 }
-interface UserData {
+export interface UserData {
   firstName: string;
   lastName: string;
   roomNumber: string;
 }
-
-export type { UserData };

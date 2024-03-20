@@ -3,7 +3,11 @@
 import { useState, useEffect, useRef } from "react"
 import { UserCircle } from "@phosphor-icons/react/dist/ssr/UserCircle"
 
-import { BookingModalActions, BookingStatus } from "@/types/BookingType"
+import {
+  Booking,
+  BookingModalActions,
+  BookingStatus,
+} from "@/types/BookingType"
 import {
   returnBookingFetchApi,
   approveBookingFetchApi,
@@ -23,6 +27,7 @@ import ActionButtonCancel from "@/components/Buttons/ActionButtonCancel"
 import ActionButtonConfirm from "@/components/Buttons/ActionButtonConfirm"
 import ActionButtonInfo from "@/components/Buttons/ActionButtonInfo"
 import { useAuth } from "@/context/auth"
+import { formatDateString } from "@/utils/strings"
 
 const messageinitial = "Confirm Action"
 const messageCancelBooking = "Are you sure to cancel this booking?"
@@ -45,22 +50,28 @@ function BookingsOverview() {
 
   const [modalAction, setModalAction] = useState<{
     isOpen: boolean
-    bookingId: number | null
-    userName: string | null
-    bikeType: string | null
-    bikeNumbering: string | null
-    status: BookingStatus | null
+    booking: Booking
     actionToConfirm: BookingModalActions | null
     dialogMessage: string
     isConfirmed: boolean | null
     resultMessage: string
   }>({
     isOpen: false,
-    bookingId: null,
-    userName: null,
-    bikeType: null,
-    bikeNumbering: null,
-    status: null,
+    booking: {
+      user: "",
+      term: "",
+      room: "",
+      bike: "",
+      bikeCount: "",
+      bikeType: "",
+      status: null,
+      type: null,
+      createdAt: "",
+      confirmedAt: "",
+      returnedAt: "",
+      returnedCondition: "",
+      notes: "",
+    },
     actionToConfirm: null,
     dialogMessage: messageinitial,
     isConfirmed: null,
@@ -72,22 +83,11 @@ function BookingsOverview() {
   const { activeBookings, error } = bookingData
 
   /* ---------------- Handle info button to redirect to modal --------------- */
-  async function handleClickInfo(
-    bookingId: number,
-    status: BookingStatus,
-    bikeType: string,
-    bikeNumbering: string,
-    userName: string
-  ) {
-    const bookingStatus = status.toUpperCase() as BookingStatus
+  async function handleClickInfo(booking: Booking) {
     setModalAction((prev) => ({
       ...prev,
       isOpen: true,
-      bookingId: bookingId,
-      bikeType: bikeType,
-      bikeNumbering: bikeNumbering,
-      userName: userName,
-      status: bookingStatus,
+      booking: booking,
       actionToConfirm: BookingModalActions.INFO,
     }))
     setModalAction((prev) => ({
@@ -97,22 +97,12 @@ function BookingsOverview() {
   }
 
   /* ---------------- Handle cancel button to redirect to modal --------------- */
-  async function handleClickCancellation(
-    bookingId: number,
-    status: BookingStatus,
-    bikeType: string,
-    bikeNumbering: string,
-    userName: string
-  ) {
-    const bookingStatus = status.toUpperCase() as BookingStatus
+  async function handleClickCancellation(booking: Booking) {
+    const bookingStatus = booking.status && booking.status
     setModalAction((prev) => ({
       ...prev,
       isOpen: true,
-      bookingId: bookingId,
-      bikeType: bikeType,
-      bikeNumbering: bikeNumbering,
-      userName: userName,
-      status: bookingStatus,
+      booking: booking,
       actionToConfirm: BookingModalActions.CANCEL,
     }))
     if (bookingStatus === BookingStatus.BOOKED) {
@@ -129,22 +119,12 @@ function BookingsOverview() {
   }
 
   /* ---------------- Handle confirm button to redirect to modal --------------- */
-  async function handleClickConfirmation(
-    bookingId: number,
-    status: BookingStatus,
-    bikeType: string,
-    bikeNumbering: string,
-    userName: string
-  ) {
-    const bookingStatus = status.toUpperCase() as BookingStatus
+  async function handleClickConfirmation(booking: Booking) {
+    const bookingStatus = booking.status && booking.status
     setModalAction((prev) => ({
       ...prev,
       isOpen: true,
-      bookingId: bookingId,
-      bikeType: bikeType,
-      bikeNumbering: bikeNumbering,
-      userName: userName,
-      status: bookingStatus,
+      booking: booking,
       actionToConfirm: BookingModalActions.CONFIRM,
     }))
     if (bookingStatus === BookingStatus.BOOKED) {
@@ -162,28 +142,28 @@ function BookingsOverview() {
 
   /* ------------------------ Handle confirm action modal ------------------------ */
   async function handleConfirmAction(confirm: boolean) {
-    if (confirm && modalAction.bookingId && modalAction.status) {
-      const { bookingId, status } = modalAction
+    if (confirm && modalAction.booking.id && modalAction.booking.status) {
+      const { id, status } = modalAction.booking
       const bookingStatus = status.toUpperCase() as BookingStatus
       const actionToConfirm = modalAction.actionToConfirm
       if (
         bookingStatus === BookingStatus.BOOKED &&
         actionToConfirm === BookingModalActions.CONFIRM
       ) {
-        const response = await approveBookingFetchApi(bookingId)
+        const response = await approveBookingFetchApi(id)
         handleServerResponse(response)
       } else if (
         bookingStatus === BookingStatus.DELIVERED &&
         actionToConfirm === BookingModalActions.CONFIRM
       ) {
-        const response = await returnBookingFetchApi(bookingId)
+        const response = await returnBookingFetchApi(id)
         handleServerResponse(response)
       } else if (
         (bookingStatus === BookingStatus.BOOKED ||
           bookingStatus === BookingStatus.DELIVERED) &&
         actionToConfirm === BookingModalActions.CANCEL
       ) {
-        const response = await cancelBookingFetchApi(bookingId)
+        const response = await cancelBookingFetchApi(id)
         handleServerResponse(response)
       }
     } else {
@@ -250,7 +230,6 @@ function BookingsOverview() {
     }
   }, [])
 
-  
   useEffect(() => {
     const fetchData = async () => {
       const result = await bookingFetchApi()
@@ -276,74 +255,41 @@ function BookingsOverview() {
                   key={booking.id}
                   className="whitespace-nowrap border-b-2 border-white bg-slate-100 py-4 text-slate-900"
                 >
-                  <th scope="row" className="py-4">
-                    <div className="flex justify-center">
+                  <th scope="row" className="p-2">
+                    <div className="flex justify-center" title={booking.status}>
                       <StatusIndicator currentStatus={booking.status} />
                     </div>
                   </th>
                   <td
-                    className="flex items-center py-4 font-medium"
-                    onClick={() =>
-                      handleClickInfo(
-                        booking.id,
-                        booking.status,
-                        booking.bikeType,
-                        booking.bike,
-                        booking.user
-                      )
-                    }
+                    className="flex items-center p-2 font-medium"
+                    onClick={() => handleClickInfo(booking)}
                   >
                     <UserCircle size={28} className="me-2 text-slate-500" />
                     {booking.user}
                   </td>
-                  <td className="py-4 text-slate-500">
+                  <td className="p-2 text-slate-500">{booking.bike}</td>
+                  <td className="p-2 text-slate-500">
                     <span className="hidden md:inline-block">
-                      {booking.bikeType && booking.bikeType.length > 0
-                        ? booking.bikeType.charAt(0).toUpperCase() +
-                          booking.bikeType.slice(1)
-                        : ""}
+                      {booking.createdAt && formatDateString(booking.createdAt)}
                     </span>
                   </td>
-                  <td className="py-4 text-slate-500">{booking.bike}</td>
-                  <td className="flex w-full flex-row items-center justify-center py-4">
-                    <div>
+                  <td className="flex w-full flex-row items-center justify-center p-2">
+                    <div title="Info">
                       <ActionButtonInfo
-                        onClick={() =>
-                          handleClickInfo(
-                            booking.id,
-                            booking.status,
-                            booking.bikeType,
-                            booking.bike,
-                            booking.user
-                          )
-                        }
+                        onClick={() => handleClickInfo(booking)}
                         name="info-booking"
                       ></ActionButtonInfo>
                     </div>
-                    <div>
+                    <div title="Cancel">
                       <ActionButtonCancel
-                        onClick={() =>
-                          handleClickCancellation(
-                            booking.id,
-                            booking.status,
-                            booking.bikeType,
-                            booking.bike,
-                            booking.user
-                          )
-                        }
+                        onClick={() => handleClickCancellation(booking)}
                         name="cancel-booking"
                       ></ActionButtonCancel>
                     </div>
-                    <div>
+                    <div title="Confirm">
                       <ActionButtonConfirm
                         onClick={() => {
-                          handleClickConfirmation(
-                            booking.id,
-                            booking.status,
-                            booking.bikeType,
-                            booking.bike,
-                            booking.user
-                          )
+                          handleClickConfirmation(booking)
                         }}
                         name="approve-booking"
                       ></ActionButtonConfirm>
@@ -364,10 +310,7 @@ function BookingsOverview() {
                 className="m-8 grid min-w-96 max-w-md gap-y-4 rounded-2xl bg-white p-8"
               >
                 <InfoboxSingleBookingModal
-                  bikeType={modalAction.bikeType}
-                  userName={modalAction.userName}
-                  bikeNumbering={modalAction.bikeNumbering}
-                  bookingStatus={modalAction.status}
+                  booking={modalAction.booking}
                   dialogMessage={modalAction.dialogMessage}
                   actionToConfirm={modalAction.actionToConfirm}
                 />
