@@ -254,7 +254,7 @@ function InputSingleBike() {
                   <div
                     className={`flex items-center rounded-lg p-2 hover:bg-gray-100 ${bookingData.bikeNumbering && bike.Numbering && bookingData.bikeNumbering === bike.Numbering.toString() && "bg-slate-200 text-blue-700"}`}
                   >
-                    <div className="px-4 sm:px-5">
+                    <div className="flex items-center px-4 sm:px-5">
                       <input
                         id={`default-radio-${bike.Numbering}`}
                         type="radio"
@@ -265,7 +265,7 @@ function InputSingleBike() {
                           `${bike.Numbering},${bike.Size},${bike.BikeType}`
                         }
                         name="default-radio"
-                        className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-1 focus:ring-blue-500"
+                        className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-1"
                         checked={
                           bookingData.bikeNumbering &&
                           bike.Numbering &&

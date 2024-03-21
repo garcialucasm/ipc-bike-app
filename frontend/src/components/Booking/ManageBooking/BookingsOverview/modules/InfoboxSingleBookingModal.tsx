@@ -1,4 +1,5 @@
 import { CheckCircle } from "@phosphor-icons/react/dist/ssr/CheckCircle"
+import { Check } from "@phosphor-icons/react/dist/ssr/Check"
 import { XCircle } from "@phosphor-icons/react/dist/ssr/XCircle"
 import { User } from "@phosphor-icons/react/dist/ssr/User"
 import { Info } from "@phosphor-icons/react/dist/ssr/Info"
@@ -83,15 +84,10 @@ function InfoboxSingleBookingModal(BookingData: InfoboxSingleBookingProps) {
           </div>
         </div>
       </div>
-      <div className="text-left text-sm font-semibold">
+      <div className="text-left text-sm px-4 font-semibold text-slate-600">
         {booking.createdAt && (
           <p className="flex items-center">
-            <CheckCircle
-              size={16}
-              className="me-1 text-green-600"
-              weight="fill"
-            />{" "}
-            Created:
+            <Check size={12} className="me-1" /> Created:
             <span className="px-1 font-normal">
               {formatDateString(booking.createdAt)}
             </span>
@@ -99,12 +95,7 @@ function InfoboxSingleBookingModal(BookingData: InfoboxSingleBookingProps) {
         )}
         {booking.confirmedAt && (
           <p className="flex items-center">
-            <CheckCircle
-              size={16}
-              className="me-1 text-green-600"
-              weight="fill"
-            />{" "}
-            Confirmed:
+            <Check size={12} className="me-1" /> Confirmed:
             <span className="px-1 font-normal">
               {formatDateString(booking.confirmedAt)}
             </span>
@@ -112,12 +103,7 @@ function InfoboxSingleBookingModal(BookingData: InfoboxSingleBookingProps) {
         )}
         {booking.returnedAt && (
           <p className="flex items-center">
-            <CheckCircle
-              size={16}
-              className="me-1 text-green-600"
-              weight="fill"
-            />{" "}
-            Returned:
+            <Check size={12} className="me-1" /> Returned:
             <span className="px-1 font-normal">
               {formatDateString(booking.returnedAt)}
             </span>

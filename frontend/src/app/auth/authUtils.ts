@@ -39,7 +39,7 @@ export function getTokenFromCookies(name: string) {
     }
 };
 
-export async function setCookie(name: string, value: string, days: number = 7) {
+export async function setCookie(name: string, value: string, days: number = 14) {
     try {
         const expirationDate = new Date();
         expirationDate.setDate(expirationDate.getDate() + days);

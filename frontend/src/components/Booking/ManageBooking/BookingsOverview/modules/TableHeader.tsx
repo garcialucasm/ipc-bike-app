@@ -13,7 +13,7 @@ function TableHeader() {
             Bikes
           </th>
           <th scope="col" className="py-3 px-2">
-            <span className="hidden md:block">Created at</span>
+            <span className="hidden md:block">Created</span>
           </th>
           <th scope="col" className="py-3 px-2 text-center">
             Actions
