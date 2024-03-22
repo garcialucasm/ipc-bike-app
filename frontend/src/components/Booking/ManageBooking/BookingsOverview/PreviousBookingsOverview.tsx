@@ -200,7 +200,7 @@ function PreviousBookingsOverview() {
                   >
                     <UserCircle
                       size={28}
-                      className="me-2 min-w-14 text-slate-500"
+                      className="me-2 min-w-7 text-slate-500"
                     />
                     <p className="line-clamp-1 text-wrap">{booking.user}</p>
                   </td>
