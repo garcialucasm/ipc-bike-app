@@ -49,7 +49,10 @@ const branchName = "main"
 let formattedDate: any
 
 fetch(
-  `https://api.github.com/repos/${repoOwner}/${repoName}/commits/${branchName}`
+  `https://api.github.com/repos/${repoOwner}/${repoName}/commits/${branchName}`,
+  {
+    cache: "no-store",
+  }
 )
   .then((response) => response.json())
   .then((data) => {
