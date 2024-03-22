@@ -198,12 +198,17 @@ function PreviousBookingsOverview() {
                     className="flex items-center p-2 font-medium"
                     onClick={() => handleClickInfo(booking)}
                   >
-                    <UserCircle size={28} className="me-2 text-slate-500" />
-                    {booking.user}
+                    <UserCircle
+                      size={28}
+                      className="me-2 min-w-14 text-slate-500"
+                    />
+                    <p className="line-clamp-1 text-wrap">{booking.user}</p>
                   </td>
                   <td className="p-2 text-slate-500">{booking.bike}</td>
                   <td className="p-2 text-slate-500">
-                    {booking.createdAt && formatDateString(booking.createdAt)}
+                    <span className="hidden md:inline-block">
+                      {booking.createdAt && formatDateString(booking.createdAt)}
+                    </span>
                   </td>
                   <td className="flex w-full flex-row items-center justify-center p-2">
                     <div>
@@ -266,7 +271,7 @@ function PreviousBookingsOverview() {
             <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50 backdrop-blur">
               <div
                 ref={modalRef}
-                className="m-8 grid min-w-96 max-w-md gap-y-4 rounded-2xl bg-white p-8"
+                className="grid max-w-md gap-y-4 rounded-2xl bg-white p-8"
               >
                 <InfoboxSingleBookingModal
                   booking={modalAction.booking}

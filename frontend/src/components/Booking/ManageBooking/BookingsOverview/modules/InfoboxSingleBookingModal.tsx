@@ -53,18 +53,18 @@ function InfoboxSingleBookingModal(BookingData: InfoboxSingleBookingProps) {
       <p className="text-start">{dialogMessage}</p>
       <div className="flex w-full flex-col gap-3 text-sm text-slate-600">
         <div className="flex w-full items-start rounded-2xl border p-3">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-300">
+          <div className="flex h-14 min-w-14 items-center justify-center rounded-2xl bg-slate-300">
             <User size={32} className="text-white" />
           </div>
           <div className="flex flex-col justify-start px-3 text-left">
-            <p className="font-extrabold capitalize text-blue-800">
+            <span className="line-clamp-1 text-wrap font-extrabold capitalize leading-4 text-blue-800">
               {booking.user}
-            </p>
+            </span>
             <div className="font-semibold">Room: {booking.room}</div>
           </div>
         </div>
         <div className="flex w-full items-start rounded-2xl border p-3">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-300 p-1">
+          <div className="flex h-14 min-w-14 items-center justify-center rounded-2xl bg-slate-300 p-1">
             <Bicycle size={32} className="text-white" />
           </div>
           <div className="flex flex-col justify-start px-3 text-left">
@@ -84,26 +84,32 @@ function InfoboxSingleBookingModal(BookingData: InfoboxSingleBookingProps) {
           </div>
         </div>
       </div>
-      <div className="text-left text-sm px-4 font-semibold text-slate-600">
+      <div className="px-4 text-left text-sm font-semibold text-slate-600">
         {booking.createdAt && (
-          <p className="flex items-center">
-            <Check size={12} className="me-1" /> Created:
+          <p className="flex items-start">
+            <span className="flex items-center">
+              <Check size={12} className="me-1" /> Created:
+            </span>
             <span className="px-1 font-normal">
               {formatDateString(booking.createdAt)}
             </span>
           </p>
         )}
         {booking.confirmedAt && (
-          <p className="flex items-center">
-            <Check size={12} className="me-1" /> Confirmed:
+          <p className="flex items-start">
+            <span className="flex items-center">
+              <Check size={12} className="me-1" /> Confirmed:
+            </span>
             <span className="px-1 font-normal">
               {formatDateString(booking.confirmedAt)}
             </span>
           </p>
         )}
         {booking.returnedAt && (
-          <p className="flex items-center">
-            <Check size={12} className="me-1" /> Returned:
+          <p className="flex items-start">
+            <span className="flex items-center">
+              <Check size={12} className="me-1" /> Returned:
+            </span>
             <span className="px-1 font-normal">
               {formatDateString(booking.returnedAt)}
             </span>
