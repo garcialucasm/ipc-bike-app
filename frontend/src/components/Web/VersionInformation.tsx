@@ -14,6 +14,7 @@ const versionInformation = {
       "Create Single Booking",
       "Approve, Return or Cancel Bookings",
       "Interface to see bike availability",
+      "Interface for previous or canceled bookings",
       "Project Webpage",
     ],
   },
@@ -21,7 +22,6 @@ const versionInformation = {
     versionNumber: "0.1.0",
     interfaces: ["Student Council", "Admin"],
     features: [
-      "Interface for previous or canceled bookings",
       "Bike inventory management interface",
       "Different interfaces and permissions for admin and student council",
       "User management interface for admin",

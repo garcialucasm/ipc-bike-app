@@ -1,6 +1,8 @@
 "use client"
 
+import { NavigationPaths } from "@/types/NavigationPaths"
 import Image from "next/image"
+import Link from "next/link"
 
 function HomeWeb() {
   return (
@@ -89,10 +91,9 @@ function HomeWeb() {
             </p>
           </a>
 
-          <a
-            href="/planning"
+          <Link
+            href={NavigationPaths.project}
             className="group rounded-lg border border-transparent px-4 py-4 transition-colors hover:border-blue-700 hover:bg-blue-950/30"
-            target="_blank"
             rel="noopener noreferrer"
           >
             <h2 className={`mb-3 text-2xl font-semibold`}>
@@ -104,12 +105,11 @@ function HomeWeb() {
             <p className={`m-0 inline max-w-[30ch] text-sm opacity-50`}>
               See the next features in the queue for development.
             </p>
-          </a>
+          </Link>
 
           <a
-            href="/contacts"
+            href={NavigationPaths.contact}
             className="group rounded-lg border border-transparent px-4 py-4 transition-colors hover:border-blue-700 hover:bg-blue-950/30"
-            target="_blank"
             rel="noopener noreferrer"
           >
             <h2 className={`mb-3 text-2xl font-semibold`}>
