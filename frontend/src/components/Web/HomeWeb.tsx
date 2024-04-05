@@ -47,7 +47,7 @@ function HomeWeb() {
         <div className="after:bg-gradient-conic relative my-8 flex place-items-center before:absolute before:h-[450px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-to-br before:from-transparent before:to-blue-700 before:opacity-10 before:blur-2xl before:content-[''] after:absolute after:h-[180px] after:w-full after:translate-x-1/3 after:from-sky-900 after:via-[#0141ff] after:opacity-40 after:blur-2xl after:content-[''] sm:before:w-[680px] sm:after:w-[240px] before:lg:h-[360px]">
           <Image
             className="relative drop-shadow-[0_0_0.3rem_#ffffff70]"
-            src="/logo-ipc-alumni-bike-white.png"
+            src="/logo-ipc-bike-white.png"
             alt="IPC Bike Logo"
             width={220}
             height={74}

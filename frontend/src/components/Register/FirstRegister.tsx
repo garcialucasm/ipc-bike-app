@@ -124,7 +124,7 @@ function FirstRegister() {
       <div className="h-screen md:flex">
         <div className="i relative hidden w-1/2 items-center justify-center overflow-hidden bg-gradient-to-tr from-blue-950 via-blue-800 to-blue-600 md:flex md:flex-col">
           <Image
-            src="/logo-ipc-alumni-bike-white.png"
+            src="/logo-ipc-bike-white.png"
             className="h-56 w-auto"
             width={300}
             height={399}
@@ -136,7 +136,7 @@ function FirstRegister() {
         <div className="fixed flex h-16 w-full items-center bg-gradient-to-tr from-blue-950 via-blue-800 to-blue-600 px-4 md:hidden">
           <Link href={NavigationPaths.homeWeb} className="ms-2 flex">
             <Image
-              src="/logo-ipc-alumni-bike-white-h2.png"
+              src="/logo-ipc-bike-white-h.png"
               className="h-8 w-auto"
               width={300}
               height={399}

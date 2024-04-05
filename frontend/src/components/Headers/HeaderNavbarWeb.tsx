@@ -52,7 +52,7 @@ export default function HeaderNavbarWeb() {
               className={`ms-2 flex lg:me-24`}
             >
               <Image
-                src="/logo-ipc-alumni-bike-white-h2.png"
+                src="/logo-ipc-bike-white-h.png"
                 className="h-8 w-auto xl:h-8"
                 width={300}
                 height={399}

@@ -145,13 +145,13 @@ export default function HeaderNavbarApp() {
               </Button>
               <Link
                 href={NavigationPaths.homeWeb}
-                className="ms-2 flex md:me-24"
+                className="ms-2 flex md:me-24 items-center"
               >
                 <Image
-                  src="/logo-ipc-alumni-bike-white-h2.png"
-                  className="h-8 w-auto xl:h-8"
-                  width={300}
-                  height={399}
+                  src="/logo-ipc-bike-white-h.png"
+                  className="h-8 w-auto xl:h-10"
+                  width={720}
+                  height={119}
                   alt=""
                   loading="lazy"
                 />
@@ -415,7 +415,7 @@ export default function HeaderNavbarApp() {
           </div>
           <div className="i static flex flex-col items-center justify-center">
             <Image
-              src="/logo-ipc-alumni-bike-blue.png"
+              src="/logo-ipc-bike-blue.png"
               className="min-h-full w-48 p-4"
               width={300}
               height={399}
