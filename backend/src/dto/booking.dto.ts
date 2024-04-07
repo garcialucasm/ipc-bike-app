@@ -11,8 +11,15 @@ interface BookingDTO {
   id: number
   status: string
   user: string
+  room: string
+  term: string
   bikeType: string | string[]
   bike: string | string[]
+  createdAt: Date | null
+  confirmedAt: Date | null
+  returnedAt: Date | null
+  returnedCondition: string
+  notes: string
 }
 
-export {BookingDTO, BookingStatusDTO}
+export { BookingDTO, BookingStatusDTO }

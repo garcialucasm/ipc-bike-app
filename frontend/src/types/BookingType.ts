@@ -1,6 +1,23 @@
 import { ServerResult } from "./ServerResult";
 import { UserData } from "./UserType";
 
+export interface Booking {
+  id?: number;
+  user: string;
+  term: string;
+  room: string;
+  bike: string;
+  bikeType: string;
+  bikeCount?: string;
+  status: BookingStatus | null;
+  type: BookingType | null;
+  createdAt?: string;
+  confirmedAt?: string;
+  returnedAt?: string;
+  returnedCondition: string;
+  notes?: string;
+}
+
 export enum BookingStatus {
   BOOKED = "BOOKED",
   DELIVERED = "DELIVERED",
@@ -8,7 +25,7 @@ export enum BookingStatus {
   CANCELED = "CANCELED",
 }
 
-export enum Booking {
+export enum BookingType {
   SINGLE = "SINGLE",
   GROUP = "GROUP",
   CLASSROOM = "CLASSROOM",

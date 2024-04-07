@@ -1,6 +1,5 @@
 "use client"
 
-import React from "react"
 import InputErrorMessage from "./InputErrorMessage"
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   children?: React.ReactNode

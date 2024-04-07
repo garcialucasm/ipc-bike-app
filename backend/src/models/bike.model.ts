@@ -22,7 +22,7 @@ interface Bike {
   IsActive: boolean;
   CreatedAt?: Date;
   UpdatedAt?: Date;
-  DeltedAt?: Date;
+  DeletedAt?: Date;
 }
 
 export { BikeStatus, Bike }

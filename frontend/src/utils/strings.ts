@@ -11,3 +11,17 @@ export function cleanUpSpaces(s: string): string {
 export function toPascalCase(input: string): string {
     return input.replace(/(\w)(\w*)/g, (_, firstChar, rest) => firstChar.toUpperCase() + rest.toLowerCase());
 }
+
+export function formatDateString(dateString: string): string {
+    const date = new Date(dateString);
+    const options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        timeZone: 'UTC' // Adjust timezone if needed
+    };
+
+    return date.toLocaleString('en-GB', options);
+}

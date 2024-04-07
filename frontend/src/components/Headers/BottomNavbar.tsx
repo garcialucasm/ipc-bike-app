@@ -1,19 +1,19 @@
-import React from "react"
+"use client"
+
 import Link from "next/link"
-import { NavigationPaths } from "@/types/NavigationPaths"
-import {
-  PersonSimpleBike,
-  Users,
-  HandHeart,
-  HouseSimple,
-} from "@phosphor-icons/react"
 import { usePathname } from "next/navigation"
+import { HouseSimple } from "@phosphor-icons/react/dist/ssr/HouseSimple"
+import { PersonSimpleBike } from "@phosphor-icons/react/dist/ssr/PersonSimpleBike"
+import { Users } from "@phosphor-icons/react/dist/ssr/Users"
+import { HandHeart } from "@phosphor-icons/react/dist/ssr/HandHeart"
+
+import { NavigationPaths } from "@/types/NavigationPaths"
 
 const BottomNavbar = () => {
   const pathname = usePathname()
   return (
     <>
-      <nav className="bottom-nav-container fixed bottom-0 left-0 right-0 z-10 flex h-14 items-center justify-center border-t border-slate-100 bg-gradient-to-t from-white to-slate-100 text-slate-500 md:hidden">
+      <nav className="bottom-nav-container fixed bottom-0 left-0 right-0 z-20 flex h-14 items-center justify-center border-t border-slate-100 bg-gradient-to-t from-white to-slate-100 text-slate-500 md:hidden">
         <ul className="main-app-size grid h-full w-full grid-cols-4 items-center justify-between divide-x-2 divide-slate-100 text-center">
           <Link href={NavigationPaths.homeAppAdmin}>
             <li

@@ -46,7 +46,7 @@ function bikeFromRow(row: any): Bike {
     Size: row['size'],
     CreatedAt: row['created_at'] ? new Date(row['created_at']) : undefined,
     UpdatedAt: row['updated_at'] ? new Date(row['updated_at']) : undefined,
-    DeltedAt: row['deleted_at'] ? new Date(row['deleted_at']) : undefined,
+    DeletedAt: row['deleted_at'] ? new Date(row['deleted_at']) : undefined,
   }
 }
 

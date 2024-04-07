@@ -1,5 +1,5 @@
-import React, { useState } from "react"
 import Image from "next/image"
+import { useState } from "react"
 
 import { useSingleBookingContext } from "@/context/singleBooking"
 import { SingleBookingSections } from "@/types/BookingType"
@@ -90,7 +90,7 @@ function InputStudentData() {
   return (
     <>
       <InstructionLabel>Please, enter cyclist information:</InstructionLabel>
-      <div className="flex w-full rounded-2xl gap-y-4 bg-white p-2 items-center justify-center text-start">
+      <div className="flex w-full items-center justify-center gap-y-4 rounded-2xl bg-white p-2 text-start">
         <Image
           src="/flat-illustration-people-cycling.jpg"
           className="rouded-2xl w-auto"

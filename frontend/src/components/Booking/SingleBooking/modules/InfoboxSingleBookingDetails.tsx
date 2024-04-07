@@ -1,9 +1,8 @@
-import React from "react"
+import { User } from "@phosphor-icons/react/dist/ssr/User"
 
 import { useSingleBookingContext } from "@/context/singleBooking"
-import { IconSvgBikeStandard } from "../../../Others/IconsSvg"
 import { toPascalCase } from "@/utils/strings"
-import { User } from "@phosphor-icons/react"
+import { IconSvgBikeStandard } from "@/components/Others/IconsSvg"
 
 function InfoboxSingleBookingDetails() {
   const { bookingData } = useSingleBookingContext()
@@ -17,11 +16,11 @@ function InfoboxSingleBookingDetails() {
     <div className="flex w-full flex-col gap-3 sm:flex-row">
       <div className="flex w-full items-center rounded-2xl border bg-white p-3 sm:mb-3">
         <div className="flex">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-400">
+          <div className="flex h-14 min-w-14 items-center justify-center rounded-2xl bg-slate-400">
             <User size={36} className="text-white" />
           </div>
           <div className="flex flex-col justify-start text-left text-slate-600">
-            <span className="px-3 font-extrabold capitalize leading-4 text-blue-800">
+            <span className="px-3 font-extrabold capitalize leading-4 text-blue-800 line-clamp-2 text-wrap">
               {fullName}
             </span>
             <span className="px-3 text-xs font-semibold leading-loose">
@@ -33,7 +32,7 @@ function InfoboxSingleBookingDetails() {
       </div>
       <div className="flex w-full items-center rounded-2xl border bg-white p-3 sm:mb-3">
         <div className="flex">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-400 p-1">
+          <div className="flex h-14 min-w-14 items-center justify-center rounded-2xl bg-slate-400 p-1">
             <IconSvgBikeStandard
               height="42"
               width="42"

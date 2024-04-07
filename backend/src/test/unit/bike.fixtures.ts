@@ -35,7 +35,7 @@ export default class MockBikeRepository implements IBikeRepository {
       throw new Error();
 
     this.bikes.delete(bikeId);
-    bike.DeltedAt = new Date();
+    bike.DeletedAt = new Date();
     bike.IsActive = false;
 
     return bike;

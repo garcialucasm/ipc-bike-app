@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
@@ -105,7 +105,7 @@ const Login = () => {
       <div className="h-screen md:flex">
         <div className="i relative hidden w-1/2 items-center justify-center overflow-hidden bg-gradient-to-tr from-blue-950 via-blue-800 to-blue-600 md:flex md:flex-col">
           <Image
-            src="/logo-ipc-alumni-bike-white.png"
+            src="/logo-ipc-bike-white.png"
             className="h-56 w-auto"
             width={300}
             height={399}
@@ -115,9 +115,9 @@ const Login = () => {
           <p className="mt-1 text-white">Book, Ride, Explore: All for Free</p>
         </div>
         <div className="fixed flex h-16 w-full items-center bg-gradient-to-tr from-blue-950 via-blue-800 to-blue-600 px-4 md:hidden">
-          <Link href="/" className="ms-2 flex">
+          <Link href={NavigationPaths.homeWeb} className="ms-2 flex">
             <Image
-              src="/logo-ipc-alumni-bike-white-h2.png"
+              src="/logo-ipc-bike-white-h.png"
               className="h-8 w-auto"
               width={300}
               height={399}
@@ -186,7 +186,7 @@ const Login = () => {
                     onClick={handleReturnButton}
                     name={NavigationPaths.homeWeb}
                   >
-                    <span>Return</span>
+                    <span>Go to Webpage</span>
                   </SecondaryButton>
                 </div>
                 {/* <span className="text ps-1-slate-500 ml-2 cursor-pointer text-xs hover:text-blue-500">

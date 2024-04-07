@@ -1,30 +1,28 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
-import {
-  PersonSimpleBike,
-  Users,
-  HandHeart,
-  House,
-  UserCircle,
-  XCircle,
-  User,
-  UserCirclePlus,
-  Bicycle,
-  ChartLine,
-  Gear,
-  SignOut,
-} from "@phosphor-icons/react"
+import { PersonSimpleBike } from "@phosphor-icons/react/dist/ssr/PersonSimpleBike"
+import { Users } from "@phosphor-icons/react/dist/ssr/Users"
+import { HandHeart } from "@phosphor-icons/react/dist/ssr/HandHeart"
+import { House } from "@phosphor-icons/react/dist/ssr/House"
+import { UserCircle } from "@phosphor-icons/react/dist/ssr/UserCircle"
+import { XCircle } from "@phosphor-icons/react/dist/ssr/XCircle"
+import { User } from "@phosphor-icons/react/dist/ssr/User"
+import { UserCirclePlus } from "@phosphor-icons/react/dist/ssr/UserCirclePlus"
+import { Bicycle } from "@phosphor-icons/react/dist/ssr/Bicycle"
+import { ChartLine } from "@phosphor-icons/react/dist/ssr/ChartLine"
+import { Gear } from "@phosphor-icons/react/dist/ssr/Gear"
+import { SignOut } from "@phosphor-icons/react/dist/ssr/SignOut"
+import { Info } from "@phosphor-icons/react/dist/ssr/Info"
 
 import { NavigationPaths } from "@/types/NavigationPaths"
 import Button from "@/components/Buttons/Button"
 import { useAuth } from "@/context/auth"
 import { getDecodedToken, logout } from "@/app/auth/authUtils"
 import { toPascalCase } from "@/utils/strings"
-import BottomNavbar from "./BottomNavbar"
 
 export default function HeaderNavbarApp() {
   const { accountData, settingAccountData: settingAccountData } = useAuth()
@@ -145,12 +143,15 @@ export default function HeaderNavbarApp() {
                   ></path>
                 </svg>
               </Button>
-              <Link href="/" className="ms-2 flex md:me-24">
+              <Link
+                href={NavigationPaths.homeWeb}
+                className="ms-2 flex md:me-24 items-center"
+              >
                 <Image
-                  src="/logo-ipc-alumni-bike-white-h2.png"
-                  className="h-8 w-auto xl:h-8"
-                  width={300}
-                  height={399}
+                  src="/logo-ipc-bike-white-h.png"
+                  className="h-8 w-auto xl:h-10"
+                  width={720}
+                  height={119}
                   alt=""
                   loading="lazy"
                 />
@@ -248,6 +249,19 @@ export default function HeaderNavbarApp() {
                             </div>
                           </div>
                         </Link>
+                        <a
+                          href={NavigationPaths.project}
+                          target="_blank"
+                          className="text-slate-700"
+                          onClick={() => setIsOpenedAccountMenu(false)}
+                        >
+                          <div className="block px-10 py-2 hover:bg-slate-200 hover:text-blue-700">
+                            <div className="flex w-fit items-center">
+                              <Info size={20} />
+                              <div className="px-2">About</div>
+                            </div>
+                          </div>
+                        </a>
                         <Link
                           href={NavigationPaths.settings}
                           className="text-slate-400"
@@ -401,7 +415,7 @@ export default function HeaderNavbarApp() {
           </div>
           <div className="i static flex flex-col items-center justify-center">
             <Image
-              src="/logo-ipc-alumni-bike-blue.png"
+              src="/logo-ipc-bike-blue.png"
               className="min-h-full w-48 p-4"
               width={300}
               height={399}
@@ -411,7 +425,6 @@ export default function HeaderNavbarApp() {
           </div>
         </div>
       </aside>
-      <BottomNavbar />
     </>
   )
 }

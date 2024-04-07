@@ -1,6 +1,5 @@
-import { CheckCircle } from "@phosphor-icons/react/dist/icons/CheckCircle"
-import { XCircle } from "@phosphor-icons/react/dist/icons/XCircle"
-import React from "react"
+import { CheckCircle } from "@phosphor-icons/react/dist/ssr/CheckCircle"
+import { XCircle } from "@phosphor-icons/react/dist/ssr/XCircle"
 
 function ActionResult(props: {
   isConfirmed: boolean

@@ -5,18 +5,17 @@ import { SingleBookingDTO } from "@/types/BookingType";
 // Flag to track whether an action is in progress
 let isProcessing = false;
 
-// Show all active bookings
-export async function bookingFetchApi() {
+// Show all bookings
+export async function allBookingsFetchApi(showInactive: boolean = true) {
   try {
-    const response = await ApiHeader.get(apiUrls.activeBookingsUrl);
-    const activeBookings = response.data.bookings;
-    return { activeBookings, error: null };
+    const response = await ApiHeader.get(showInactive ? apiUrls.allBookingsUrl : apiUrls.activeBookingsUrl);
+    const allBookings = response.data.bookings;
+    return { allBookings, error: null };
   } catch (error: any) {
-    console.error('Error getting active bookings:', error.message);
-    return { activeBookings: null, error: `${error.message}` };
+    console.error(`Error getting ${showInactive ? 'inactive' : 'active'} bookings:`, error.message);
+    return { allBookings: null, error: `${error.message}` };
   }
 };
-
 
 //Create Single Booking
 export async function createSingleBookingFetchApi(bookingData: SingleBookingDTO) {

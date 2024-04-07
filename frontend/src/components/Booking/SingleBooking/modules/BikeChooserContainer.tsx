@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { BikeType, BikeStatus } from "@/types/BikeType"
 import Image from "next/image"
 import StatusIndicator from "../../../Others/StatusIndicator"
