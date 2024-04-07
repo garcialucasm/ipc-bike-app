@@ -1,5 +1,9 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
+require('events').defaultMaxListeners = 25;
+
 import express from "express"
-import bodyParser from "body-parser"
 import cors from "cors"
 import bookingController from "./controllers/booking.controllers"
 import IBookingService from "./services/booking.service"
@@ -25,9 +29,6 @@ import bikeController from "./controllers/bike.controller"
 import accountController from "./controllers/account.controller"
 import { checkAuth } from "./utils/auth"
 import { getLogger } from "./logger"
-import dotenv from 'dotenv'
-
-dotenv.config()
 
 const logger = getLogger()
 

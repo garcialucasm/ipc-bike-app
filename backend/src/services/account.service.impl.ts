@@ -57,7 +57,7 @@ export default class AccountService implements IAccountService {
       const storedPassword = foundAccount.Hash
       const storedId = foundAccount.ID
       const storedAccountName = foundAccount.AccountName
-      console.log(process.env)
+      
       if (!storedEmail) {
         logger.silly("Email is not correct or does not exist")
         throw new Error("Email is not correct or does not exist");

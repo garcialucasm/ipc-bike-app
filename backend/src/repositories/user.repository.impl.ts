@@ -1,9 +1,11 @@
 import { Client } from "pg";
-import { User, UserStatus, UserType } from "../models/user.model";
+import { User } from "../models/user.model";
 import IUserRepository from "./user.repository";
 import { createWhereClausule } from "./sql.util";
 import { userFromRow } from "./mappings";
-import { logger } from "../logger";
+import { getLogger } from "../logger";
+
+const logger = getLogger('UserRepository')
 
 export default class UserRepository implements IUserRepository {
 
@@ -25,7 +27,7 @@ export default class UserRepository implements IUserRepository {
   }
 
   async save(user: User): Promise<User> {
-    logger.silly("User Repository called: save")
+    logger.silly("save")
     user.CreatedAt = new Date()
 
     let result = await this.client.query(this.insertUserStmt, [user.Name, user.Type,
@@ -34,7 +36,7 @@ export default class UserRepository implements IUserRepository {
     let [row] = result.rows
 
     if (row === undefined) {
-      logger.error("User Repository called: save error | Couldn't insert user")
+      logger.error("Couldn't insert user")
       throw new Error("Couldn't insert user")
     }
 
@@ -43,7 +45,7 @@ export default class UserRepository implements IUserRepository {
 
 
   async update(user: User): Promise<User> {
-    logger.silly("User Repository called: update")
+    logger.silly("update")
     if (user.ID === undefined)
       throw new Error("Cant update user with undefined id")
 
@@ -51,7 +53,7 @@ export default class UserRepository implements IUserRepository {
     let result = await this.client.query(this.updateUserStmt, [user.Status, user.IsActive, user.UpdatedAt, user.ID])
 
     if (result.rowCount == 0) {
-      logger.error("User Repository called: update error | Couldn't update user")
+      logger.error("Couldn't update user")
       throw new Error("Couldn't update user")
     }
 
@@ -61,11 +63,11 @@ export default class UserRepository implements IUserRepository {
   }
 
   async delete(userId: number): Promise<User> {
-    logger.silly("User Repository called: delete")
+    logger.silly("delete")
     let result = await this.client.query(this.deleteUserStmt, [false, new Date(), userId])
 
     if (result.rowCount == 0) {
-      logger.error("User Repository called: delete error | Couldn't delete user")
+      logger.error("Couldn't delete user")
       throw new Error("Couldn't delete user")
     }
 
@@ -75,11 +77,11 @@ export default class UserRepository implements IUserRepository {
   }
 
   async findById(userId: number): Promise<User> {
-    logger.silly("User Repository called: findById")
+    logger.silly("findById")
     let result = await this.client.query(this.findByIdStmt, [userId])
 
     if (result.rowCount == 0) {
-      logger.error("User Repository called: findById error | Couldn't find user")
+      logger.error("Couldn't find user")
       throw new Error("Couldn't find user")
     }
 
@@ -88,8 +90,8 @@ export default class UserRepository implements IUserRepository {
     return userFromRow(row)
   }
 
-  async findAll(searchCriteria: { name?: string | undefined; term?: string | undefined; room?: string | undefined; }): Promise<User[]> {
-    logger.silly("User Repository findAll: findById")
+  async findAll(searchCriteria: { name?: undefined; term?: undefined; room?: undefined; }): Promise<User[]> {
+    logger.silly("findById")
     let query: string = this.findAllStmt
 
     query += createWhereClausule(searchCriteria)

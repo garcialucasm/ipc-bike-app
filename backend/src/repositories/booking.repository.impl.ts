@@ -2,8 +2,7 @@ import { Client } from "pg"
 import { Booking, BookingStatus, BookingType } from "../models/booking.model"
 import IBookingRepository from "./booking.repository"
 import { bikeFromRow, bookingFromRow, filterPropertiesWithPrefix } from "./mappings"
-import { createWhereClausule } from "./sql.util"
-import { logger } from "../logger"
+import { getLogger } from "../logger"
 
 
 function toObj(properties: string[], values: any[]) {
@@ -12,7 +11,7 @@ function toObj(properties: string[], values: any[]) {
 }
 
 function populateBookingFromRows(rows: any[], offset: number): Booking {
-    logger.silly("Booking Repository called: populateBookingFromRows")
+    logger.silly("populateBookingFromRows")
     let booking: Booking = bookingFromRow(rows[offset])
 
     switch (booking.Type) {
@@ -29,7 +28,7 @@ function populateBookingFromRows(rows: any[], offset: number): Booking {
     return booking
 }
 function toBookingArray(rows: any[]): Booking[] {
-    logger.silly("Booking Repository called: toBookingArray")
+    logger.silly("toBookingArray")
     let bookings = []
     let i = 0
 
@@ -41,6 +40,8 @@ function toBookingArray(rows: any[]): Booking[] {
 
     return bookings
 }
+
+const logger = getLogger('BookingRepository')
 
 export default class BookingRepository implements IBookingRepository {
 
@@ -107,10 +108,10 @@ export default class BookingRepository implements IBookingRepository {
     }
 
     async save(booking: Booking): Promise<Booking> {
-        logger.silly("Booking Repository called: save")
+        logger.silly("save")
 
         if (!booking.User.ID) {
-            logger.error("Booking Repository called: save error | Invalid user ID")
+            logger.error("Invalid user ID")
             throw new Error('Invalid user ID')
         }
 
@@ -118,7 +119,7 @@ export default class BookingRepository implements IBookingRepository {
             [booking.User.ID, booking.Status, booking.Type, booking.BikeCount, booking.CreatedAt])
 
         if (!result.rowCount) {
-            logger.error("Booking Repository called: save error | Couldn't save booking")
+            logger.error("Couldn't save booking")
             throw new Error("Couldn't save booking")
         }
 
@@ -133,9 +134,9 @@ export default class BookingRepository implements IBookingRepository {
     }
 
     async update(booking: Booking): Promise<Booking> {
-        logger.silly("Booking Repository called: update")
+        logger.silly("update")
         if (booking.ID === undefined) {
-            logger.error("Booking Repository called: update error | Can't update unsaved booking")
+            logger.error("Can't update unsaved booking")
             throw new Error("Can't update unsaved booking")
         }
 
@@ -152,7 +153,7 @@ export default class BookingRepository implements IBookingRepository {
         let result = await this.client.query(query)
 
         if (!result.rowCount) {
-            logger.error("Booking Repository called: update error | Couldn't update booking")
+            logger.error("Couldn't update booking")
             throw new Error("Couldn't update booking")
         }
 
@@ -160,7 +161,7 @@ export default class BookingRepository implements IBookingRepository {
     }
 
     async findById(bookingId: number): Promise<Booking> {
-        logger.silly("Booking Repository called: findById")
+        logger.silly("findById")
         let query = {
             text: this.findByIdStmt,
             values: [bookingId],
@@ -169,7 +170,7 @@ export default class BookingRepository implements IBookingRepository {
         let result = await this.client.query(query)
 
         if (!result.rowCount) {
-            logger.silly(`Booking Repository called: findById | Couldn't find booking with id ${bookingId}`)
+            logger.silly("Couldn't find booking with id", bookingId)
             throw new Error(`Couldn't find booking with id ${bookingId}`)
         }
 
@@ -179,7 +180,7 @@ export default class BookingRepository implements IBookingRepository {
     }
 
     async findByUser(userId: number): Promise<Booking[]> {
-        logger.silly("Booking Repository called: findByUser")
+        logger.silly("findByUser")
         let query = {
             text: this.findAllByUserStmt,
             values: [userId],
@@ -189,7 +190,7 @@ export default class BookingRepository implements IBookingRepository {
         let result = await this.client.query(query)
 
         if (!result.rowCount) {
-            logger.silly(`Booking Repository called: findByUser | Couldn't find bookings for userId ${userId}`)
+            logger.silly("Couldn't find bookings for ",  userId)
             throw new Error(`Couldn't find bookings for userId ${userId}`)
         }
 
@@ -199,7 +200,7 @@ export default class BookingRepository implements IBookingRepository {
     }
 
     async findByBike(bikeId: number): Promise<Booking[]> {
-        logger.silly("Booking Repository called: findByBike")
+        logger.silly("findByBike")
         let query = {
             text: this.findByBikeStmt,
             values: [bikeId],
@@ -214,7 +215,7 @@ export default class BookingRepository implements IBookingRepository {
     }
 
     async findByStatus(status: BookingStatus): Promise<Booking[]> {
-        logger.silly("Booking Repository called: findByStatus")
+        logger.silly("findByStatus")
         let query = {
             text: this.findByStatusStmt,
             values: [status],
@@ -229,7 +230,7 @@ export default class BookingRepository implements IBookingRepository {
     }
 
     async findAll(): Promise<Booking[]> {
-        logger.silly("Booking Repository called: findAll")
+        logger.silly("findAll")
         let query = {
             text: this.findAllStmt,
             rowMode: 'array'
@@ -241,7 +242,7 @@ export default class BookingRepository implements IBookingRepository {
     }
 
     async countBookingsByStatus(): Promise<Map<BookingStatus, number>> {
-        logger.silly("Booking Repository called: countBookingsByStatus")
+        logger.silly("countBookingsByStatus")
         let query = {
             text: this.countBookingsByStatusStmt
         }

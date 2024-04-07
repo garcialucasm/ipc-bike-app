@@ -4,7 +4,6 @@ import { validateEmail, validatePassword, validateUserName } from "../models/val
 import { AccountDTO } from "../dto/account.dto";
 import { cleanUpSpaces } from "../utils/strings";
 import { getLogger } from '../logger';
-import winston from 'winston/lib/winston/config';
 
 
 function toAccountDTO(account: AccountDTO): AccountDTO {
@@ -37,15 +36,14 @@ export default function accountController(accountService: IAccountService, route
                     res.status(200)
                         .send("Successfully registered")
                 }).catch(error => {
-                    logger.error(`registerAccount error | ${error}`)
-                    console.error(error)
+                    logger.error("registerAccount error")
+                    logger.error(error)
                     res.status(401)
                         .send({ error: error.message })
                 })
         }
         catch (error: any) {
-            logger.error(`POST /secure/register error | ${error}`)
-            console.error(error)
+            logger.error(error)
             res.status(401)
                 .send({ error: error.message })
         }
@@ -70,15 +68,13 @@ export default function accountController(accountService: IAccountService, route
                     res.status(200)
                         .send("Successfully registered")
                 }).catch(error => {
-                    logger.error(`firstRegisterAccount error | ${error}`)
-                    console.error(error)
+                    logger.error(error)
                     res.status(401)
                         .send({ error: error.message })
                 })
         }
         catch (error: any) {
-            logger.error(`POST /register error | ${error}`)
-            console.error(error)
+            logger.error(error)
             res.status(401)
                 .send({ error: error.message })
         }
@@ -90,24 +86,23 @@ export default function accountController(accountService: IAccountService, route
         logger.info("POST /login")
         const email = cleanUpSpaces(req.body.email.toLowerCase())
         const password = req.body.password
-        logger.silly('silly test')
+        logger.silly('pudim')
         try {
             validateEmail(email)
             accountService.login(email, password)
                 .then((account) => {
-                    logger.debug(`Login successfully completed by the account id: ${account.id}`)
+                    logger.debug("Login successfully completed by the account", account.id)
                     res.status(200)
                         .send({ account: toAccountDTO(account) })
 
                 }).catch(error => {
-                    logger.error("login error:  ", error)
+                    logger.error(error)
                     res.status(401)
                         .send({ error: error.message })
                 })
         }
         catch (error: any) {
-            logger.error(`POST /login error | ${error}`)
-            console.error(error)
+            logger.error(error)
             res.status(401)
                 .send({ error: error.message })
         }

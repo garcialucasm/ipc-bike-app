@@ -14,6 +14,9 @@ const formatter = printf(({ level, message, timestamp, className }) => {
   return `${timestamp} [${className}] ${level}: ${message}`;
 })
 
+const level = process.env.LOG_LEVEL || 'info'
+console.log(`global level is ${level}`)
+
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
   format: combine(timestamp(), formatter),
@@ -23,14 +26,12 @@ const logger = winston.createLogger({
   transports: transports
 });
 
-
-
 function getLogger(className: string = "") {
   if (className === "")
     return logger
-  console.log('pudim')
+  const level = process.env[`LOG_LEVEL_${className}`] || process.env.LOG_LEVEL || 'info'
   return winston.createLogger({
-    level: process.env[`LOG_LEVEL_${className}`] || process.env.LOG_LEVEL || 'info',
+    level: level,
     format: combine(timestamp(), formatter), 
       defaultMeta: {
       className: className,
@@ -39,4 +40,4 @@ function getLogger(className: string = "") {
   })
 }
 
-export { logger, getLogger };
+export {  getLogger };

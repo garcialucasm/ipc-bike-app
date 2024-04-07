@@ -2,7 +2,7 @@ import { Router, RouterOptions } from 'express'
 import IBikeService from '../services/bike.service'
 import { Bike, BikeStatus } from '../models/bike.model'
 import { BikeDTO, BikeStatusDTO } from '../dto/bike.dto'
-import { logger } from '../logger'
+import { getLogger } from '../logger'
 
 function toStatusDTO(status: Map<BikeStatus, number>): BikeStatusDTO {
   return {
@@ -27,24 +27,24 @@ export function toBikeDTO(bike: Bike): BikeDTO {
 export default function bikeController(bikeService: IBikeService, routerOptions?: RouterOptions) {
 
   const router: Router = Router(routerOptions)
+  const logger = getLogger('bikeController')
 
   router.get('/status', (req, res) => {
-    logger.info("Bike Controller called: GET /status")
+    logger.info("GET /status")
     bikeService.countBikesByStatus().then(bikeStatus => {
       res.status(200).send({ status: toStatusDTO(bikeStatus) })
     })
   })
 
   router.get("/all/available", (req, res) => {
-    logger.info("Bike Controller called: GET /all/available")
+    logger.info("GET /all/available")
     bikeService.findAllAvailable()
       .then((allBikes) => {
-        logger.debug(`Bike Controller called: GET /all/available successfully`)
+        logger.debug("GET /all/available successfully")
         res.status(200).send(allBikes);
       })
       .catch(error => {
-        logger.error(`Bike Controller called: GET /all/available error | ${error}`)
-        console.log(error);
+        logger.error(error)
         res.status(401).send({ error: error.message });
       });
   });
