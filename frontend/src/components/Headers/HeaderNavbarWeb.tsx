@@ -23,7 +23,9 @@ export default function HeaderNavbarWeb() {
         <div
           className={`mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4`}
         >
-          <div className={`flex items-center justify-start rtl:justify-end grow`}>
+          <div
+            className={`flex grow items-center justify-start rtl:justify-end`}
+          >
             <Button
               onClick={handleMenuClick}
               data-drawer-target="logo-sidebar"
@@ -53,7 +55,7 @@ export default function HeaderNavbarWeb() {
             >
               <Image
                 src="/logo-ipc-bike-white-h.png"
-                className="h-8 w-auto xl:h-8"
+                className="h-6 w-auto xl:h-8"
                 width={300}
                 height={399}
                 alt=""
@@ -67,13 +69,14 @@ export default function HeaderNavbarWeb() {
           <div className="flex space-x-3 lg:order-2 lg:space-x-0 rtl:space-x-reverse">
             <Link
               href={NavigationPaths.login}
-              className="rounded-full btn-primary text-sm"
+              className="btn-primary rounded-full text-sm"
             >
-              Go to App <span className="ps-2">-&gt;</span>
+              Go to App{" "}
+              <span className="hidden ps-2 sm:inline-block">-&gt;</span>
             </Link>
           </div>
           <div
-            className="w-full items-center justify-between lg:order-1 lg:flex lg:w-auto px-8"
+            className="w-full items-center justify-between px-8 lg:order-1 lg:flex lg:w-auto"
             id="navbar-sticky"
           >
             <ul
