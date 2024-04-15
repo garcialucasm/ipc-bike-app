@@ -6,7 +6,7 @@ import { BikeStatus } from "@/types/BikeType"
 import AvailabilityCard from "./AvailabilityCard"
 import {
   initialBikeStatusCount,
-  useBikeAvailabilityContext,
+  useBikeContext,
 } from "@/context/bikeAvailability"
 import LoadingComponent from "../Others/LoadingComponent"
 import { useAuth } from "@/context/auth"
@@ -17,7 +17,7 @@ function AvailabilityContainer() {
   const {
     bikeStatusCount: bikeStatusCount,
     updatingBikeAvailability: getBikeAvailability,
-  } = useBikeAvailabilityContext()
+  } = useBikeContext()
 
   useEffect(() => {
     if (isAuth) {

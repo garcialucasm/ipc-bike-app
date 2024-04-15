@@ -24,7 +24,7 @@ export type SingleBookingContextProps = {
 
 export type BikeAvailabilityContextProps = {
     bikeStatusCount: BikeStatusCard;
-    allBikesAvailable: BikeDTO[];
+    allBikes: BikeDTO[];
     updatingBikeAvailability: () => void;
-    updatingAllBikesAvailable: () => void;
+    updatingAllBikes: () => void;
 }

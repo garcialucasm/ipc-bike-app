@@ -42,7 +42,7 @@ export async function bikeStatusCounterFetchApi() {
 export async function allBikesAvailableFetchApi() {
 
     try {
-        const response = await ApiHeader.get(apiUrls.allBikesAvailableUrl);
+        const response = await ApiHeader.get(apiUrls.allBikesUrl);
         if (response.status < 200 || response.status >= 300) {
             throw new Error(`${response.status}: ${response.statusText}`);
         }

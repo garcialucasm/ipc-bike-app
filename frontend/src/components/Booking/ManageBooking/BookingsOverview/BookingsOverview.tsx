@@ -17,7 +17,7 @@ import {
 import StatusIndicator from "@/components/Others/StatusIndicator"
 import { EmptyBookingsOverview } from "./EmptyBookingsOverview"
 import { ErrorBookingsOverview } from "./ErrorBookingsOverview"
-import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
+import { useBikeContext } from "@/context/bikeAvailability"
 import PrimaryButton from "@/components/Buttons/PrimaryButton"
 import SecondaryButton from "@/components/Buttons/SecondaryButton"
 import InfoboxSingleBookingModal from "./modules/InfoboxSingleBookingModal"
@@ -77,7 +77,7 @@ function BookingsOverview() {
     isConfirmed: null,
     resultMessage: "",
   })
-  const { updatingBikeAvailability } = useBikeAvailabilityContext()
+  const { updatingBikeAvailability } = useBikeContext()
   const modalRef = useRef<HTMLDivElement>(null)
 
   const { allBookings: allBookings, error } = bookingData

@@ -1,14 +1,10 @@
 import withAuth from "@/app/auth/withAuth"
-import UnderConstruction from "@/components/Others/UnderConstruction"
+import Inventory from "@/components/Inventory/Inventory"
 
 const Page = () => {
   const isAuth = withAuth()
   if (isAuth) {
-    return (
-      <>
-        <UnderConstruction />
-      </>
-    )
+    return <Inventory />
   }
 }
 

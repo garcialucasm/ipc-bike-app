@@ -145,7 +145,7 @@ export default function HeaderNavbarApp() {
               </Button>
               <Link
                 href={NavigationPaths.homeWeb}
-                className="ms-2 flex md:me-24 items-center"
+                className="ms-2 flex items-center md:me-24"
               >
                 <Image
                   src="/logo-ipc-bike-white-h.png"
@@ -227,7 +227,6 @@ export default function HeaderNavbarApp() {
                         </Link>
                         <Link
                           href={NavigationPaths.inventory}
-                          className="text-slate-400"
                           onClick={() => setIsOpenedAccountMenu(false)}
                         >
                           <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">

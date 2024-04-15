@@ -8,7 +8,7 @@ import {
   IconSvgBikeDisabled,
 } from "../Others/IconsSvg"
 import StatusIndicator from "../Others/StatusIndicator"
-import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
+import { useBikeContext } from "@/context/bikeAvailability"
 
 function AvailabilityCard(props: {
   selectedStatus: BikeStatus
@@ -16,7 +16,7 @@ function AvailabilityCard(props: {
 }) {
   const selectedStatus = props.selectedStatus as BikeStatus
 
-  const { bikeStatusCount: bikeStatusCount } = useBikeAvailabilityContext()
+  const { bikeStatusCount: bikeStatusCount } = useBikeContext()
 
   const currentBikeCount = bikeStatusCount[selectedStatus]
 
