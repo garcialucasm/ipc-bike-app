@@ -71,7 +71,7 @@ fetch(
 function VersionInformation() {
   return (
     <div className="mb-4 flex flex-wrap gap-x-4 gap-y-8 text-sm">
-      <div className="min-w-64 flex-1 rounded-xl border border-gray-600 bg-gray-900 text-white">
+      <div className="min-w-64 flex-1 rounded-xl border border-gray-600 bg-gray-900">
         <span className="flex items-center justify-between border-b border-gray-600 p-4">
           <h1 className="font-bold">EXPECTED FEATURES</h1>
           <Stack size={24} />
@@ -87,7 +87,7 @@ function VersionInformation() {
           ))}
         </ul>
       </div>
-      <div className="min-w-64 flex-1 rounded-xl border border-gray-600 bg-gray-900 text-white">
+      <div className="min-w-64 flex-1 rounded-xl border border-gray-600 bg-gray-900">
         <span className="flex items-center justify-between border-b border-gray-600 p-4">
           <h1 className="font-bold">
             NEXT VERSION{" "}
@@ -108,7 +108,7 @@ function VersionInformation() {
           ))}
         </ul>
       </div>
-      <div className="min-w-64 flex-1 rounded-xl border border-green-600 bg-gray-900 text-white">
+      <div className="min-w-64 flex-1 rounded-xl border border-green-600 bg-gray-900">
         <span className="flex items-center justify-between border-b border-gray-600 p-4">
           <h1 className="font-bold">
             CURRENT VERSION{" "}

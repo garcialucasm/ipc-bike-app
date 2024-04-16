@@ -7,14 +7,14 @@ import Link from "next/link"
 function HomeWeb() {
   return (
     <>
-      <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-tr from-gray-900 via-black to-gray-900 p-24 pt-[69px] text-white">
+      <main className="background-mash-dark flex min-h-screen flex-col items-center justify-between p-24 pt-[69px] text-white">
         <div className="z-10 my-8 w-full max-w-6xl items-center justify-between font-mono text-sm lg:flex">
           <a
             href="https://github.com/garcialucasm/ipc-bike-app"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <p className="hidden w-full justify-center border-b border-neutral-800 bg-zinc-800/30 bg-gradient-to-b from-inherit pb-6 pt-8 backdrop-blur-2xl hover:border-blue-700 hover:bg-blue-950/30 lg:static  lg:flex lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:bg-zinc-800/30 lg:p-4">
+            <p className="hover:shadow-center-lg hidden w-full justify-center border-b border-neutral-700 bg-slate-800/20 bg-gradient-to-b from-inherit pb-6 pt-8 backdrop-blur-2xl transition-all duration-300 hover:border-blue-700 hover:bg-blue-950/30 hover:shadow-purple-800 lg:static lg:flex lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:bg-zinc-800/30 lg:p-4">
               Github project 👉
               <code className="ps-1 font-mono font-bold text-blue-500">
                 /ipc-bike-app
@@ -28,15 +28,15 @@ function HomeWeb() {
             >
               By{" "}
               <a
-                href="https://github.com/garcialucasm"
-                className="hover:text-blue-500"
+                href="https://lucasgarcia.work"
+                className="hover:text-blue-500 transition-colors"
               >
                 <span className="font-bold">Lucas</span>
               </a>
               &
               <a
-                href="https://github.com/felipedreis"
-                className="hover:text-blue-500"
+                href="https://felipedu.art"
+                className="hover:text-blue-500 transition-colors"
               >
                 <span className="font-bold">Felipe</span>
               </a>
@@ -58,7 +58,7 @@ function HomeWeb() {
         <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-6xl lg:grid-cols-4 lg:text-left">
           <a
             href="https://docs.google.com/forms/d/e/1FAIpQLScVMcb64zo40oHOvnjtm2sT7N8sNCRJpY4e1EPDuo8Hz5iLSg/viewform?usp=sf_link"
-            className="group rounded-lg border border-transparent px-4 py-4 transition-colors hover:border-blue-700 hover:bg-blue-950/30"
+            className="group rounded-lg border border-transparent px-4 py-4 transition-all duration-300 hover:border-blue-700 hover:bg-blue-950/30"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -75,7 +75,7 @@ function HomeWeb() {
 
           <a
             href="https://docs.google.com/forms/d/e/1FAIpQLScXNfkNSFDAaBfxreMgxxN5GcD58SIxPmGQher0-JtWq1u7Fw/viewform"
-            className="group rounded-lg border border-transparent px-4 py-4 transition-colors hover:border-blue-700 hover:bg-blue-950/30"
+            className="group rounded-lg border border-transparent px-4 py-4 transition-all duration-300 hover:border-blue-700 hover:bg-blue-950/30"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -93,7 +93,7 @@ function HomeWeb() {
 
           <Link
             href={NavigationPaths.project}
-            className="group rounded-lg border border-transparent px-4 py-4 transition-colors hover:border-blue-700 hover:bg-blue-950/30"
+            className="group rounded-lg border border-transparent px-4 py-4 transition-all duration-300 hover:border-blue-700 hover:bg-blue-950/30"
             rel="noopener noreferrer"
           >
             <h2 className={`mb-3 text-2xl font-semibold`}>
@@ -109,7 +109,7 @@ function HomeWeb() {
 
           <a
             href={NavigationPaths.contact}
-            className="group rounded-lg border border-transparent px-4 py-4 transition-colors hover:border-blue-700 hover:bg-blue-950/30"
+            className="group rounded-lg border border-transparent px-4 py-4 transition-all duration-300 hover:border-blue-700 hover:bg-blue-950/30"
             rel="noopener noreferrer"
           >
             <h2 className={`mb-3 text-2xl font-semibold`}>

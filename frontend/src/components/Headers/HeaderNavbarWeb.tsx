@@ -15,10 +15,16 @@ export default function HeaderNavbarWeb() {
     setIsMenuOpened(!isMenuOpened)
   }
 
+  function handleNavigationClick() {
+    if (isMenuOpened) {
+      setIsMenuOpened(!isMenuOpened)
+    }
+  }
+
   return (
     <>
       <nav
-        className={`fixed start-0 top-0 z-20 w-full border-b border-gray-600 bg-gradient-to-r from-black to-gray-900 ${isMenuOpened && "bg-gray-900"}`}
+        className={`fixed start-0 top-0 z-20 w-full backdrop-blur-xl outline outline-1 outline-offset-1 outline-white/[.3] ${isMenuOpened && "bg-black bg-opacity-50"}`}
       >
         <div
           className={`mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4`}
@@ -81,7 +87,7 @@ export default function HeaderNavbarWeb() {
           >
             <ul
               className={`mt-4 flex flex-col rounded-lg border border-gray-700 p-4 font-medium lg:mt-0 lg:flex-row lg:space-x-8 lg:border-0 lg:p-0 rtl:space-x-reverse ${!isMenuOpened && "hidden lg:flex"}`}
-              onClick={handleMenuClick}
+              onClick={handleNavigationClick}
             >
               <li>
                 <Link

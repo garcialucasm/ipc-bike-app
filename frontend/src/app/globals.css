@@ -11,15 +11,15 @@
   }
 
   .header-menu-item-current-page {
-    @apply border bg-blue-800 text-white hover:to-blue-800;
+    @apply border bg-blue-800 text-white hover:bg-blue-700;
   }
 
   /* ---------------------------- Buttons and links --------------------------- */
   .btn-primary {
-    @apply w-full rounded-full bg-gradient-to-tr from-blue-800 via-blue-800 to-blue-600 px-4 py-2 font-semibold text-white transition duration-200 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+    @apply w-full rounded-full bg-blue-800 px-4 py-2 font-semibold text-white transition-all hover:bg-blue-700 hover:shadow-center-lg hover:shadow-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
   }
   .btn-secondary {
-    @apply w-full rounded-full border border-blue-800 bg-gradient-to-tr from-slate-50 via-white to-white px-4 py-2 font-semibold text-blue-900 transition duration-200 hover:bg-slate-300 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+    @apply w-full rounded-full border border-blue-800 bg-slate-50 px-4 py-2 font-semibold text-blue-900 transition-all hover:bg-slate-200 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
   }
   .link-primary {
     @apply btn-primary px-0 py-0;
@@ -77,4 +77,19 @@ body {
 
 .bottom-nav-container {
   box-shadow: 0px -2px 30px rgba(0, 0, 0, 0.3);
+}
+
+.background-mash-dark {
+  background-color: hsla(263, 80%, 5%, 1);
+  background-image: radial-gradient(
+      at 40% 20%,
+      hsla(244, 70%, 10%, 0.77) 0px,
+      transparent 50%
+    ),
+    radial-gradient(at 0% 0%, hsla(189, 100%, 10%, 1) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, hsla(335, 100%, 15%, 1) 0px, transparent 50%),
+    radial-gradient(at 60% 50%, hsla(340, 100%, 15%, 1) 0px, transparent 50%),
+    radial-gradient(at 90% 0%, hsla(22, 100%, 20%, 0.6) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, hsla(240, 50%, 8%, 0.62) 0px, transparent 50%),
+    radial-gradient(at 85% 94%, hsla(339, 100%, 10%, 1) 0px, transparent 50%);
 }
