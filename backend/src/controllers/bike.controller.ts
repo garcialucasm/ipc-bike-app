@@ -28,8 +28,6 @@ export default function bikeController(
   bikeService: IBikeService,
   routerOptions?: RouterOptions
 ) {
-  const router: Router = Router(routerOptions);
-
 
   const router: Router = Router(routerOptions)
   const logger = getLogger('bikeController')
