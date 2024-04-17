@@ -102,7 +102,7 @@ export default function HeaderNavbarWeb() {
                   Home
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href={NavigationPaths.project}
                   className={`block rounded px-3 py-2 hover:text-blue-300 lg:bg-transparent lg:p-0 ${
@@ -114,7 +114,7 @@ export default function HeaderNavbarWeb() {
                 >
                   Project
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   href={NavigationPaths.rules}
