@@ -61,8 +61,8 @@ function Inventory() {
 
   /* ---------------- Handle maintenance button to redirect to modal --------------- */
   async function handleClick(bike: BikeDTO) {
-    let action = null
-    let message = null
+    let action: BikeModalActions | null = null
+    let message: string = ""
     if (bike.CurrentStatus === BikeStatus.FREE) {
       action = BikeModalActions.SENDMAINTENANCE
       message = messageSendMaintenance
@@ -80,7 +80,10 @@ function Inventory() {
   }
 
   /* ------------------------ Handle confirm action modal ------------------------ */
-  async function handleConfirmAction(confirm: boolean, numbering: string | null) {
+  async function handleConfirmAction(
+    confirm: boolean,
+    numbering: string | null
+  ) {
     if (confirm && numbering) {
       const response = await toggleMaintenanceFetchApi(numbering)
       handleServerResponse(response)
@@ -104,8 +107,7 @@ function Inventory() {
       // If the request is successful, proceed with the desired actions
       let actionMessage: string = "Action confirmed"
       if (modalAction.actionToConfirm === BikeModalActions.SENDMAINTENANCE) {
-        actionMessage =
-          "The bike was sent for maintenance successfully!"
+        actionMessage = "The bike was sent for maintenance successfully!"
       }
       if (modalAction.actionToConfirm === BikeModalActions.RETURNMAINTENANCE) {
         actionMessage = "The bike is ready to use again!"
@@ -140,6 +142,14 @@ function Inventory() {
   useEffect(() => {
     updatingAllBikesAvailable()
   }, [reloadData])
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleModalClick)
+
+    return () => {
+      document.removeEventListener("mousedown", handleModalClick)
+    }
+  }, [])
 
   if (allBikes && allBikes.length > 0) {
     // Sorting the bikes by numbering
@@ -252,7 +262,9 @@ function Inventory() {
                     No
                   </SecondaryButton>
                   <PrimaryButton
-                    onClick={() => handleConfirmAction(true, modalAction.bike.Numbering)}
+                    onClick={() =>
+                      handleConfirmAction(true, modalAction.bike.Numbering)
+                    }
                     className="btn-primary ms-0 w-full max-w-24"
                   >
                     Yes
@@ -283,7 +295,8 @@ function Inventory() {
                 <div className="flex justify-center">
                   <SecondaryButton
                     onClick={() => {
-                      handleConfirmAction(false, null), setReloadData(!reloadData)
+                      handleConfirmAction(false, null),
+                        setReloadData(!reloadData)
                     }}
                     className="btn-secondary w-full max-w-24"
                   >
