@@ -40,3 +40,6 @@ dist/
 
 # database
 db.config*
+
+# log
+*app.log

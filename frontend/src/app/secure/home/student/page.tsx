@@ -2,7 +2,7 @@ import withAuth from "@/app/auth/withAuth"
 
 const HomeStudentPage = () => {
   const componentName = HomeStudentPage.name
-  const isAuth = withAuth(componentName)
+  const isAuth = withAuth()
   if (isAuth) {
     return (
       <>

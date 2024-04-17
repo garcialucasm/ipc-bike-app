@@ -5,7 +5,7 @@ import withAuth from "@/app/auth/withAuth"
 
 const HomePage = () => {
   const componentName = HomePage.name
-  const isAuth = withAuth(componentName)
+  const isAuth = withAuth()
   if (isAuth) {
     /* ----------- // TODO: Redirect according to user type by useAuth ---------- */
     redirect(NavigationPaths.homeAppAdmin)

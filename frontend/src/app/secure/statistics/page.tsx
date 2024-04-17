@@ -3,7 +3,7 @@ import UnderConstruction from "@/components/Others/UnderConstruction"
 
 const StatisticsPage = () => {
   const componentName = StatisticsPage.name
-  const isAuth = withAuth(componentName)
+  const isAuth = withAuth()
   if (isAuth) {
     return (
       <>

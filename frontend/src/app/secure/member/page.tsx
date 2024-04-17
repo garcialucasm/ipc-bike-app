@@ -3,7 +3,7 @@ import UnderConstruction from "@/components/Others/UnderConstruction"
 
 const MemberPage = () => {
   const componentName = MemberPage.name
-  const isAuth = withAuth(componentName)
+  const isAuth = withAuth()
   if (isAuth) {
     return (
       <>
