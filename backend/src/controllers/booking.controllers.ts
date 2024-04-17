@@ -4,6 +4,7 @@ import IBookingService from '../services/booking.service'
 import { validateRoom, validateUserName, validateBikeNumbering } from '../models/validators'
 import { BookingDTO, BookingStatusDTO } from '../dto/booking.dto'
 import { Booking, BookingStatus, BookingType } from '../models/booking.model'
+import { getLogger } from '../logger'
 
 
 function toBookingDTO(booking: Booking): BookingDTO {
@@ -37,8 +38,10 @@ function toBookingStatusDTO(status: Map<BookingStatus, number>): BookingStatusDT
 export default function bookingController(bookingService: IBookingService, routerOptions?: RouterOptions) {
 
   const router: Router = Router(routerOptions)
+  const logger = getLogger('BookingController')
 
   router.get("/status", async (req, res) => {
+    logger.info("GET /status")
     bookingService.countBookingsByStatus()
       .then(statusResult => toBookingStatusDTO(statusResult))
       .then(statusResult => {
@@ -49,6 +52,7 @@ export default function bookingController(bookingService: IBookingService, route
 
 
   router.post("/create/single", async (req, res) => {
+    logger.info("POST /create/single")
     const userName = req.body.userName
     const room = req.body.room
     const bikeNumbering = req.body.bikeNumbering
@@ -59,14 +63,16 @@ export default function bookingController(bookingService: IBookingService, route
       validateBikeNumbering(bikeNumbering)
       bookingService.createSingleBooking(userName, room, bikeNumbering)
         .then(booking => {
+          logger.debug("createSingleBooking for user", booking.User.ID)
           res.status(200)
             .send({ booking: toBookingDTO(booking) })
         }).catch(error => {
-          console.log(error)
+          logger.error(error)
           res.status(401)
             .send({ error: error.message })
         })
     } catch (error: any) {
+      logger.error(error)
       console.log(error)
       res.status(401)
         .send({ error: error.message })
@@ -74,42 +80,49 @@ export default function bookingController(bookingService: IBookingService, route
   })
 
   router.post("/approve/:id", async (req, res) => {
+    logger.info("POST /approve/", req.params.id)
     bookingService.approve(parseInt(req.params.id))
       .then(booking => {
+        logger.debug("approve for user ", booking.User.ID)
         res.status(200)
           .send({ booking: toBookingDTO(booking) })
       }).catch(error => {
-        console.log(error)
+        logger.error(error)
         res.status(401)
           .send({ error: error.message })
       })
   })
 
   router.post("/return/:id", (req, res) => {
+    logger.info("POST /return/", req.params.id)
     bookingService.returnBike(parseInt(req.params.id))
       .then(booking => {
+        logger.debug("returnBike successfully")
         res.status(200)
           .send({ booking: toBookingDTO(booking) })
       }).catch(error => {
-        console.log(error)
+        logger.error(error)
         res.status(401)
           .send({ error: error.message })
       })
   })
 
   router.post("/cancel/:id", (req, res) => {
+    logger.info("POST /cancel/", req.params.id)
     bookingService.cancel(parseInt(req.params.id))
       .then(booking => {
+        logger.debug("cancel successfully")
         res.status(200)
           .send({ booking: toBookingDTO(booking) })
       }).catch(error => {
-        console.log(error)
+        logger.error(error)
         res.status(401)
           .send({ error: error.message })
       })
   })
 
   router.get("/all", (req, res) => {
+    logger.info("GET /all")
     let showInactive: boolean = false
     if (req.query.show_inactive && req.query.show_inactive === 'true') {
       showInactive = true
@@ -120,10 +133,11 @@ export default function bookingController(bookingService: IBookingService, route
         bookings.map(booking => toBookingDTO(booking))
       )
       .then(bookings => {
+        logger.debug(`findAll successfully`)
         res.status(200)
           .send({ bookings: bookings })
       }).catch(error => {
-        console.log(error)
+        logger.error(error)
         res.status(401)
           .send({ error: error.message })
       })

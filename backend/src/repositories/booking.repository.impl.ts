@@ -2,7 +2,7 @@ import { Client } from "pg"
 import { Booking, BookingStatus, BookingType } from "../models/booking.model"
 import IBookingRepository from "./booking.repository"
 import { bikeFromRow, bookingFromRow, filterPropertiesWithPrefix } from "./mappings"
-import { createWhereClausule } from "./sql.util"
+import { getLogger } from "../logger"
 
 
 function toObj(properties: string[], values: any[]) {
@@ -10,7 +10,8 @@ function toObj(properties: string[], values: any[]) {
     return Object.fromEntries(zipped)
 }
 
-function populateBookingFromRows(rows: any[], offset: number) : Booking {
+function populateBookingFromRows(rows: any[], offset: number): Booking {
+    logger.silly("populateBookingFromRows")
     let booking: Booking = bookingFromRow(rows[offset])
 
     booking.CreatedAt = rows[offset]['bk.created_at'] ? new Date(rows[offset]['bk.created_at']) : undefined
@@ -20,17 +21,18 @@ function populateBookingFromRows(rows: any[], offset: number) : Booking {
     switch (booking.Type) {
         case BookingType.SINGLE:
             booking.Bike.push(bikeFromRow(filterPropertiesWithPrefix(rows[offset], 'b')))
-        break;
+            break;
 
         case BookingType.GROUP:
             for (let i = offset; i < offset + booking.BikeCount && i < rows.length; ++i) {
-            booking.Bike.push(bikeFromRow(filterPropertiesWithPrefix(rows[i], 'b')))
-        }
+                booking.Bike.push(bikeFromRow(filterPropertiesWithPrefix(rows[i], 'b')))
+            }
     }
-    
+
     return booking
 }
-function toBookingArray(rows: any[]) : Booking[] {
+function toBookingArray(rows: any[]): Booking[] {
+    logger.silly("toBookingArray")
     let bookings = []
     let i = 0
 
@@ -43,12 +45,14 @@ function toBookingArray(rows: any[]) : Booking[] {
     return bookings
 }
 
+const logger = getLogger('BookingRepository')
+
 export default class BookingRepository implements IBookingRepository {
 
     client: Client
 
-    insertStmt: string = 'INSERT INTO "booking" ("user_id", "status", "type", "bike_count", "created_at")' +  
-            ' VALUES ($1, $2, $3, $4, $5) RETURNING id' 
+    insertStmt: string = 'INSERT INTO "booking" ("user_id", "status", "type", "bike_count", "created_at")' +
+        ' VALUES ($1, $2, $3, $4, $5) RETURNING id'
 
     insertBookingBikesStmt: string = `insert into booking_bike(booking_id, bike_id)
             values ($1, $2)`
@@ -57,9 +61,9 @@ export default class BookingRepository implements IBookingRepository {
             notes=$3, confirmed_at=$4, returned_at=$5 where id=$6 returning *`
 
     findSelectFields: string[] = [
-        'bk.id', 'bk.status', 'bk.bike_count', 'bk.type', 'bk.returned_condition', 
+        'bk.id', 'bk.status', 'bk.bike_count', 'bk.type', 'bk.returned_condition',
         'bk.notes', 'bk.created_at', 'bk.confirmed_at', 'bk.returned_at',
-        'u.id', 'u.name', 'u.type', 'u.room', 'u.term', 'u.status', 
+        'u.id', 'u.name', 'u.type', 'u.room', 'u.term', 'u.status',
         'u.is_active', 'u.created_at', 'u.updated_at', 'u.deleted_at',
         'b.id', 'b.numbering', 'b.size', 'b.current_status', 'b.is_active',
         'b.created_at', 'b.updated_at', 'b.deleted_at'
@@ -101,22 +105,27 @@ export default class BookingRepository implements IBookingRepository {
 
 
     countBookingsByStatusStmt: string = `select bk.status, count(bk.status)
-              from booking bk group by bk.status`
+                from booking bk group by bk.status`
 
     constructor(client: Client) {
         this.client = client
     }
 
     async save(booking: Booking): Promise<Booking> {
+        logger.silly("save")
 
-        if (!booking.User.ID)
+        if (!booking.User.ID) {
+            logger.error("Invalid user ID")
             throw new Error('Invalid user ID')
+        }
 
         let result = await this.client.query(this.insertStmt,
             [booking.User.ID, booking.Status, booking.Type, booking.BikeCount, booking.CreatedAt])
 
-        if (!result.rowCount)
+        if (!result.rowCount) {
+            logger.error("Couldn't save booking")
             throw new Error("Couldn't save booking")
+        }
 
         let [row] = result.rows
 
@@ -125,58 +134,69 @@ export default class BookingRepository implements IBookingRepository {
             await this.client.query(this.insertBookingBikesStmt, [booking.ID, bike.ID])
         })
 
-        return Object.assign({}, booking) 
+        return Object.assign({}, booking)
     }
 
     async update(booking: Booking): Promise<Booking> {
-        if (booking.ID === undefined) 
+        logger.silly("update")
+        if (booking.ID === undefined) {
+            logger.error("Can't update unsaved booking")
             throw new Error("Can't update unsaved booking")
+        }
 
         let query = {
             text: this.updateStmt,
             values: [booking.Status,
-                booking.ReturnedCondition,
-                booking.Notes,
-                booking.ConfirmedAt,
-                booking.ReturnedAt,
-                booking.ID],
+            booking.ReturnedCondition,
+            booking.Notes,
+            booking.ConfirmedAt,
+            booking.ReturnedAt,
+            booking.ID],
         }
 
         let result = await this.client.query(query)
 
-        if (!result.rowCount)
-            throw new Error("Couldn't update booking") 
+        if (!result.rowCount) {
+            logger.error("Couldn't update booking")
+            throw new Error("Couldn't update booking")
+        }
 
-        return Object.assign({}, booking) 
+        return Object.assign({}, booking)
     }
 
     async findById(bookingId: number): Promise<Booking> {
+        logger.silly("findById")
         let query = {
-            text: this.findByIdStmt, 
+            text: this.findByIdStmt,
             values: [bookingId],
             rowMode: 'array'
         }
         let result = await this.client.query(query)
-        
-        if (!result.rowCount)
+
+        if (!result.rowCount) {
+            logger.silly("Couldn't find booking with id", bookingId)
             throw new Error(`Couldn't find booking with id ${bookingId}`)
-        
+        }
+
         let objectRows = result.rows.map(row => toObj(this.findSelectFields, row))
-        
+
         return populateBookingFromRows(objectRows, 0)
     }
 
     async findByUser(userId: number): Promise<Booking[]> {
+        logger.silly("findByUser")
         let query = {
-            text: this.findAllByUserStmt, 
+            text: this.findAllByUserStmt,
             values: [userId],
             rowMode: 'array'
         }
 
         let result = await this.client.query(query)
 
-        if (!result.rowCount) 
+        if (!result.rowCount) {
+            logger.silly("Couldn't find bookings for ",  userId)
             throw new Error(`Couldn't find bookings for userId ${userId}`)
+        }
 
         let objectRows = result.rows.map(row => toObj(this.findSelectFields, row))
 
@@ -184,6 +204,7 @@ export default class BookingRepository implements IBookingRepository {
     }
 
     async findByBike(bikeId: number): Promise<Booking[]> {
+        logger.silly("findByBike")
         let query = {
             text: this.findByBikeStmt,
             values: [bikeId],
@@ -198,6 +219,7 @@ export default class BookingRepository implements IBookingRepository {
     }
 
     async findByStatus(status: BookingStatus): Promise<Booking[]> {
+        logger.silly("findByStatus")
         let query = {
             text: this.findByStatusStmt,
             values: [status],
@@ -212,28 +234,30 @@ export default class BookingRepository implements IBookingRepository {
     }
 
     async findAll(): Promise<Booking[]> {
+        logger.silly("findAll")
         let query = {
-            text: this.findAllStmt, 
+            text: this.findAllStmt,
             rowMode: 'array'
         }
         let result = await this.client.query(query)
         let objectRows = result.rows.map(row => toObj(this.findSelectFields, row))
 
         return toBookingArray(objectRows)
-   }
-    
-  async countBookingsByStatus(): Promise<Map<BookingStatus, number>> {
-      let query = {
-        text: this.countBookingsByStatusStmt 
-      }
+    }
 
-      let result = await this.client.query(query)
-      let ans : Map<BookingStatus, number> = new Map<BookingStatus, number>()
-      
-      result.rows.forEach(row => {
-        ans.set(BookingStatus[row.status as keyof typeof BookingStatus], Number.parseInt(row.count))
-      })
+    async countBookingsByStatus(): Promise<Map<BookingStatus, number>> {
+        logger.silly("countBookingsByStatus")
+        let query = {
+            text: this.countBookingsByStatusStmt
+        }
 
-      return ans
-  }
+        let result = await this.client.query(query)
+        let ans: Map<BookingStatus, number> = new Map<BookingStatus, number>()
+
+        result.rows.forEach(row => {
+            ans.set(BookingStatus[row.status as keyof typeof BookingStatus], Number.parseInt(row.count))
+        })
+
+        return ans
+    }
 }

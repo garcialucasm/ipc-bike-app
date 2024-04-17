@@ -1,4 +1,5 @@
 
+import { getLogger } from "../logger";
 import { Bike, BikeStatus } from "../models/bike.model";
 import { Booking, BookingStatus, BookingType } from "../models/booking.model";
 import { User, UserStatus, UserType } from "../models/user.model";
@@ -10,6 +11,8 @@ import IUserService from "./user.service";
 
 /* --- Define an array to store names of users with booking in process --- */
 const usersInBookingProcess: string[] = [];
+
+const logger = getLogger('BookingService')
 
 export default class BookingService implements IBookingService {
 
@@ -40,10 +43,13 @@ export default class BookingService implements IBookingService {
 
 
   async createSingleBooking(userName: string, room: string, bikeNumbering: number): Promise<Booking> {
+    logger.debug("createSingleBooking")
+
     let availableBikes = await this.bikeService.findAllAvailable(undefined, bikeNumbering)
 
     /* --------- Check if the user is already in the process of booking --------- */
     if (usersInBookingProcess.includes(userName)) {
+      logger.error("Double user request identified")
       /* --------- If the user is already in the process, wait for a delay -------- */
       await this.delay(1000 * 5);
     }
@@ -52,8 +58,10 @@ export default class BookingService implements IBookingService {
     usersInBookingProcess.push(userName);
 
     try {
-      if (availableBikes.length == 0)
+      if (availableBikes.length == 0) {
+        logger.error("There's no available bikes for size")
         throw new Error(`There's no available bikes for size ${bikeNumbering}`)
+      }
 
       let user = await this.userService.getOrCreate(userName, room, this.currentTerm)
 
@@ -87,10 +95,12 @@ export default class BookingService implements IBookingService {
 
       return booking
     } catch (error) {
+      logger.error(`${error}`)
       /* ----------- If an error occurs, remove the user from the array ----------- */
       const index = usersInBookingProcess.indexOf(userName);
       if (index !== -1) {
         usersInBookingProcess.splice(index, 1);
+        logger.error("Double user request")
       }
       throw error;
     } finally {
@@ -103,28 +113,48 @@ export default class BookingService implements IBookingService {
   }
 
   private validateUserForBooking(user: User) {
+    logger.debug("validateUserForBooking")
+
     // TODO consider if this should be in another component, and if we should create customized errors
-    if (!user.IsActive)
+    if (!user.IsActive) {
+      logger.error(`User is inactive`)
       throw new Error("User is inactive")
-    if (user.Status === UserStatus.BOOKED)
+    }
+    if (user.Status === UserStatus.BOOKED) {
+      logger.error(`User has already booked a bike`)
       throw new Error("User has already booked a bike")
-    if (user.Status === UserStatus.INUSE)
+    }
+    if (user.Status === UserStatus.INUSE) {
+      logger.error(`User is already using a bike`)
       throw new Error("User is already using a bike")
-    if (user.Type !== UserType.STUDENT)
+    }
+    if (user.Type !== UserType.STUDENT) {
+      logger.error(`User is not a student`)
       throw new Error("User is not a student")
+    }
   }
 
   private validateBikeForBooking(bike: Bike) {
+    logger.debug("validateBikeForBooking")
+
     // TODO consider if this should be in another component, and if we should create customized errors
-    if (!bike.IsActive)
+    if (!bike.IsActive) {
+      logger.error(`Bike is inactive`)
       throw new Error("Bike is inactive")
-    if (bike.CurrentStatus === BikeStatus.BOOKED)
+    }
+    if (bike.CurrentStatus === BikeStatus.BOOKED) {
+      logger.error(`Bike is already booked`)
       throw new Error("Bike is already booked")
-    if (bike.CurrentStatus === BikeStatus.INUSE)
+    }
+    if (bike.CurrentStatus === BikeStatus.INUSE) {
+      logger.error(`Bike is already in using`)
       throw new Error("Bike is already in using")
+    }
   }
 
   async approve(bookingId: number): Promise<Booking> {
+    logger.debug("approve")
+
     let booking: Booking = await this.bookingRepository.findById(bookingId)
     booking.ConfirmedAt = new Date()
     booking.User = await this.userService.changeStatus(booking.User, UserStatus.INUSE)
@@ -135,6 +165,8 @@ export default class BookingService implements IBookingService {
   }
 
   async returnBike(bookingId: number): Promise<Booking> {
+    logger.debug("returnBike")
+
     let booking: Booking = await this.bookingRepository.findById(bookingId)
     booking.ReturnedAt = new Date()
     booking.User = await this.userService.changeStatus(booking.User, UserStatus.FREE)
@@ -145,6 +177,8 @@ export default class BookingService implements IBookingService {
   }
 
   async changeStatus(booking: Booking, status: BookingStatus): Promise<Booking> {
+    logger.debug("changeStatus")
+
     const transitions = this.bookingStatusTransitions.get(booking.Status)
     if (transitions?.includes(status)) {
       booking.Status = status;
@@ -155,6 +189,8 @@ export default class BookingService implements IBookingService {
   }
 
   async cancel(bookingId: number): Promise<Booking> {
+    logger.debug("cancel")
+
     let booking: Booking = await this.bookingRepository.findById(bookingId)
     booking.Status = BookingStatus.CANCELED
     booking.User = await this.userService.changeStatus(booking.User, UserStatus.FREE)
@@ -165,6 +201,8 @@ export default class BookingService implements IBookingService {
   }
 
   async findAll(showInactive: boolean): Promise<Booking[]> {
+    logger.debug("findAll")
+
     let openedBookings: Booking[] = []
 
     if (showInactive) {
@@ -181,6 +219,8 @@ export default class BookingService implements IBookingService {
   }
 
   countBookingsByStatus(): Promise<Map<BookingStatus, number>> {
+    logger.debug("countBookingsByStatus")
+
     return this.bookingRepository.countBookingsByStatus()
   }
 

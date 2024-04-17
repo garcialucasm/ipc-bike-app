@@ -3,6 +3,9 @@ import IBikeRepository from "./bike.repository";
 
 import { Client } from 'pg'
 import { createWhereClausule } from "./sql.util";
+import { getLogger } from "../logger";
+
+const logger = getLogger('BikeRepository')
 
 export default class BikeRepository implements IBikeRepository {
 
@@ -26,19 +29,23 @@ export default class BikeRepository implements IBikeRepository {
   }
 
   async save(bike: Bike): Promise<Bike> {
+    logger.silly("save")
     bike.CreatedAt = new Date()
     const result = await this
       .client.query(this.insertStmt, [bike.Numbering, bike.Size, bike.BikeType,
       BikeStatus[bike.CurrentStatus], bike.IsActive, bike.CreatedAt])
 
-    if (result.rowCount == 0)
+    if (result.rowCount == 0) {
+      logger.error("save to database have failed")
       throw new Error("save to database have failed")
+    }
 
     let [row] = result.rows
     return this.bikeFromRow(row)
   }
 
   async update(bike: Bike): Promise<Bike> {
+    logger.silly("update")
     if (bike.ID == undefined)
       throw new Error()
 
@@ -48,19 +55,24 @@ export default class BikeRepository implements IBikeRepository {
       .client.query(this.updateStmt, [bike.IsActive, bike.UpdatedAt,
       BikeStatus[bike.CurrentStatus], bike.ID])
 
-    if (result.rowCount == 0)
-      throw new Error("no result was updated")
+    if (result.rowCount == 0) {
+      logger.error("No bikes updated")
+      throw new Error("No bikes updated")
+    }
 
     return bike;
   }
 
   async delete(bikeId: number): Promise<Bike> {
+    logger.silly("delete")
     const result = await this
       .client.query(this.deleteStmt, [false, new Date(),
         BikeStatus[BikeStatus.DISABLED], bikeId])
 
-    if (result.rowCount == 0)
-      throw new Error("No bikes updated")
+    if (result.rowCount == 0) {
+      logger.error("No bikes deleted")
+      throw new Error("No bikes deleted")
+    }
 
     let [row] = result.rows
 
@@ -68,10 +80,13 @@ export default class BikeRepository implements IBikeRepository {
   }
 
   async findById(bikeId: number): Promise<Bike> {
+    logger.silly("findById")
     const result = await this.client.query(this.findByIdStmt, [bikeId])
 
-    if (result.rowCount == 0)
-      throw new Error("No bikes updated")
+    if (result.rowCount == 0) {
+      logger.error("No bikes found")
+      throw new Error("No bikes found")
+    }
 
     let [row] = result.rows
 
@@ -84,6 +99,7 @@ export default class BikeRepository implements IBikeRepository {
     currentStatus?: BikeStatus | undefined;
   }): Promise<Bike[]> {
 
+    logger.silly("findAll")
     let query: string = this.findAllStmt
 
     query += createWhereClausule(searchCriteria)
@@ -92,6 +108,7 @@ export default class BikeRepository implements IBikeRepository {
   }
 
   private bikeFromRow(row: any): Bike {
+    logger.silly("bikeFromRow")
     let bike: Bike = {
       ID: Number.parseInt(row['id']),
       IsActive: row['is_active'] ? new Boolean(row['is_active']).valueOf() : false,
@@ -108,6 +125,7 @@ export default class BikeRepository implements IBikeRepository {
   }
 
   async countBikesByStatus(): Promise<Map<BikeStatus, number>> {
+    logger.silly("countBikesByStatus")
     let query: string = this.countBikesByStatusStmt
 
     const result = await this.client.query(query)

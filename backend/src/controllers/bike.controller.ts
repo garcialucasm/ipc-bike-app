@@ -2,6 +2,7 @@ import { Router, RouterOptions } from 'express'
 import IBikeService from '../services/bike.service'
 import { Bike, BikeStatus } from '../models/bike.model'
 import { BikeDTO, BikeStatusDTO } from '../dto/bike.dto'
+import { getLogger } from '../logger'
 
 function toStatusDTO(status: Map<BikeStatus, number>): BikeStatusDTO {
   return {
@@ -26,20 +27,24 @@ export function toBikeDTO(bike: Bike): BikeDTO {
 export default function bikeController(bikeService: IBikeService, routerOptions?: RouterOptions) {
 
   const router: Router = Router(routerOptions)
+  const logger = getLogger('bikeController')
 
   router.get('/status', (req, res) => {
+    logger.info("GET /status")
     bikeService.countBikesByStatus().then(bikeStatus => {
       res.status(200).send({ status: toStatusDTO(bikeStatus) })
     })
   })
 
   router.get("/all/available", (req, res) => {
+    logger.info("GET /all/available")
     bikeService.findAllAvailable()
       .then((allBikes) => {
+        logger.debug("GET /all/available successfully")
         res.status(200).send(allBikes);
       })
       .catch(error => {
-        console.log(error);
+        logger.error(error)
         res.status(401).send({ error: error.message });
       });
   });

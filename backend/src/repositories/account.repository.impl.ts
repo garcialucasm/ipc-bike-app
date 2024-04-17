@@ -2,6 +2,9 @@ import { Client } from "pg";
 import { Account } from "../models/account.model";
 import IAccountRepository from "./account.repository";
 import { accountFromRow } from "./mappings";
+import { getLogger } from "../logger";
+
+const logger = getLogger('AccountRepository')
 
 export default class AccountRepository implements IAccountRepository {
 
@@ -19,6 +22,7 @@ export default class AccountRepository implements IAccountRepository {
   }
 
   async save(account: Account): Promise<Account> {
+    logger.silly("save")
     try {
       const name = account.AccountName
       const email = account.Email
@@ -30,8 +34,10 @@ export default class AccountRepository implements IAccountRepository {
 
       let [row] = result.rows
 
-      if (row === undefined)
+      if (row === undefined) {
+        logger.error("Couldn't insert user account")
         throw new Error("Couldn't insert user account")
+      }
 
       return accountFromRow(row)
     }
@@ -41,7 +47,7 @@ export default class AccountRepository implements IAccountRepository {
   }
 
   async findByEmail(email: string): Promise<Account | null> {
-    console.log(`AccountRepository.findByEmail(${email})`)
+    logger.silly("findByEmail")
     try {
       let result = await this.client.query(this.findByEmailStmt, [email])
 
@@ -52,17 +58,20 @@ export default class AccountRepository implements IAccountRepository {
         return null;
       }
     } catch (error) {
+      logger.silly("Couldn't find account by email")
       throw new Error("Couldn't find account by email")
     }
   }
 
   async findAccount(email: string): Promise<Account> {
+    logger.silly("findAccount")
     try {
       let result = await this.client.query(this.loginStmt, [email])
 
       let account = result.rows[0]
 
       if (!account) {
+        logger.silly("Email not found")
         throw new Error("Email not found");
       }
 
@@ -73,7 +82,10 @@ export default class AccountRepository implements IAccountRepository {
         Hash: account.hash,
       };
     } catch (error) {
-      throw error;
+      {
+        logger.error(`${error}`)
+        throw error;
+      }
     }
   }
 

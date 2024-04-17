@@ -1,7 +1,8 @@
 import withAuth from "@/app/auth/withAuth"
 import UnderConstruction from "@/components/Others/UnderConstruction"
 
-const Page = () => {
+const SettingsPage = () => {
+  const componentName = SettingsPage.name
   const isAuth = withAuth()
   if (isAuth) {
     return (
@@ -12,4 +13,4 @@ const Page = () => {
   }
 }
 
-export default Page
+export default SettingsPage

@@ -1,5 +1,9 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
+require('events').defaultMaxListeners = 25;
+
 import express from "express"
-import bodyParser from "body-parser"
 import cors from "cors"
 import bookingController from "./controllers/booking.controllers"
 import IBookingService from "./services/booking.service"
@@ -24,12 +28,17 @@ import getClient from "./db/index"
 import bikeController from "./controllers/bike.controller"
 import accountController from "./controllers/account.controller"
 import { checkAuth } from "./utils/auth"
+import { getLogger } from "./logger"
 
+const logger = getLogger()
+
+logger.info('connecting to db')
 let db = getClient()
 db.connect()
 
 const currentTerm = 'spring 2023'
 
+logger.info('intializing services')
 const userRepository: IUserRepository = new UserRepository(db)
 const accountRepository: IAccountRepository = new AccountRepository(db)
 const bikeRepository: IBikeRepository = new BikeRepository(db)
@@ -61,7 +70,7 @@ app.get("/", async (req, res) => {
 })
 
 const server = app.listen(3000, () => {
-  console.log("Express server started on port 3000")
+  logger.info("Express server started on port 3000")
 })
 
 export { app, server, db }
