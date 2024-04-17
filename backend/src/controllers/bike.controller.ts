@@ -1,7 +1,8 @@
-import { Router, RouterOptions } from "express";
-import IBikeService from "../services/bike.service";
-import { Bike, BikeStatus } from "../models/bike.model";
-import { BikeDTO, BikeStatusDTO } from "../dto/bike.dto";
+import { Router, RouterOptions } from 'express'
+import IBikeService from '../services/bike.service'
+import { Bike, BikeStatus } from '../models/bike.model'
+import { BikeDTO, BikeStatusDTO } from '../dto/bike.dto'
+import { getLogger } from '../logger'
 
 function toStatusDTO(status: Map<BikeStatus, number>): BikeStatusDTO {
   return {
@@ -29,23 +30,29 @@ export default function bikeController(
 ) {
   const router: Router = Router(routerOptions);
 
+
+  const router: Router = Router(routerOptions)
+  const logger = getLogger('bikeController')
+
   router.get("/status", (req, res) => {
-    bikeService.countBikesByStatus().then((bikeStatus) => {
+    logger.info("GET /status")
+    bikeService.countBikesByStatus().then(bikeStatus => {
       res.status(200).send({ status: toStatusDTO(bikeStatus) });
     });
   });
 
-  router.get("/all", (req, res) => {
-    bikeService
-      .findAll()
+   router.get("/all", (req, res) => {
+     logger.info("GET /all")
+    bikeService.findAll()
       .then((allBikes) => {
+        logger.debug("GET /all/available successfully")
         res.status(200).send(allBikes);
       })
       .catch((error) => {
         console.log(error);
         res.status(401).send({ error: error.message });
       });
-  });
+   });
 
   router.put("/maintenance/:id", (req, res) => {
     bikeService
@@ -53,8 +60,9 @@ export default function bikeController(
       .then((bike) => {
         res.status(200).send({ bike: toBikeDTO(bike) });
       })
-      .catch((error) => {
-        console.log(error);
+.catch(error => {
+        logger.error(error)
+
         res.status(401).send({ error: error.message });
       });
   });

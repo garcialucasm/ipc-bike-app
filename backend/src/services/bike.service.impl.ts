@@ -1,6 +1,9 @@
 import { Bike, BikeStatus } from "../models/bike.model";
 import IBikeRepository from "../repositories/bike.repository";
 import IBikeService from "./bike.service";
+import { getLogger } from '../logger'
+
+const logger = getLogger('BikeService')
 
 export default class BikeService implements IBikeService {
   bikeRepository: IBikeRepository;
@@ -18,12 +21,10 @@ export default class BikeService implements IBikeService {
     ]);
   }
 
-  async createBike(
-    numbering: number,
-    bikeType: string,
-    size: string
-  ): Promise<Bike> {
-    let bikes = await this.bikeRepository.findAll({ numbering: numbering });
+  async createBike(numbering: number, bikeType: string, size: string): Promise<Bike> {
+    logger.debug("createBike")
+    
+    let bikes = await this.bikeRepository.findAll({ numbering: numbering })
 
     if (bikes.length) {
       throw new Error("Numbering already exist");
@@ -42,11 +43,17 @@ export default class BikeService implements IBikeService {
   }
 
   async changeStatus(bike: Bike, status: BikeStatus): Promise<Bike> {
-    if (bike.CurrentStatus === undefined) throw new Error();
+    logger.debug("changeStatus")
 
-    let statusChange = this.validBikeStatusTransitions.get(bike.CurrentStatus);
+    if (bike.CurrentStatus === undefined) {
+      throw new Error()
+    }
 
-    if (!statusChange?.includes(status)) throw new Error();
+    let statusChange = this.validBikeStatusTransitions.get(bike.CurrentStatus)
+
+    if (!statusChange?.includes(status)) {
+      throw new Error()
+    }
 
     bike.CurrentStatus = status;
 
@@ -58,11 +65,13 @@ export default class BikeService implements IBikeService {
     numbering?: number,
     currentStatus?: BikeStatus
   ): Promise<Bike[]> {
+    logger.debug("findAllAvailable")
     const searchCriteria: {
       numbering?: number;
       currentStatus?: BikeStatus;
       size?: string;
     } = {};
+
     /* -- without this statement, findAllAvailable doesnt work with empty size -- */
     if (size) {
       searchCriteria.size = size;
@@ -78,7 +87,8 @@ export default class BikeService implements IBikeService {
   }
 
   countBikesByStatus(): Promise<Map<BikeStatus, number>> {
-    return this.bikeRepository.countBikesByStatus();
+    logger.debug("countBikesByStatus")
+    return this.bikeRepository.countBikesByStatus()
   }
 
   async maintenance(numbering: number) {

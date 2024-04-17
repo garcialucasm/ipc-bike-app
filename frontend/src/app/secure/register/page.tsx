@@ -1,7 +1,8 @@
 import withAuth from "@/app/auth/withAuth"
 import RegisterForm from "@/components/Forms/RegisterForm"
 
-const RegisterAccount = () => {
+const RegisterAccountPage = () => {
+  const componentName = RegisterAccountPage.name
   const isAuth = withAuth()
 
   if (isAuth) {
@@ -9,4 +10,4 @@ const RegisterAccount = () => {
   }
 }
 
-export default RegisterAccount
+export default RegisterAccountPage

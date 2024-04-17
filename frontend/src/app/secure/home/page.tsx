@@ -3,7 +3,8 @@ import { redirect } from "next/navigation"
 import { NavigationPaths } from "@/types/NavigationPaths"
 import withAuth from "@/app/auth/withAuth"
 
-const Home = () => {
+const HomePage = () => {
+  const componentName = HomePage.name
   const isAuth = withAuth()
   if (isAuth) {
     /* ----------- // TODO: Redirect according to user type by useAuth ---------- */
@@ -11,4 +12,4 @@ const Home = () => {
   }
 }
 
-export default Home
+export default HomePage
