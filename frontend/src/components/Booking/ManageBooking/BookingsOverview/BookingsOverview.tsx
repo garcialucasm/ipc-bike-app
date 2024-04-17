@@ -183,7 +183,7 @@ function BookingsOverview() {
     updatingBikeAvailability()
     setModalAction((prev) => ({
       ...prev,
-      actionToConfirm: BookingModalActions.CLOSERESPONSE,
+      actionToConfirm: BookingModalActions.RESPONSE,
       dialogMessage: messageinitial,
     }))
   }
@@ -277,19 +277,19 @@ function BookingsOverview() {
                     </span>
                   </td>
                   <td className="flex w-full flex-row items-center justify-center p-2">
-                    <div title="Info">
+                    <div className="flex" title="Info">
                       <ActionButtonInfo
                         onClick={() => handleClickInfo(booking)}
                         name="info-booking"
                       ></ActionButtonInfo>
                     </div>
-                    <div title="Cancel">
+                    <div className="flex" title="Cancel">
                       <ActionButtonCancel
                         onClick={() => handleClickCancellation(booking)}
                         name="cancel-booking"
                       ></ActionButtonCancel>
                     </div>
-                    <div title="Confirm">
+                    <div className="flex" title="Confirm">
                       <ActionButtonConfirm
                         onClick={() => {
                           handleClickConfirmation(booking)
@@ -306,7 +306,7 @@ function BookingsOverview() {
 
         {/* -------------------------- Modal: Confirm action -------------------------- */}
         {modalAction.isOpen &&
-          modalAction.actionToConfirm !== BookingModalActions.CLOSERESPONSE && (
+          modalAction.actionToConfirm !== BookingModalActions.RESPONSE && (
             <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50 backdrop-blur">
               <div
                 ref={modalRef}
@@ -341,7 +341,7 @@ function BookingsOverview() {
 
         {/* -------------------------- Modal: Server response -------------------------- */}
         {modalAction.isOpen &&
-          modalAction.actionToConfirm == BookingModalActions.CLOSERESPONSE && (
+          modalAction.actionToConfirm == BookingModalActions.RESPONSE && (
             <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50 backdrop-blur">
               <div
                 ref={modalRef}

@@ -47,5 +47,17 @@ export default function bikeController(
       });
   });
 
+  router.put("/maintenance/:id", (req, res) => {
+    bikeService
+      .maintenance(parseInt(req.params.id))
+      .then((bike) => {
+        res.status(200).send({ bike: toBikeDTO(bike) });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(401).send({ error: error.message });
+      });
+  });
+
   return router;
 }

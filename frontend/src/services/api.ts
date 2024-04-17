@@ -34,6 +34,7 @@ export const apiUrls = {
   /* ------------------------------ Bike Service ------------------------------ */
   bikeStatusCounterUrl: "/secure/bike/status",
   allBikesUrl: "/secure/bike/all",
+  maintenance: "/secure/bike/maintenance/"
 }
 
 export const ApiHeader = axios.create({

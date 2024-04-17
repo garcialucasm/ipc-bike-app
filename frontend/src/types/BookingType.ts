@@ -34,7 +34,7 @@ export enum BookingType {
 export enum BookingModalActions {
   CANCEL = "Cancel",
   CONFIRM = "Confirm",
-  CLOSERESPONSE = "Close",
+  RESPONSE = "Response",
   INFO = "Info",
 }
 

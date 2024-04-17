@@ -15,9 +15,9 @@ function TableHeader() {
           <th scope="col" className="px-2 py-3">
             Size
           </th>
-          {/* <th scope="col" className="px-2 py-3 text-center">
+          <th scope="col" className="px-2 py-3 text-center">
             Actions
-          </th> */}
+          </th>
         </tr>
       </thead>
     </>

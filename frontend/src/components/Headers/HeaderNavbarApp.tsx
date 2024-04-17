@@ -14,7 +14,6 @@ import { User } from "@phosphor-icons/react/dist/ssr/User"
 import { UserCirclePlus } from "@phosphor-icons/react/dist/ssr/UserCirclePlus"
 import { Bicycle } from "@phosphor-icons/react/dist/ssr/Bicycle"
 import { ChartLine } from "@phosphor-icons/react/dist/ssr/ChartLine"
-import { Gear } from "@phosphor-icons/react/dist/ssr/Gear"
 import { SignOut } from "@phosphor-icons/react/dist/ssr/SignOut"
 import { Info } from "@phosphor-icons/react/dist/ssr/Info"
 
@@ -23,6 +22,7 @@ import Button from "@/components/Buttons/Button"
 import { useAuth } from "@/context/auth"
 import { getDecodedToken, logout } from "@/app/auth/authUtils"
 import { toPascalCase } from "@/utils/strings"
+import { FileText } from "@phosphor-icons/react/dist/ssr/FileText"
 
 export default function HeaderNavbarApp() {
   const { accountData, settingAccountData: settingAccountData } = useAuth()
@@ -191,17 +191,17 @@ export default function HeaderNavbarApp() {
                           className="border-b border-slate-200 px-10 py-3"
                           role="none"
                         >
-                          <p className="text-xs text-slate-900" role="none">
+                          <p className="text-xs" role="none">
                             Welcome,
                           </p>
                           <p
-                            className="truncate text-base font-medium text-slate-900"
+                            className="truncate text-base font-medium"
                             role="none"
                           >
                             {accountName}
                           </p>
                         </div>
-                        <Link
+                        {/* <Link
                           href={NavigationPaths.profile}
                           className="text-slate-400"
                           onClick={() => setIsOpenedAccountMenu(false)}
@@ -212,7 +212,7 @@ export default function HeaderNavbarApp() {
                               <div className="px-2">Profile</div>
                             </div>
                           </div>
-                        </Link>
+                        </Link> */}
                         <Link
                           href={NavigationPaths.register}
                           className="text-slate-700"
@@ -236,7 +236,7 @@ export default function HeaderNavbarApp() {
                             </div>
                           </div>
                         </Link>
-                        <Link
+                        {/* <Link
                           href={NavigationPaths.statistics}
                           className="text-slate-400"
                           onClick={() => setIsOpenedAccountMenu(false)}
@@ -247,11 +247,22 @@ export default function HeaderNavbarApp() {
                               <div className="px-2">Statistics</div>
                             </div>
                           </div>
-                        </Link>
+                        </Link> */}
+                        <a
+                          href={NavigationPaths.rules}
+                          target="_blank"
+                          onClick={() => setIsOpenedAccountMenu(false)}
+                        >
+                          <div className="block px-10 py-2 hover:bg-slate-200 hover:text-blue-700">
+                            <div className="flex w-fit items-center">
+                              <FileText size={20} />
+                              <div className="px-2">Usage rules</div>
+                            </div>
+                          </div>
+                        </a>
                         <a
                           href={NavigationPaths.project}
                           target="_blank"
-                          className="text-slate-700"
                           onClick={() => setIsOpenedAccountMenu(false)}
                         >
                           <div className="block px-10 py-2 hover:bg-slate-200 hover:text-blue-700">
@@ -261,18 +272,6 @@ export default function HeaderNavbarApp() {
                             </div>
                           </div>
                         </a>
-                        <Link
-                          href={NavigationPaths.settings}
-                          className="text-slate-400"
-                          onClick={() => setIsOpenedAccountMenu(false)}
-                        >
-                          <div className="block px-10 py-2 hover:bg-slate-200 hover:text-blue-700">
-                            <div className="flex w-fit items-center">
-                              <Gear size={20} />
-                              <div className="px-2">Settings</div>
-                            </div>
-                          </div>
-                        </Link>
                         <Button
                           onClick={() => handleClick(NavigationPaths.logout)}
                           name={NavigationPaths.logout}

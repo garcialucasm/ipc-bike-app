@@ -60,6 +60,28 @@ export async function allBikesAvailableFetchApi() {
     }
 }
 
+/* --------------------------- Toggle Bike Maintenance -------------------------- */
+export async function toggleMaintenanceFetchApi(numbering: string) {
+
+    try {
+        const response = await ApiHeader.put(apiUrls.maintenance + numbering);
+        if (response.status < 200 || response.status >= 300) {
+            throw new Error(`${response.status}: ${response.statusText}`);
+        }
+
+        const data = response.data
+
+        return {
+            data: data, error: null
+        };
+    } catch (error: any) {
+        console.error('Error updating bike maintenance status:', error.message);
+        return {
+            data: null, error: `${error.message}`
+        }
+    }
+}
+
 
 
 export async function getBikeStatusCount() {

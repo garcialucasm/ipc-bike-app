@@ -130,7 +130,7 @@ function PreviousBookingsOverview() {
     updatingBikeAvailability()
     setModalAction((prev) => ({
       ...prev,
-      actionToConfirm: BookingModalActions.CLOSERESPONSE,
+      actionToConfirm: BookingModalActions.RESPONSE,
       dialogMessage: messageinitial,
     }))
   }
@@ -267,7 +267,7 @@ function PreviousBookingsOverview() {
 
         {/* -------------------------- Modal: Confirm action -------------------------- */}
         {modalAction.isOpen &&
-          modalAction.actionToConfirm !== BookingModalActions.CLOSERESPONSE && (
+          modalAction.actionToConfirm !== BookingModalActions.RESPONSE && (
             <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50 backdrop-blur">
               <div
                 ref={modalRef}

@@ -9,4 +9,5 @@ export default interface IBikeService {
     currentStatus?: BikeStatus
   ): Promise<Bike[]>;
   countBikesByStatus(): Promise<Map<BikeStatus, number>>;
+  maintenance(numbering: number): Promise<Bike>;
 }

@@ -25,6 +25,9 @@ const config: Config = {
       },
       letterSpacing: {
         tightest: '-.4em',
+      },
+      borderWidth: {
+        '3': '3px',
       }
     },
   },
