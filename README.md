@@ -1,16 +1,27 @@
-# IPC Alumni | Bike lending and management PWA
+# [IPC Bike | Bike Management Web App 🚲](https://ipc.bike)
 
-Progressive Web App designed for bike lending and management at a college in Denmark.
+Web application for bicycle management at International People's College in Denmark. The project aims to manage college bicycles for admins, students, and professors through a reservation system.
+
+Official Link 👉 [ipc.bike](https://ipc.bike)
 
 ## Table of Contents
 
 - [Introduction]
 - [Features]
-- [Future Enhancements]
+- [Contact]
 
 ## Introduction
 
-This PWA is a solution designed to address the challenges of managing and maintaining bikes at Denmark's IPC | Alumni college. This app aims to provide a platform for students, teachers, alumni, and the student council to borrow and return bikes effortlessly, ensuring accountability and efficient management, while also simplifying bike borrowing, promoting responsible usage, and contributing to a more environmentally-conscious campus culture.
+Welcome to IPC Bike! 👋
+
+We've crafted a non-profit web application dedicated to serving IPC's community.
+Our mission? To provide students, faculty, and administrators with a hassle-free bike management solution, all at no cost.
+
+To learn more about the project, you can visit 👉 [ipc.bike](https://ipc.bike/web)
+
+If you have any suggestions, please use our feedback forms on the [home page](https://ipc.bike/web) or send us a message through our contact details.
+
+Dive in and discover how we're revolutionizing campus mobility!
 
 ## Features
 
@@ -18,13 +29,14 @@ List the main features of your project. Use bullet points for clarity.
 
 - **Bike Availability:** Display the number of bikes currently available.
 - **Reservation System:** A feature that allows users to borrow and return the bike.
+- **Enhanced Reservation System:** Suggest the least used bike for the subsequent lending.
 - **User Profiles:** Users can create profiles and manage their reservations.
-- **Notifications:** Users receive notifications for reservation confirmations, return times, reminders, and return confirmations.
-- **Rules, FAQs, and Help:** A section with the rules, frequently asked questions, and support information.
+- **Rules, FAQs, and Help:** A section with the rules, frequently asked questions and support information.
 - **Admin Panel:** An admin panel to manage bike inventory, user accounts, notifications, view statistics, and usage logs.
 - **Alumni advertising:** Advertising to show students the existence of Alumni and get them interested in membership (link to redirect them to become a member).
 
-## Future Enhancements:
+To learn more about the project and the current status of feature development, you can visit 👉 [ipc.bike/about](https://ipc.bike/web/about)
 
-- Enhanced Reservation System:
-    - Suggest the least used bike for the subsequent lending.
+## Contact
+
+To see our contacts, you can visit [ipc.bike/contact](https://ipc.bike/web) or send us a message through our contact details.
