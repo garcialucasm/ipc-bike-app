@@ -6,9 +6,9 @@ Official Link 👉 [ipc.bike](https://ipc.bike)
 
 ## Table of Contents
 
-- [Introduction]
-- [Features]
-- [Contact]
+- [Introduction](#introduction)
+- [Features](#features)
+- [Contact](#contact)
 
 ## Introduction
 
@@ -39,4 +39,4 @@ To learn more about the project and the current status of feature development, y
 
 ## Contact
 
-To see our contacts, you can visit [ipc.bike/contact](https://ipc.bike/web) or send us a message through our contact details.
+To see our contacts, you can visit [ipc.bike/contact](https://ipc.bike/web/contact) and send us a message.
