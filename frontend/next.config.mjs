@@ -7,6 +7,21 @@ const nextConfig = {
         destination: "/web/about",
         permanent: true,
       },
+      {
+        source: "/project",
+        destination: "/web/about",
+        permanent: true,
+      },
+      {
+        source: "/about",
+        destination: "/web/about",
+        permanent: true,
+      },
+      {
+        source: "/contact",
+        destination: "/web/contact",
+        permanent: true,
+      },
     ]
   },
 }
