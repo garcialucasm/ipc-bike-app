@@ -30,6 +30,15 @@ const emptyBike = {
   IsActive: true,
 }
 
+const emptyModalAction = {
+  isOpen: false,
+  bike: emptyBike,
+  actionToConfirm: null,
+  dialogMessage: messageInitial,
+  isConfirmed: null,
+  resultMessage: "",
+}
+
 function Inventory() {
   const { allBikes: allBikes, updatingAllBikes: updatingAllBikesAvailable } =
     useBikeContext()
@@ -43,14 +52,7 @@ function Inventory() {
     dialogMessage: string
     isConfirmed: boolean | null
     resultMessage: string
-  }>({
-    isOpen: false,
-    bike: emptyBike,
-    actionToConfirm: null,
-    dialogMessage: messageInitial,
-    isConfirmed: null,
-    resultMessage: "",
-  })
+  }>(emptyModalAction)
 
   // Function to sort bikes by numbering
   const sortByNumbering = (a: BikeDTO, b: BikeDTO) => {
@@ -80,25 +82,18 @@ function Inventory() {
   }
 
   /* ------------------------ Handle confirm action modal ------------------------ */
-  async function handleConfirmAction(
-    confirm: boolean,
-    numbering: string | null
-  ) {
-    if (confirm && numbering) {
-      const response = await toggleMaintenanceFetchApi(numbering)
+  async function handleConfirmAction(confirm: boolean) {
+    if (confirm && modalAction.bike.Numbering) {
+      const response = await toggleMaintenanceFetchApi(
+        modalAction.bike.Numbering
+      )
       handleServerResponse(response)
       setModalAction((prev) => ({
         ...prev,
         actionToConfirm: BikeModalActions.RESPONSE,
       }))
     } else {
-      setModalAction((prev) => ({
-        ...prev,
-        isOpen: false,
-        bike: emptyBike,
-        actionToConfirm: null,
-        dialogMessage: messageInitial,
-      }))
+      setModalAction(emptyModalAction)
     }
   }
 
@@ -135,7 +130,7 @@ function Inventory() {
 
   const handleModalClick = (e: any) => {
     if (modalRef.current && !modalRef.current.contains(e.target)) {
-      handleConfirmAction(false, null)
+      handleConfirmAction(false)
     }
   }
 
@@ -256,15 +251,13 @@ function Inventory() {
                 />
                 <div className="flex justify-end gap-x-3">
                   <SecondaryButton
-                    onClick={() => handleConfirmAction(false, null)}
+                    onClick={() => handleConfirmAction(false)}
                     className="btn-secondary w-full max-w-16"
                   >
                     No
                   </SecondaryButton>
                   <PrimaryButton
-                    onClick={() =>
-                      handleConfirmAction(true, modalAction.bike.Numbering)
-                    }
+                    onClick={() => handleConfirmAction(true)}
                     className="btn-primary ms-0 w-full max-w-24"
                   >
                     Yes
@@ -295,8 +288,7 @@ function Inventory() {
                 <div className="flex justify-center">
                   <SecondaryButton
                     onClick={() => {
-                      handleConfirmAction(false, null),
-                        setReloadData(!reloadData)
+                      handleConfirmAction(false), setReloadData(!reloadData)
                     }}
                     className="btn-secondary w-full max-w-24"
                   >

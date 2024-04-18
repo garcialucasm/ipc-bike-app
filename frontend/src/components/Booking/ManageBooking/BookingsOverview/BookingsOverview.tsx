@@ -28,8 +28,9 @@ import ActionButtonConfirm from "@/components/Buttons/ActionButtonConfirm"
 import ActionButtonInfo from "@/components/Buttons/ActionButtonInfo"
 import { useAuth } from "@/context/auth"
 import { formatDateString } from "@/utils/strings"
+import { toggleMaintenanceFetchApi } from "@/services/bikeApi"
 
-const messageinitial = "Confirm Action"
+const messageInitial = "Confirm Action"
 const messageCancelBooking = "Are you sure to cancel this booking?"
 const messageCancelReturn = "Are you sure to cancel this bike return?"
 const messageConfirmBooking = "Are you sure to confirm this booking?"
@@ -40,6 +41,7 @@ function BookingsOverview() {
   const { accountData } = useAuth()
   const isAuth = accountData?.isAuthenticated || false
   const [reloadData, setReloadData] = useState(false)
+  const [isMaintenanceChecked, setIsMaintenanceChecked] = useState(false)
   const [bookingData, setBookingData] = useState<{
     allBookings: any
     error: string | null
@@ -47,6 +49,30 @@ function BookingsOverview() {
     allBookings: null,
     error: null,
   })
+  const emptyBooking = {
+    user: "",
+    term: "",
+    room: "",
+    bike: "",
+    bikeCount: "",
+    bikeType: "",
+    status: null,
+    type: null,
+    createdAt: "",
+    confirmedAt: "",
+    returnedAt: "",
+    returnedCondition: "",
+    notes: "",
+  }
+
+  const emptyModalAction = {
+    isOpen: false,
+    booking: emptyBooking,
+    actionToConfirm: null,
+    dialogMessage: messageInitial,
+    isConfirmed: null,
+    resultMessage: "",
+  }
 
   const [modalAction, setModalAction] = useState<{
     isOpen: boolean
@@ -55,28 +81,7 @@ function BookingsOverview() {
     dialogMessage: string
     isConfirmed: boolean | null
     resultMessage: string
-  }>({
-    isOpen: false,
-    booking: {
-      user: "",
-      term: "",
-      room: "",
-      bike: "",
-      bikeCount: "",
-      bikeType: "",
-      status: null,
-      type: null,
-      createdAt: "",
-      confirmedAt: "",
-      returnedAt: "",
-      returnedCondition: "",
-      notes: "",
-    },
-    actionToConfirm: null,
-    dialogMessage: messageinitial,
-    isConfirmed: null,
-    resultMessage: "",
-  })
+  }>(emptyModalAction)
   const { updatingBikeAvailability } = useBikeContext()
   const modalRef = useRef<HTMLDivElement>(null)
 
@@ -89,9 +94,6 @@ function BookingsOverview() {
       isOpen: true,
       booking: booking,
       actionToConfirm: BookingModalActions.INFO,
-    }))
-    setModalAction((prev) => ({
-      ...prev,
       dialogMessage: messageInfoBooking,
     }))
   }
@@ -157,6 +159,7 @@ function BookingsOverview() {
         actionToConfirm === BookingModalActions.CONFIRM
       ) {
         const response = await returnBookingFetchApi(id)
+        setIsMaintenanceChecked(true)
         handleServerResponse(response)
       } else if (
         (bookingStatus === BookingStatus.BOOKED ||
@@ -167,33 +170,37 @@ function BookingsOverview() {
         handleServerResponse(response)
       }
     } else {
-      setModalAction((prev) => ({
-        ...prev,
-        isOpen: false,
-        bookingId: null,
-        userName: null,
-        bikeType: null,
-        bikeNumbering: null,
-        status: null,
-        actionToConfirm: null,
-        dialogMessage: messageinitial,
-        isConfirmed: null,
-      }))
+      setModalAction(emptyModalAction)
+      setIsMaintenanceChecked(false)
     }
     updatingBikeAvailability()
     setModalAction((prev) => ({
       ...prev,
       actionToConfirm: BookingModalActions.RESPONSE,
-      dialogMessage: messageinitial,
     }))
   }
 
-  function handleServerResponse(response: any) {
+  async function handleServerResponse(response: any) {
     if (response.data) {
       // If the request is successful, proceed with the desired actions
       let actionMessage: string = "Action confirmed"
+      const bookingStatus =
+        modalAction.booking.status &&
+        (modalAction.booking.status.toUpperCase() as BookingStatus)
       if (modalAction.actionToConfirm === BookingModalActions.CANCEL) {
         actionMessage = "Booking canceled"
+      } else if (
+        modalAction.actionToConfirm === BookingModalActions.CONFIRM &&
+        isMaintenanceChecked &&
+        bookingStatus === BookingStatus.DELIVERED
+      ) {
+        const res = await toggleMaintenanceFetchApi(modalAction.booking.bike)
+        if (res.data) {
+          actionMessage = "Bike returned and sent for maintenance"
+        } else {
+          actionMessage =
+            "Bike returned but something unexpected occurred when trying to send it for maintenance."
+        }
       }
       setModalAction((prev) => ({
         ...prev,
@@ -220,6 +227,10 @@ function BookingsOverview() {
     if (modalRef.current && !modalRef.current.contains(e.target)) {
       handleConfirmAction(false)
     }
+  }
+
+  function handleCheckboxChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setIsMaintenanceChecked(event.target.checked)
   }
 
   useEffect(() => {
@@ -310,13 +321,31 @@ function BookingsOverview() {
             <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50 backdrop-blur">
               <div
                 ref={modalRef}
-                className="grid min-w-72 sm:min-w-96 max-w-md gap-y-4 rounded-2xl bg-white p-8"
+                className="grid min-w-72 max-w-md gap-y-4 rounded-2xl bg-white p-8 sm:min-w-96"
               >
                 <InfoboxSingleBookingModal
                   booking={modalAction.booking}
                   dialogMessage={modalAction.dialogMessage}
                   actionToConfirm={modalAction.actionToConfirm}
                 />
+                {modalAction.actionToConfirm ===
+                  BookingModalActions.CONFIRM && (
+                  <div className="flex w-full items-center justify-center px-4 sm:justify-start">
+                    <input
+                      id="default-checkbox"
+                      type="checkbox"
+                      checked={isMaintenanceChecked}
+                      onChange={handleCheckboxChange}
+                      className={`h-4 w-4 rounded-2xl border-gray-300 bg-gray-100 text-blue-600`}
+                    />
+                    <label
+                      htmlFor="default-checkbox"
+                      className="ms-2 text-sm text-gray-700"
+                    >
+                      This bike needs repairs. Send for maintenance.
+                    </label>
+                  </div>
+                )}
                 <div className="flex justify-end gap-x-3">
                   <SecondaryButton
                     onClick={() => handleConfirmAction(false)}
