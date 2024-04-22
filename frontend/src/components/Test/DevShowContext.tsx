@@ -2,13 +2,13 @@
 
 import { useState } from "react"
 
-import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
+import { useBikeContext } from "@/context/bikeAvailability"
 import { useSingleBookingContext } from "@/context/singleBooking"
 import { useAuth } from "@/context/auth"
 
 function DevShowContext() {
   const { bookingData } = useSingleBookingContext()
-  const { bikeStatusCount: bikeStatusCount } = useBikeAvailabilityContext()
+  const { bikeStatusCount: bikeStatusCount } = useBikeContext()
   const { accountData } = useAuth()
   const [minimized, setMinimized] = useState(false)
 

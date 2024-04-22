@@ -6,7 +6,7 @@ enum StatusColorClass {
   GREEN = "bg-emerald-500",
   YELLOW = "bg-amber-500",
   RED = "bg-rose-500",
-  GRAY = "bg-slate-300",
+  GRAY = "bg-slate-400",
   WHITE = "bg-slate-100",
 }
 enum AnimationStatusClass {

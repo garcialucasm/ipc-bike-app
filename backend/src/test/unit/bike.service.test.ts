@@ -143,7 +143,7 @@ describe("find all available bikes", async () => {
   })
 
   it("returns only free bikes", async () => {
-    let bikes = await bikeService.findAllAvailable()
+    let bikes = await bikeService.findAll()
 
     assert.equal(2, bikes.length)
 

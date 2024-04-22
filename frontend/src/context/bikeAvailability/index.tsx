@@ -14,11 +14,11 @@ export const initialBikeStatusCount: BikeStatusCard = {
   [BikeStatus.DISABLED]: null,
 }
 
-const BikeAvailabilityContext = createContext<BikeAvailabilityContextProps>(
+const BikeContext = createContext<BikeAvailabilityContextProps>(
   {} as BikeAvailabilityContextProps
 )
 
-const BikeAvailabilityProvider = ({
+const BikeProvider = ({
   children,
 }: {
   children: React.ReactNode
@@ -28,7 +28,7 @@ const BikeAvailabilityProvider = ({
     initialBikeStatusCount
   )
 
-  const [allBikesAvailable, setAllBikesAvailable] = useState<BikeDTO[]>([]);
+  const [allBikes, setAllBikesAvailable] = useState<BikeDTO[]>([]);
 
   const updatingAllBikesAvailable = async () => {
     const serverResult = await getAllBikesAvailable()
@@ -52,26 +52,26 @@ const BikeAvailabilityProvider = ({
   }
 
   return (
-    <BikeAvailabilityContext.Provider
+    <BikeContext.Provider
       value={{
         bikeStatusCount: bikeStatusCount,
-        allBikesAvailable: allBikesAvailable,
+        allBikes: allBikes,
         updatingBikeAvailability,
-        updatingAllBikesAvailable,
+        updatingAllBikes: updatingAllBikesAvailable,
       }}
     >
       <>{children}</>
-    </BikeAvailabilityContext.Provider>
+    </BikeContext.Provider>
   )
 }
 
-const useBikeAvailabilityContext = () => {
-  const context = useContext(BikeAvailabilityContext)
+const useBikeContext = () => {
+  const context = useContext(BikeContext)
   return context
 }
 
 export {
-  BikeAvailabilityContext,
-  BikeAvailabilityProvider,
-  useBikeAvailabilityContext,
+  BikeContext,
+  BikeProvider as BikeAvailabilityProvider,
+  useBikeContext,
 }

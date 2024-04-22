@@ -43,9 +43,10 @@ export default class BookingService implements IBookingService {
 
 
   async createSingleBooking(userName: string, room: string, bikeNumbering: number): Promise<Booking> {
-    logger.debug("createSingleBooking")
 
-    let availableBikes = await this.bikeService.findAllAvailable(undefined, bikeNumbering)
+    logger.debug("createSingleBooking")
+    let availableBikes = await this.bikeService.findAll(undefined, bikeNumbering, BikeStatus.FREE)
+
 
     /* --------- Check if the user is already in the process of booking --------- */
     if (usersInBookingProcess.includes(userName)) {

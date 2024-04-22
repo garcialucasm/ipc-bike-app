@@ -4,7 +4,7 @@ export interface Bike {
   bikeType: string;
   size: string;
   currentStatus: BikeStatus;
-  isActive: boolean;
+  isActive?: boolean;
   createdAt?: string;
   updatedAt?: string;
   deletedAt?: string;
@@ -45,3 +45,9 @@ export type BikeStatusCard = {
   [BikeStatus.FREE]: number | null,
   [BikeStatus.DISABLED]: number | null
 };
+
+export enum BikeModalActions {
+  RETURNMAINTENANCE = "Return",
+  SENDMAINTENANCE = "Send",
+  RESPONSE = "Response",
+}

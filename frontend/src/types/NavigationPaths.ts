@@ -23,7 +23,7 @@ export enum NavigationPaths {
   project = "/web/project",
   rules = "/web/rules",
   becomeMember = "/secure/member",
-  termsAndConditions = "/web",
+  termsAndConditions = "/web/rules",
   /* -------------------------------------------------------------------------- */
 
 }

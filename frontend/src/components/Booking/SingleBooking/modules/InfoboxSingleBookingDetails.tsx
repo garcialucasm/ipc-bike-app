@@ -1,8 +1,6 @@
-import { User } from "@phosphor-icons/react/dist/ssr/User"
-
 import { useSingleBookingContext } from "@/context/singleBooking"
-import { toPascalCase } from "@/utils/strings"
-import { IconSvgBikeStandard } from "@/components/Others/IconsSvg"
+import UserDetails from "./UserDetails"
+import BikeDetails from "./BikeDetails"
 
 function InfoboxSingleBookingDetails() {
   const { bookingData } = useSingleBookingContext()
@@ -14,42 +12,12 @@ function InfoboxSingleBookingDetails() {
 
   return (
     <div className="flex w-full flex-col gap-3 sm:flex-row">
-      <div className="flex w-full items-center rounded-2xl border bg-white p-3 sm:mb-3">
-        <div className="flex">
-          <div className="flex h-14 min-w-14 items-center justify-center rounded-2xl bg-slate-400">
-            <User size={36} className="text-white" />
-          </div>
-          <div className="flex flex-col justify-start text-left text-slate-600">
-            <span className="px-3 font-extrabold capitalize leading-4 text-blue-800 line-clamp-2 text-wrap">
-              {fullName}
-            </span>
-            <span className="px-3 text-xs font-semibold leading-loose">
-              <span>Room: </span>
-              <span className="text-blue-800">{roomNumber}</span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div className="flex w-full items-center rounded-2xl border bg-white p-3 sm:mb-3">
-        <div className="flex">
-          <div className="flex h-14 min-w-14 items-center justify-center rounded-2xl bg-slate-400 p-1">
-            <IconSvgBikeStandard
-              height="42"
-              width="42"
-              fillColor="fill-white"
-            />
-          </div>
-          <div className="flex flex-col justify-start text-left text-slate-600">
-            <p className="px-3 font-extrabold capitalize leading-4 text-blue-800">
-              Bike {bikeNumbering}
-            </p>
-            <div className="gap-x-2 divide-x divide-slate-400 px-3 text-xs font-semibold leading-loose">
-              <span className="pe-1">{bikeType && toPascalCase(bikeType)}</span>
-              <span className="px-1">{bikeSize && toPascalCase(bikeSize)}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <UserDetails fullName={fullName} roomNumber={roomNumber} />
+      <BikeDetails
+        bikeNumbering={bikeNumbering}
+        bikeType={bikeType}
+        bikeSize={bikeSize}
+      />
     </div>
   )
 }

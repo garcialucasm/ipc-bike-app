@@ -8,7 +8,7 @@ import { allBookingsFetchApi } from "@/services/bookingApi"
 import StatusIndicator from "@/components/Others/StatusIndicator"
 import { EmptyBookingsOverview } from "./EmptyBookingsOverview"
 import { ErrorBookingsOverview } from "./ErrorBookingsOverview"
-import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
+import { useBikeContext } from "@/context/bikeAvailability"
 import PrimaryButton from "@/components/Buttons/PrimaryButton"
 import InfoboxSingleBookingModal from "./modules/InfoboxSingleBookingModal"
 import TableHeader from "./modules/TableHeader"
@@ -33,7 +33,7 @@ function PreviousBookingsOverview() {
     error: null,
   })
 
-  const { updatingBikeAvailability } = useBikeAvailabilityContext()
+  const { updatingBikeAvailability } = useBikeContext()
   const [currentPage, setCurrentPage] = useState(1)
 
   const [modalAction, setModalAction] = useState<{
@@ -130,7 +130,7 @@ function PreviousBookingsOverview() {
     updatingBikeAvailability()
     setModalAction((prev) => ({
       ...prev,
-      actionToConfirm: BookingModalActions.CLOSERESPONSE,
+      actionToConfirm: BookingModalActions.RESPONSE,
       dialogMessage: messageinitial,
     }))
   }
@@ -267,7 +267,7 @@ function PreviousBookingsOverview() {
 
         {/* -------------------------- Modal: Confirm action -------------------------- */}
         {modalAction.isOpen &&
-          modalAction.actionToConfirm !== BookingModalActions.CLOSERESPONSE && (
+          modalAction.actionToConfirm !== BookingModalActions.RESPONSE && (
             <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50 backdrop-blur">
               <div
                 ref={modalRef}

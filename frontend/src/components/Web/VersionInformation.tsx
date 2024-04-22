@@ -5,7 +5,7 @@ import { Stack } from "@phosphor-icons/react/dist/ssr/Stack"
 const versionInformation = {
   currentVersion: {
     lastUpdate: "",
-    versionNumber: "0.0.3",
+    tagName: "",
     interface: "Access only to the Student Council",
     features: [
       "Login System",
@@ -48,6 +48,17 @@ const repoName = "ipc-bike-app"
 const branchName = "main"
 let formattedDate: any
 
+fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/tags`, {
+  cache: "no-store",
+})
+  .then((response) => response.json())
+  .then((data) => {
+    versionInformation.currentVersion.tagName = data[0]["name"]
+  })
+  .catch((error) => {
+    console.error("Error fetching latest version of IPC Bike:", error)
+  })
+
 fetch(
   `https://api.github.com/repos/${repoOwner}/${repoName}/commits/${branchName}`,
   {
@@ -71,7 +82,7 @@ fetch(
 function VersionInformation() {
   return (
     <div className="mb-4 flex flex-wrap gap-x-4 gap-y-8 text-sm">
-      <div className="min-w-64 flex-1 rounded-xl border border-gray-600 bg-gray-900 text-white">
+      <div className="min-w-64 flex-1 rounded-xl border border-gray-600 bg-gray-900">
         <span className="flex items-center justify-between border-b border-gray-600 p-4">
           <h1 className="font-bold">EXPECTED FEATURES</h1>
           <Stack size={24} />
@@ -87,7 +98,7 @@ function VersionInformation() {
           ))}
         </ul>
       </div>
-      <div className="min-w-64 flex-1 rounded-xl border border-gray-600 bg-gray-900 text-white">
+      <div className="min-w-64 flex-1 rounded-xl border border-gray-600 bg-gray-900">
         <span className="flex items-center justify-between border-b border-gray-600 p-4">
           <h1 className="font-bold">
             NEXT VERSION{" "}
@@ -108,12 +119,18 @@ function VersionInformation() {
           ))}
         </ul>
       </div>
-      <div className="min-w-64 flex-1 rounded-xl border border-green-600 bg-gray-900 text-white">
+      <div className="min-w-64 flex-1 rounded-xl border border-green-600 bg-gray-900">
         <span className="flex items-center justify-between border-b border-gray-600 p-4">
           <h1 className="font-bold">
             CURRENT VERSION{" "}
             <span className="px-2 text-xs font-light italic">
-              (Alpha {versionInformation.currentVersion.versionNumber})
+              (
+              {versionInformation.currentVersion.tagName.includes("v0.0.")
+                ? "Alpha "
+                : versionInformation.currentVersion.tagName.includes("v0.")
+                  ? "Beta "
+                  : ""}
+              {versionInformation.currentVersion.tagName ? versionInformation.currentVersion.tagName : "Please, check on github"})
             </span>
           </h1>
           <GitMerge size={24} />
@@ -129,7 +146,7 @@ function VersionInformation() {
           ))}
         </ul>
         <p className="px-4 pb-4 text-right text-xs italic text-gray-300">
-          Last Commit: <span className="text-green-500 ">{formattedDate}</span>
+          Last Commit: <span className="text-green-500 ">{formattedDate ? formattedDate : "Please, check on github"}</span>
         </p>
       </div>
     </div>

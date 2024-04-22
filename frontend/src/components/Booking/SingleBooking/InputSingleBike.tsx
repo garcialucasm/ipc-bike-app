@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
-import { BikeDTO, BikeType, BikeSize } from "@/types/BikeType"
+import { BikeDTO, BikeType, BikeSize, BikeStatus } from "@/types/BikeType"
 import PrimaryButton from "../../Buttons/PrimaryButton"
 import { SingleBookingSections } from "@/types/BookingType"
 import { useSingleBookingContext } from "@/context/singleBooking"
@@ -10,7 +10,7 @@ import { NavigationPaths } from "@/types/NavigationPaths"
 import InstructionLabel from "@/components/Others/InstructionLabel"
 import { toPascalCase } from "@/utils/strings"
 import Button from "@/components/Buttons/Button"
-import { useBikeAvailabilityContext } from "@/context/bikeAvailability"
+import { useBikeContext } from "@/context/bikeAvailability"
 
 function InputSingleBike() {
   const {
@@ -21,8 +21,11 @@ function InputSingleBike() {
     settingBikeSize,
   } = useSingleBookingContext()
 
-  const { allBikesAvailable, updatingAllBikesAvailable } =
-    useBikeAvailabilityContext()
+  const { allBikes, updatingAllBikes } = useBikeContext()
+
+  const allBikesAvailable = allBikes.filter(
+    (bike) => bike.CurrentStatus === BikeStatus.FREE
+  )
 
   const [listOfAvailableBikes, setListOfAvailableBikes] =
     useState<BikeDTO[]>(allBikesAvailable)
@@ -128,7 +131,7 @@ function InputSingleBike() {
   }
 
   useEffect(() => {
-    updatingAllBikesAvailable()
+    updatingAllBikes()
     sortBikeList(allBikesAvailable)
   }, [radioBikeSizeValue, radioBikeSizeValue, reloadData, isLoad])
 

@@ -6,7 +6,7 @@ import { BikeStatus } from "@/types/BikeType"
 import AvailabilityCard from "./AvailabilityCard"
 import {
   initialBikeStatusCount,
-  useBikeAvailabilityContext,
+  useBikeContext,
 } from "@/context/bikeAvailability"
 import LoadingComponent from "../Others/LoadingComponent"
 import { useAuth } from "@/context/auth"
@@ -17,7 +17,7 @@ function AvailabilityContainer() {
   const {
     bikeStatusCount: bikeStatusCount,
     updatingBikeAvailability: getBikeAvailability,
-  } = useBikeAvailabilityContext()
+  } = useBikeContext()
 
   useEffect(() => {
     if (isAuth) {
@@ -32,7 +32,7 @@ function AvailabilityContainer() {
           <LoadingComponent />
         ) : (
           <div className="flex w-full gap-4 overflow-x-auto pb-2">
-            {[BikeStatus.FREE, BikeStatus.INUSE].map((bikeStatus) => (
+            {[BikeStatus.FREE,BikeStatus.INUSE, BikeStatus.DISABLED].map((bikeStatus) => (
               <AvailabilityCard key={bikeStatus} selectedStatus={bikeStatus} />
             ))}
           </div>

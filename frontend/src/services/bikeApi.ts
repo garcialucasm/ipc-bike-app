@@ -42,7 +42,7 @@ export async function bikeStatusCounterFetchApi() {
 export async function allBikesAvailableFetchApi() {
 
     try {
-        const response = await ApiHeader.get(apiUrls.allBikesAvailableUrl);
+        const response = await ApiHeader.get(apiUrls.allBikesUrl);
         if (response.status < 200 || response.status >= 300) {
             throw new Error(`${response.status}: ${response.statusText}`);
         }
@@ -54,6 +54,28 @@ export async function allBikesAvailableFetchApi() {
         };
     } catch (error: any) {
         console.error('Error getting status counter:', error.message);
+        return {
+            data: null, error: `${error.message}`
+        }
+    }
+}
+
+/* --------------------------- Toggle Bike Maintenance -------------------------- */
+export async function toggleMaintenanceFetchApi(numbering: string) {
+
+    try {
+        const response = await ApiHeader.put(apiUrls.maintenance + numbering);
+        if (response.status < 200 || response.status >= 300) {
+            throw new Error(`${response.status}: ${response.statusText}`);
+        }
+
+        const data = response.data
+
+        return {
+            data: data, error: null
+        };
+    } catch (error: any) {
+        console.error('Error updating bike maintenance status:', error.message);
         return {
             data: null, error: `${error.message}`
         }
