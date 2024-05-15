@@ -1,20 +1,32 @@
 "use client"
 
-import { NavigationPaths } from "@/types/NavigationPaths"
 import Image from "next/image"
 import Link from "next/link"
+import { useFramerMotion } from "@/context/framerMotion"
+import { NavigationPaths } from "@/types/NavigationPaths"
+import FooterWeb from "../Footers/FooterWeb"
 
 function HomeWeb() {
+  const { motion } = useFramerMotion()
   return (
     <>
-      <main className="background-mash-dark flex min-h-screen flex-col items-center justify-between p-24 pt-[69px] text-white">
-        <div className="z-10 my-8 w-full max-w-6xl items-center justify-between font-mono text-sm lg:flex">
+      <main className="background-mash-noise-dark flex min-h-screen flex-col items-center justify-between p-24 pt-[69px] text-white">
+        <motion.div
+          viewport={{ once: true }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{
+            delay: 0.8,
+            ease: [0, 0.71, 0.2, 1.01],
+          }}
+          className="z-10 my-8 w-full max-w-6xl items-center justify-between font-mono text-sm lg:flex"
+        >
           <a
             href="https://github.com/garcialucasm/ipc-bike-app"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <p className="hover:shadow-center-lg hidden w-full justify-center border-b border-neutral-700 bg-slate-800/20 bg-gradient-to-b from-inherit pb-6 pt-8 backdrop-blur-2xl transition-all duration-300 hover:border-blue-700 hover:bg-blue-950/30 hover:shadow-purple-800 lg:static lg:flex lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:bg-zinc-800/30 lg:p-4">
+            <p className="hidden w-full justify-center border-b border-neutral-500 border-opacity-20 pb-6 pt-8 transition-all duration-300 hover:border-blue-700 hover:bg-blue-950/30 hover:shadow-center-lg hover:shadow-purple-800 lg:static lg:flex lg:w-auto lg:rounded-xl lg:border lg:p-4">
               Github project 👉
               <code className="ps-1 font-mono font-bold text-blue-500">
                 /ipc-bike-app
@@ -29,22 +41,31 @@ function HomeWeb() {
               By{" "}
               <a
                 href="https://lucasgarcia.work"
-                className="hover:text-blue-500 transition-colors"
+                className="transition-colors hover:text-blue-500"
               >
                 <span className="font-bold">Lucas</span>
               </a>
               &
               <a
                 href="https://felipedu.art"
-                className="hover:text-blue-500 transition-colors"
+                className="transition-colors hover:text-blue-500"
               >
                 <span className="font-bold">Felipe</span>
               </a>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="after:bg-gradient-conic relative my-8 flex place-items-center before:absolute before:h-[450px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-to-br before:from-transparent before:to-blue-700 before:opacity-10 before:blur-2xl before:content-[''] after:absolute after:h-[180px] after:w-full after:translate-x-1/3 after:from-sky-900 after:via-[#0141ff] after:opacity-40 after:blur-2xl after:content-[''] sm:before:w-[680px] sm:after:w-[240px] before:lg:h-[360px]">
+        <motion.div
+          viewport={{ once: true }}
+          initial={{ x: -40, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          transition={{
+            duration: 2,
+            ease: [0, 0.71, 0.2, 1.01],
+          }}
+          className="after:bg-gradient-conic relative my-8 flex place-items-center before:absolute before:h-[450px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-to-br before:from-transparent before:to-blue-700 before:opacity-10 before:blur-2xl before:content-[''] after:absolute after:h-[180px] after:w-full after:translate-x-1/3 after:from-sky-900 after:via-[#0141ff] after:opacity-40 after:blur-2xl after:content-[''] sm:before:w-[680px] sm:after:w-[240px] before:lg:h-[360px]"
+        >
           <Image
             className="relative drop-shadow-[0_0_0.3rem_#ffffff70]"
             src="/logo-ipc-bike-white.png"
@@ -53,9 +74,18 @@ function HomeWeb() {
             height={74}
             priority
           />
-        </div>
+        </motion.div>
 
-        <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-6xl lg:grid-cols-4 lg:text-left">
+        <motion.div
+          viewport={{ once: true }}
+          initial={{ y: 40, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{
+            delay: 0.8,
+            ease: [0, 0.71, 0.2, 1.01],
+          }}
+          className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-6xl lg:grid-cols-4 lg:text-left"
+        >
           <a
             href="https://docs.google.com/forms/d/e/1FAIpQLScVMcb64zo40oHOvnjtm2sT7N8sNCRJpY4e1EPDuo8Hz5iLSg/viewform?usp=sf_link"
             className="group rounded-lg border border-transparent px-4 py-4 transition-all duration-300 hover:border-blue-700 hover:bg-blue-950/30"
@@ -124,7 +154,19 @@ function HomeWeb() {
               Please feel free to contact us.
             </p>
           </a>
-        </div>
+        </motion.div>
+        <motion.div
+          viewport={{ once: true }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.4 }}
+          transition={{
+            delay: 0.8,
+            ease: [0, 0.71, 0.2, 1.01],
+          }}
+          className="absolute bottom-5"
+        >
+          <FooterWeb />
+        </motion.div>
       </main>
     </>
   )

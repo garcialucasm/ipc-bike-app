@@ -23,9 +23,11 @@ import { useAuth } from "@/context/auth"
 import { getDecodedToken, logout } from "@/app/auth/authUtils"
 import { toPascalCase } from "@/utils/strings"
 import { FileText } from "@phosphor-icons/react/dist/ssr/FileText"
+import { useSession, signOut } from "next-auth/react"
 
 export default function HeaderNavbarApp() {
   const { accountData, settingAccountData: settingAccountData } = useAuth()
+  const { data: session } = useSession()
   const [isOpenedAccountMenu, setIsOpenedAccountMenu] = useState(false)
   const [isOpenedSideBar, setIsOpenedSideBar] = useState(false)
   const [closedAlert, setClosedAlert] = useState(false)
@@ -48,10 +50,15 @@ export default function HeaderNavbarApp() {
     setIsOpenedAccountMenu(!isOpenedAccountMenu)
   }
 
-  function handleClick(buttonClicked: NavigationPaths) {
+  async function signOutOAuth() {
+    await signOut()
+  }
+
+  async function handleClick(buttonClicked: NavigationPaths) {
     switch (buttonClicked) {
       case NavigationPaths.logout:
         logout()
+        await signOutOAuth()
         window.location.replace(NavigationPaths.login)
         return NavigationPaths.homeAppAdmin
       default:
@@ -188,18 +195,29 @@ export default function HeaderNavbarApp() {
                     <div className="flex justify-center rounded-2xl bg-white text-left text-sm shadow-lg xl:text-base">
                       <div className="block w-full">
                         <div
-                          className="border-b border-slate-200 px-10 py-3"
+                          className="flex gap-x-2 border-b border-slate-200 px-8 py-3"
                           role="none"
                         >
-                          <p className="text-xs" role="none">
-                            Welcome,
-                          </p>
-                          <p
-                            className="truncate text-base font-medium"
-                            role="none"
-                          >
-                            {accountName}
-                          </p>
+                          {session?.user?.image && (
+                            <img
+                              src={session.user.image}
+                              className="h-10 w-10 rounded-full border-2"
+                              alt=""
+                            />
+                          )}
+                          <div>
+                            <p className="text-xs" role="none">
+                              Welcome,
+                            </p>
+                            <p
+                              className="truncate text-base font-medium"
+                              role="none"
+                            >
+                              {session?.user?.name
+                                ? toPascalCase(session.user.name)
+                                : accountName && toPascalCase(accountName)}
+                            </p>
+                          </div>
                         </div>
                         {/* <Link
                           href={NavigationPaths.profile}
@@ -249,7 +267,7 @@ export default function HeaderNavbarApp() {
                           </div>
                         </Link> */}
                         <a
-                          href={NavigationPaths.rules}
+                          href={NavigationPaths.termsOfService}
                           target="_blank"
                           onClick={() => setIsOpenedAccountMenu(false)}
                         >

@@ -1,6 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState } from "react"
+import { SessionProvider } from "next-auth/react"
 
 import { AccountProps } from "@/types/AccountType"
 import { AuthContextProps } from "@/types/ContextType"
@@ -40,7 +41,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         settingIsAuthenticated,
       }}
     >
-      <>{children}</>
+      <SessionProvider>{children}</SessionProvider>
     </AuthContext.Provider>
   )
 }

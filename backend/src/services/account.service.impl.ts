@@ -83,7 +83,7 @@ export default class AccountService implements IAccountService {
       if (isMatch) {
         const asyncToken = await generateAsyncToken({ id: storedId?.toString(), accountName: storedAccountName });
 
-        return { id: storedId, accountName: storedAccountName, token: asyncToken };
+        return { id: storedId, name: storedAccountName, email: storedEmail, token: asyncToken };
       } else {
         logger.silly("Password is not correct")
         throw new Error('Password is not correct');

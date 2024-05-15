@@ -4,71 +4,63 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
+import { signIn, useSession } from "next-auth/react"
+import { ArrowLeft } from "@phosphor-icons/react/dist/ssr/ArrowLeft"
+import { WarningCircle } from "@phosphor-icons/react/dist/ssr/WarningCircle"
+import { X } from "@phosphor-icons/react/dist/ssr/X"
+import { LockSimple } from "@phosphor-icons/react/dist/ssr/LockSimple"
 
 import { NavigationPaths } from "@/types/NavigationPaths"
 import PrimaryButton from "@/components/Buttons/PrimaryButton"
 import SecondaryButton from "@/components/Buttons/SecondaryButton"
-import { checkAuth, setCookie } from "@/app/auth/authUtils"
-import { login } from "@/services/accountApi"
-import { ErrorMessageLogin } from "@/types/ErrorMessageTypes"
 import InputText from "./Inputs/InputText"
-import {
-  IconSvgEmail,
-  IconSvgLoader,
-  IconSvgPassword,
-} from "../Others/IconsSvg"
+import { IconSvgEmail, IconSvgLoader } from "../Others/IconsSvg"
+import { checkAuth } from "@/app/auth/authUtils"
+import { useFramerMotion } from "@/context/framerMotion"
 
-const initialErrorMessages: ErrorMessageLogin = {
-  email: "",
-  password: "",
-}
+const ERROR_MESSAGE_LOGIN =
+  "Sign in failed. Check the details you provided are correct."
+
+const ERROR_UNEXPECTED = "Ops... Something went wrong."
 
 const Login = () => {
+  const { data: session, status } = useSession()
+  const { motion } = useFramerMotion()
   const router = useRouter()
-  const [formLoginData, setFormLoginData] = useState({
+  const [isEmailOpen, setIsEmailOpen] = useState(false)
+  const [errorLogin, setErrorLogin] = useState("")
+  const [showTooltip, setShowTooltip] = useState(false)
+  const [credentialsData, setCredentialsData] = useState({
     email: "",
     password: "",
   })
-  const [errorMessages, setErrorMessages] = useState(initialErrorMessages)
-  const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
+  const signInCredentials = async (e: { preventDefault: () => void }) => {
+    setErrorLogin("")
     e.preventDefault()
+    const res = await signIn("credentials", {
+      ...credentialsData,
+      redirect: false,
+    })
+    if (res?.status == 200) {
+      router.push(NavigationPaths.homeApp)
+    } else if (res?.status == 401) {
+      setErrorLogin(ERROR_MESSAGE_LOGIN)
+    } else setErrorLogin(ERROR_UNEXPECTED)
+  }
 
-    const response = await login(formLoginData.email, formLoginData.password)
+  const singInGoogle = async () => {
+    await signIn("google", {
+      redirect: false,
+      callbackUrl: NavigationPaths.homeApp, // Optional: Redirect URL after successful sign-in
+    })
+  }
 
-    if (response.data) {
-      // If the request is successful, proceed with the desired actions
-      setIsLoading(true)
-      await setCookie("ipcBikeApp_authToken", response.data.account.token)
-      window.location.replace(NavigationPaths.homeApp)
-    } else if (response.error) {
-      // If there is an error response from the server, handle specific error messages
-      switch (response.error) {
-        case 401:
-          setErrorMessages({
-            email: "Login failed.",
-            password: "Please check your email and password.",
-          })
-          break
-        // Add more cases based on specific error status codes if needed
-        default:
-          setErrorMessages({
-            email: "",
-            password:
-              "Oops! Something went wrong. Please try again in a few moments.",
-          })
-          break
-      }
-    } else {
-      // Handle unexpected errors or errors when trying to fetch data
-      console.error("Authentication error: error when trying to fetch data ")
-      setErrorMessages({
-        email: "",
-        password:
-          "Oops! Something went wrong. Please try again in a few moments.",
-      })
-    }
+  const singInFacebook = async () => {
+    await signIn("facebook", {
+      redirect: false,
+      callbackUrl: NavigationPaths.homeApp, // Optional: Redirect URL after successful sign-in
+    })
   }
 
   function handleReturnButton() {
@@ -76,22 +68,15 @@ const Login = () => {
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setFormLoginData({
-      ...formLoginData,
+    setCredentialsData((prevData) => ({
+      ...prevData,
       [e.target.name]: e.target.value,
-    })
-  }
-
-  const handleFocus = () => {
-    setErrorMessages({
-      email: "",
-      password: "",
-    })
+    }))
   }
 
   async function isAuthRedirection() {
     const isAuth = await checkAuth()
-    if (isAuth) {
+    if (isAuth && session) {
       window.location.replace(NavigationPaths.homeApp)
     }
   }
@@ -103,24 +88,47 @@ const Login = () => {
   return (
     <>
       <div className="h-screen md:flex">
-        <div className="i relative hidden w-1/2 items-center justify-center overflow-hidden bg-gradient-to-tr from-blue-950 via-blue-800 to-blue-600 md:flex md:flex-col">
-          <Image
-            src="/logo-ipc-bike-white.png"
-            className="h-56 w-auto"
-            width={300}
-            height={399}
-            alt=""
-            priority
-          />
-          <p className="mt-1 text-white">Book, Ride, Explore: All for Free</p>
+        <div className="background-mash-noise-light relative hidden w-1/2 items-center justify-center overflow-hidden md:flex md:flex-col">
+          <motion.span
+            viewport={{ once: true }}
+            initial={{ x: -30, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.2,
+              ease: [0, 0.71, 0.2, 1.01],
+            }}
+          >
+            <Image
+              src="/logo-ipc-bike-white.png"
+              className="h-56 w-auto"
+              width={224}
+              height={224}
+              alt=""
+              priority
+            />
+          </motion.span>
+          <motion.p
+            viewport={{ once: true }}
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.5,
+              ease: [0, 0.71, 0.2, 1.01],
+            }}
+            className="mt-1 text-white"
+          >
+            Book, Ride, Explore: All for Free
+          </motion.p>
         </div>
-        <div className="fixed flex h-16 w-full items-center bg-gradient-to-tr from-blue-950 via-blue-800 to-blue-600 px-4 md:hidden">
+        <div className="fixed flex h-16 w-full items-center bg-blue-700 px-4 md:hidden">
           <Link href={NavigationPaths.homeWeb} className="ms-2 flex">
             <Image
               src="/logo-ipc-bike-white-h.png"
               className="h-8 w-auto"
-              width={300}
-              height={399}
+              width={194}
+              height={32}
               alt=""
             />
             <span className="sr-only self-center whitespace-nowrap text-xl font-semibold sm:text-2xl">
@@ -128,60 +136,209 @@ const Login = () => {
             </span>
           </Link>
         </div>
-        <div className="mt-[64px] flex items-center justify-center bg-white py-10 md:mt-0 md:w-1/2">
-          <form
-            onSubmit={handleSubmitForm}
-            className="flex w-1/2 flex-col items-center justify-center bg-white md:w-2/3 lg:w-1/2 2xl:w-1/3"
+        <div className="mt-[64px] flex flex-col items-center justify-center bg-white py-10 md:mt-0 md:w-1/2 md:py-0">
+          <motion.div
+            viewport={{ once: true }}
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.2,
+              ease: [0, 0.71, 0.2, 1.01],
+            }}
+            className="flex w-1/2 flex-col gap-y-2 md:w-2/3 lg:w-1/2 2xl:w-1/3"
           >
             <h1 className="mb-1 text-2xl font-bold text-gray-800">Hello! 👋</h1>
-            <p className="mb-7 text-sm font-normal text-gray-600">
+            <p className="mb-6 text-sm font-normal text-gray-600">
               Welcome Back
             </p>
-            {isLoading ? (
-              <IconSvgLoader height={"48"} fillColor="text-blue-800" />
+            {status === "loading" ? (
+              <div className="flex w-full justify-center">
+                <IconSvgLoader height={"48"} fillColor="text-blue-800" />
+              </div>
             ) : (
-              <div className="flex w-full flex-col gap-y-4">
-                <InputText
-                  id="email"
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  value={formLoginData.email}
-                  onChange={handleChange}
-                  onFocus={handleFocus}
-                  errorMessage={errorMessages.email}
-                  autoComplete="email"
-                >
-                  <IconSvgEmail
-                    fillColor="text-gray-400"
-                    width="24"
-                    height="24"
-                  />
-                </InputText>
-                <InputText
-                  id="password"
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  value={formLoginData.password}
-                  onChange={handleChange}
-                  onFocus={handleFocus}
-                  errorMessage={errorMessages.password}
-                  autoComplete="current-password"
-                >
-                  <IconSvgPassword
-                    fillColor="text-gray-400"
-                    width="24"
-                    height="24"
-                  />
-                </InputText>
-                <div className="mt-4 flex w-full flex-col gap-y-4 py-2">
-                  <PrimaryButton
-                    type="submit"
-                    name={NavigationPaths.homeAppAdmin}
+              <>
+                {!isEmailOpen && (
+                  <>
+                    <div className="relative pb-2 text-sm">
+                      New here?{" "}
+                      <span
+                        className="cursor-help underline"
+                        onMouseEnter={() => setShowTooltip(true)}
+                        onMouseLeave={() => setShowTooltip(false)}
+                      >
+                        Let's get started!
+                      </span>
+                      {showTooltip && (
+                        <motion.div
+                          viewport={{ once: true }}
+                          initial={{ y: -10, opacity: 0 }}
+                          whileInView={{ y: 0, opacity: 1 }}
+                          transition={{
+                            delay: 0.2,
+                            ease: [0, 0.71, 0.2, 1.01],
+                          }}
+                          className="absolute left-0 top-8 rounded bg-blue-600 px-4 py-8 text-white shadow-2xl"
+                        >
+                          <span className="absolute right-0 top-0 p-2 opacity-40">
+                            <X size={20} />
+                          </span>
+                          If you don't have an account yet, we'll create one for
+                          you when you sign in with{" "}
+                          <span className="underline">Google</span> or{" "}
+                          <span className="underline">Facebook</span>.
+                        </motion.div>
+                      )}
+                    </div>
+                    <motion.span
+                      viewport={{ once: true }}
+                      initial={{ y: -20, opacity: 0 }}
+                      whileInView={{ y: 0, opacity: 1 }}
+                      transition={{
+                        ease: [0, 0.71, 0.2, 1.01],
+                      }}
+                      className="flex flex-col gap-y-2"
+                    >
+                      <PrimaryButton onClick={singInGoogle}>
+                        <div className="flex items-center gap-x-2 text-sm">
+                          <Image
+                            src="/google-logo.png"
+                            className="h-9 w-auto rounded-full bg-white p-1"
+                            width={40}
+                            height={40}
+                            alt=""
+                            priority
+                          />
+                          Sign in with Google
+                        </div>
+                      </PrimaryButton>
+                      <PrimaryButton onClick={singInFacebook}>
+                        <div className="flex items-center gap-x-2 text-sm">
+                          <Image
+                            src="/facebook-logo.png"
+                            className="h-9 w-auto rounded-full"
+                            width={40}
+                            height={40}
+                            alt=""
+                            priority
+                          />
+                          Sign in with Facebook
+                        </div>
+                      </PrimaryButton>
+                      <div className="my-4 flex items-center justify-center">
+                        <hr className="w-1/4 border-gray-300" />
+                        <span className="mx-4 text-gray-500">or</span>
+                        <hr className="w-1/4 border-gray-300" />
+                      </div>
+                    </motion.span>
+                  </>
+                )}
+
+                {isEmailOpen ? (
+                  <motion.span
+                    viewport={{ once: true }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    transition={{
+                      ease: [0, 0.71, 0.2, 1.01],
+                    }}
                   >
-                    <span>Log in</span>
-                  </PrimaryButton>
+                    <>
+                      <SecondaryButton
+                        onClick={() => {
+                          setIsEmailOpen(!isEmailOpen)
+                          setErrorLogin("")
+                        }}
+                      >
+                        <div className="flex items-center gap-x-2 text-sm">
+                          <ArrowLeft size={24} className="h-9 w-auto py-1.5" />
+                          Sign in with E-mail
+                        </div>
+                      </SecondaryButton>{" "}
+                      <form
+                        className="mt-4 flex flex-col items-center justify-center bg-white"
+                        onSubmit={signInCredentials}
+                      >
+                        <div className="flex w-full flex-col gap-y-2">
+                          <InputText
+                            id="email"
+                            type="email"
+                            name="email"
+                            autoComplete="email"
+                            placeholder="Email"
+                            value={credentialsData.email}
+                            onChange={handleChange}
+                          >
+                            <IconSvgEmail
+                              fillColor="text-gray-400"
+                              width="24"
+                              height="24"
+                            />
+                          </InputText>
+                          <InputText
+                            id="password"
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            autoComplete="current-password"
+                            value={credentialsData.password}
+                            onChange={handleChange}
+                          >
+                            <LockSimple
+                              size={24}
+                              weight="fill"
+                              className="text-slate-400"
+                            />
+                          </InputText>
+                          <div className="flex w-full flex-col ">
+                            <PrimaryButton
+                              type="submit"
+                              name={NavigationPaths.homeAppAdmin}
+                            >
+                              <span>Sign in</span>
+                            </PrimaryButton>
+                          </div>
+                        </div>
+                      </form>
+                    </>
+                  </motion.span>
+                ) : (
+                  <motion.div
+                    viewport={{ once: true }}
+                    initial={{ y: -20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    transition={{
+                      ease: [0, 0.71, 0.2, 1.01],
+                    }}
+                  >
+                    <PrimaryButton
+                      onClick={() => {
+                        setIsEmailOpen(!isEmailOpen)
+                        setErrorLogin("")
+                      }}
+                    >
+                      <div className="flex items-center gap-x-2 text-sm">
+                        <span className="h-9 w-auto rounded-full bg-white p-1.5">
+                          <IconSvgEmail
+                            fillColor="text-gray-700"
+                            width="24"
+                            height="24"
+                          />
+                        </span>
+                        Sign in with E-mail
+                      </div>
+                    </PrimaryButton>
+                  </motion.div>
+                )}
+                {errorLogin && (
+                  <div className="flex items-start justify-start text-sm text-rose-400">
+                    <span className="px-2">
+                      <WarningCircle size={20} />
+                    </span>
+                    {errorLogin}
+                  </div>
+                )}
+                <div className="mt-2">
                   <SecondaryButton
                     onClick={handleReturnButton}
                     name={NavigationPaths.homeWeb}
@@ -189,12 +346,18 @@ const Login = () => {
                     <span>Go to Webpage</span>
                   </SecondaryButton>
                 </div>
-                {/* <span className="text ps-1-slate-500 ml-2 cursor-pointer text-xs hover:text-blue-500">
-                  Forgot Password ?
-                </span> */}
-              </div>
+              </>
             )}
-          </form>
+            <p className="text-sm">
+              Learn about our{" "}
+              <Link
+                href={NavigationPaths.privacyPolicy}
+                className="text-blue-600"
+              >
+                Privacy Policy
+              </Link>{" "}
+            </p>
+          </motion.div>
         </div>
       </div>
     </>

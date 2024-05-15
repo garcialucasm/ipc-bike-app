@@ -1,15 +1,18 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { NavigationPaths } from "@/types/NavigationPaths"
 import Button from "../Buttons/Button"
+import { useFramerMotion } from "@/context/framerMotion"
 
 export default function HeaderNavbarWeb() {
+  const { motion } = useFramerMotion()
   const pathname = usePathname()
   const [isMenuOpened, setIsMenuOpened] = useState(false)
+  const [isScrolling, setIsScrolling] = useState(false)
 
   function handleMenuClick() {
     setIsMenuOpened(!isMenuOpened)
@@ -21,10 +24,34 @@ export default function HeaderNavbarWeb() {
     }
   }
 
+  useEffect(() => {
+    function handleScroll() {
+      const position = window.scrollY
+      if (position > 10) {
+        setIsScrolling(true)
+      } else {
+        setIsScrolling(false)
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
+
   return (
     <>
-      <nav
-        className={`fixed start-0 top-0 z-20 w-full backdrop-blur-xl outline outline-1 outline-offset-1 outline-white/[.3] ${isMenuOpened && "bg-black bg-opacity-50"}`}
+      <motion.nav
+        viewport={{ once: true }}
+        initial={{ y: -40, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{
+          delay: 0.8,
+          ease: [0, 0.71, 0.2, 1.01],
+        }}
+        className={`fixed start-0 top-0 z-20 w-full outline outline-1 outline-offset-1 outline-white/[.3] backdrop-blur-xl md:backdrop-blur-none ${isScrolling && "backdrop-blur-xl"} ${isMenuOpened && "bg-black bg-opacity-50 md:bg-transparent"}`}
       >
         <div
           className={`mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4`}
@@ -77,8 +104,10 @@ export default function HeaderNavbarWeb() {
               href={NavigationPaths.login}
               className="btn-primary rounded-full text-sm"
             >
-              Go to App{" "}
-              <span className="hidden ps-2 sm:inline-block">-&gt;</span>
+              <span className="px-1">
+                Go to App
+                <span className="hidden ps-2 sm:inline-block">-&gt;</span>
+              </span>
             </Link>
           </div>
           <div
@@ -117,9 +146,9 @@ export default function HeaderNavbarWeb() {
               </li> */}
               <li>
                 <Link
-                  href={NavigationPaths.rules}
+                  href={NavigationPaths.termsOfService}
                   className={`block rounded px-3 py-2 hover:text-blue-300 lg:bg-transparent lg:p-0 ${
-                    pathname === NavigationPaths.rules
+                    pathname === NavigationPaths.termsOfService
                       ? "text-blue-500"
                       : "text-white"
                   } ${!isMenuOpened && "hidden lg:block"}`}
@@ -157,7 +186,7 @@ export default function HeaderNavbarWeb() {
             </ul>
           </div>
         </div>
-      </nav>
+      </motion.nav>
     </>
   )
 }

@@ -16,10 +16,10 @@
 
   /* ---------------------------- Buttons and links --------------------------- */
   .btn-primary {
-    @apply w-full rounded-full bg-blue-800 px-4 py-2 font-semibold text-white transition-all hover:bg-blue-700 hover:shadow-center-lg hover:shadow-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+    @apply w-full rounded-full bg-blue-600 p-2 font-semibold text-white transition-all hover:bg-blue-700 hover:shadow-center-sm hover:shadow-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
   }
   .btn-secondary {
-    @apply w-full rounded-full border border-blue-800 bg-slate-50 px-4 py-2 font-semibold text-blue-900 transition-all hover:bg-slate-200 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+    @apply w-full rounded-full border border-slate-300 px-4 py-2 font-semibold text-slate-700 transition-all hover:bg-slate-100 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
   }
   .link-primary {
     @apply btn-primary px-0 py-0;
@@ -79,7 +79,34 @@ body {
   box-shadow: 0px -2px 30px rgba(0, 0, 0, 0.3);
 }
 
-.background-mash-dark {
+.background-mash-noise-light {
+  background-color: hsla(263, 80%, 20%, 1);
+  background-image: radial-gradient(
+      at 40% 20%,
+      hsla(238, 100%, 64%, 0.77) 0px,
+      transparent 50%
+    ),
+    radial-gradient(at 0% 0%, hsla(230, 100%, 64%, 1) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, hsla(240, 100%, 64%, 1) 0px, transparent 50%),
+    radial-gradient(at 70% 50%, hsla(236, 100%, 64%, 1) 0px, transparent 50%),
+    radial-gradient(at 90% 0%, hsla(230, 100%, 64%, 0.8) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, hsla(240, 100%, 64%, 0.8) 0px, transparent 50%),
+    radial-gradient(at 85% 94%, hsla(239, 100%, 64%, 1) 0px, transparent 50%);
+}
+
+.background-mash-noise-light::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/noise-bg-05.png");
+  background-size: 300px;
+  pointer-events: none;
+}
+
+.background-mash-noise-dark {
   background-color: hsla(263, 80%, 5%, 1);
   background-image: radial-gradient(
       at 40% 20%,
@@ -87,9 +114,21 @@ body {
       transparent 50%
     ),
     radial-gradient(at 0% 0%, hsla(189, 100%, 10%, 1) 0px, transparent 50%),
-    radial-gradient(at 0% 50%, hsla(335, 100%, 15%, 1) 0px, transparent 50%),
-    radial-gradient(at 60% 50%, hsla(340, 100%, 15%, 1) 0px, transparent 50%),
-    radial-gradient(at 90% 0%, hsla(22, 100%, 20%, 0.6) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, hsla(260, 100%, 15%, 1) 0px, transparent 50%),
+    radial-gradient(at 60% 50%, hsla(240, 100%, 15%, 1) 0px, transparent 50%),
+    radial-gradient(at 90% 0%, hsla(200, 100%, 20%, 0.6) 0px, transparent 50%),
     radial-gradient(at 0% 100%, hsla(240, 50%, 8%, 0.62) 0px, transparent 50%),
-    radial-gradient(at 85% 94%, hsla(339, 100%, 10%, 1) 0px, transparent 50%);
+    radial-gradient(at 85% 94%, hsla(239, 100%, 10%, 1) 0px, transparent 50%);
+}
+
+.background-mash-noise-dark::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/noise-bg-05.png");
+  background-size: 200px;
+  pointer-events: none;
 }

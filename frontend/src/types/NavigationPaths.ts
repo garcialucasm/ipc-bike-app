@@ -1,6 +1,7 @@
 export enum NavigationPaths {
   login = "/auth/login",
   logout = "/auth/logout",
+  firstRegister = "/auth/register",
 
   /* ------------------------------ Secure pages ------------------------------ */
   register = "/secure/register",
@@ -21,11 +22,10 @@ export enum NavigationPaths {
   about = "/web/about",
   contact = "/web/contact",
   project = "/web/project",
-  rules = "/web/rules",
   becomeMember = "/secure/member",
-  termsAndConditions = "/web/rules",
+  termsOfService = "/web/terms-of-service",
+  privacyPolicy = "/web/privacy-policy",
   /* -------------------------------------------------------------------------- */
-
 }
 
 export enum NavigationOptions {
