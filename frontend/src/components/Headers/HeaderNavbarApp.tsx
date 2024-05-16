@@ -10,10 +10,8 @@ import { HandHeart } from "@phosphor-icons/react/dist/ssr/HandHeart"
 import { House } from "@phosphor-icons/react/dist/ssr/House"
 import { UserCircle } from "@phosphor-icons/react/dist/ssr/UserCircle"
 import { XCircle } from "@phosphor-icons/react/dist/ssr/XCircle"
-import { User } from "@phosphor-icons/react/dist/ssr/User"
 import { UserCirclePlus } from "@phosphor-icons/react/dist/ssr/UserCirclePlus"
 import { Bicycle } from "@phosphor-icons/react/dist/ssr/Bicycle"
-import { ChartLine } from "@phosphor-icons/react/dist/ssr/ChartLine"
 import { SignOut } from "@phosphor-icons/react/dist/ssr/SignOut"
 import { Info } from "@phosphor-icons/react/dist/ssr/Info"
 
@@ -23,7 +21,7 @@ import { useAuth } from "@/context/auth"
 import { getDecodedToken, logout } from "@/app/auth/authUtils"
 import { toPascalCase } from "@/utils/strings"
 import { FileText } from "@phosphor-icons/react/dist/ssr/FileText"
-import { useSession, signOut } from "next-auth/react"
+import { useSession } from "next-auth/react"
 
 export default function HeaderNavbarApp() {
   const { accountData, settingAccountData: settingAccountData } = useAuth()
@@ -50,15 +48,10 @@ export default function HeaderNavbarApp() {
     setIsOpenedAccountMenu(!isOpenedAccountMenu)
   }
 
-  async function signOutOAuth() {
-    await signOut()
-  }
-
   async function handleClick(buttonClicked: NavigationPaths) {
     switch (buttonClicked) {
       case NavigationPaths.logout:
-        logout()
-        await signOutOAuth()
+        await logout()
         window.location.replace(NavigationPaths.login)
         return NavigationPaths.homeAppAdmin
       default:

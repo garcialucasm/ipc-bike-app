@@ -68,7 +68,7 @@ export function generateAsyncToken(payload: { id: string, accountName: string })
       return;
     }
 
-    jwt.sign(payload, privateJwtKey, { algorithm: 'RS256', expiresIn: '14d' }, (err, token) => {
+    jwt.sign(payload, privateJwtKey, { algorithm: 'RS256', expiresIn: '30d' }, (err, token) => {
       if (err) {
         reject(err);
         logger.debug("Error generating token", err)

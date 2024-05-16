@@ -1,5 +1,6 @@
 import { cookieTokenName } from "@/types/CookieType"
 import jwt, { JwtPayload } from "jsonwebtoken"
+import { signOut } from "next-auth/react"
 
 const jwtPublicKey = process.env.NEXT_PUBLIC_JWT_KEY?.trim()
 
@@ -40,11 +41,7 @@ export function getTokenFromCookies(name: string) {
   }
 }
 
-export async function setCookie(
-  name: string,
-  value: string,
-  days: number = 14
-) {
+export async function setCookie(name: string, value: string, days: number) {
   try {
     const expirationDate = new Date()
     expirationDate.setDate(expirationDate.getDate() + days)
@@ -57,6 +54,19 @@ export async function setCookie(
     return true
   } catch (error) {
     throw new Error("Error setting cookie: " + error)
+  }
+}
+
+/* ------------------ Clear the authentication token cookie ----------------- */
+export async function logout() {
+  try {
+    await setCookie(cookieTokenName, "", -1)
+    await signOut()
+
+    return true
+  } catch (error) {
+    console.error("Logout error: " + error)
+    return false
   }
 }
 
@@ -84,7 +94,7 @@ export function getDecodedToken() {
   }
 }
 
-/* ------------------ Check token to return if it is valid ------------------ */
+/* -------------------------- Get and verify Token -------------------------- */
 export async function checkAuth() {
   const token = getTokenFromCookies(cookieTokenName)
   if (!token) {
@@ -94,6 +104,7 @@ export async function checkAuth() {
   return isAuth
 }
 
+/* ------------------------------ Verify Token ------------------------------ */
 export function verifyToken(token: string | null) {
   if (!jwtPublicKey) {
     console.error("Authentication error: JWT_SECRET_KEY is not set.")
@@ -110,17 +121,5 @@ export function verifyToken(token: string | null) {
   } catch (error) {
     console.error("Invalid token: " + error)
     return null
-  }
-}
-
-/* ------------------ Clear the authentication token cookie ----------------- */
-export async function logout() {
-  try {
-    await setCookie(cookieTokenName, "", -1)
-
-    return true
-  } catch (error) {
-    console.error("Logout error: " + error)
-    return false
   }
 }

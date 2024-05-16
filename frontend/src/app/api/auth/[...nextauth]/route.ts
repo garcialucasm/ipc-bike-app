@@ -4,7 +4,7 @@ import FacebookProvider from "next-auth/providers/facebook"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { cookies } from "next/headers"
 
-import { login } from "@/services/accountApi"
+import { authenticateUser } from "@/services/accountApi"
 import { z } from "zod"
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
@@ -15,13 +15,21 @@ const FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET
 
 const OAUTH_PWD = process.env.OAUTH_PWD
 
+const setAuthTokenCookie = (token: string) => {
+  cookies().set({
+    name: "ipcBikeApp_authToken",
+    value: token,
+    secure: true,
+  })
+}
+
 const handler = NextAuth({
   pages: {
     signIn: "/auth/login",
+    error: "/auth/authError", // Error code passed in query string as ?error=
     // signOut: "/auth/login",
-    // error: '/auth/error', // Error code passed in query string as ?error=
-    //   verifyRequest: '/auth/verify-request', // (used for check email message)
-    //   newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
+    // verifyRequest: '/auth/verify-request', // (used for check email message)
+    // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
   },
   theme: {
     colorScheme: "light", // "auto" | "dark" | "light"
@@ -64,16 +72,15 @@ const handler = NextAuth({
           .object({ email: z.string().email(), password: z.string().min(8) })
           .safeParse(credentials)
         if (parsedCredentials.success) {
-          const res = await login(credentials?.email!, credentials?.password!)
-          let user = await res.data.account
+          const res = await authenticateUser(
+            credentials?.email!,
+            credentials?.password!
+          )
+          let user = res?.data?.account
           // If no error and we have user data, return it
-          if (res.data && user) {
+          if (res.data && user?.token) {
             // If the request is successful, proceed with the desired actions
-            cookies().set({
-              name: "ipcBikeApp_authToken",
-              value: user.token,
-              secure: true,
-            })
+            setAuthTokenCookie(user.token)
             return user
           }
         } // Return null if user data could not be retrieved
@@ -83,32 +90,39 @@ const handler = NextAuth({
   ],
   callbacks: {
     async signIn({ profile, user, account }) {
+      /* -------------------------------------------------------------------------- */
+      /* --------------------------------- google --------------------------------- */
+      /* -------------------------------------------------------------------------- */
       if (profile?.email && profile.sub && account?.provider === "google") {
-        const res = await login(profile.email, OAUTH_PWD + profile.sub)
-        if (res.data.account.token) {
+        const res = await authenticateUser(
+          profile.email,
+          OAUTH_PWD + profile.sub
+        )
+        if (res?.data?.account?.token) {
           // If the request is successful, proceed with the desired actions
-          cookies().set({
-            name: "ipcBikeApp_authToken",
-            value: res.data.account.token,
-            secure: true,
-          })
+          setAuthTokenCookie(res.data.account.token)
           return true
         } else {
+          return false
         }
+        /* -------------------------------------------------------------------------- */
+        /* -------------------------------- facebook -------------------------------- */
+        /* -------------------------------------------------------------------------- */
       } else if (user.id && user.email && account?.provider === "facebook") {
-        const res = await login(user.email, OAUTH_PWD + user.id)
-        // console.log(res.error.error.message)
-        if (res.data.account.token) {
+        const res = await authenticateUser(user.email, OAUTH_PWD + user.id)
+        if (res?.data?.account?.token) {
           // If the request is successful, proceed with the desired actions
-          cookies().set({
-            name: "ipcBikeApp_authToken",
-            value: res.data.account.token,
-            secure: true,
-          })
+          setAuthTokenCookie(res.data.account.token)
           return true
+        } else {
+          return false
         }
+        /* -------------------------------------------------------------------------- */
+        /* ------------------------------- credentials ------------------------------ */
+        /* -------------------------------------------------------------------------- */
       } else if (user.id && user.email && account?.provider === "credentials") {
         return true
+        /* -------------------------------------------------------------------------- */
       }
       return false
     },

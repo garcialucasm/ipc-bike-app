@@ -65,7 +65,7 @@ export async function registerFirstAccountFetchApi(accountData: AccountDTO) {
 }
 
 /* --------------------------- Handle Login action -------------------------- */
-export async function login(email: string, password: string) {
+export async function authenticateUser(email: string, password: string) {
     try {
         const response = await ApiHeader.post(apiUrls.loginUrl, {
             email: email,
