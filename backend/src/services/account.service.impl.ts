@@ -1,3 +1,4 @@
+import { accountMessages } from "./../../../shared/constants/errorMessages";
 import bcrypt from "bcrypt";
 import { Account } from "../models/account.model";
 import IAccountRepository from "../repositories/account.repository";
@@ -6,97 +7,106 @@ import { generateAsyncToken } from "../utils/auth";
 import { AccountDTO } from "../dto/account.dto";
 import { getLogger } from "../logger";
 
-const saltRounds = 8
+const saltRounds = 8;
 
-const logger = getLogger('AccountService')
+const logger = getLogger("AccountService");
 
 export default class AccountService implements IAccountService {
-
-  accountRepository: IAccountRepository
+  accountRepository: IAccountRepository;
 
   constructor(accountRepository: IAccountRepository) {
-    this.accountRepository = accountRepository
+    this.accountRepository = accountRepository;
   }
 
-  async registerAccount(name: string, email: string, password: string): Promise<Account> {
-    logger.debug("registerAccount")
-    let account: Account
+  async registerAccount(
+    name: string,
+    email: string,
+    password: string
+  ): Promise<Account> {
+    logger.debug("registerAccount");
+    let account: Account;
 
-    const user = await this.accountRepository.findByEmail(email)
+    const user = await this.accountRepository.findByEmail(email);
 
     if (user) {
-      logger.warn("E-mail already registered")
-      throw new Error("E-mail already registered");
+      logger.warn(accountMessages.EMAIL_ALREADY_REGISTRED);
+      throw new Error(accountMessages.EMAIL_ALREADY_REGISTRED);
     }
-    console.log("Encripting password")
+    logger.silly("Encripting password");
     const hash = await bcrypt.hash(password, saltRounds);
 
     account = {
       AccountName: name,
       Email: email,
       Hash: hash,
-      IsActive: true
-    } as Account
+      IsActive: true,
+    } as Account;
 
-    account = await this.accountRepository.save(account)
-    logger.silly("registered successfully")
-    return account
+    account = await this.accountRepository.save(account);
+    logger.silly("registered successfully");
+    return account;
   }
 
   async login(loginEmail: string, loginPassword: string): Promise<AccountDTO> {
-    logger.debug("login")
+    logger.debug("login");
 
-    try {
-      if (!loginEmail) {
-        logger.error("Email is not provided")
-        throw new Error("Email is not provided");
-      }
+    if (!loginEmail) {
+      logger.error(accountMessages.EMAIL_NOT_PROVIDED);
+      throw new Error(accountMessages.EMAIL_NOT_PROVIDED);
+    }
 
-      const foundAccount = await this.accountRepository.findAccount(loginEmail, loginPassword);
-      const storedEmail = foundAccount.Email
-      const storedPassword = foundAccount.Hash
-      const storedId = foundAccount.ID
-      const storedAccountName = foundAccount.AccountName
-      
-      if (!storedEmail) {
-        logger.silly("Email is not correct or does not exist")
-        throw new Error("Email is not correct or does not exist");
-      }
+    const foundAccount = await this.accountRepository.findAccount(
+      loginEmail,
+      loginPassword
+    );
+    const storedEmail = foundAccount.Email;
+    const storedPassword = foundAccount.Hash;
+    const storedId = foundAccount.ID;
+    const storedAccountName = foundAccount.AccountName;
 
-      if (!storedPassword) {
-        logger.error("Password is not provided")
-        throw new Error("Password is not provided");
-      }
+    if (!storedEmail) {
+      logger.silly(accountMessages.EMAIL_NOT_REGISTRED);
+      throw new Error(accountMessages.EMAIL_NOT_REGISTRED);
+    }
 
-      if (!storedId) {
-        logger.error("Id does not exist")
-        throw new Error("Id does not exist");
-      }
+    if (!storedPassword) {
+      logger.error(accountMessages.PASSWORD_NOT_PROVIDED);
+      throw new Error(accountMessages.PASSWORD_NOT_PROVIDED);
+    }
 
-      if (!storedAccountName) {
-        logger.error("Account name is not valid or does not exist")
-        throw new Error("Account name is not valid or does not exist");
-      }
+    if (!storedId) {
+      logger.error(accountMessages.ID_NOT_REGISTRED);
+      throw new Error(accountMessages.ID_NOT_REGISTRED);
+    }
 
-      const isMatch = await bcrypt.compare(loginPassword, storedPassword);
+    if (!storedAccountName) {
+      logger.error(accountMessages.NAME_NOT_REGISTRED);
+      throw new Error(accountMessages.NAME_NOT_REGISTRED);
+    }
 
-      if (isMatch) {
-        const asyncToken = await generateAsyncToken({ id: storedId?.toString(), accountName: storedAccountName });
+    const isMatch = await bcrypt.compare(loginPassword, storedPassword);
 
-        return { id: storedId, name: storedAccountName, email: storedEmail, token: asyncToken };
-      } else {
-        logger.silly("Password is not correct")
-        throw new Error('Password is not correct');
-      }
-    } catch (error) {
-      logger.debug(error)
-      throw error;
+    if (isMatch) {
+      const asyncToken = await generateAsyncToken({
+        id: storedId?.toString(),
+        accountName: storedAccountName,
+      });
+
+      return {
+        id: storedId,
+        name: storedAccountName,
+        email: storedEmail,
+        token: asyncToken,
+      };
+    } else {
+      logger.silly(accountMessages.PASSWORD_INCORRECT);
+      throw new Error(accountMessages.PASSWORD_INCORRECT);
     }
   }
 
   async findByEmail(email: string): Promise<Account | null> {
-    logger.debug("findByEmail")
-    let result = this.accountRepository.findByEmail(email)
-    return result
+    logger.debug("findByEmail");
+    let result = this.accountRepository.findByEmail(email);
+    return result;
   }
 }

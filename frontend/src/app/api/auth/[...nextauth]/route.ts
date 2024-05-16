@@ -3,9 +3,11 @@ import GoogleProvider from "next-auth/providers/google"
 import FacebookProvider from "next-auth/providers/facebook"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { cookies } from "next/headers"
-
-import { authenticateUser } from "@/services/accountApi"
 import { z } from "zod"
+
+import { accountMessages } from "./../../../../../../shared/constants/errorMessages"
+import { authenticateUser } from "@/services/accountApi"
+import { autoSignUp } from "@/app/auth/authUtils"
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
@@ -15,12 +17,31 @@ const FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET
 
 const OAUTH_PWD = process.env.OAUTH_PWD
 
+/* --------------- Function to set authentication token cookie -------------- */
 const setAuthTokenCookie = (token: string) => {
   cookies().set({
     name: "ipcBikeApp_authToken",
     value: token,
     secure: true,
   })
+}
+
+/* ---------------------- Custom authentication handler --------------------- */
+const customAuthHandler = async (credentials: any, req: any) => {
+  const parsedCredentials = z
+    .object({ email: z.string().email(), password: z.string().min(8) })
+    .safeParse(credentials)
+
+  if (parsedCredentials.success) {
+    const res = await authenticateUser(credentials.email, credentials.password)
+    const user = res?.data?.account
+
+    if (res.data && user?.token) {
+      setAuthTokenCookie(user.token)
+      return user
+    }
+  }
+  return null
 }
 
 const handler = NextAuth({
@@ -61,43 +82,29 @@ const handler = NextAuth({
         },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
-        const parsedCredentials = z
-          .object({ email: z.string().email(), password: z.string().min(8) })
-          .safeParse(credentials)
-        if (parsedCredentials.success) {
-          const res = await authenticateUser(
-            credentials?.email!,
-            credentials?.password!
-          )
-          let user = res?.data?.account
-          // If no error and we have user data, return it
-          if (res.data && user?.token) {
-            // If the request is successful, proceed with the desired actions
-            setAuthTokenCookie(user.token)
-            return user
-          }
-        } // Return null if user data could not be retrieved
-        return null
-      },
+      authorize: customAuthHandler,
     }),
   ],
   callbacks: {
-    async signIn({ profile, user, account }) {
+    async signIn({ user, account }) {
       /* -------------------------------------------------------------------------- */
-      /* --------------------------------- google --------------------------------- */
+      /* --------------------------- google or facebook --------------------------- */
       /* -------------------------------------------------------------------------- */
-      if (profile?.email && profile.sub && account?.provider === "google") {
-        const res = await authenticateUser(
-          profile.email,
-          OAUTH_PWD + profile.sub
-        )
+      if (
+        user &&
+        user.email &&
+        (account?.provider === "google" || account?.provider === "facebook")
+      ) {
+        let res = await authenticateUser(user.email, OAUTH_PWD + user?.id)
+        if (res.error === accountMessages.EMAIL_NOT_FOUND) {
+          try {
+            await autoSignUp(user, OAUTH_PWD as string)
+            res = await authenticateUser(user.email, OAUTH_PWD + user.id)
+            setAuthTokenCookie
+          } catch (error) {
+            return false
+          }
+        }
         if (res?.data?.account?.token) {
           // If the request is successful, proceed with the desired actions
           setAuthTokenCookie(res.data.account.token)
@@ -106,17 +113,7 @@ const handler = NextAuth({
           return false
         }
         /* -------------------------------------------------------------------------- */
-        /* -------------------------------- facebook -------------------------------- */
-        /* -------------------------------------------------------------------------- */
-      } else if (user.id && user.email && account?.provider === "facebook") {
-        const res = await authenticateUser(user.email, OAUTH_PWD + user.id)
-        if (res?.data?.account?.token) {
-          // If the request is successful, proceed with the desired actions
-          setAuthTokenCookie(res.data.account.token)
-          return true
-        } else {
-          return false
-        }
+
         /* -------------------------------------------------------------------------- */
         /* ------------------------------- credentials ------------------------------ */
         /* -------------------------------------------------------------------------- */

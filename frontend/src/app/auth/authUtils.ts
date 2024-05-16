@@ -1,5 +1,7 @@
+import { registerFirstAccountFetchApi } from "@/services/accountApi"
 import { cookieTokenName } from "@/types/CookieType"
 import jwt, { JwtPayload } from "jsonwebtoken"
+import { User } from "next-auth"
 import { signOut } from "next-auth/react"
 
 const jwtPublicKey = process.env.NEXT_PUBLIC_JWT_KEY?.trim()
@@ -122,4 +124,20 @@ export function verifyToken(token: string | null) {
     console.error("Invalid token: " + error)
     return null
   }
+}
+
+
+export async function autoSignUp(user: User, OAUTH_PWD: string) {
+  if (user.name && user.email && user.id) {
+    const accountData = {
+      accountName: user.name,
+      email: user.email,
+      password: OAUTH_PWD + user.id,
+    }
+    try {
+      await registerFirstAccountFetchApi(accountData)
+      return true
+    } catch (error) {}
+  }
+  throw new Error()
 }

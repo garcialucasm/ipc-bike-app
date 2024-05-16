@@ -17,6 +17,7 @@ import InputText from "./Inputs/InputText"
 import { IconSvgEmail, IconSvgLoader } from "../Others/IconsSvg"
 import { checkAuth } from "@/app/auth/authUtils"
 import { useFramerMotion } from "@/context/framerMotion"
+import HalfPageLogo from "./modules/HalfPageLogo"
 
 const ERROR_MESSAGE_LOGIN =
   "Sign in failed. Check the details you provided are correct."
@@ -89,54 +90,7 @@ const Login = () => {
   return (
     <>
       <div className="h-screen md:flex">
-        <div className="background-mash-noise-light relative hidden w-1/2 items-center justify-center overflow-hidden shadow-lg shadow-black md:flex md:flex-col">
-          <motion.span
-            viewport={{ once: true }}
-            initial={{ x: -30, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            transition={{
-              duration: 0.8,
-              delay: 0.2,
-              ease: [0, 0.71, 0.2, 1.01],
-            }}
-          >
-            <Image
-              src="/logo-ipc-bike-white.png"
-              className="h-56 w-auto"
-              width={224}
-              height={224}
-              alt=""
-              priority
-            />
-          </motion.span>
-          <motion.p
-            viewport={{ once: true }}
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{
-              duration: 0.8,
-              delay: 0.5,
-              ease: [0, 0.71, 0.2, 1.01],
-            }}
-            className="mt-1 text-white"
-          >
-            Book, Ride, Explore: All for Free
-          </motion.p>
-        </div>
-        <div className="background-solid-noise fixed flex h-20 w-full items-center bg-blue-700 px-4 md:hidden">
-          <Link href={NavigationPaths.homeWeb} className="ms-2 flex">
-            <Image
-              src="/logo-ipc-bike-white-h.png"
-              className="h-8 w-auto"
-              width={194}
-              height={32}
-              alt=""
-            />
-            <span className="sr-only self-center whitespace-nowrap text-xl font-semibold sm:text-2xl">
-              IPC Bike App
-            </span>
-          </Link>
-        </div>
+        <HalfPageLogo />
         <div className="mt-[72px] flex h-full flex-col items-center bg-white py-10 md:mt-0 md:w-1/2 md:justify-center md:py-0">
           <motion.div
             viewport={{ once: true }}

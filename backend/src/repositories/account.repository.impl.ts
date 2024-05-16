@@ -3,6 +3,7 @@ import { Account } from "../models/account.model";
 import IAccountRepository from "./account.repository";
 import { accountFromRow } from "./mappings";
 import { getLogger } from "../logger";
+import { accountMessages } from "../../../shared/constants/errorMessages";
 
 const logger = getLogger('AccountRepository')
 
@@ -71,8 +72,8 @@ export default class AccountRepository implements IAccountRepository {
       let account = result.rows[0]
 
       if (!account) {
-        logger.silly("Email not found")
-        throw new Error("Email not found");
+        logger.silly(accountMessages.EMAIL_NOT_FOUND)
+        throw new Error(accountMessages.EMAIL_NOT_FOUND);
       }
 
       return {

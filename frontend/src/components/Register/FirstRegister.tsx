@@ -24,6 +24,7 @@ import {
 import ActionResult from "../ActionResult/ActionResult"
 import SecondaryButton from "../Buttons/SecondaryButton"
 import { ServerResult } from "@/types/ServerResult"
+import HalfPageLogo from "../Forms/modules/HalfPageLogo"
 
 const initialAccountData: AccountDTO = {
   accountName: "",
@@ -122,31 +123,7 @@ function FirstRegister() {
   return (
     <>
       <div className="h-screen md:flex">
-        <div className="i relative hidden w-1/2 items-center justify-center overflow-hidden bg-gradient-to-tr from-blue-950 via-blue-800 to-blue-600 md:flex md:flex-col">
-          <Image
-            src="/logo-ipc-bike-white.png"
-            className="h-56 w-auto"
-            width={300}
-            height={399}
-            alt=""
-            priority
-          />
-          <p className="mt-1 text-white">Book, Ride, Explore: All for Free</p>
-        </div>
-        <div className="fixed flex h-16 w-full items-center bg-gradient-to-tr from-blue-950 via-blue-800 to-blue-600 px-4 md:hidden">
-          <Link href={NavigationPaths.homeWeb} className="ms-2 flex">
-            <Image
-              src="/logo-ipc-bike-white-h.png"
-              className="h-8 w-auto"
-              width={300}
-              height={399}
-              alt=""
-            />
-            <span className="sr-only self-center whitespace-nowrap text-xl font-semibold sm:text-2xl">
-              IPC Bike App
-            </span>
-          </Link>
-        </div>
+        <HalfPageLogo />
         <div className="mt-[64px] flex items-center justify-center bg-white py-10 md:mt-0 md:w-1/2">
           <form
             onSubmit={handleSubmitForm}
@@ -164,7 +141,7 @@ function FirstRegister() {
             {/* ------------------------- render after submit ------------------------- */}
             {!isLoading && serverResult.isConfirmed !== null && (
               <>
-                <div className="mb-8 flex p-8 items-center">
+                <div className="mb-8 flex items-center p-8">
                   <ActionResult
                     isConfirmed={serverResult.isConfirmed}
                     personalizedMessage={serverResult.resultMessage as string}
@@ -180,7 +157,6 @@ function FirstRegister() {
                 {serverResult.isConfirmed && (
                   <div className="my-4 flex w-full flex-col gap-y-4">
                     <div className="link-primary w-full">
-                      {/* TODO:-------------------- Create an automatic login process ------------------- */}
                       <Link href={NavigationPaths.login}>
                         <span className="block px-4 py-2 text-center">
                           Login
