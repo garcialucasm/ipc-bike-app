@@ -37,8 +37,12 @@ const customAuthHandler = async (credentials: any, req: any) => {
     const user = res?.data?.account
 
     if (res.data && user?.token) {
-      setAuthTokenCookie(user.token)
-      return user
+      try {
+        setAuthTokenCookie(user.token)
+        return user
+      } catch (error) {
+        throw new Error("Error: Setting auth token cookie")
+      }
     }
   }
   return null
@@ -47,7 +51,7 @@ const customAuthHandler = async (credentials: any, req: any) => {
 const handler = NextAuth({
   pages: {
     signIn: "/auth/login",
-    error: "/auth/authError", // Error code passed in query string as ?error=
+    error: "/auth/error", // Error code passed in query string as ?error=
     // signOut: "/auth/login",
     // verifyRequest: '/auth/verify-request', // (used for check email message)
     // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
@@ -104,6 +108,8 @@ const handler = NextAuth({
           } catch (error) {
             return false
           }
+        } else if (res.error === accountMessages.PASSWORD_INCORRECT) {
+          throw new Error(accountMessages.TRY_A_DIFFERENT_METHOD)
         }
         if (res?.data?.account?.token) {
           // If the request is successful, proceed with the desired actions
