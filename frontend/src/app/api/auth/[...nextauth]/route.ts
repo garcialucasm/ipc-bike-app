@@ -91,6 +91,7 @@ const handler = NextAuth({
   ],
   callbacks: {
     async signIn({ user, account }) {
+      console.log(user)
       /* -------------------------------------------------------------------------- */
       /* --------------------------- google or facebook --------------------------- */
       /* -------------------------------------------------------------------------- */
@@ -104,7 +105,6 @@ const handler = NextAuth({
           try {
             await autoSignUp(user, OAUTH_PWD as string)
             res = await authenticateUser(user.email, OAUTH_PWD + user.id)
-            setAuthTokenCookie
           } catch (error) {
             return false
           }
