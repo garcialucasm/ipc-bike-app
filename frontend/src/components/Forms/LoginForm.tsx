@@ -57,12 +57,12 @@ const Login = () => {
     })
   }
 
-  const singInFacebook = async () => {
-    await signIn("facebook", {
-      redirect: false,
-      callbackUrl: NavigationPaths.homeApp, // Optional: Redirect URL after successful sign-in
-    })
-  }
+  // const singInFacebook = async () => {
+  //   await signIn("facebook", {
+  //     redirect: false,
+  //     callbackUrl: NavigationPaths.homeApp, // Optional: Redirect URL after successful sign-in
+  //   })
+  // }
 
   function handleReturnButton() {
     router.push(NavigationPaths.homeWeb)
@@ -115,13 +115,13 @@ const Login = () => {
               <>
                 {!isEmailOpen && (
                   <>
-                    <div className="relative pb-2 text-sm">
+                    <div
+                      className="relative pb-2 text-sm"
+                      onMouseEnter={() => setShowTooltip(true)}
+                      onMouseLeave={() => setShowTooltip(false)}
+                    >
                       New here?{" "}
-                      <span
-                        className="cursor-help underline"
-                        onMouseEnter={() => setShowTooltip(true)}
-                        onMouseLeave={() => setShowTooltip(false)}
-                      >
+                      <span className="cursor-help underline">
                         Let's get started!
                       </span>
                       {showTooltip && (
@@ -140,8 +140,9 @@ const Login = () => {
                           </span>
                           If you don't have an account yet, we'll create one for
                           you when you sign in with{" "}
-                          <span className="underline">Google</span> or{" "}
-                          <span className="underline">Facebook</span>.
+                          <span className="underline">Google.</span>
+                          {/* or{" "} */}
+                          {/* <span className="underline">Facebook</span>. */}
                         </motion.div>
                       )}
                     </div>
@@ -167,7 +168,7 @@ const Login = () => {
                           Sign in with Google
                         </div>
                       </PrimaryButton>
-                      <PrimaryButton onClick={singInFacebook}>
+                      {/* <PrimaryButton onClick={singInFacebook}>
                         <div className="flex items-center gap-x-2 text-sm">
                           <Image
                             src="/facebook-logo.png"
@@ -179,7 +180,7 @@ const Login = () => {
                           />
                           Sign in with Facebook
                         </div>
-                      </PrimaryButton>
+                      </PrimaryButton> */}
                       <div className="my-4 flex items-center justify-center">
                         <hr className="w-1/4 border-gray-300" />
                         <span className="mx-4 text-gray-500">or</span>

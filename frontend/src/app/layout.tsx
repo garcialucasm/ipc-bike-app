@@ -8,6 +8,14 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "IPC Bike App",
   description: "IPC Bike App | Book, Ride, Explore: All for Free",
+  openGraph: {
+    title: "IPC Bike App",
+    description: "IPC Bike App | Book, Ride, Explore: All for Free",
+    url: "https://ipc.bike",
+    siteName: "IPC Bike",
+    type: "website",
+  },
+  metadataBase: new URL("https://ipc.bike"),
 }
 
 export default function RootLayout({
