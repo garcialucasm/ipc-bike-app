@@ -115,26 +115,17 @@ const Login = () => {
               <>
                 {!isEmailOpen && (
                   <>
-                    <div
-                      className="relative pb-2 text-sm"
-                      onMouseEnter={() => setShowTooltip(true)}
-                      onMouseLeave={() => setShowTooltip(false)}
-                    >
+                    <div className="relative py-1 text-sm">
                       New here?{" "}
-                      <span className="cursor-help underline">
+                      <span
+                        className="cursor-help underline"
+                        onMouseEnter={() => setShowTooltip(true)}
+                        onMouseLeave={() => setShowTooltip(false)}
+                      >
                         Let's get started!
                       </span>
                       {showTooltip && (
-                        <motion.div
-                          viewport={{ once: true }}
-                          initial={{ y: -20, opacity: 0 }}
-                          whileInView={{ y: 0, opacity: 1 }}
-                          transition={{
-                            delay: 0.2,
-                            ease: [0, 0.71, 0.2, 1.01],
-                          }}
-                          className="background-solid-noise absolute left-0 top-8 rounded bg-blue-700 px-4 py-8 text-white shadow-2xl"
-                        >
+                        <div className="background-solid-noise absolute left-0 top-8 rounded bg-blue-700 px-4 py-8 text-white shadow-2xl">
                           <span className="absolute right-0 top-0 p-2 opacity-50">
                             <X size={20} />
                           </span>
@@ -143,7 +134,7 @@ const Login = () => {
                           <span className="underline">Google.</span>
                           {/* or{" "} */}
                           {/* <span className="underline">Facebook</span>. */}
-                        </motion.div>
+                        </div>
                       )}
                     </div>
                     <motion.span
