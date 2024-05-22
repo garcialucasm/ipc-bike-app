@@ -70,7 +70,7 @@ function BikeChooserContainer(props: {
         <span className="px-1 font-medium">{bikeCount}</span> available
       </div>
       <div
-        className={`transform transition-transform duration-500 ease-in-out ${
+        className={`min-h-36 transform transition-transform duration-500 ease-in-out sm:min-h-48 ${
           isImageSliding ? "translate-x-[450px]" : "translate-x-0"
         }`}
       >

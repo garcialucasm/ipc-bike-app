@@ -122,17 +122,17 @@ function RegisterForm() {
 
         {/* ------------------------- render after submit ------------------------- */}
         {!isLoading && serverResult.isConfirmed !== null && (
-            <div className="mb-8 flex p-8 items-center">
-              <ActionResult
-                isConfirmed={serverResult.isConfirmed}
-                personalizedMessage={serverResult.resultMessage as string}
-              />
-              {serverResult.isConfirmed === false && (
-                <PrimaryButton onClick={handleCleanStates}>
-                  Try again
-                </PrimaryButton>
-              )}
-            </div>
+          <div className="mb-8 flex items-center p-8">
+            <ActionResult
+              isConfirmed={serverResult.isConfirmed}
+              personalizedMessage={serverResult.resultMessage as string}
+            />
+            {serverResult.isConfirmed === false && (
+              <PrimaryButton onClick={handleCleanStates}>
+                Try again
+              </PrimaryButton>
+            )}
+          </div>
         )}
 
         {/* ------------------------- render before submit ------------------------- */}

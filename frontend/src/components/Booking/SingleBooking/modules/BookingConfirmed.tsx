@@ -35,7 +35,7 @@ function BookingConfirmed() {
         </div>
       </PrimaryButton>
       <div className="link-primary w-full">
-        <Link href={NavigationPaths.rules} target="_blank">
+        <Link href={NavigationPaths.termsOfService} target="_blank">
           <span className="block px-4 py-2">See the Rules</span>
         </Link>
       </div>

@@ -65,7 +65,7 @@ export async function registerFirstAccountFetchApi(accountData: AccountDTO) {
 }
 
 /* --------------------------- Handle Login action -------------------------- */
-export async function login(email: string, password: string) {
+export async function authenticateUser(email: string, password: string) {
     try {
         const response = await ApiHeader.post(apiUrls.loginUrl, {
             email: email,
@@ -78,7 +78,7 @@ export async function login(email: string, password: string) {
             // The request was made and the server responded with a status code
             // that falls out of the range of 2xx
             console.error('Error response data:', error.response.status);
-            return { data: null, error: error.response.status };
+            return { data: null, error: error.response.data.error };
         } else if (error.request) {
             // The request was made but no response was received
             // `error.request` is an instance of XMLHttpRequest in the browser and an instance of

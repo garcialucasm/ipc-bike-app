@@ -3,12 +3,12 @@ import SubtitleLabelWeb from "@/components/Others/SubtitleLabelWeb"
 import TextWithBgLabelWeb from "@/components/Others/TextWithBgLabelWeb"
 import TitleLabelWeb from "@/components/Others/TitleLabelWeb"
 
-const Rules = () => {
+const TermsOfService = () => {
   return (
     <>
       <ContainerWebpage>
         <div className="flex flex-col gap-y-8">
-          <TitleLabelWeb>Rules and Terms of Use</TitleLabelWeb>
+          <TitleLabelWeb>Terms of Service and Rules</TitleLabelWeb>
           <div className="flex flex-col gap-y-4">
             <div>
               <SubtitleLabelWeb>
@@ -158,4 +158,4 @@ const Rules = () => {
   )
 }
 
-export default Rules
+export default TermsOfService

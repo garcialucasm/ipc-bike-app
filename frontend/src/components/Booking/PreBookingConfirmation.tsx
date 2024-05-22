@@ -115,7 +115,7 @@ const PreBookingConfirmation = () => {
           className="ms-2 text-sm text-gray-700"
         >
           I agree to the{" "}
-          <a href={NavigationPaths.termsAndConditions} target="_blank">
+          <a href={NavigationPaths.termsOfService} target="_blank">
             <span className="text-blue-700">terms and conditions</span>.
           </a>
         </label>

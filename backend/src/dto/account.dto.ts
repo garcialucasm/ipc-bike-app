@@ -1,6 +1,7 @@
 interface AccountDTO {
   id: number
-  accountName: string
+  name: string
+  email: string
   token: string
 }
 
