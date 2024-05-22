@@ -154,7 +154,7 @@ export default function HeaderNavbarWeb() {
                   } ${!isMenuOpened && "hidden lg:block"}`}
                   aria-current="page"
                 >
-                  Rules
+                  Terms of Service
                 </Link>
               </li>
               <li>
