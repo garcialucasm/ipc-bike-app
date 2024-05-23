@@ -46,7 +46,7 @@ function AvailabilityCard(props: {
   return (
     <>
       <div
-        className={`px-auto flex w-full min-w-32 h-36 flex-col justify-between overflow-hidden rounded-2xl border-l border-r border-t border-slate-200 bg-gradient-to-tr from-white via-slate-200 to-slate-200 font-semibold ${cardTextColorByStatus}`}
+        className={`px-auto flex h-36 w-full min-w-32 flex-col justify-between overflow-hidden rounded-2xl border-l border-r border-t border-slate-100 bg-gradient-to-tr from-slate-100 to-slate-200 font-semibold ${cardTextColorByStatus}`}
       >
         <span>
           <StatusIndicator
@@ -56,21 +56,15 @@ function AvailabilityCard(props: {
             width="w-4"
           />
         </span>
-        <div className="flex -translate-y-2 items-center justify-end h-12">
-          <div className="text-white">
-            {selectedStatus === BikeStatus.FREE && <Bicycle size={112} />}
-            {selectedStatus === BikeStatus.BOOKED && <Ticket size={112} />}
-            {selectedStatus === BikeStatus.INUSE && (
-              <IconSvgBikeInUse
-                height="112"
-                width="112"
-                fillColor="fill-white"
-              />
-            )}
-            {selectedStatus === BikeStatus.DISABLED && <Wrench size={112} />}
-          </div>
+        <div className="flex h-12 -translate-y-6 items-center justify-end text-white p-1">
+          {selectedStatus === BikeStatus.FREE && <Bicycle size={72} />}
+          {selectedStatus === BikeStatus.BOOKED && <Ticket size={72} />}
+          {selectedStatus === BikeStatus.INUSE && (
+            <IconSvgBikeInUse height="64" width="64" fillColor="fill-white" />
+          )}
+          {selectedStatus === BikeStatus.DISABLED && <Wrench size={72} />}
         </div>
-        <span className="px-2 pb-2 text-left text-4xl z-30">
+        <span className="z-30 px-2 pb-2 text-left text-4xl">
           {currentBikeCount || 0}
           <span className="px-1 text-xs text-slate-500">{textLabel}</span>
         </span>
