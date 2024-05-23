@@ -56,7 +56,7 @@ function AvailabilityCard(props: {
             width="w-4"
           />
         </span>
-        <div className="flex h-12 -translate-y-6 items-center justify-end text-white p-1">
+        <div className="flex h-12 -translate-y-5 items-center justify-end px-2 text-white">
           {selectedStatus === BikeStatus.FREE && <Bicycle size={72} />}
           {selectedStatus === BikeStatus.BOOKED && <Ticket size={72} />}
           {selectedStatus === BikeStatus.INUSE && (

@@ -43,15 +43,8 @@ export default function HeaderNavbarWeb() {
 
   return (
     <>
-      <motion.nav
-        viewport={{ once: true }}
-        initial={{ y: -40, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        transition={{
-          delay: 0.8,
-          ease: [0, 0.71, 0.2, 1.01],
-        }}
-        className={`fixed start-0 top-0 z-20 w-full outline outline-1 outline-offset-1 outline-white/[.3] backdrop-blur-xl md:backdrop-blur-none ${isScrolling && "backdrop-blur-xl"} ${isMenuOpened && "bg-black bg-opacity-50 md:bg-transparent"}`}
+      <nav
+        className={`fixed start-0 top-0 z-20 w-full outline outline-1 outline-offset-1 outline-white/[.3] backdrop-blur-xl md:backdrop-blur-none ${isScrolling && "backdrop-blur-xl md:backdrop-blur-xl"} ${isMenuOpened && "bg-black bg-opacity-50 md:bg-transparent"}`}
       >
         <div
           className={`mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4`}
@@ -186,7 +179,7 @@ export default function HeaderNavbarWeb() {
             </ul>
           </div>
         </div>
-      </motion.nav>
+      </nav>
     </>
   )
 }

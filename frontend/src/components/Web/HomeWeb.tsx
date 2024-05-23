@@ -10,7 +10,7 @@ function HomeWeb() {
   const { motion } = useFramerMotion()
   return (
     <>
-      <main className="background-mash-noise-dark flex min-h-screen flex-col items-center justify-between p-24 pt-[69px] text-white">
+      <main className="background-mash-noise-dark flex min-h-screen h-max flex-col items-center justify-between p-24 pt-[69px] text-white">
         <motion.div
           viewport={{ once: true }}
           initial={{ opacity: 0 }}
@@ -163,7 +163,7 @@ function HomeWeb() {
             delay: 0.8,
             ease: [0, 0.71, 0.2, 1.01],
           }}
-          className="absolute bottom-5"
+          className="pt-12"
         >
           <FooterWeb />
         </motion.div>
