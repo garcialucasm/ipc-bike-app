@@ -3,7 +3,7 @@ import { Account } from "../models/account.model";
 import IAccountRepository from "./account.repository";
 import { accountFromRow } from "./mappings";
 import { getLogger } from "../logger";
-import { accountMessages } from "../../../shared/constants/errorMessages";
+import { accountMessages } from "../utils/errorMessages";
 
 const logger = getLogger('AccountRepository')
 

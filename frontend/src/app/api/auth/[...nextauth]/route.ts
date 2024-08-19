@@ -5,9 +5,9 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { cookies } from "next/headers"
 import { z } from "zod"
 
-import { accountMessages } from "./../../../../../../shared/constants/errorMessages"
 import { authenticateUser } from "@/services/accountApi"
 import { autoSignUp } from "@/app/auth/authUtils"
+import { accountMessages } from "@/utils/errorMessages"
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET

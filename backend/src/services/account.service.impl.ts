@@ -1,4 +1,3 @@
-import { accountMessages } from "./../../../shared/constants/errorMessages";
 import bcrypt from "bcrypt";
 import { Account } from "../models/account.model";
 import IAccountRepository from "../repositories/account.repository";
@@ -6,6 +5,7 @@ import IAccountService from "./account.service";
 import { generateAsyncToken } from "../utils/auth";
 import { AccountDTO } from "../dto/account.dto";
 import { getLogger } from "../logger";
+import { accountMessages } from "../utils/errorMessages";
 
 const saltRounds = 8;
 
