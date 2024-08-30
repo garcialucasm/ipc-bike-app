@@ -1,5 +1,13 @@
+enum AccountType {
+  STUDENT = "STUDENT",
+  PROFESSOR = "PROFESSOR",
+  KEYKEEPER = "KEYKEEPER",
+  ADMIN = "ADMIN",
+}
+
 interface Account {
-    ID?: number;
+    ID?: number,
+    Type: AccountType,
     AccountName?: string,
     Email?: string,
     Hash?: string,
@@ -10,5 +18,5 @@ interface Account {
     Token?: string,
 }
 
-export { Account }
+export { Account, AccountType }
 

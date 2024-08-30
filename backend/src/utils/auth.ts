@@ -58,7 +58,26 @@ export const checkAuth = async (req: Request, res: Response, next: NextFunction)
   }
 };
 
-export function generateAsyncToken(payload: { id: string, accountName: string }): Promise<string> {
+export const getDecodedToken = async (req: Request): Promise<JwtPayload | null> => {
+  logger.debug("getDecodedToken")
+
+  try {
+    const token = req.header("Authorization")?.replace("Bearer ", "")
+
+    if (token) {
+      const decoded = jwt.verify(token, publicJwtKey) as JwtPayload
+      logger.debug("token decoded sucessfully")
+      
+      return decoded
+    }
+    logger.debug("No token found")
+  } catch (err) {
+    logger.debug("decoded error", err)
+  }
+  return null
+}
+
+export function generateAsyncToken(payload: { accountId: string, accountName: string }): Promise<string> {
   logger.debug("generateAsyncToken")
   return new Promise((resolve, reject) => {
 

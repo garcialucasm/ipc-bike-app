@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { Account } from "../models/account.model";
+import { Account, AccountType } from "../models/account.model";
 import IAccountRepository from "../repositories/account.repository";
 import IAccountService from "./account.service";
 import { generateAsyncToken } from "../utils/auth";
@@ -36,10 +36,11 @@ export default class AccountService implements IAccountService {
     const hash = await bcrypt.hash(password, saltRounds);
 
     account = {
+      Type: AccountType.STUDENT,
       AccountName: name,
       Email: email,
       Hash: hash,
-      IsActive: true,
+      IsActive: false,
     } as Account;
 
     account = await this.accountRepository.save(account);
@@ -63,6 +64,7 @@ export default class AccountService implements IAccountService {
     const storedPassword = foundAccount.Hash;
     const storedId = foundAccount.ID;
     const storedAccountName = foundAccount.AccountName;
+    const storedIsActive = foundAccount.IsActive;
 
     if (!storedEmail) {
       logger.silly(accountMessages.EMAIL_NOT_REGISTRED);
@@ -84,11 +86,16 @@ export default class AccountService implements IAccountService {
       throw new Error(accountMessages.NAME_NOT_REGISTRED);
     }
 
+    if (!storedIsActive) {
+      logger.error(accountMessages.ACCOUNT_INACTIVE);
+      throw new Error(accountMessages.ACCOUNT_INACTIVE);
+    }
+
     const isMatch = await bcrypt.compare(loginPassword, storedPassword);
 
     if (isMatch) {
       const asyncToken = await generateAsyncToken({
-        id: storedId?.toString(),
+        accountId: storedId?.toString(),
         accountName: storedAccountName,
       });
 

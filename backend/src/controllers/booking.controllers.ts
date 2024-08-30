@@ -1,10 +1,10 @@
-
 import { Router, RouterOptions } from 'express'
 import IBookingService from '../services/booking.service'
 import { validateRoom, validateUserName, validateBikeNumbering } from '../models/validators'
 import { BookingDTO, BookingStatusDTO } from '../dto/booking.dto'
 import { Booking, BookingStatus, BookingType } from '../models/booking.model'
 import { getLogger } from '../logger'
+import { getDecodedToken } from '../utils/auth';
 
 
 function toBookingDTO(booking: Booking): BookingDTO {
@@ -21,6 +21,11 @@ function toBookingDTO(booking: Booking): BookingDTO {
     createdAt: booking.CreatedAt ?? null,
     confirmedAt: booking.ConfirmedAt ?? null,
     returnedAt: booking.ReturnedAt ?? null,
+    canceledAt: booking.CanceledAt ?? null,
+    createdByAccount: booking.CreatedByAccount ?? null,
+    confirmedByAccount: booking.ConfirmedByAccount ?? null,
+    returnedByAccount: booking.ReturnedByAccount ?? null,
+    canceledByAccount: booking.CanceledByAccount ?? null,
     returnedCondition: booking.ReturnedCondition ?? "",
     notes: booking.Notes ?? ""
   }
@@ -53,6 +58,8 @@ export default function bookingController(bookingService: IBookingService, route
 
   router.post("/create/single", async (req, res) => {
     logger.info("POST /create/single")
+    const decodedToken = await getDecodedToken(req)
+    const accountId = decodedToken ? decodedToken.accountId : null
     const userName = req.body.userName
     const room = req.body.room
     const bikeNumbering = req.body.bikeNumbering
@@ -61,7 +68,7 @@ export default function bookingController(bookingService: IBookingService, route
       validateUserName(userName)
       validateRoom(room)
       validateBikeNumbering(bikeNumbering)
-      bookingService.createSingleBooking(userName, room, bikeNumbering)
+      bookingService.createSingleBooking(accountId, userName, room, bikeNumbering)
         .then(booking => {
           logger.debug("createSingleBooking for user", booking.User.ID)
           res.status(200)
@@ -73,7 +80,6 @@ export default function bookingController(bookingService: IBookingService, route
         })
     } catch (error: any) {
       logger.error(error)
-      console.log(error)
       res.status(401)
         .send({ error: error.message })
     }
@@ -81,44 +87,71 @@ export default function bookingController(bookingService: IBookingService, route
 
   router.post("/approve/:id", async (req, res) => {
     logger.info("POST /approve/", req.params.id)
-    bookingService.approve(parseInt(req.params.id))
-      .then(booking => {
-        logger.debug("approve for user ", booking.User.ID)
-        res.status(200)
-          .send({ booking: toBookingDTO(booking) })
-      }).catch(error => {
-        logger.error(error)
-        res.status(401)
-          .send({ error: error.message })
-      })
+
+    try {
+      const decodedToken = await getDecodedToken(req)
+      const accountId: number = decodedToken && decodedToken.accountId
+
+      bookingService
+        .approve(accountId, parseInt(req.params.id))
+        .then((booking) => {
+          logger.debug("approve for user ", booking.User.ID)
+          res.status(200).send({ booking: toBookingDTO(booking) })
+        })
+        .catch((error) => {
+          logger.error(error)
+          res.status(401).send({ error: error.message })
+        })
+    } catch (error: any) {
+      logger.error(error)
+      res.status(401).send({ error: error.message })
+    }
   })
 
-  router.post("/return/:id", (req, res) => {
+  router.post("/return/:id", async (req, res) => {
     logger.info("POST /return/", req.params.id)
-    bookingService.returnBike(parseInt(req.params.id))
-      .then(booking => {
-        logger.debug("returnBike successfully")
-        res.status(200)
-          .send({ booking: toBookingDTO(booking) })
-      }).catch(error => {
-        logger.error(error)
-        res.status(401)
-          .send({ error: error.message })
-      })
+
+    try {
+      const decodedToken = await getDecodedToken(req)
+      const accountId: number = decodedToken && decodedToken.accountId
+
+      bookingService
+        .returnBike(accountId, parseInt(req.params.id))
+        .then((booking) => {
+          logger.debug("returnBike successfully")
+          res.status(200).send({ booking: toBookingDTO(booking) })
+        })
+        .catch((error) => {
+          logger.error(error)
+          res.status(401).send({ error: error.message })
+        })
+    } catch (error: any) {
+      logger.error(error)
+      res.status(401).send({ error: error.message })
+    }
   })
 
-  router.post("/cancel/:id", (req, res) => {
+  router.post("/cancel/:id", async (req, res) => {
     logger.info("POST /cancel/", req.params.id)
-    bookingService.cancel(parseInt(req.params.id))
-      .then(booking => {
-        logger.debug("cancel successfully")
-        res.status(200)
-          .send({ booking: toBookingDTO(booking) })
-      }).catch(error => {
-        logger.error(error)
-        res.status(401)
-          .send({ error: error.message })
-      })
+
+    try {
+      const decodedToken = await getDecodedToken(req)
+      const accountId: number = decodedToken && decodedToken.accountId
+
+      bookingService
+        .cancel(accountId, parseInt(req.params.id))
+        .then((booking) => {
+          logger.debug("cancel successfully")
+          res.status(200).send({ booking: toBookingDTO(booking) })
+        })
+        .catch((error) => {
+          logger.error(error)
+          res.status(401).send({ error: error.message })
+        })
+    } catch (error: any) {
+      logger.error(error)
+      res.status(401).send({ error: error.message })
+    }
   })
 
   router.get("/all", (req, res) => {

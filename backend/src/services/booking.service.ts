@@ -8,7 +8,12 @@ export default interface IBookingService {
    * @param userName 
    * @param bikeSize 
    */
-  createSingleBooking(userName: string, room: string, bikeNumbering: number): Promise<Booking>;
+  createSingleBooking(
+    accountId: number | null,
+    userName: string,
+    room: string,
+    bikeNumbering: number
+  ): Promise<Booking>
 
   /**
    * Given a bookingId, if it's in a BOOKED state, move it to DELIVERED state,
@@ -16,7 +21,7 @@ export default interface IBookingService {
    * Returns the updated Booking object 
    * @param bookingId 
    */
-  approve(bookingId: number): Promise<Booking>;
+  approve(accountId: number, bookingId: number): Promise<Booking>;
 
   /**
    * given a bookingId, if it's in a INUSE, move the Booking to RETURNED state,
@@ -24,7 +29,7 @@ export default interface IBookingService {
    * Returns the updated Booking object 
    * @param bookingId 
    */
-  returnBike(bookingId: number): Promise<Booking>;
+  returnBike(accountId: number, bookingId: number): Promise<Booking>;
 
   /**
    * Given a bookingId, if it's in BOOKED state, move it to CANCELED state,
@@ -32,7 +37,7 @@ export default interface IBookingService {
    * returns the updated Booking object 
    * @param booking 
    */
-  cancel(bookingId: number): Promise<Booking>;
+  cancel(accountId: number, bookingId: number): Promise<Booking>;
 
   /**
    * List all bookings in BOOKED state
