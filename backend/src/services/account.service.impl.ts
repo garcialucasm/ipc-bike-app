@@ -104,6 +104,7 @@ export default class AccountService implements IAccountService {
         name: storedAccountName,
         email: storedEmail,
         token: asyncToken,
+        isActive: storedIsActive,
       };
     } else {
       logger.silly(accountMessages.PASSWORD_INCORRECT);
@@ -114,6 +115,13 @@ export default class AccountService implements IAccountService {
   async findByEmail(email: string): Promise<Account | null> {
     logger.debug("findByEmail");
     let result = this.accountRepository.findByEmail(email);
+    return result;
+  }
+
+  async toggleAccountActivation(email: string): Promise<Account> {
+    logger.debug("toggleAccountActivation");
+    let result = this.accountRepository.toggleIsActive(email);
+    
     return result;
   }
 }

@@ -11,7 +11,7 @@ interface Account {
     AccountName?: string,
     Email?: string,
     Hash?: string,
-    IsActive?: Boolean,
+    IsActive?: boolean,
     CreatedAt?: Date,
     UpdatedAt?: Date,
     DeletedAt?: Date,

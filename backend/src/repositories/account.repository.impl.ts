@@ -19,6 +19,11 @@ export default class AccountRepository implements IAccountRepository {
   loginStmt: string = `SELECT id, type, email, name, hash, is_active 
                        FROM "account" WHERE email=$1`;
 
+  toggleIsActiveStmt: string = `UPDATE "account"
+                       SET is_active = NOT is_active, updated_at = NOW()
+                       WHERE email = $1
+                       RETURNING *`;
+
   constructor(client: Client) {
     this.client = client;
   }
@@ -88,6 +93,32 @@ export default class AccountRepository implements IAccountRepository {
         Hash: account.hash,
         IsActive: account.is_active,
       };
+    } catch (error) {
+      logger.error(`${error}`);
+      throw error;
+    }
+  }
+
+  async toggleIsActive(email: string): Promise<Account> {
+    logger.silly("toggleIsActive");
+    try {
+      const findResult = await this.client.query(this.findByEmailStmt, [email]);
+      const account = findResult.rows[0];
+
+      if (!account) {
+        logger.silly(accountMessages.EMAIL_NOT_FOUND);
+        throw new Error(accountMessages.EMAIL_NOT_FOUND);
+      }
+
+      const result = await this.client.query(this.toggleIsActiveStmt, [email]);
+      const updatedAccount = result.rows[0];
+
+      if (!updatedAccount) {
+        logger.error("Couldn't toggle isActive status");
+        throw new Error("Couldn't toggle isActive status");
+      }
+
+      return accountFromRow(updatedAccount);
     } catch (error) {
       logger.error(`${error}`);
       throw error;

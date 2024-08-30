@@ -3,6 +3,7 @@ interface AccountDTO {
   name: string
   email: string
   token: string
+  isActive: boolean
 }
 
 export { AccountDTO }

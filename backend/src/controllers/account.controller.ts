@@ -15,6 +15,7 @@ function toAccountDTO(account: AccountDTO): AccountDTO {
     name: account.name ?? "",
     email: account.email ?? "",
     token: account.token ?? "",
+    isActive: account.isActive ?? undefined,
   };
 }
 
@@ -52,6 +53,25 @@ export default function accountController(
       logger.error(error);
       res.status(401).send({ error: error.message });
     }
+  });
+  /* -------------------------------------------------------------------------- */
+
+  /* ----------------------- Secure Account Activation ------------------------ */
+  router.post("/secure/account/activation", async (req, res) => {
+    logger.info("POST /secure/account/activation");
+    const email = req.body.email;
+
+    accountService
+      .toggleAccountActivation(email)
+      .then((email) => {
+        logger.debug(`toggleAccountActivation for account ${email}`);
+        res.status(200).send("Success");
+      })
+      .catch((error) => {
+        logger.error("toggleAccountActivation error");
+        logger.error(error);
+        res.status(401).send({ error: error.message });
+      });
   });
   /* -------------------------------------------------------------------------- */
 
