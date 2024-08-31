@@ -13,7 +13,7 @@ function populateBookingFromRows(rows: any[], offset: number): Booking {
     logger.silly("populateBookingFromRows")
     let booking: Booking = bookingFromRow(rows[offset])
 
-    booking.CreatedAt = rows[offset]['bk.created_at'] ? new Date(rows[offset]['bk.created_at']) : undefined
+    booking.CreatedAt = rows[offset]['bk.created_at'] ?? new Date(rows[offset]['bk.created_at'])
     booking.ConfirmedAt = rows[offset]['bk.confirmed_at'] ? new Date(rows[offset]['bk.confirmed_at']) : undefined
     booking.ReturnedAt = rows[offset]['bk.returned_at'] ? new Date(rows[offset]['bk.returned_at']) : undefined
     booking.CanceledAt = rows[offset]['bk.canceled_at'] ? new Date(rows[offset]['bk.canceled_at']) : undefined

@@ -16,6 +16,10 @@ export default class AccountRepository implements IAccountRepository {
   findByEmailStmt: string = `SELECT id, type, name, email, is_active, created_at, updated_at, deleted_at 
                              FROM "account" WHERE email=$1`;
 
+  findAllStmt: string = `SELECT id, type, name, email, is_active, created_at, updated_at, deleted_at 
+                             FROM "account"
+                             ORDER BY is_active DESC, created_at ASC`;
+
   loginStmt: string = `SELECT id, type, email, name, hash, is_active 
                        FROM "account" WHERE email=$1`;
 
@@ -31,12 +35,12 @@ export default class AccountRepository implements IAccountRepository {
   async save(account: Account): Promise<Account> {
     logger.silly("save");
     try {
-      const { Type, AccountName, Email, Hash, IsActive } = account;
+      const { Type, Name, Email, Hash, IsActive } = account;
       const createdAt = new Date();
 
       const result = await this.client.query(this.insertAccountStmt, [
         Type,
-        AccountName,
+        Name,
         Email,
         Hash,
         IsActive,
@@ -88,7 +92,7 @@ export default class AccountRepository implements IAccountRepository {
       return {
         ID: account.id,
         Type: account.type,
-        AccountName: account.name,
+        Name: account.name,
         Email: account.email,
         Hash: account.hash,
         IsActive: account.is_active,
@@ -97,6 +101,17 @@ export default class AccountRepository implements IAccountRepository {
       logger.error(`${error}`);
       throw error;
     }
+  }
+
+  async findAllAccounts(): Promise<Account[]> {
+    logger.silly("findAllAccounts");
+    let query = {
+      text: this.findAllStmt,
+    }
+
+    let result = await this.client.query(query)
+    
+    return result.rows.map(row => accountFromRow(row));
   }
 
   async toggleIsActive(email: string): Promise<Account> {
@@ -124,4 +139,5 @@ export default class AccountRepository implements IAccountRepository {
       throw error;
     }
   }
+
 }

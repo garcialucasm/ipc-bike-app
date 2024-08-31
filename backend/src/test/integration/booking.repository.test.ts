@@ -74,6 +74,7 @@ describe('IBookingRepository Integration Test', function () {
       Status: BookingStatus.BOOKED,
       Type: BookingType.SINGLE,
       ReturnedCondition: "",
+      CreatedAt: new Date(),
     }
 
     return bookingRepository.save(booking).then(singleBooking => {
@@ -94,6 +95,7 @@ describe('IBookingRepository Integration Test', function () {
       Status: BookingStatus.RETURNED,
       Type: BookingType.GROUP,
       ReturnedCondition: "good",
+      CreatedAt: new Date(),
     }
 
     return bookingRepository.save(groupBooking).then(groupBooking => {

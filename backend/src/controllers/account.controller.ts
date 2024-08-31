@@ -8,14 +8,19 @@ import {
 import { AccountDTO } from "../dto/account.dto";
 import { cleanUpSpaces } from "../utils/strings";
 import { getLogger } from "../logger";
+import { Account } from "../models/account.model";
 
-function toAccountDTO(account: AccountDTO): AccountDTO {
+function toAccountDTO(account: Account): AccountDTO {
   return {
-    id: account.id ?? 0,
-    name: account.name ?? "",
-    email: account.email ?? "",
-    token: account.token ?? "",
-    isActive: account.isActive ?? undefined,
+    id: account.ID ?? 0,
+    type: account.Type ?? "",
+    name: account.Name ?? "",
+    email: account.Email ?? "",
+    token: account.Token ?? "",
+    isActive: account.IsActive ?? undefined,
+    createdAt: account.CreatedAt ?? undefined,
+    updatedAt: account.UpdatedAt ?? undefined,
+    deletedAt: account.DeletedAt ?? undefined,
   };
 }
 
@@ -41,7 +46,7 @@ export default function accountController(
       accountService
         .registerAccount(accountName, email, password)
         .then((account) => {
-          logger.debug(`registerAccount for user ${account.AccountName}`);
+          logger.debug(`registerAccount for user ${account.Name}`);
           res.status(200).send("Successfully registered");
         })
         .catch((error) => {
@@ -75,6 +80,23 @@ export default function accountController(
   });
   /* -------------------------------------------------------------------------- */
 
+  /* ---------------------------- Find all accounts --------------------------- */
+  router.get("/secure/account/all", (req, res) => {
+    logger.info("GET /secure/account/all")
+
+    accountService.findAllAccounts()
+      .then(allAccounts => {
+        logger.debug(`findAll successfully`)
+        allAccounts.map(account => toAccountDTO(account))
+        res.status(200)
+          .send({ allAccounts: allAccounts })
+      }).catch(error => {
+        logger.error(error)
+        res.status(401)
+          .send({ error: error.message })
+      })
+  })
+
   /* ----------------------------- First Register ----------------------------- */
   router.post("/register", async (req, res) => {
     logger.info("POST /register");
@@ -90,7 +112,7 @@ export default function accountController(
       accountService
         .registerAccount(accountName, email, password)
         .then((account) => {
-          logger.debug(`firstRegisterAccount for user ${account.AccountName}`);
+          logger.debug(`firstRegisterAccount for user ${account.Name}`);
           res.status(200).send("Successfully registered");
         })
         .catch((error) => {
@@ -117,7 +139,7 @@ export default function accountController(
         .then((account) => {
           logger.debug(
             "Login successfully completed by the account",
-            account.id
+            account.ID
           );
           res.status(200).send({ account: toAccountDTO(account) });
         })

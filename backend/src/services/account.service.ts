@@ -1,5 +1,4 @@
 
-import { AccountDTO } from "../dto/account.dto";
 import { Account } from "../models/account.model";
 
 export default interface IAccountService {
@@ -10,6 +9,11 @@ export default interface IAccountService {
      * @param email 
      */
     findByEmail(email: string): Promise<Account | null>;
+
+    /**
+     * list all accounts 
+     */
+    findAllAccounts(): Promise<Account[]>;
 
     /**
      * if there's an user account with the same email in the database, gets the user account
@@ -27,7 +31,7 @@ export default interface IAccountService {
      * @param email 
      * @param password
      */
-    login(email: string, password: string): Promise<AccountDTO>;
+    login(email: string, password: string): Promise<Account>;
 
     /**
      * if there's an user with the same email in the database, gets the userEmail and the userPassword

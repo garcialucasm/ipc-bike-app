@@ -8,10 +8,10 @@ enum AccountType {
 interface Account {
     ID?: number,
     Type: AccountType,
-    AccountName?: string,
-    Email?: string,
+    IsActive: boolean,
+    Email: string,
+    Name?: string,
     Hash?: string,
-    IsActive?: boolean,
     CreatedAt?: Date,
     UpdatedAt?: Date,
     DeletedAt?: Date,

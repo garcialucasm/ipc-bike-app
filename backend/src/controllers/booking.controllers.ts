@@ -18,7 +18,7 @@ function toBookingDTO(booking: Booking): BookingDTO {
       booking.Bike[0].Size.toLowerCase() : booking.Bike.map(bike => bike.Size.toLowerCase()),
     bike: booking.Type == BookingType.SINGLE ?
       booking.Bike[0].Numbering.toString() : booking.Bike.map(bike => bike.Numbering.toString()),
-    createdAt: booking.CreatedAt ?? null,
+    createdAt: booking.CreatedAt,
     confirmedAt: booking.ConfirmedAt ?? null,
     returnedAt: booking.ReturnedAt ?? null,
     canceledAt: booking.CanceledAt ?? null,

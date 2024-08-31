@@ -29,7 +29,7 @@ function bookingFromRow(row: any): Booking {
     Status: bookingData['status'] ? BookingStatus[bookingData['status'] as keyof typeof BookingStatus] : BookingStatus.BOOKED,
     Notes: bookingData['notes'],
     ReturnedCondition: bookingData['returned_condition'],
-    CreatedAt: bookingData['created_at'] ? new Date(bookingData['created_at']) : undefined,
+    CreatedAt: bookingData['created_at'] ?? new Date(bookingData['created_at']),
     ConfirmedAt: bookingData['confirmed_at'] ? new Date(bookingData['confirmed_at']) : undefined,
     ReturnedAt: bookingData['returned_at'] ? new Date(bookingData['returned_at']) : undefined,
     CanceledAt: bookingData['canceled_at'] ? new Date(bookingData['canceled_at']) : undefined,
@@ -71,11 +71,12 @@ function userFromRow(row: any): User {
 function accountFromRow(row: any): Account {
   return {
     ID: Number.parseInt(row['id']),
-    Type: row['type'] ? AccountType[row['type'] as keyof typeof AccountType] : AccountType.STUDENT,
+    Type: row['type'] ?? AccountType[row['type'] as keyof typeof AccountType],
+    IsActive: row['is_active'] ?? new Boolean(row['is_active']).valueOf(),
     Email: row['email'],
+    Name: row['name'],
     Hash: row['password'],
-    IsActive: row['is_active'] ? new Boolean(row['is_active']).valueOf() : false,
-    CreatedAt: row['created_at'] ? new Date(row['created_at']) : undefined,
+    CreatedAt: row['created_at'] ?? new Date(row['created_at']),
     UpdatedAt: row['updated_at'] ? new Date(row['updated_at']) : undefined,
     DeletedAt: row['deleted_at'] ? new Date(row['deleted_at']) : undefined
   }

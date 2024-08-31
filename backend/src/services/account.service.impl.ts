@@ -3,7 +3,6 @@ import { Account, AccountType } from "../models/account.model";
 import IAccountRepository from "../repositories/account.repository";
 import IAccountService from "./account.service";
 import { generateAsyncToken } from "../utils/auth";
-import { AccountDTO } from "../dto/account.dto";
 import { getLogger } from "../logger";
 import { accountMessages } from "../utils/errorMessages";
 
@@ -36,8 +35,8 @@ export default class AccountService implements IAccountService {
     const hash = await bcrypt.hash(password, saltRounds);
 
     account = {
-      Type: AccountType.STUDENT,
-      AccountName: name,
+      Type: AccountType.KEYKEEPER,
+      Name: name,
       Email: email,
       Hash: hash,
       IsActive: false,
@@ -48,7 +47,7 @@ export default class AccountService implements IAccountService {
     return account;
   }
 
-  async login(loginEmail: string, loginPassword: string): Promise<AccountDTO> {
+  async login(loginEmail: string, loginPassword: string): Promise<Account> {
     logger.debug("login");
 
     if (!loginEmail) {
@@ -60,10 +59,11 @@ export default class AccountService implements IAccountService {
       loginEmail,
       loginPassword
     );
+    const storedType = foundAccount.Type;
     const storedEmail = foundAccount.Email;
     const storedPassword = foundAccount.Hash;
     const storedId = foundAccount.ID;
-    const storedAccountName = foundAccount.AccountName;
+    const storedAccountName = foundAccount.Name;
     const storedIsActive = foundAccount.IsActive;
 
     if (!storedEmail) {
@@ -100,11 +100,12 @@ export default class AccountService implements IAccountService {
       });
 
       return {
-        id: storedId,
-        name: storedAccountName,
-        email: storedEmail,
-        token: asyncToken,
-        isActive: storedIsActive,
+        ID: storedId,
+        Type: storedType,
+        IsActive: storedIsActive,
+        Email: storedEmail,
+        Name: storedAccountName,
+        Token: asyncToken,
       };
     } else {
       logger.silly(accountMessages.PASSWORD_INCORRECT);
@@ -115,6 +116,12 @@ export default class AccountService implements IAccountService {
   async findByEmail(email: string): Promise<Account | null> {
     logger.debug("findByEmail");
     let result = this.accountRepository.findByEmail(email);
+    return result;
+  }
+
+  async findAllAccounts(): Promise<Account[]> {
+    logger.debug("findAll");
+    let result = this.accountRepository.findAllAccounts();
     return result;
   }
 

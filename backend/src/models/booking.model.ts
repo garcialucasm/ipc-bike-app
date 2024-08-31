@@ -21,7 +21,7 @@ interface Booking {
   BikeCount: number;
   Status: BookingStatus;
   Type: BookingType;
-  CreatedAt?: Date;
+  CreatedAt: Date;
   ConfirmedAt?: Date;
   ReturnedAt?: Date;
   CanceledAt?: Date;
