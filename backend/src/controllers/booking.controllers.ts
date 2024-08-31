@@ -4,7 +4,8 @@ import { validateRoom, validateUserName, validateBikeNumbering } from '../models
 import { BookingDTO, BookingStatusDTO } from '../dto/booking.dto'
 import { Booking, BookingStatus, BookingType } from '../models/booking.model'
 import { getLogger } from '../logger'
-import { getDecodedToken } from '../utils/auth';
+import { getDecodedToken, validateAccountPermission } from '../utils/auth';
+import { AccountType } from '../models/account.model'
 
 
 function toBookingDTO(booking: Booking): BookingDTO {
@@ -89,9 +90,12 @@ export default function bookingController(bookingService: IBookingService, route
     logger.info("POST /approve/", req.params.id)
 
     try {
+      await validateAccountPermission(req, [
+        AccountType.KEYKEEPER,
+        AccountType.ADMIN,
+      ])
       const decodedToken = await getDecodedToken(req)
       const accountId: number = decodedToken && decodedToken.accountId
-
       bookingService
         .approve(accountId, parseInt(req.params.id))
         .then((booking) => {
@@ -112,6 +116,10 @@ export default function bookingController(bookingService: IBookingService, route
     logger.info("POST /return/", req.params.id)
 
     try {
+      await validateAccountPermission(req, [
+        AccountType.KEYKEEPER,
+        AccountType.ADMIN,
+      ])
       const decodedToken = await getDecodedToken(req)
       const accountId: number = decodedToken && decodedToken.accountId
 
@@ -135,6 +143,10 @@ export default function bookingController(bookingService: IBookingService, route
     logger.info("POST /cancel/", req.params.id)
 
     try {
+      await validateAccountPermission(req, [
+        AccountType.KEYKEEPER,
+        AccountType.ADMIN,
+      ])
       const decodedToken = await getDecodedToken(req)
       const accountId: number = decodedToken && decodedToken.accountId
 

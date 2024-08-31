@@ -91,12 +91,18 @@ export default class AccountService implements IAccountService {
       throw new Error(accountMessages.ACCOUNT_INACTIVE);
     }
 
+    if (!storedType) {
+      logger.error(accountMessages.ACCOUNT_TYPE_NOT_FOUND);
+      throw new Error(accountMessages.ACCOUNT_TYPE_NOT_FOUND);
+    }
+
     const isMatch = await bcrypt.compare(loginPassword, storedPassword);
 
     if (isMatch) {
       const asyncToken = await generateAsyncToken({
         accountId: storedId?.toString(),
         accountName: storedAccountName,
+        accountType: storedType,
       });
 
       return {

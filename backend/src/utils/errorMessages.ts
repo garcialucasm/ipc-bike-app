@@ -9,4 +9,5 @@ export enum accountMessages {
   NAME_NOT_REGISTRED = "Account name is not valid or does not exist",
   TRY_A_DIFFERENT_METHOD = "It looks like there is already an account associated with this email address. Please try to sign in using the method you originally used to create your account",
   ACCOUNT_INACTIVE = "Your account is currently inactive. Please contact support for assistance.",
+  ACCOUNT_TYPE_NOT_FOUND = "Account type not found",
 }
