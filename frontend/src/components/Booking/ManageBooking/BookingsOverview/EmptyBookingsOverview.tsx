@@ -32,7 +32,7 @@ export function EmptyBookingsOverview() {
             To create a new one, please go to the{" "}
             <Link
               className="font-medium text-blue-800"
-              href={NavigationPaths.singleBooking}
+              href={NavigationPaths.singleBookingSecure}
               prefetch={false}
             >
               Single Booking
@@ -40,7 +40,7 @@ export function EmptyBookingsOverview() {
             or{" "}
             <Link
               className="font-medium text-blue-800"
-              href={NavigationPaths.groupBooking}
+              href={NavigationPaths.groupBookingSecure}
             >
               Group Booking
             </Link>{" "}

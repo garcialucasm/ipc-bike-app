@@ -24,7 +24,7 @@ import {
 import ActionResult from "../ActionResult/ActionResult"
 import SecondaryButton from "../Buttons/SecondaryButton"
 import { ServerResult } from "@/types/ServerResult"
-import HalfPageLogo from "../Forms/modules/HalfPageLogo"
+import HalfPageLogo from "../Home/modules/HalfPageLogo"
 
 const initialAccountData: AccountDTO = {
   accountName: "",
@@ -247,7 +247,7 @@ function FirstRegister() {
               </>
             )}
             <div className="link-secondary w-full">
-              <Link href={NavigationPaths.homeApp}>
+              <Link href={NavigationPaths.homeAppSecure}>
                 <span className="block px-4 py-2 text-center">Main Page</span>
               </Link>
             </div>

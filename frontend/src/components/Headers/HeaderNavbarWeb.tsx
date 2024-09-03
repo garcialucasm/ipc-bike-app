@@ -9,7 +9,6 @@ import Button from "../Buttons/Button"
 import { useFramerMotion } from "@/context/framerMotion"
 
 export default function HeaderNavbarWeb() {
-  const { motion } = useFramerMotion()
   const pathname = usePathname()
   const [isMenuOpened, setIsMenuOpened] = useState(false)
   const [isScrolling, setIsScrolling] = useState(false)
@@ -94,7 +93,7 @@ export default function HeaderNavbarWeb() {
           </div>
           <div className="flex space-x-3 lg:order-2 lg:space-x-0 rtl:space-x-reverse">
             <Link
-              href={NavigationPaths.login}
+              href={NavigationPaths.home}
               className="btn-primary rounded-full text-sm"
             >
               <span className="px-1">
@@ -124,9 +123,22 @@ export default function HeaderNavbarWeb() {
                   Home
                 </Link>
               </li>
-              {/* <li>
+              <li>
                 <Link
-                  href={NavigationPaths.project}
+                  href={NavigationPaths.termsOfService}
+                  className={`block rounded px-3 py-2 hover:text-blue-300 lg:bg-transparent lg:p-0 ${
+                    pathname === NavigationPaths.privacyPolicy
+                      ? "text-blue-500"
+                      : "text-white"
+                  } ${!isMenuOpened && "hidden lg:block"}`}
+                  aria-current="page"
+                >
+                  Terms of Service
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href={NavigationPaths.privacyPolicy}
                   className={`block rounded px-3 py-2 hover:text-blue-300 lg:bg-transparent lg:p-0 ${
                     pathname === NavigationPaths.project
                       ? "text-blue-500"
@@ -134,20 +146,7 @@ export default function HeaderNavbarWeb() {
                   } ${!isMenuOpened && "hidden lg:block"}`}
                   aria-current="page"
                 >
-                  Project
-                </Link>
-              </li> */}
-              <li>
-                <Link
-                  href={NavigationPaths.termsOfService}
-                  className={`block rounded px-3 py-2 hover:text-blue-300 lg:bg-transparent lg:p-0 ${
-                    pathname === NavigationPaths.termsOfService
-                      ? "text-blue-500"
-                      : "text-white"
-                  } ${!isMenuOpened && "hidden lg:block"}`}
-                  aria-current="page"
-                >
-                  Terms of Service
+                  Privacy Policy
                 </Link>
               </li>
               <li>

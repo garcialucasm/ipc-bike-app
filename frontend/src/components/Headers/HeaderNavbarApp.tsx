@@ -35,6 +35,7 @@ export default function HeaderNavbarApp() {
   const router = useRouter()
   const accountName = accountData?.accountName
   const pathname = usePathname()
+  const isSecure = pathname.includes("/secure")
 
   function toggleAlertClosed() {
     setClosedAlert(true)
@@ -53,7 +54,9 @@ export default function HeaderNavbarApp() {
       case NavigationPaths.logout:
         await logout()
         window.location.replace(NavigationPaths.login)
-        return NavigationPaths.homeAppAdmin
+        return NavigationPaths.home
+      case NavigationPaths.home:
+        router.push(NavigationPaths.home)
       default:
         console.error(`Unknown section: ${buttonClicked}`)
         return NavigationPaths.homeWeb
@@ -224,29 +227,33 @@ export default function HeaderNavbarApp() {
                             </div>
                           </div>
                         </Link> */}
-                        <Link
-                          href={NavigationPaths.register}
-                          className="text-slate-700"
-                          onClick={() => setIsOpenedAccountMenu(false)}
-                        >
-                          <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
-                            <div className="flex w-fit items-center">
-                              <UserCirclePlus size={20} />
-                              <div className="px-2">Register</div>
+                        {isSecure && (
+                          <Link
+                            href={NavigationPaths.register}
+                            className="text-slate-700"
+                            onClick={() => setIsOpenedAccountMenu(false)}
+                          >
+                            <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
+                              <div className="flex w-fit items-center">
+                                <UserCirclePlus size={20} />
+                                <div className="px-2">Register</div>
+                              </div>
                             </div>
-                          </div>
-                        </Link>
-                        <Link
-                          href={NavigationPaths.inventory}
-                          onClick={() => setIsOpenedAccountMenu(false)}
-                        >
-                          <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
-                            <div className="flex w-fit items-center">
-                              <Bicycle size={20} />
-                              <div className="px-2">Inventory</div>
+                          </Link>
+                        )}
+                        {isSecure && (
+                          <Link
+                            href={NavigationPaths.inventory}
+                            onClick={() => setIsOpenedAccountMenu(false)}
+                          >
+                            <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
+                              <div className="flex w-fit items-center">
+                                <Bicycle size={20} />
+                                <div className="px-2">Inventory</div>
+                              </div>
                             </div>
-                          </div>
-                        </Link>
+                          </Link>
+                        )}
                         {/* <Link
                           href={NavigationPaths.statistics}
                           className="text-slate-400"
@@ -283,18 +290,33 @@ export default function HeaderNavbarApp() {
                             </div>
                           </div>
                         </a>
-                        <Button
-                          onClick={() => handleClick(NavigationPaths.logout)}
-                          name={NavigationPaths.logout}
-                          className="w-full text-left text-rose-600"
-                        >
-                          <div className="block rounded-b-2xl bg-rose-50 px-10 py-2 hover:rounded-b-2xl hover:bg-slate-200 hover:text-blue-700">
-                            <div className="flex w-fit items-center">
-                              <SignOut size={20} weight="fill" />
-                              <div className="px-2">Log out</div>
+                        {isSecure ? (
+                          <Button
+                            onClick={() => handleClick(NavigationPaths.logout)}
+                            name={NavigationPaths.logout}
+                            className="w-full text-left text-rose-600"
+                          >
+                            <div className="block rounded-b-2xl bg-rose-50 px-10 py-2 hover:rounded-b-2xl hover:bg-slate-200 hover:text-blue-700">
+                              <div className="flex w-fit items-center">
+                                <SignOut size={20} weight="fill" />
+                                <div className="px-2">Log out</div>
+                              </div>
                             </div>
-                          </div>
-                        </Button>
+                          </Button>
+                        ) : (
+                          <Button
+                            onClick={() => handleClick(NavigationPaths.home)}
+                            name={NavigationPaths.home}
+                            className="w-full text-left text-rose-600"
+                          >
+                            <div className="block rounded-b-2xl bg-rose-50 px-10 py-2 hover:rounded-b-2xl hover:bg-slate-200 hover:text-blue-700">
+                              <div className="flex w-fit items-center">
+                                <SignOut size={20} weight="fill" />
+                                <div className="px-2">Home Page</div>
+                              </div>
+                            </div>
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -314,7 +336,11 @@ export default function HeaderNavbarApp() {
           <ul className="space-y-2 font-medium">
             <li>
               <Link
-                href={NavigationPaths.homeAppAdmin}
+                href={
+                  isSecure
+                    ? NavigationPaths.homeAppAdmin
+                    : NavigationPaths.homeAppPublic
+                }
                 className={`group flex items-center rounded-2xl p-2 ${
                   pathname.includes("/home")
                     ? "header-menu-item-current-page"
@@ -328,9 +354,13 @@ export default function HeaderNavbarApp() {
             </li>
             <li>
               <Link
-                href={NavigationPaths.singleBooking}
+                href={
+                  isSecure
+                    ? NavigationPaths.singleBookingSecure
+                    : NavigationPaths.singleBookingPublic
+                }
                 className={`group flex items-center rounded-2xl p-2 ${
-                  pathname === NavigationPaths.singleBooking
+                  pathname === NavigationPaths.singleBookingSecure
                     ? "header-menu-item-current-page"
                     : "hover:bg-slate-200 hover:text-blue-700"
                 }`}
@@ -343,22 +373,41 @@ export default function HeaderNavbarApp() {
                 </span>
               </Link>
             </li>
-            <li className="text-slate-400">
-              <Link
-                href={NavigationPaths.groupBooking}
-                className={`group flex items-center rounded-2xl p-2 ${
-                  pathname === NavigationPaths.groupBooking
-                    ? "header-menu-item-current-page"
-                    : "hover:bg-slate-200 hover:text-blue-700"
-                }`}
-                onClick={toggleSideBarOpened}
-              >
-                <Users size={28} weight="fill" />
-                <span className="ms-3 flex-1 whitespace-nowrap">
-                  Group Booking
-                </span>
-              </Link>
-            </li>
+            {isSecure ? (
+              <li className="text-slate-400">
+                <Link
+                  href={NavigationPaths.groupBookingSecure}
+                  className={`group flex items-center rounded-2xl p-2 ${
+                    pathname === NavigationPaths.groupBookingSecure
+                      ? "header-menu-item-current-page"
+                      : "hover:bg-slate-200 hover:text-blue-700"
+                  }`}
+                  onClick={toggleSideBarOpened}
+                >
+                  <Users size={28} weight="fill" />
+                  <span className="ms-3 flex-1 whitespace-nowrap">
+                    Group Booking
+                  </span>
+                </Link>
+              </li>
+            ) : (
+              <li className="text-slate-400">
+                <Link
+                  href={NavigationPaths.termsOfService}
+                  className={`group flex items-center rounded-2xl p-2 ${
+                    pathname === NavigationPaths.termsOfService
+                      ? "header-menu-item-current-page"
+                      : "hover:bg-slate-200 hover:text-blue-700"
+                  }`}
+                  onClick={toggleSideBarOpened}
+                >
+                  <Info size={28} weight="fill" />
+                  <span className="ms-3 flex-1 whitespace-nowrap">
+                    Rules & Terms
+                  </span>
+                </Link>
+              </li>
+            )}
             <li className="text-slate-400">
               <Link
                 href={NavigationPaths.becomeMember}

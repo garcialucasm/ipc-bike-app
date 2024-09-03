@@ -17,7 +17,7 @@ import InputText from "./Inputs/InputText"
 import { IconSvgEmail, IconSvgLoader } from "../Others/IconsSvg"
 import { checkAuth } from "@/app/auth/authUtils"
 import { useFramerMotion } from "@/context/framerMotion"
-import HalfPageLogo from "./modules/HalfPageLogo"
+import HalfPageLogo from "../Home/modules/HalfPageLogo"
 
 const ERROR_MESSAGE_LOGIN =
   "Sign in failed. Check the details you provided are correct."
@@ -44,7 +44,7 @@ const Login = () => {
       redirect: false,
     })
     if (res?.status == 200) {
-      window.location.replace(NavigationPaths.homeApp)
+      window.location.replace(NavigationPaths.homeAppSecure)
     } else if (res?.status == 401) {
       setErrorLogin(ERROR_MESSAGE_LOGIN)
     } else setErrorLogin(ERROR_UNEXPECTED)
@@ -53,7 +53,7 @@ const Login = () => {
   const singInGoogle = async () => {
     await signIn("google", {
       redirect: false,
-      callbackUrl: NavigationPaths.homeApp, // Optional: Redirect URL after successful sign-in
+      callbackUrl: NavigationPaths.homeAppSecure, // Optional: Redirect URL after successful sign-in
     })
   }
 
@@ -65,6 +65,10 @@ const Login = () => {
   // }
 
   function handleReturnButton() {
+    router.push(NavigationPaths.home)
+  }
+
+  function handleWebpageButton() {
     router.push(NavigationPaths.homeWeb)
   }
 
@@ -79,7 +83,7 @@ const Login = () => {
   async function isAuthRedirection() {
     const isAuth = await checkAuth()
     if (isAuth && session) {
-      window.location.replace(NavigationPaths.homeApp)
+      window.location.replace(NavigationPaths.homeAppSecure)
     }
   }
 
@@ -89,7 +93,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="h-screen md:flex">
+      <div className="h-screen text-sm md:flex">
         <HalfPageLogo />
         <div className="mt-[72px] flex h-full flex-col items-center bg-white py-10 md:mt-0 md:w-1/2 md:justify-center md:py-0">
           <motion.div
@@ -104,9 +108,7 @@ const Login = () => {
             className="flex w-2/3 flex-col gap-y-2 md:w-2/3 lg:w-1/2 2xl:w-1/3"
           >
             <h1 className="mb-1 text-2xl font-bold text-gray-800">Hello! 👋</h1>
-            <p className="mb-6 text-sm font-normal text-gray-600">
-              Welcome Back
-            </p>
+            <p className="mb-6 font-normal text-gray-600">Welcome Back</p>
             {status === "loading" ? (
               <div className="flex w-full justify-center py-16">
                 <IconSvgLoader height={"48"} fillColor="text-blue-800" />
@@ -115,7 +117,7 @@ const Login = () => {
               <>
                 {!isEmailOpen && (
                   <>
-                    <div className="relative py-1 text-sm">
+                    <div className="relative py-1">
                       New here?{" "}
                       <span
                         className="cursor-help underline"
@@ -132,8 +134,15 @@ const Login = () => {
                           If you don't have an account yet, we'll create one for
                           you when you sign in with{" "}
                           <span className="underline">Google.</span>
-                          {/* or{" "} */}
-                          {/* <span className="underline">Facebook</span>. */}
+                          <div className="mt-4 flex flex-row rounded-xl border-2 border-yellow-400 p-2">
+                            <span className="pr-2 text-xl font-bold">⚠️</span>
+                            <span className="text-xs">
+                              Your account will only be activated{" "}
+                              <span className="underline decoration-yellow-400 decoration-1">
+                                after administrator approval
+                              </span>
+                            </span>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -147,7 +156,7 @@ const Login = () => {
                       className="flex flex-col gap-y-2"
                     >
                       <PrimaryButton onClick={singInGoogle}>
-                        <div className="flex items-center gap-x-2 text-sm">
+                        <div className="flex items-center gap-x-2">
                           <Image
                             src="/google-logo.png"
                             className="h-9 w-auto rounded-full bg-white p-1"
@@ -156,11 +165,13 @@ const Login = () => {
                             alt=""
                             priority
                           />
-                          Sign in with Google
+                          <div className="flex w-full justify-center pr-9">
+                            Sign in with Google
+                          </div>
                         </div>
                       </PrimaryButton>
                       {/* <PrimaryButton onClick={singInFacebook}>
-                        <div className="flex items-center gap-x-2 text-sm">
+                        <div className="flex items-center gap-x-2">
                           <Image
                             src="/facebook-logo.png"
                             className="h-9 w-auto rounded-full"
@@ -197,9 +208,11 @@ const Login = () => {
                           setErrorLogin("")
                         }}
                       >
-                        <div className="flex items-center gap-x-2 text-sm">
+                        <div className="flex items-center gap-x-2">
                           <ArrowLeft size={24} className="h-9 w-auto py-1.5" />
-                          Sign in with E-mail
+                          <div className="flex w-full justify-center pr-9">
+                            Sign in with E-mail
+                          </div>
                         </div>
                       </SecondaryButton>{" "}
                       <form
@@ -266,7 +279,7 @@ const Login = () => {
                         setErrorLogin("")
                       }}
                     >
-                      <div className="flex items-center gap-x-2 text-sm">
+                      <div className="flex items-center gap-x-2">
                         <span className="h-9 w-auto rounded-full bg-white p-1.5">
                           <IconSvgEmail
                             fillColor="text-gray-700"
@@ -274,13 +287,15 @@ const Login = () => {
                             height="24"
                           />
                         </span>
-                        Sign in with E-mail
+                        <div className="flex w-full justify-center pr-9">
+                          Sign in with E-mail
+                        </div>
                       </div>
                     </PrimaryButton>
                   </motion.div>
                 )}
                 {errorLogin && (
-                  <div className="flex items-start justify-start text-sm text-rose-500">
+                  <div className="flex items-start justify-start text-rose-500">
                     <span className="px-2">
                       <WarningCircle size={20} />
                     </span>
@@ -290,6 +305,14 @@ const Login = () => {
                 <div className="mt-2">
                   <SecondaryButton
                     onClick={handleReturnButton}
+                    name={NavigationPaths.home}
+                  >
+                    <span>Return</span>
+                  </SecondaryButton>
+                </div>
+                <div className="mt-2">
+                  <SecondaryButton
+                    onClick={handleWebpageButton}
                     name={NavigationPaths.homeWeb}
                   >
                     <span>Go to Webpage</span>
@@ -297,7 +320,7 @@ const Login = () => {
                 </div>
               </>
             )}
-            <p className="mt-2 text-sm">
+            <p className="mt-2">
               Learn about our{" "}
               <Link
                 href={NavigationPaths.privacyPolicy}

@@ -1,15 +1,19 @@
 export enum NavigationPaths {
+  /* ------------------------------ Public pages ------------------------------ */
+  home = "/",
+  homeAppPublic = "/public/home",
+  firstRegister = "/auth/register",
+  singleBookingPublic = "/public/booking/single-booking",
   login = "/auth/login",
   logout = "/auth/logout",
-  firstRegister = "/auth/register",
 
   /* ------------------------------ Secure pages ------------------------------ */
   register = "/secure/register",
   homeAppAdmin = "/secure/home/admin",
   homeAppStudent = "/secure/home/student",
-  homeApp = "/secure/home",
-  singleBooking = "/secure/booking/single-booking",
-  groupBooking = "/secure/booking/group-booking",
+  homeAppSecure = "/secure/home",
+  singleBookingSecure = "/secure/booking/single-booking",
+  groupBookingSecure = "/secure/booking/group-booking",
   previousBookings = "/secure/booking/previous",
   profile = "/secure/profile",
   inventory = "/secure/inventory",

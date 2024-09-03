@@ -309,7 +309,7 @@ function InputSingleBike() {
         </>
       </div>
       <div className="link-secondary w-full">
-        <Link href={NavigationPaths.homeApp}>
+        <Link href={NavigationPaths.homeAppSecure}>
           <span className="block px-4 py-2">Return</span>
         </Link>
       </div>
