@@ -7,7 +7,7 @@ import Link from "next/link"
 import { NavigationPaths } from "@/types/NavigationPaths"
 import PrimaryButton from "@/components/Buttons/PrimaryButton"
 import { registerFirstAccountFetchApi } from "@/services/accountApi"
-import { AccountDTO } from "@/types/AccountType"
+import { AccountRegisterType } from "@/types/AccountType"
 import {
   errorMessagePasswordInvalid,
   formValidationRegister,
@@ -26,7 +26,7 @@ import SecondaryButton from "../Buttons/SecondaryButton"
 import { ServerResult } from "@/types/ServerResult"
 import HalfPageLogo from "../Forms/modules/HalfPageLogo"
 
-const initialAccountData: AccountDTO = {
+const initialAccountData: AccountRegisterType = {
   accountName: "",
   email: "",
   password: "",
@@ -48,7 +48,7 @@ function FirstRegister() {
   const [serverResult, setServerResult] =
     useState<ServerResult>(initialServerResult)
   const [formRegisterAccount, setFormRegisterAccount] =
-    useState<AccountDTO>(initialAccountData)
+    useState<AccountRegisterType>(initialAccountData)
   const [errorMessages, setErrorMessages] = useState(initialErrorMessages)
 
   async function handleSubmitForm(event: React.FormEvent<HTMLFormElement>) {

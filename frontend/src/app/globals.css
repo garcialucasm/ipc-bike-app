@@ -4,7 +4,7 @@
 
 @layer components {
   .main-app-size {
-    @apply max-w-xl;
+    @apply max-w-[46rem];
   }
   .bg-component-color {
     @apply bg-slate-100;

@@ -12,6 +12,7 @@ export enum NavigationPaths {
   groupBooking = "/secure/booking/group-booking",
   previousBookings = "/secure/booking/previous",
   profile = "/secure/profile",
+  accountManager = "/secure/accounts",
   inventory = "/secure/inventory",
   statistics = "/secure/statistics",
   settings = "/secure/settings",
