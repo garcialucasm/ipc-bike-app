@@ -4,7 +4,6 @@ import IBookingRepository from "./booking.repository"
 import { bikeFromRow, bookingFromRow, filterPropertiesWithPrefix } from "./mappings"
 import { getLogger } from "../logger"
 
-
 function toObj(properties: string[], values: any[]) {
     let zipped = properties.map((property, i) => [property, values[i]])
     return Object.fromEntries(zipped)
@@ -14,9 +13,13 @@ function populateBookingFromRows(rows: any[], offset: number): Booking {
     logger.silly("populateBookingFromRows")
     let booking: Booking = bookingFromRow(rows[offset])
 
-    booking.CreatedAt = rows[offset]['bk.created_at'] ? new Date(rows[offset]['bk.created_at']) : undefined
+    booking.CreatedAt = rows[offset]['bk.created_at'] ?? new Date(rows[offset]['bk.created_at'])
     booking.ConfirmedAt = rows[offset]['bk.confirmed_at'] ? new Date(rows[offset]['bk.confirmed_at']) : undefined
     booking.ReturnedAt = rows[offset]['bk.returned_at'] ? new Date(rows[offset]['bk.returned_at']) : undefined
+    booking.CanceledAt = rows[offset]['bk.canceled_at'] ? new Date(rows[offset]['bk.canceled_at']) : undefined
+    booking.ConfirmedByAccount = rows[offset]['bk.confirmed_by_account_id'] ?? booking.ConfirmedByAccount;
+    booking.ReturnedByAccount = rows[offset]['bk.returned_by_account_id'] ?? booking.ReturnedByAccount;
+    booking.CanceledByAccount = rows[offset]['bk.canceled_by_account_id'] ?? booking.CanceledByAccount;
 
     switch (booking.Type) {
         case BookingType.SINGLE:
@@ -51,18 +54,27 @@ export default class BookingRepository implements IBookingRepository {
 
     client: Client
 
-    insertStmt: string = 'INSERT INTO "booking" ("user_id", "status", "type", "bike_count", "created_at")' +
-        ' VALUES ($1, $2, $3, $4, $5) RETURNING id'
+    insertStmt: string = `
+        INSERT INTO "booking" ("user_id", "status", "type", "bike_count", "created_at", "created_by_account_id") 
+        VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+    `
 
-    insertBookingBikesStmt: string = `insert into booking_bike(booking_id, bike_id)
-            values ($1, $2)`
+    insertBookingBikesStmt: string = `
+        INSERT INTO booking_bike(booking_id, bike_id) 
+        VALUES ($1, $2)
+    `
 
-    updateStmt: string = `update booking set status=$1, returned_condition=$2, 
-            notes=$3, confirmed_at=$4, returned_at=$5 where id=$6 returning *`
+    updateStmt: string = `
+        UPDATE booking 
+        SET status=$1, returned_condition=$2, notes=$3, confirmed_at=$4, returned_at=$5, canceled_at=$6, 
+            confirmed_by_account_id=$7, returned_by_account_id=$8, canceled_by_account_id=$9 
+        WHERE id=$10 RETURNING *
+    `
 
     findSelectFields: string[] = [
         'bk.id', 'bk.status', 'bk.bike_count', 'bk.type', 'bk.returned_condition',
         'bk.notes', 'bk.created_at', 'bk.confirmed_at', 'bk.returned_at',
+        'bk.created_by_account_id', 'bk.confirmed_by_account_id', 'bk.returned_by_account_id', 'bk.canceled_by_account_id',
         'u.id', 'u.name', 'u.type', 'u.room', 'u.term', 'u.status',
         'u.is_active', 'u.created_at', 'u.updated_at', 'u.deleted_at',
         'b.id', 'b.numbering', 'b.size', 'b.current_status', 'b.is_active',
@@ -120,7 +132,7 @@ export default class BookingRepository implements IBookingRepository {
         }
 
         let result = await this.client.query(this.insertStmt,
-            [booking.User.ID, booking.Status, booking.Type, booking.BikeCount, booking.CreatedAt])
+            [booking.User.ID, booking.Status, booking.Type, booking.BikeCount, booking.CreatedAt, booking.CreatedByAccount])
 
         if (!result.rowCount) {
             logger.error("Couldn't save booking")
@@ -146,12 +158,18 @@ export default class BookingRepository implements IBookingRepository {
 
         let query = {
             text: this.updateStmt,
-            values: [booking.Status,
-            booking.ReturnedCondition,
-            booking.Notes,
-            booking.ConfirmedAt,
-            booking.ReturnedAt,
-            booking.ID],
+            values: [
+                booking.Status,
+                booking.ReturnedCondition,
+                booking.Notes,
+                booking.ConfirmedAt,
+                booking.ReturnedAt,
+                booking.CanceledAt,
+                booking.ConfirmedByAccount,
+                booking.ReturnedByAccount,
+                booking.CanceledByAccount,
+                booking.ID
+            ],
         }
 
         let result = await this.client.query(query)

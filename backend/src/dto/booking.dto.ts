@@ -15,9 +15,14 @@ interface BookingDTO {
   term: string
   bikeType: string | string[]
   bike: string | string[]
-  createdAt: Date | null
+  createdAt: Date
   confirmedAt: Date | null
   returnedAt: Date | null
+  canceledAt: Date | null
+  createdByAccount: number | null
+  confirmedByAccount: number | null
+  returnedByAccount: number | null
+  canceledByAccount: number | null
   returnedCondition: string
   notes: string
 }

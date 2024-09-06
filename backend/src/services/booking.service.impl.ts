@@ -42,11 +42,10 @@ export default class BookingService implements IBookingService {
   }
 
 
-  async createSingleBooking(userName: string, room: string, bikeNumbering: number): Promise<Booking> {
+  async createSingleBooking(accountId: number | null, userName: string, room: string, bikeNumbering: number): Promise<Booking> {
 
     logger.debug("createSingleBooking")
     let availableBikes = await this.bikeService.findAll(undefined, bikeNumbering, BikeStatus.FREE)
-
 
     /* --------- Check if the user is already in the process of booking --------- */
     if (usersInBookingProcess.includes(userName)) {
@@ -77,6 +76,7 @@ export default class BookingService implements IBookingService {
         User: user,
         Status: BookingStatus.BOOKED,
         CreatedAt: new Date(),
+        CreatedByAccount: accountId,
         ReturnedCondition: "",
         BikeCount: 1,
         Type: BookingType.SINGLE
@@ -85,14 +85,6 @@ export default class BookingService implements IBookingService {
       booking = await this.bookingRepository.save(booking)
       this.bikeService.changeStatus(bike, BikeStatus.BOOKED)
       this.userService.changeStatus(user, UserStatus.BOOKED)
-
-      /* -------------------------------------------------------------------------- */
-      /* ----------- Skip to confirm booking status during initial tests ---------- */
-      /* -------------------------------------------------------------------------- */
-      if (booking.ID) {
-        await this.approve(booking.ID);
-      }
-      /* -------------------------------------------------------------------------- */
 
       return booking
     } catch (error) {
@@ -153,11 +145,12 @@ export default class BookingService implements IBookingService {
     }
   }
 
-  async approve(bookingId: number): Promise<Booking> {
+  async approve(accountId: number, bookingId: number): Promise<Booking> {
     logger.debug("approve")
 
     let booking: Booking = await this.bookingRepository.findById(bookingId)
     booking.ConfirmedAt = new Date()
+    booking.ConfirmedByAccount = accountId
     booking.User = await this.userService.changeStatus(booking.User, UserStatus.INUSE)
     booking.Bike[0] = await this.bikeService.changeStatus(booking.Bike[0], BikeStatus.INUSE)
     let updatedBooking = await this.changeStatus(booking, BookingStatus.DELIVERED)
@@ -165,21 +158,22 @@ export default class BookingService implements IBookingService {
     return updatedBooking
   }
 
-  async returnBike(bookingId: number): Promise<Booking> {
+  async returnBike(accountId: number, bookingId: number): Promise<Booking> {
     logger.debug("returnBike")
 
     let booking: Booking = await this.bookingRepository.findById(bookingId)
     booking.ReturnedAt = new Date()
+    booking.ReturnedByAccount = accountId
     booking.User = await this.userService.changeStatus(booking.User, UserStatus.FREE)
     booking.Bike[0] = await this.bikeService.changeStatus(booking.Bike[0], BikeStatus.FREE)
     let updatedBooking = await this.changeStatus(booking, BookingStatus.RETURNED)
-
+    
     return updatedBooking
   }
-
+  
   async changeStatus(booking: Booking, status: BookingStatus): Promise<Booking> {
     logger.debug("changeStatus")
-
+    
     const transitions = this.bookingStatusTransitions.get(booking.Status)
     if (transitions?.includes(status)) {
       booking.Status = status;
@@ -188,12 +182,14 @@ export default class BookingService implements IBookingService {
       throw new Error(`Unable to change booking status ${booking.Status} to ${status}`)
     }
   }
-
-  async cancel(bookingId: number): Promise<Booking> {
+  
+  async cancel(accountId: number, bookingId: number): Promise<Booking> {
     logger.debug("cancel")
-
+    
     let booking: Booking = await this.bookingRepository.findById(bookingId)
     booking.Status = BookingStatus.CANCELED
+    booking.CanceledAt = new Date()
+    booking.CanceledByAccount = accountId
     booking.User = await this.userService.changeStatus(booking.User, UserStatus.FREE)
     booking.Bike[0] = await this.bikeService.changeStatus(booking.Bike[0], BikeStatus.FREE)
     let updatedBooking = await this.bookingRepository.update(booking)

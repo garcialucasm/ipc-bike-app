@@ -1,9 +1,8 @@
 import bcrypt from "bcrypt";
-import { Account } from "../models/account.model";
+import { Account, AccountType } from "../models/account.model";
 import IAccountRepository from "../repositories/account.repository";
 import IAccountService from "./account.service";
 import { generateAsyncToken } from "../utils/auth";
-import { AccountDTO } from "../dto/account.dto";
 import { getLogger } from "../logger";
 import { accountMessages } from "../utils/errorMessages";
 
@@ -36,10 +35,11 @@ export default class AccountService implements IAccountService {
     const hash = await bcrypt.hash(password, saltRounds);
 
     account = {
-      AccountName: name,
+      Type: AccountType.KEYKEEPER,
+      Name: name,
       Email: email,
       Hash: hash,
-      IsActive: true,
+      IsActive: false,
     } as Account;
 
     account = await this.accountRepository.save(account);
@@ -47,7 +47,7 @@ export default class AccountService implements IAccountService {
     return account;
   }
 
-  async login(loginEmail: string, loginPassword: string): Promise<AccountDTO> {
+  async login(loginEmail: string, loginPassword: string): Promise<Account> {
     logger.debug("login");
 
     if (!loginEmail) {
@@ -59,10 +59,12 @@ export default class AccountService implements IAccountService {
       loginEmail,
       loginPassword
     );
+    const storedType = foundAccount.Type;
     const storedEmail = foundAccount.Email;
     const storedPassword = foundAccount.Hash;
     const storedId = foundAccount.ID;
-    const storedAccountName = foundAccount.AccountName;
+    const storedAccountName = foundAccount.Name;
+    const storedIsActive = foundAccount.IsActive;
 
     if (!storedEmail) {
       logger.silly(accountMessages.EMAIL_NOT_REGISTRED);
@@ -84,19 +86,32 @@ export default class AccountService implements IAccountService {
       throw new Error(accountMessages.NAME_NOT_REGISTRED);
     }
 
+    if (!storedIsActive) {
+      logger.error(accountMessages.ACCOUNT_INACTIVE);
+      throw new Error(accountMessages.ACCOUNT_INACTIVE);
+    }
+
+    if (!storedType) {
+      logger.error(accountMessages.ACCOUNT_TYPE_NOT_FOUND);
+      throw new Error(accountMessages.ACCOUNT_TYPE_NOT_FOUND);
+    }
+
     const isMatch = await bcrypt.compare(loginPassword, storedPassword);
 
     if (isMatch) {
       const asyncToken = await generateAsyncToken({
-        id: storedId?.toString(),
+        accountId: storedId?.toString(),
         accountName: storedAccountName,
+        accountType: storedType,
       });
 
       return {
-        id: storedId,
-        name: storedAccountName,
-        email: storedEmail,
-        token: asyncToken,
+        ID: storedId,
+        Type: storedType,
+        IsActive: storedIsActive,
+        Email: storedEmail,
+        Name: storedAccountName,
+        Token: asyncToken,
       };
     } else {
       logger.silly(accountMessages.PASSWORD_INCORRECT);
@@ -107,6 +122,19 @@ export default class AccountService implements IAccountService {
   async findByEmail(email: string): Promise<Account | null> {
     logger.debug("findByEmail");
     let result = this.accountRepository.findByEmail(email);
+    return result;
+  }
+
+  async findAllAccounts(): Promise<Account[]> {
+    logger.debug("findAll");
+    let result = this.accountRepository.findAllAccounts();
+    return result;
+  }
+
+  async toggleAccountActivation(email: string): Promise<Account> {
+    logger.debug("toggleAccountActivation");
+    let result = this.accountRepository.toggleIsActive(email);
+    
     return result;
   }
 }

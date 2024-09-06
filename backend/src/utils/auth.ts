@@ -2,6 +2,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import * as fs from 'fs';
 import { getLogger } from '../logger';
+import { AccountType } from '../models/account.model';
 
 const logger = getLogger('auth')
 
@@ -58,7 +59,26 @@ export const checkAuth = async (req: Request, res: Response, next: NextFunction)
   }
 };
 
-export function generateAsyncToken(payload: { id: string, accountName: string }): Promise<string> {
+export const getDecodedToken = async (req: Request): Promise<JwtPayload | null> => {
+  logger.debug("getDecodedToken")
+
+  try {
+    const token = req.header("Authorization")?.replace("Bearer ", "")
+
+    if (token) {
+      const decoded = jwt.verify(token, publicJwtKey) as JwtPayload
+      logger.debug("token decoded sucessfully")
+      
+      return decoded
+    }
+    logger.debug("No token found")
+  } catch (err) {
+    logger.debug("decoded error", err)
+  }
+  return null
+}
+
+export function generateAsyncToken(payload: { accountId: string, accountName: string, accountType:string }): Promise<string> {
   logger.debug("generateAsyncToken")
   return new Promise((resolve, reject) => {
 
@@ -80,3 +100,19 @@ export function generateAsyncToken(payload: { id: string, accountName: string })
     });
   });
 }
+
+export async function validateAccountPermission(req: Request, expectedAccountTypes: AccountType[]): Promise<boolean> {
+  logger.debug("validateAccountPermission")
+  
+  const decodedToken = await getDecodedToken(req)
+  const currentAccountType = decodedToken ? decodedToken.accountType : null
+  const hasPermission = expectedAccountTypes.includes(currentAccountType)
+  
+  if (hasPermission) {
+    logger.debug("validateAccountPermission ~ hasPermission")
+    return hasPermission
+  } else {
+    logger.debug("validateAccountPermission ~ Account permission denied")
+    throw new Error("Account permission denied")
+  }
+};

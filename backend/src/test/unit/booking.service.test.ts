@@ -21,6 +21,7 @@ let bikeChooser: IBikeChooser
 let userService: IUserService
 let bookingService: IBookingService
 
+const accountId = 1
 const userName = 'TesterDaSilva'
 const bikeNumbering = 1
 const room = 'A101'
@@ -43,7 +44,7 @@ describe('For a valid user', () => {
   })
 
   it('should create a student booking', async () => {
-    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeNumbering)
+    let singleBooking: Booking = await bookingService.createSingleBooking(accountId, userName, room, bikeNumbering)
 
     assert.strictEqual(singleBooking.User.Name, userName)
     assert.strictEqual(singleBooking.Status, BookingStatus.BOOKED)
@@ -52,7 +53,7 @@ describe('For a valid user', () => {
   })
 
   it('should approve a booking', async () => {
-    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeNumbering)
+    let singleBooking: Booking = await bookingService.createSingleBooking(accountId, userName, room, bikeNumbering)
 
     assert.strictEqual(singleBooking.ID, 1)
     assert.strictEqual(singleBooking.Status, BookingStatus.BOOKED)
@@ -62,12 +63,12 @@ describe('For a valid user', () => {
   })
 
   it('should not approve a booking that has already been approved', async () => {
-    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeNumbering)
-    await bookingService.approve(1)
+    let singleBooking: Booking = await bookingService.createSingleBooking(accountId, userName, room, bikeNumbering)
+    await bookingService.approve(accountId, 1)
 
     try {
       assert.doesNotThrow(async () => {
-        await bookingService.approve(1);
+        await bookingService.approve(accountId, 1);
       }, Error);
     } catch (error) {
       assert.ok(error)
@@ -80,13 +81,13 @@ describe('For a valid user', () => {
 
 
   it('should not approve a booking that has already been returned', async () => {
-    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeNumbering)
-    await bookingService.approve(1)
-    await bookingService.returnBike(1)
+    let singleBooking: Booking = await bookingService.createSingleBooking(accountId, userName, room, bikeNumbering)
+    await bookingService.approve(accountId, 1)
+    await bookingService.returnBike(accountId, 1)
 
     try {
       assert.doesNotThrow(async () => {
-        await bookingService.approve(1);
+        await bookingService.approve(accountId, 1);
       }, Error)
     } catch (error) {
       assert.ok(error)
@@ -98,9 +99,9 @@ describe('For a valid user', () => {
   })
 
   it('should return a bike', async () => {
-    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeNumbering)
-    await bookingService.approve(1)
-    await bookingService.returnBike(1)
+    let singleBooking: Booking = await bookingService.createSingleBooking(accountId, userName, room, bikeNumbering)
+    await bookingService.approve(accountId, 1)
+    await bookingService.returnBike(accountId, 1)
 
     assert.strictEqual(singleBooking.ID, 1)
     assert.strictEqual(singleBooking.Status, BookingStatus.RETURNED)
@@ -110,11 +111,11 @@ describe('For a valid user', () => {
 
 
   it('should not return a bike that has not yet been approved', async () => {
-    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeNumbering)
+    let singleBooking: Booking = await bookingService.createSingleBooking(accountId, userName, room, bikeNumbering)
 
     try {
       assert.doesNotThrow(async () => {
-        await bookingService.returnBike(1);
+        await bookingService.returnBike(accountId, 1);
       }, Error)
       assert.fail("should fail")
     } catch (error) {
@@ -127,13 +128,13 @@ describe('For a valid user', () => {
   })
 
   it('should not return a bike that has already been returned', async () => {
-    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeNumbering)
-    await bookingService.approve(1)
-    await bookingService.returnBike(1)
+    let singleBooking: Booking = await bookingService.createSingleBooking(accountId, userName, room, bikeNumbering)
+    await bookingService.approve(accountId, 1)
+    await bookingService.returnBike(accountId, 1)
 
     try {
       assert.doesNotThrow(async () =>
-        await bookingService.returnBike(1),
+        await bookingService.returnBike(accountId, 1),
         Error,
       )
       assert.fail("should fail")
@@ -147,8 +148,8 @@ describe('For a valid user', () => {
   })
 
   it('should cancel a booking with BOOKED status', async () => {
-    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeNumbering)
-    await bookingService.cancel(1)
+    let singleBooking: Booking = await bookingService.createSingleBooking(accountId, userName, room, bikeNumbering)
+    await bookingService.cancel(accountId, 1)
 
     assert.strictEqual(singleBooking.Status, BookingStatus.CANCELED)
     assert.strictEqual(singleBooking.User.Status, UserStatus.FREE)
@@ -156,9 +157,9 @@ describe('For a valid user', () => {
   })
 
   it('should cancel a booking with DELIVERED status', async () => {
-    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeNumbering)
-    await bookingService.approve(1)
-    await bookingService.cancel(1)
+    let singleBooking: Booking = await bookingService.createSingleBooking(accountId, userName, room, bikeNumbering)
+    await bookingService.approve(accountId, 1)
+    await bookingService.cancel(accountId, 1)
 
     assert.strictEqual(singleBooking.Status, BookingStatus.CANCELED)
     assert.strictEqual(singleBooking.User.Status, UserStatus.FREE)
@@ -166,13 +167,13 @@ describe('For a valid user', () => {
   })
 
   it('should not cancel a booking with RETURNED status', async () => {
-    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeNumbering)
-    await bookingService.approve(1)
-    await bookingService.returnBike(1)
+    let singleBooking: Booking = await bookingService.createSingleBooking(accountId, userName, room, bikeNumbering)
+    await bookingService.approve(accountId, 1)
+    await bookingService.returnBike(accountId, 1)
 
     try {
       assert.doesNotThrow(async () =>
-        await bookingService.cancel(1),
+        await bookingService.cancel(accountId, 1),
         Error,
       )
       assert.fail("should fail")
@@ -186,12 +187,12 @@ describe('For a valid user', () => {
   })
 
   it('should not cancel a booking with CANCELED status', async () => {
-    let singleBooking: Booking = await bookingService.createSingleBooking(userName, room, bikeNumbering)
-    await bookingService.cancel(1)
+    let singleBooking: Booking = await bookingService.createSingleBooking(accountId, userName, room, bikeNumbering)
+    await bookingService.cancel(accountId, 1)
 
     try {
       assert.doesNotThrow(async () =>
-        await bookingService.cancel(1),
+        await bookingService.cancel(accountId, 1),
         Error,
       )
       assert.fail("should fail")

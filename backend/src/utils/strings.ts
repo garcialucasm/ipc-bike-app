@@ -5,7 +5,7 @@ function isLowerCase(s: string): boolean {
 }
 
 function isNumber(value: any): boolean {
-  return typeof value === 'number';
+  return typeof value === "number"
 }
 
 function isAlpha(s: string): boolean {
@@ -14,10 +14,10 @@ function isAlpha(s: string): boolean {
 }
 
 function isNumericString(value: any): boolean {
-  if (typeof value !== 'string') {
-    return false;
+  if (typeof value !== "string") {
+    return false
   }
-  return /^\d+$/.test(value);
+  return /^\d+$/.test(value)
 }
 
 function isAlphaNumerical(s: string): boolean {
@@ -33,15 +33,11 @@ function toSnakeCase(s: string): string {
   let result: string = ""
 
   for (let i = 0; i < s.length; ++i) {
-    if (!isValid(s[i]))
-      continue
+    if (!isValid(s[i])) continue
 
-    if (isLowerCase(s[i]))
-      result += s[i]
-    else if ("_" === s[i])
-      result += '_'
-    else
-      result += '_' + s[i].toLocaleLowerCase()
+    if (isLowerCase(s[i])) result += s[i]
+    else if ("_" === s[i]) result += "_"
+    else result += "_" + s[i].toLocaleLowerCase()
   }
 
   return result
@@ -53,13 +49,36 @@ function isEmail(s: string): boolean {
 }
 
 function cleanUpSpaces(s: string): string {
+  if (!s) {
+    console.error("🚀 ~ cleanUpSpaces ~ s:", s)
+    return ""
+  }
+
   // Remove double or more spaces
-  const noDoubleSpaces = s.replace(/\s{2,}/g, ' ');
+  const noDoubleSpaces = s.replace(/\s+/g, " ")
 
   // Remove spaces at the end
-  const trimmed = noDoubleSpaces.trim();
-
-  return trimmed;
+  const trimmed = noDoubleSpaces.trim()
+  return trimmed
 }
 
-export { isLowerCase, isNumber, isNumericString, isAlpha, isAlphaNumerical, toSnakeCase, isEmail, cleanUpSpaces }
+function sanitizeInput(s: string): string {
+  if (!s) {
+    console.error("🚀 ~ sanitizeInput ~ s:", s)
+    return ""
+  }
+  // Remove double or more spaces
+  return cleanUpSpaces(s).toLowerCase()
+}
+
+export {
+  isLowerCase,
+  isNumber,
+  isNumericString,
+  isAlpha,
+  isAlphaNumerical,
+  toSnakeCase,
+  isEmail,
+  cleanUpSpaces,
+  sanitizeInput,
+}

@@ -5,7 +5,7 @@ export interface User {
   room: string,
   term: string,
   status: UserStatus,
-  isActive?: Boolean,
+  isActive?: boolean,
   createdAt?: Date,
   updatedAt?: Date,
   deletedAt?: Date,

@@ -1,14 +1,22 @@
+enum AccountType {
+  STUDENT = "STUDENT",
+  PROFESSOR = "PROFESSOR",
+  KEYKEEPER = "KEYKEEPER",
+  ADMIN = "ADMIN",
+}
+
 interface Account {
-    ID?: number;
-    AccountName?: string,
-    Email?: string,
+    ID?: number,
+    Type: AccountType,
+    IsActive: boolean,
+    Email: string,
+    Name?: string,
     Hash?: string,
-    IsActive?: Boolean,
     CreatedAt?: Date,
     UpdatedAt?: Date,
     DeletedAt?: Date,
     Token?: string,
 }
 
-export { Account }
+export { Account, AccountType }
 

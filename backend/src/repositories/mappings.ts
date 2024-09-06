@@ -1,8 +1,7 @@
 import { Bike, BikeStatus } from "../models/bike.model";
 import { Booking, BookingStatus, BookingType } from "../models/booking.model";
-import { Account } from "../models/account.model";
+import { Account, AccountType } from "../models/account.model";
 import { User, UserType, UserStatus } from "../models/user.model";
-
 
 function filterPropertiesWithPrefix(object: any, prefix: string): any {
   const dotedPrefix = prefix + '.'
@@ -30,12 +29,16 @@ function bookingFromRow(row: any): Booking {
     Status: bookingData['status'] ? BookingStatus[bookingData['status'] as keyof typeof BookingStatus] : BookingStatus.BOOKED,
     Notes: bookingData['notes'],
     ReturnedCondition: bookingData['returned_condition'],
-    CreatedAt: bookingData['created_at'] ? new Date(row['created_at']) : undefined,
-    ConfirmedAt: bookingData['confirmed_at'] ? new Date(row['confirmed_at']) : undefined,
-    ReturnedAt: bookingData['returned_at'] ? new Date(row['returned_at']) : undefined,
+    CreatedAt: bookingData['created_at'] ?? new Date(bookingData['created_at']),
+    ConfirmedAt: bookingData['confirmed_at'] ? new Date(bookingData['confirmed_at']) : undefined,
+    ReturnedAt: bookingData['returned_at'] ? new Date(bookingData['returned_at']) : undefined,
+    CanceledAt: bookingData['canceled_at'] ? new Date(bookingData['canceled_at']) : undefined,
+    CreatedByAccount: row['created_by_account_id'] ? Number(row['created_by_account_id']) : undefined,
+    ConfirmedByAccount: row['confirmed_by_account_id'] ? Number(row['confirmed_by_account_id']) : undefined,
+    ReturnedByAccount: row['returned_by_account_id'] ? Number(row['returned_by_account_id']) : undefined,
+    CanceledByAccount: row['canceled_by_account_id'] ? Number(row['canceled_by_account_id']) : undefined,
   }
 }
-
 function bikeFromRow(row: any): Bike {
   return {
     ID: Number.parseInt(row['id']),
@@ -68,10 +71,12 @@ function userFromRow(row: any): User {
 function accountFromRow(row: any): Account {
   return {
     ID: Number.parseInt(row['id']),
+    Type: row['type'] ?? AccountType[row['type'] as keyof typeof AccountType],
+    IsActive: row['is_active'] ?? new Boolean(row['is_active']).valueOf(),
     Email: row['email'],
+    Name: row['name'],
     Hash: row['password'],
-    IsActive: row['is_active'] ? new Boolean(row['is_active']).valueOf() : false,
-    CreatedAt: row['created_at'] ? new Date(row['created_at']) : undefined,
+    CreatedAt: row['created_at'] ?? new Date(row['created_at']),
     UpdatedAt: row['updated_at'] ? new Date(row['updated_at']) : undefined,
     DeletedAt: row['deleted_at'] ? new Date(row['deleted_at']) : undefined
   }
