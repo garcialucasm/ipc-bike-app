@@ -14,6 +14,8 @@ import PrimaryButton from "../Buttons/PrimaryButton"
 import ActionResult from "../ActionResult/ActionResult"
 import { Wrench } from "@phosphor-icons/react/dist/ssr/Wrench"
 import BikeDetails from "../Booking/SingleBooking/modules/BikeDetails"
+import { useAuth } from "@/context/auth"
+import { AccountTypePermission } from "@/types/AccountType"
 
 const messageInitial = "Confirm Action"
 const messageReturnMaintenance =
@@ -40,11 +42,12 @@ const emptyModalAction = {
 }
 
 function Inventory() {
-  const { allBikes: allBikes, updatingAllBikes } =
-    useBikeContext()
+  const { accountData } = useAuth()
+  const { allBikes: allBikes, updatingAllBikes } = useBikeContext()
   const [reloadData, setReloadData] = useState(false)
   const modalRef = useRef<HTMLDivElement>(null)
-
+  const isCurrentUserAdmin: boolean =
+    accountData?.accountType === AccountTypePermission.ADMIN && true
   const [modalAction, setModalAction] = useState<{
     isOpen: boolean
     bike: BikeDTO
@@ -144,7 +147,7 @@ function Inventory() {
       <>
         <div className="w-full overflow-x-auto rounded-2xl">
           <table className="w-full text-left text-sm text-slate-500 rtl:text-right">
-            <TableHeader />
+            <TableHeader shouldHideActions={isCurrentUserAdmin} />
             <tbody>
               {allBikes.map((bike: BikeDTO) => (
                 <tr
@@ -168,38 +171,37 @@ function Inventory() {
                   <td className="p-2 text-slate-500">
                     {toPascalCase(bike.Size)}
                   </td>
-                  <td className="flex w-full flex-row items-center justify-center p-2">
-                    {/* <div title="Info">
-                      <ActionButtonInfo name="info-bike"></ActionButtonInfo>
-                    </div> */}
-                    {bike.CurrentStatus === BikeStatus.FREE && (
-                      <div title="Send for Maintenance" className="flex">
-                        <ActionButtonSendMaintenance
-                          onClick={() => handleClick(bike)}
-                          name="send-for-maintenance"
-                        ></ActionButtonSendMaintenance>
-                      </div>
-                    )}
-                    {(bike.CurrentStatus === BikeStatus.BOOKED ||
-                      bike.CurrentStatus === BikeStatus.INUSE) && (
-                      <div
-                        title="Only bikes with free status can go for maintenance"
-                        className="flex"
-                      >
-                        <span className="pointer-events-none opacity-20">
-                          <ActionButtonSendMaintenance name="send-for-maintenance"></ActionButtonSendMaintenance>
-                        </span>
-                      </div>
-                    )}
-                    {bike.CurrentStatus === BikeStatus.DISABLED && (
-                      <div title="Return from Maintenance" className="flex">
-                        <ActionButtonReturnMaintenance
-                          onClick={() => handleClick(bike)}
-                          name="return-from-maintenance"
-                        ></ActionButtonReturnMaintenance>
-                      </div>
-                    )}
-                  </td>
+                  {isCurrentUserAdmin && (
+                    <td className="flex w-full flex-row items-center justify-center p-2">
+                      {bike.CurrentStatus === BikeStatus.FREE && (
+                        <div title="Send for Maintenance" className="flex">
+                          <ActionButtonSendMaintenance
+                            onClick={() => handleClick(bike)}
+                            name="send-for-maintenance"
+                          ></ActionButtonSendMaintenance>
+                        </div>
+                      )}
+                      {(bike.CurrentStatus === BikeStatus.BOOKED ||
+                        bike.CurrentStatus === BikeStatus.INUSE) && (
+                        <div
+                          title="Only bikes with free status can go for maintenance"
+                          className="flex"
+                        >
+                          <span className="pointer-events-none opacity-20">
+                            <ActionButtonSendMaintenance name="send-for-maintenance"></ActionButtonSendMaintenance>
+                          </span>
+                        </div>
+                      )}
+                      {bike.CurrentStatus === BikeStatus.DISABLED && (
+                        <div title="Return from Maintenance" className="flex">
+                          <ActionButtonReturnMaintenance
+                            onClick={() => handleClick(bike)}
+                            name="return-from-maintenance"
+                          ></ActionButtonReturnMaintenance>
+                        </div>
+                      )}
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

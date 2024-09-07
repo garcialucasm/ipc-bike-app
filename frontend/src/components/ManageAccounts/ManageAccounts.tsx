@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
 import TableHeader from "./modules/TableHeader"
 import StatusIndicator from "../Others/StatusIndicator"
@@ -82,7 +82,7 @@ function Inventory() {
                         onClick={() => handleClick(account)}
                         name="send-for-maintenance"
                         disabled={
-                          (currentAccountEmail !== account.Email ||
+                          (currentAccountEmail === account.Email ||
                             account.IsActive === false) &&
                           true
                         }
@@ -93,7 +93,7 @@ function Inventory() {
                         onClick={() => handleClick(account)}
                         name="return-from-maintenance"
                         disabled={
-                          (currentAccountEmail !== account.Email ||
+                          (currentAccountEmail === account.Email ||
                             account.IsActive === true) &&
                           true
                         }

@@ -1,4 +1,8 @@
-function TableHeader() {
+interface Props {
+  shouldHideActions?: boolean
+}
+
+function TableHeader({ shouldHideActions }: Props) {
   return (
     <>
       <thead className="bg-blue-800 text-xs uppercase text-slate-100">
@@ -15,9 +19,11 @@ function TableHeader() {
           <th scope="col" className="px-2 py-3">
             Size
           </th>
-          <th scope="col" className="px-2 py-3 text-center">
-            Actions
-          </th>
+          {shouldHideActions && (
+            <th scope="col" className="px-2 py-3 text-center">
+              Actions
+            </th>
+          )}
         </tr>
       </thead>
     </>

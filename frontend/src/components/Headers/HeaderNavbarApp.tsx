@@ -23,9 +23,10 @@ import { getDecodedToken, logout } from "@/app/auth/authUtils"
 import { toPascalCase } from "@/utils/strings"
 import { FileText } from "@phosphor-icons/react/dist/ssr/FileText"
 import { useSession } from "next-auth/react"
+import { AccountTypePermission } from "@/types/AccountType"
 
 export default function HeaderNavbarApp() {
-  const { accountData, settingAccountData: settingAccountData } = useAuth()
+  const { accountData, settingAccountData } = useAuth()
   const { data: session } = useSession()
   const [isOpenedAccountMenu, setIsOpenedAccountMenu] = useState(false)
   const [isOpenedSideBar, setIsOpenedSideBar] = useState(false)
@@ -37,6 +38,8 @@ export default function HeaderNavbarApp() {
   const accountName = accountData?.accountName
   const pathname = usePathname()
   const isSecure = pathname.includes("/secure")
+  const isCurrentUserAdmin =
+    accountData?.accountType === AccountTypePermission.ADMIN && true
 
   function toggleAlertClosed() {
     setClosedAlert(true)
@@ -69,10 +72,12 @@ export default function HeaderNavbarApp() {
     if (decodedToken && !accountData?.isAuthenticated) {
       const accountId = decodedToken.id
       const accountName = toPascalCase(decodedToken.accountName)
+      const accountType = decodedToken.accountType
       settingAccountData({
         id: accountId,
         accountName: accountName,
         isAuthenticated: true,
+        accountType: accountType,
       })
     }
   }
@@ -218,7 +223,7 @@ export default function HeaderNavbarApp() {
                         </div>
                         {isSecure && (
                           <>
-                            <Link
+                            {/* <Link
                               href={NavigationPaths.register}
                               className="text-slate-700"
                               onClick={() => setIsOpenedAccountMenu(false)}
@@ -229,19 +234,21 @@ export default function HeaderNavbarApp() {
                                   <div className="px-2">Register</div>
                                 </div>
                               </div>
-                            </Link>
-                            <Link
-                              href={NavigationPaths.accountManager}
-                              className="text-slate-700"
-                              onClick={() => setIsOpenedAccountMenu(false)}
-                            >
-                              <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
-                                <div className="flex w-fit items-center">
-                                  <UserCircleGear size={20} />
-                                  <div className="px-2">Manage Accounts</div>
+                            </Link> */}
+                            {isCurrentUserAdmin && (
+                              <Link
+                                href={NavigationPaths.accountManager}
+                                className="text-slate-700"
+                                onClick={() => setIsOpenedAccountMenu(false)}
+                              >
+                                <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
+                                  <div className="flex w-fit items-center">
+                                    <UserCircleGear size={20} />
+                                    <div className="px-2">Manage Accounts</div>
+                                  </div>
                                 </div>
-                              </div>
-                            </Link>
+                              </Link>
+                            )}
                             <Link
                               href={NavigationPaths.inventory}
                               onClick={() => setIsOpenedAccountMenu(false)}

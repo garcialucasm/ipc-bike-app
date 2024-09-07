@@ -1,7 +1,20 @@
+export enum AccountTypePermission {
+  STUDENT = "STUDENT",
+  PROFESSOR = "PROFESSOR",
+  KEYKEEPER = "KEYKEEPER",
+  ADMIN = "ADMIN",
+}
+
+export enum AccountStatus {
+  IS_ACTIVE = "IS ACTIVE",
+  INACTIVE = "DISABLED",
+}
+
 export type AccountProps = {
   id: number | null
   accountName: string | null
   isAuthenticated: boolean | null
+  accountType: string | null
 }
 
 export type AccountRegisterType = {
@@ -18,9 +31,4 @@ export type AccountType = {
   Email: string
   IsActive: boolean
   CreatedAt?: Date
-}
-
-export enum AccountStatus {
-  IS_ACTIVE = "IS ACTIVE",
-  INACTIVE = "DISABLED",
 }
