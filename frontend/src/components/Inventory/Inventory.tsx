@@ -40,7 +40,7 @@ const emptyModalAction = {
 }
 
 function Inventory() {
-  const { allBikes: allBikes, updatingAllBikes: updatingAllBikesAvailable } =
+  const { allBikes: allBikes, updatingAllBikes } =
     useBikeContext()
   const [reloadData, setReloadData] = useState(false)
   const modalRef = useRef<HTMLDivElement>(null)
@@ -53,13 +53,6 @@ function Inventory() {
     isConfirmed: boolean | null
     resultMessage: string
   }>(emptyModalAction)
-
-  // Function to sort bikes by numbering
-  const sortByNumbering = (a: BikeDTO, b: BikeDTO) => {
-    const numberingA = parseInt(a.Numbering)
-    const numberingB = parseInt(b.Numbering)
-    return numberingA - numberingB
-  }
 
   /* ---------------- Handle maintenance button to redirect to modal --------------- */
   async function handleClick(bike: BikeDTO) {
@@ -135,7 +128,7 @@ function Inventory() {
   }
 
   useEffect(() => {
-    updatingAllBikesAvailable()
+    updatingAllBikes()
   }, [reloadData])
 
   useEffect(() => {
@@ -147,16 +140,13 @@ function Inventory() {
   }, [])
 
   if (allBikes && allBikes.length > 0) {
-    // Sorting the bikes by numbering
-    const sortedBikes = [...allBikes].sort(sortByNumbering)
-
     return (
       <>
         <div className="w-full overflow-x-auto rounded-2xl">
           <table className="w-full text-left text-sm text-slate-500 rtl:text-right">
             <TableHeader />
             <tbody>
-              {sortedBikes.map((bike: BikeDTO) => (
+              {allBikes.map((bike: BikeDTO) => (
                 <tr
                   key={bike.ID}
                   className="whitespace-nowrap border-b-2 border-white bg-slate-100 py-4 text-slate-900"
@@ -190,17 +180,17 @@ function Inventory() {
                         ></ActionButtonSendMaintenance>
                       </div>
                     )}
-                    {bike.CurrentStatus === BikeStatus.BOOKED ||
-                      (bike.CurrentStatus === BikeStatus.INUSE && (
-                        <div
-                          title="Only bikes with free status can go for maintenance"
-                          className="flex"
-                        >
-                          <span className="pointer-events-none opacity-20">
-                            <ActionButtonSendMaintenance name="send-for-maintenance"></ActionButtonSendMaintenance>
-                          </span>
-                        </div>
-                      ))}
+                    {(bike.CurrentStatus === BikeStatus.BOOKED ||
+                      bike.CurrentStatus === BikeStatus.INUSE) && (
+                      <div
+                        title="Only bikes with free status can go for maintenance"
+                        className="flex"
+                      >
+                        <span className="pointer-events-none opacity-20">
+                          <ActionButtonSendMaintenance name="send-for-maintenance"></ActionButtonSendMaintenance>
+                        </span>
+                      </div>
+                    )}
                     {bike.CurrentStatus === BikeStatus.DISABLED && (
                       <div title="Return from Maintenance" className="flex">
                         <ActionButtonReturnMaintenance
@@ -231,8 +221,7 @@ function Inventory() {
                   className={`flex items-center border-b border-slate-200 pb-4 text-start text-xl font-semibold ${
                     modalAction.actionToConfirm ===
                       BikeModalActions.SENDMAINTENANCE && "text-amber-600"
-                  } ${modalAction.actionToConfirm === BikeModalActions.RETURNMAINTENANCE && "text-blue-600"}
-        `}
+                  } ${modalAction.actionToConfirm === BikeModalActions.RETURNMAINTENANCE && "text-blue-600"}`}
                 >
                   <span className="me-2 font-bold">
                     <Wrench size={42} weight="fill" />

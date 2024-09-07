@@ -43,7 +43,7 @@ export default function HeaderNavbarWeb() {
   return (
     <>
       <nav
-        className={`fixed start-0 top-0 z-20 w-full outline outline-1 outline-offset-1 outline-white/[.3] backdrop-blur-xl md:backdrop-blur-none ${isScrolling && "backdrop-blur-xl md:backdrop-blur-xl"} ${isMenuOpened && "bg-black bg-opacity-50 md:bg-transparent"}`}
+        className={`fixed start-0 top-0 z-20 w-full outline outline-1 outline-offset-1 outline-white/[.3] backdrop-blur-xl lg:backdrop-blur-none ${isScrolling && "backdrop-blur-xl lg:backdrop-blur-xl"} ${isMenuOpened && "bg-black bg-opacity-50 lg:bg-transparent"}`}
       >
         <div
           className={`mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4`}

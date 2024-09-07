@@ -3,7 +3,7 @@ import {
   ErrorMessageRegister,
 } from "@/types/ErrorMessageTypes"
 import { cleanUpSpaces } from "./strings"
-import { AccountDTO } from "@/types/AccountType"
+import { AccountRegisterType } from "@/types/AccountType"
 import { UserData } from "@/types/UserType"
 
 export const errorMessagePasswordInvalid = "Invalid password"
@@ -70,7 +70,7 @@ export function validateFormRoomNumber(s: string): string {
 /* ----------------------------- form validation ---------------------------- */
 /* -------------------------------------------------------------------------- */
 
-export function formValidationRegister(formValues: AccountDTO) {
+export function formValidationRegister(formValues: AccountRegisterType) {
   let error: ErrorMessageRegister = {
     accountName: "",
     email: "",

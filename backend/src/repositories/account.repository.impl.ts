@@ -18,7 +18,7 @@ export default class AccountRepository implements IAccountRepository {
 
   findAllStmt: string = `SELECT id, type, name, email, is_active, created_at, updated_at, deleted_at 
                              FROM "account"
-                             ORDER BY is_active DESC, created_at ASC`;
+                             ORDER BY is_active DESC, name ASC`;
 
   loginStmt: string = `SELECT id, type, email, name, hash, is_active 
                        FROM "account" WHERE email=$1`;

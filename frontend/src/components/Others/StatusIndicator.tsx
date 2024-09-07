@@ -1,3 +1,4 @@
+import { AccountStatus } from "@/types/AccountType"
 import { BikeStatus } from "@/types/BikeType"
 import { BookingStatus } from "@/types/BookingType"
 import { UserStatus } from "@/types/UserType"
@@ -6,7 +7,7 @@ enum StatusColorClass {
   GREEN = "bg-emerald-500",
   YELLOW = "bg-amber-500",
   RED = "bg-rose-500",
-  GRAY = "bg-slate-400",
+  GRAY = "bg-slate-300",
   WHITE = "bg-slate-100",
 }
 enum AnimationStatusClass {
@@ -16,12 +17,18 @@ enum AnimationStatusClass {
   BOOKED = "animate-ping",
 }
 
-function getStatusColor(status: BookingStatus | UserStatus | BikeStatus) {
+function getStatusColor(
+  status: BookingStatus | UserStatus | BikeStatus | AccountStatus
+) {
   let statusColorClass: string
   let animationStatusClass: string
   let currentStatus = status.toUpperCase()
 
-  if (currentStatus === BikeStatus.FREE || currentStatus === UserStatus.FREE) {
+  if (
+    currentStatus === BikeStatus.FREE ||
+    currentStatus === UserStatus.FREE ||
+    currentStatus === AccountStatus.IS_ACTIVE
+  ) {
     statusColorClass = StatusColorClass.GREEN
     animationStatusClass = AnimationStatusClass.FREE
   } else if (
@@ -41,7 +48,8 @@ function getStatusColor(status: BookingStatus | UserStatus | BikeStatus) {
   } else if (
     currentStatus === BookingStatus.CANCELED ||
     currentStatus === BookingStatus.RETURNED ||
-    currentStatus === BikeStatus.DISABLED
+    currentStatus === BikeStatus.DISABLED ||
+    currentStatus === AccountStatus.INACTIVE
   ) {
     statusColorClass = StatusColorClass.GRAY
     animationStatusClass = AnimationStatusClass.NONE
@@ -57,7 +65,7 @@ function getStatusColor(status: BookingStatus | UserStatus | BikeStatus) {
 }
 
 function StatusIndicator(props: {
-  currentStatus: BookingStatus | UserStatus | BikeStatus
+  currentStatus: BookingStatus | UserStatus | BikeStatus | AccountStatus
   isStatic?: boolean
   height?: string
   width?: string
@@ -69,18 +77,18 @@ function StatusIndicator(props: {
   return (
     <>
       <span
-        className={`relative flex items-center justify-center text-center ${height ?? "h-2.5"} ${
-          width ?? "w-2.5 "
+        className={`relative flex items-center justify-center text-center ${height ?? "h-3"} ${
+          width ?? "w-3 "
         } m-2`}
       >
         <span
-          className={`absolute inline-flex h-full w-full items-center justify-center rounded-full opacity-50 text-center ${statusColorClass} ${
+          className={`absolute inline-flex h-full w-full items-center justify-center rounded-full text-center opacity-50 ${statusColorClass} ${
             isStatic ? "" : animationStatusClass
           }`}
         ></span>
         <span
-          className={`relative inline-flex items-center justify-center rounded-full text-center ${height ?? "h-2.5"} ${
-            width ?? "w-2.5"
+          className={`relative inline-flex items-center justify-center rounded-full text-center ${height ?? "h-3"} ${
+            width ?? "w-3"
           } ${statusColorClass}`}
         ></span>
       </span>

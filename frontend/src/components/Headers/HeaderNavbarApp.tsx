@@ -14,6 +14,7 @@ import { UserCirclePlus } from "@phosphor-icons/react/dist/ssr/UserCirclePlus"
 import { Bicycle } from "@phosphor-icons/react/dist/ssr/Bicycle"
 import { SignOut } from "@phosphor-icons/react/dist/ssr/SignOut"
 import { Info } from "@phosphor-icons/react/dist/ssr/Info"
+import { UserCircleGear } from "@phosphor-icons/react/dist/ssr/UserCircleGear"
 
 import { NavigationPaths } from "@/types/NavigationPaths"
 import Button from "@/components/Buttons/Button"
@@ -215,44 +216,44 @@ export default function HeaderNavbarApp() {
                             </p>
                           </div>
                         </div>
-                        {/* <Link
-                          href={NavigationPaths.profile}
-                          className="text-slate-400"
-                          onClick={() => setIsOpenedAccountMenu(false)}
-                        >
-                          <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
-                            <div className="flex w-fit items-center">
-                              <User size={20} />
-                              <div className="px-2">Profile</div>
-                            </div>
-                          </div>
-                        </Link> */}
                         {isSecure && (
-                          <Link
-                            href={NavigationPaths.register}
-                            className="text-slate-700"
-                            onClick={() => setIsOpenedAccountMenu(false)}
-                          >
-                            <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
-                              <div className="flex w-fit items-center">
-                                <UserCirclePlus size={20} />
-                                <div className="px-2">Register</div>
+                          <>
+                            <Link
+                              href={NavigationPaths.register}
+                              className="text-slate-700"
+                              onClick={() => setIsOpenedAccountMenu(false)}
+                            >
+                              <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
+                                <div className="flex w-fit items-center">
+                                  <UserCirclePlus size={20} />
+                                  <div className="px-2">Register</div>
+                                </div>
                               </div>
-                            </div>
-                          </Link>
-                        )}
-                        {isSecure && (
-                          <Link
-                            href={NavigationPaths.inventory}
-                            onClick={() => setIsOpenedAccountMenu(false)}
-                          >
-                            <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
-                              <div className="flex w-fit items-center">
-                                <Bicycle size={20} />
-                                <div className="px-2">Inventory</div>
+                            </Link>
+                            <Link
+                              href={NavigationPaths.accountManager}
+                              className="text-slate-700"
+                              onClick={() => setIsOpenedAccountMenu(false)}
+                            >
+                              <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
+                                <div className="flex w-fit items-center">
+                                  <UserCircleGear size={20} />
+                                  <div className="px-2">Manage Accounts</div>
+                                </div>
                               </div>
-                            </div>
-                          </Link>
+                            </Link>
+                            <Link
+                              href={NavigationPaths.inventory}
+                              onClick={() => setIsOpenedAccountMenu(false)}
+                            >
+                              <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
+                                <div className="flex w-fit items-center">
+                                  <Bicycle size={20} />
+                                  <div className="px-2">Inventory</div>
+                                </div>
+                              </div>
+                            </Link>
+                          </>
                         )}
                         {/* <Link
                           href={NavigationPaths.statistics}
@@ -329,7 +330,7 @@ export default function HeaderNavbarApp() {
       <aside
         ref={sidebarMenuRef}
         id="logo-sidebar"
-        className={`${isOpenedSideBar ? "" : "-translate-x-full"} fixed left-0 top-0 z-40 mt-[64px] h-screen w-80 border-r border-slate-200 bg-slate-50 pb-24 pt-8 text-left text-slate-600 transition-transform xl:translate-x-0`}
+        className={`${isOpenedSideBar ? "" : "-translate-x-full"} fixed left-0 top-0 z-40 mt-[64px] h-screen w-[17rem] border-r border-slate-200 bg-slate-50 pb-20 pt-8 text-left text-slate-600 transition-transform xl:translate-x-0`}
         aria-label="Sidebar"
       >
         <div className="flex h-full flex-col justify-between overflow-y-auto px-3 pb-4">
@@ -425,11 +426,11 @@ export default function HeaderNavbarApp() {
             {!closedAlert && (
               <div
                 id="dropdown-cta"
-                className="mt-6 hidden w-full rounded-2xl border border-blue-300 bg-slate-100 p-4 xl:inline-block"
+                className="mt-6 hidden w-full rounded-2xl border border-blue-300 bg-slate-100 p-4 text-xs xl:inline-block"
                 role="alert"
               >
                 <div className="mb-3 flex items-center">
-                  <span className="me-2 rounded bg-orange-100 px-2.5 py-0.5 text-sm font-semibold text-orange-800">
+                  <span className="me-2 rounded bg-orange-100 px-2.5 py-0.5 font-semibold text-orange-800">
                     Beta
                   </span>
                   <button
@@ -457,12 +458,12 @@ export default function HeaderNavbarApp() {
                     </svg>
                   </button>
                 </div>
-                <p className="mb-3 text-balance text-sm text-blue-800">
+                <p className="mb-3 text-pretty text-blue-800">
                   If you have any suggestions, feedback, or encounter any
                   difficulties, please feel free to use the form below. 😊
                 </p>
                 <a
-                  className="text-sm font-medium text-blue-800 underline hover:text-blue-900"
+                  className="font-medium text-blue-800 underline hover:text-blue-900"
                   href={NavigationPaths.homeWeb}
                   target="_blank"
                 >
@@ -474,7 +475,7 @@ export default function HeaderNavbarApp() {
           <div className="i static flex flex-col items-center justify-center">
             <Image
               src="/logo-ipc-bike-blue.png"
-              className="min-h-full w-48 p-4"
+              className="min-h-full w-44 p-4 2xl:w-48"
               width={300}
               height={399}
               alt=""
