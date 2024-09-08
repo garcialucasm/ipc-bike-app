@@ -28,14 +28,14 @@ export const apiUrls = {
   /* ----------------------------- Booking Service ---------------------------- */
   activeBookingsUrl: "/secure/booking/all",
   allBookingsUrl: "/secure/booking/all?show_inactive=true",
-  createSingleBookingUrl: "/secure/booking/create/single",
+  createSingleBookingUrl: "/booking/create/single",
   cancelBookingUrl: "/secure/booking/cancel/",
   approveBookingUrl: "/secure/booking/approve/",
   returnBookingUrl: "/secure/booking/return/",
 
   /* ------------------------------ Bike Service ------------------------------ */
-  bikeStatusCounterUrl: "/secure/bike/status",
-  allBikesUrl: "/secure/bike/all",
+  bikeStatusCounterUrl: "/bike/status",
+  allBikesUrl: "/bike/all",
   maintenance: "/secure/bike/maintenance/"
 }
 

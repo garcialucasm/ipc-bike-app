@@ -10,17 +10,6 @@ const HomeAppPublic = () => {
     <>
       <AvailabilityContainer />
       <BookingsOverview />
-      <div className="group flex w-full justify-start">
-        <Link
-          href={NavigationPaths.previousBookings}
-          className="flex items-center rounded-2xl px-2 text-sm text-blue-800 hover:text-blue-600"
-        >
-          See all bookings{" "}
-          <span className="inline-block ps-2 transition-transform group-hover:translate-x-2 motion-reduce:transform-none">
-            <CaretRight size={16} />
-          </span>
-        </Link>
-      </div>
     </>
   )
 }

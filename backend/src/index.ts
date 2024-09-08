@@ -61,8 +61,8 @@ app.use(express.json())
 
 app.use('/api/secure/*', checkAuth)
 
-app.use('/api/secure/booking/', bookingController(bookingService))
-app.use('/api/secure/bike/', bikeController(bikeService))
+app.use('/api/', bookingController(bookingService))
+app.use('/api/', bikeController(bikeService))
 app.use('/api/auth/', accountController(accountService))
 
 app.get("/", async (req, res) => {

@@ -46,7 +46,7 @@ export default function bookingController(bookingService: IBookingService, route
   const router: Router = Router(routerOptions)
   const logger = getLogger('BookingController')
 
-  router.get("/status", async (req, res) => {
+  router.get("/secure/booking/status", async (req, res) => {
     logger.info("GET /status")
     bookingService.countBookingsByStatus()
       .then(statusResult => toBookingStatusDTO(statusResult))
@@ -57,7 +57,7 @@ export default function bookingController(bookingService: IBookingService, route
   })
 
 
-  router.post("/create/single", async (req, res) => {
+  router.post("/booking/create/single", async (req, res) => {
     logger.info("POST /create/single")
     const decodedToken = await getDecodedToken(req)
     const accountId = decodedToken ? decodedToken.accountId : null
@@ -86,7 +86,7 @@ export default function bookingController(bookingService: IBookingService, route
     }
   })
 
-  router.post("/approve/:id", async (req, res) => {
+  router.post("/secure/booking/approve/:id", async (req, res) => {
     logger.info("POST /approve/", req.params.id)
 
     try {
@@ -112,7 +112,7 @@ export default function bookingController(bookingService: IBookingService, route
     }
   })
 
-  router.post("/return/:id", async (req, res) => {
+  router.post("/secure/booking/return/:id", async (req, res) => {
     logger.info("POST /return/", req.params.id)
 
     try {
@@ -139,7 +139,7 @@ export default function bookingController(bookingService: IBookingService, route
     }
   })
 
-  router.post("/cancel/:id", async (req, res) => {
+  router.post("/secure/booking/cancel/:id", async (req, res) => {
     logger.info("POST /cancel/", req.params.id)
 
     try {
@@ -166,7 +166,7 @@ export default function bookingController(bookingService: IBookingService, route
     }
   })
 
-  router.get("/all", (req, res) => {
+  router.get("/secure/booking/all", (req, res) => {
     logger.info("GET /all")
     let showInactive: boolean = false
     if (req.query.show_inactive && req.query.show_inactive === 'true') {
