@@ -61,6 +61,9 @@ function BookingsOverview() {
     createdAt: "",
     confirmedAt: "",
     returnedAt: "",
+    createdByAccount: "",
+    confirmedByAccount: "",
+    returnedByAccount: "",
     returnedCondition: "",
     notes: "",
   }

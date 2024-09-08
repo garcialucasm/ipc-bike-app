@@ -14,6 +14,9 @@ export interface Booking {
   createdAt?: string;
   confirmedAt?: string;
   returnedAt?: string;
+  createdByAccount?: string;
+  confirmedByAccount?: string;
+  returnedByAccount?: string;
   returnedCondition: string;
   notes?: string;
 }

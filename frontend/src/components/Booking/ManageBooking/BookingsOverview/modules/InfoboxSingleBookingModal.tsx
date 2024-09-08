@@ -86,34 +86,64 @@ function InfoboxSingleBookingModal(BookingData: InfoboxSingleBookingProps) {
       </div>
       <div className="px-4 text-left text-sm font-semibold text-slate-600">
         {booking.createdAt && (
-          <p className="flex items-start">
-            <span className="flex items-center">
-              <Check size={12} className="me-1" /> Created:
-            </span>
-            <span className="px-1 font-normal">
-              {formatDateString(booking.createdAt)}
-            </span>
-          </p>
+          <>
+            <p className="flex items-start">
+              <span className="flex items-center">
+                <Check size={12} className="me-1" /> Created:
+              </span>
+              <span className="px-1 font-normal">
+                {formatDateString(booking.createdAt)}
+              </span>
+            </p>
+            {/* {booking.createdByAccount && (
+              <p className="flex items-start">
+                <span className="flex items-center pl-4">By:</span>
+                <span className="px-1 font-normal">
+                  {booking.createdByAccount}
+                </span>
+              </p>
+            )} */}
+          </>
         )}
         {booking.confirmedAt && (
-          <p className="flex items-start">
-            <span className="flex items-center">
-              <Check size={12} className="me-1" /> Confirmed:
-            </span>
-            <span className="px-1 font-normal">
-              {formatDateString(booking.confirmedAt)}
-            </span>
-          </p>
+          <>
+            <p className="flex items-start">
+              <span className="flex items-center">
+                <Check size={12} className="me-1" /> Confirmed:
+              </span>
+              <span className="px-1 font-normal">
+                {formatDateString(booking.confirmedAt)}
+              </span>
+            </p>
+            {/* {booking.confirmedByAccount && (
+              <p className="flex items-start">
+                <span className="flex items-center pl-4">By:</span>
+                <span className="px-1 font-normal">
+                  {booking.confirmedByAccount}
+                </span>
+              </p>
+            )} */}
+          </>
         )}
         {booking.returnedAt && (
-          <p className="flex items-start">
-            <span className="flex items-center">
-              <Check size={12} className="me-1" /> Returned:
-            </span>
-            <span className="px-1 font-normal">
-              {formatDateString(booking.returnedAt)}
-            </span>
-          </p>
+          <>
+            <p className="flex items-start">
+              <span className="flex items-center">
+                <Check size={12} className="me-1" /> Returned:
+              </span>
+              <span className="px-1 font-normal">
+                {formatDateString(booking.returnedAt)}
+              </span>
+            </p>
+            {/* {booking.returnedByAccount && (
+              <p className="flex items-start">
+                <span className="flex items-center pl-4">By:</span>
+                <span className="px-1 font-normal">
+                  {booking.returnedByAccount}
+                </span>
+              </p>
+            )} */}
+          </>
         )}
       </div>
     </>
