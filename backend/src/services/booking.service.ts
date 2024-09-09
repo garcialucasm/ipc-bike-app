@@ -49,4 +49,9 @@ export default interface IBookingService {
     * Count all booking group by status
     */
   countBookingsByStatus(): Promise<Map<BookingStatus, number>>;
+
+  /**
+    * List opened booking by Id and CreatedAt
+    */
+  findByUserId(userId: number, hideInactive: boolean): Promise<Booking[]>;
 }

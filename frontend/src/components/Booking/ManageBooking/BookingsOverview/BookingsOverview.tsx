@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { UserCircle } from "@phosphor-icons/react/dist/ssr/UserCircle"
+import { usePathname } from "next/navigation"
 
 import {
   Booking,
@@ -12,6 +13,7 @@ import {
   returnBookingFetchApi,
   approveBookingFetchApi,
   allBookingsFetchApi,
+  previousBookingsFetchApi,
   cancelBookingFetchApi,
 } from "@/services/bookingApi"
 import StatusIndicator from "@/components/Others/StatusIndicator"
@@ -29,6 +31,7 @@ import ActionButtonInfo from "@/components/Buttons/ActionButtonInfo"
 import { useAuth } from "@/context/auth"
 import { formatDateString } from "@/utils/strings"
 import { toggleMaintenanceFetchApi } from "@/services/bikeApi"
+import { getTokenFromCookies } from "@/app/auth/authUtils"
 
 const messageInitial = "Confirm Action"
 const messageCancelBooking = "Are you sure to cancel this booking?"
@@ -39,6 +42,7 @@ const messageInfoBooking = "Current booking selected"
 
 function BookingsOverview() {
   const { accountData } = useAuth()
+  const pathname = usePathname()
   const isAuth = accountData?.isAuthenticated || false
   const [reloadData, setReloadData] = useState(false)
   const [isMaintenanceChecked, setIsMaintenanceChecked] = useState(false)
@@ -49,6 +53,7 @@ function BookingsOverview() {
     allBookings: null,
     error: null,
   })
+  const isSecure = pathname.includes("/secure/")
   const emptyBooking = {
     user: "",
     term: "",
@@ -250,8 +255,19 @@ function BookingsOverview() {
       setBookingData(result)
     }
 
+    const fetchPublicPreviousBookings = async () => {
+      const token = getTokenFromCookies("ipcBikeApp_previousBookings")
+
+      if (token) {
+        const result = await previousBookingsFetchApi(token)
+        setBookingData(result)
+      }
+    }
+
     if (isAuth) {
       fetchData()
+    } else {
+      fetchPublicPreviousBookings()
     }
   }, [reloadData, isAuth])
 
@@ -297,20 +313,24 @@ function BookingsOverview() {
                         name="info-booking"
                       ></ActionButtonInfo>
                     </div>
-                    <div className="flex" title="Cancel">
-                      <ActionButtonCancel
-                        onClick={() => handleClickCancellation(booking)}
-                        name="cancel-booking"
-                      ></ActionButtonCancel>
-                    </div>
-                    <div className="flex" title="Confirm">
-                      <ActionButtonConfirm
-                        onClick={() => {
-                          handleClickConfirmation(booking)
-                        }}
-                        name="approve-booking"
-                      ></ActionButtonConfirm>
-                    </div>
+                    {isSecure && (
+                      <div className="flex" title="Cancel">
+                        <ActionButtonCancel
+                          onClick={() => handleClickCancellation(booking)}
+                          name="cancel-booking"
+                        ></ActionButtonCancel>
+                      </div>
+                    )}
+                    {isSecure && (
+                      <div className="flex" title="Confirm">
+                        <ActionButtonConfirm
+                          onClick={() => {
+                            handleClickConfirmation(booking)
+                          }}
+                          name="approve-booking"
+                        ></ActionButtonConfirm>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}

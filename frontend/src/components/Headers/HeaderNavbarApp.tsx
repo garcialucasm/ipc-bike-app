@@ -68,7 +68,7 @@ export default function HeaderNavbarApp() {
   }
 
   function setAccountInfo() {
-    const decodedToken = getDecodedToken()
+    const decodedToken = getDecodedToken("ipcBikeApp_authToken")
     if (decodedToken && !accountData?.isAuthenticated) {
       const accountId = decodedToken.id
       const accountName = toPascalCase(decodedToken.accountName)

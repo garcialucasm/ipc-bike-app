@@ -28,6 +28,7 @@ export const apiUrls = {
   /* ----------------------------- Booking Service ---------------------------- */
   activeBookingsUrl: "/secure/booking/all",
   allBookingsUrl: "/secure/booking/all?show_inactive=true",
+  previousBookingUrl: "/booking/previous/",
   createSingleBookingUrl: "/booking/create/single",
   cancelBookingUrl: "/secure/booking/cancel/",
   approveBookingUrl: "/secure/booking/approve/",

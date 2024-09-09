@@ -9,5 +9,4 @@ export default interface IBookingRepository {
   findByStatus(status: BookingStatus) : Promise<Booking[]>;
   findAll() : Promise<Booking[]>;
   countBookingsByStatus() : Promise<Map<BookingStatus, number>>
-  
 }

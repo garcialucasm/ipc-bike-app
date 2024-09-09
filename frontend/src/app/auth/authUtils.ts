@@ -72,9 +72,9 @@ export async function logout() {
   }
 }
 
-export function getDecodedToken() {
+export function getDecodedToken(cookieName: string) {
   /* ---------------------- Get the token from the cookie --------------------- */
-  const token = getTokenFromCookies("ipcBikeApp_authToken")
+  const token = getTokenFromCookies(cookieName)
 
   try {
     if (!jwtPublicKey) {
