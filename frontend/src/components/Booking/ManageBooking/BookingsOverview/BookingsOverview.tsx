@@ -351,24 +351,25 @@ function BookingsOverview() {
                   dialogMessage={modalAction.dialogMessage}
                   actionToConfirm={modalAction.actionToConfirm}
                 />
-                {modalAction.actionToConfirm ===
-                  BookingModalActions.CONFIRM && (
-                  <div className="flex w-full items-center justify-center px-4 sm:justify-start">
-                    <input
-                      id="default-checkbox"
-                      type="checkbox"
-                      checked={isMaintenanceChecked}
-                      onChange={handleCheckboxChange}
-                      className={`h-4 w-4 rounded-2xl border-gray-300 bg-gray-100 text-blue-600`}
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ms-2 text-sm text-gray-700"
-                    >
-                      This bike needs repairs. Send for maintenance.
-                    </label>
-                  </div>
-                )}
+                {modalAction.actionToConfirm === BookingModalActions.CONFIRM &&
+                  modalAction?.booking?.status?.toUpperCase() ===
+                    BookingStatus.DELIVERED && (
+                    <div className="flex w-full items-center justify-center px-4 sm:justify-start">
+                      <input
+                        id="default-checkbox"
+                        type="checkbox"
+                        checked={isMaintenanceChecked}
+                        onChange={handleCheckboxChange}
+                        className={`h-4 w-4 rounded-2xl border-gray-300 bg-gray-100 text-blue-600`}
+                      />
+                      <label
+                        htmlFor="default-checkbox"
+                        className="ms-2 text-sm text-gray-700"
+                      >
+                        This bike needs repairs. Send for maintenance.
+                      </label>
+                    </div>
+                  )}
                 <div className="flex justify-end gap-x-3">
                   <SecondaryButton
                     onClick={() => handleConfirmAction(false)}
