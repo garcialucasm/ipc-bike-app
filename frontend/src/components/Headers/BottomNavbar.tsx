@@ -40,7 +40,7 @@ const BottomNavbar = () => {
             }
           >
             <li
-              className={`flex h-14 w-full flex-col items-center justify-center border-t-4 sm:h-16 ${pathname === NavigationPaths.singleBookingSecure ? "border-blue-700 text-blue-700" : "border-slate-100"}`}
+              className={`flex h-14 w-full flex-col items-center justify-center border-t-4 sm:h-16 ${pathname === NavigationPaths.singleBookingSecure || pathname === NavigationPaths.singleBookingPublic ? "border-blue-700 text-blue-700" : "border-slate-100"}`}
             >
               <PersonSimpleBike size={28} />
               <span className="block text-xxs">Single Booking</span>

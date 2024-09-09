@@ -368,7 +368,7 @@ export default function HeaderNavbarApp() {
                     : NavigationPaths.singleBookingPublic
                 }
                 className={`group flex items-center rounded-2xl p-2 ${
-                  pathname === NavigationPaths.singleBookingSecure
+                  (pathname === NavigationPaths.singleBookingSecure || pathname === NavigationPaths.singleBookingPublic)
                     ? "header-menu-item-current-page"
                     : "hover:bg-slate-200 hover:text-blue-700"
                 }`}
