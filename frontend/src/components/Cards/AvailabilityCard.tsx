@@ -44,11 +44,6 @@ function AvailabilityCard(props: {
             ) {
               inUseCount++
             }
-            console.log("🚀 ~ allBookings.forEach ~ booking:", booking)
-            console.log(
-              "🚀 ~ allBookings.forEach ~ booking.status:",
-              booking.status
-            )
           })
           setOpenedBookings({ bookedCount, inUseCount })
         } catch (error) {

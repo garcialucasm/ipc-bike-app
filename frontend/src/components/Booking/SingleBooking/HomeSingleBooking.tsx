@@ -54,17 +54,15 @@ const HomeSingleBooking: NextPage = () => {
 
   async function verifyOpenedBookingsByUser() {
     if (!isSecure) {
-      const token = getTokenFromCookies("ipcBikeApp_previousBookings")
-      if (token) {
-        const result = await previousBookingsFetchApi(token)
-        const userHasOpenedBookings =
-          result.allBookings.length === 0 ? false : true
-        setHasOpenedBoking(userHasOpenedBookings)
-        console.log(
-          "🚀 ~ verifyOpenedBookingsByUser ~ hasOpenedBooking:",
-          hasOpenedBooking
-        )
-      }
+      try {
+        const token = getTokenFromCookies("ipcBikeApp_previousBookings")
+        if (token) {
+          const result = await previousBookingsFetchApi(token)
+          const userHasOpenedBookings =
+            result.allBookings.length === 0 ? false : true
+          setHasOpenedBoking(userHasOpenedBookings)
+        }
+      } catch { console.log("No previous Bookings were found")}
     }
   }
 

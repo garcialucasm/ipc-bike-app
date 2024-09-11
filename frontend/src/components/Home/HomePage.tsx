@@ -22,7 +22,7 @@ const HomePage = () => {
   const [showTooltip, setShowTooltip] = useState(false)
 
   function handleBookBikeButton() {
-    router.push(NavigationPaths.singleBookingPublic)
+    router.push(NavigationPaths.homeAppPublic)
   }
 
   function handleKeykeeperButton() {

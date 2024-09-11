@@ -1,34 +1,38 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt, { JwtPayload } from "jsonwebtoken"
 
-import * as fs from 'fs';
-import { Router, RouterOptions } from 'express'
-import IBookingService from '../services/booking.service'
-import { validateRoom, validateUserName, validateBikeNumbering } from '../models/validators'
-import { BookingDTO, BookingStatusDTO } from '../dto/booking.dto'
-import { Booking, BookingStatus, BookingType } from '../models/booking.model'
-import { getLogger } from '../logger'
-import { generatePublicAsyncToken, getDecodedToken, validateAccountPermission } from '../utils/auth';
-import { AccountType } from '../models/account.model'
-
-let publicJwtKey: string = ""
-
-if (process.env.PUBLIC_JWT_KEY_FILE) {
-  publicJwtKey = fs.readFileSync(process.env.PUBLIC_JWT_KEY_FILE, 'utf8')
-} else if (process.env.PUBLIC_JWT_KEY) {
-  publicJwtKey = process.env.PUBLIC_JWT_KEY;
-}
+import { Router, RouterOptions } from "express"
+import IBookingService from "../services/booking.service"
+import {
+  validateRoom,
+  validateUserName,
+  validateBikeNumbering,
+} from "../models/validators"
+import { BookingDTO, BookingStatusDTO } from "../dto/booking.dto"
+import { Booking, BookingStatus, BookingType } from "../models/booking.model"
+import { getLogger } from "../logger"
+import {
+  generatePublicAsyncToken,
+  getDecodedToken,
+  validateAccountPermission,
+} from "../utils/auth"
+import { AccountType } from "../models/account.model"
 
 function toBookingDTO(booking: Booking): BookingDTO {
   return {
     id: booking.ID ?? 0,
-    status: BookingStatus[booking.Status as keyof typeof BookingStatus].toLowerCase(),
+    status:
+      BookingStatus[booking.Status as keyof typeof BookingStatus].toLowerCase(),
     user: booking.User.Name,
     term: booking.User.Term,
     room: booking.User.Room,
-    bikeType: booking.Type == BookingType.SINGLE ?
-      booking.Bike[0].Size.toLowerCase() : booking.Bike.map(bike => bike.Size.toLowerCase()),
-    bike: booking.Type == BookingType.SINGLE ?
-      booking.Bike[0].Numbering.toString() : booking.Bike.map(bike => bike.Numbering.toString()),
+    bikeType:
+      booking.Type == BookingType.SINGLE
+        ? booking.Bike[0].Size.toLowerCase()
+        : booking.Bike.map((bike) => bike.Size.toLowerCase()),
+    bike:
+      booking.Type == BookingType.SINGLE
+        ? booking.Bike[0].Numbering.toString()
+        : booking.Bike.map((bike) => bike.Numbering.toString()),
     createdAt: booking.CreatedAt,
     confirmedAt: booking.ConfirmedAt ?? null,
     returnedAt: booking.ReturnedAt ?? null,
@@ -38,34 +42,37 @@ function toBookingDTO(booking: Booking): BookingDTO {
     returnedByAccount: booking.ReturnedByAccount ?? null,
     canceledByAccount: booking.CanceledByAccount ?? null,
     returnedCondition: booking.ReturnedCondition ?? "",
-    notes: booking.Notes ?? ""
+    notes: booking.Notes ?? "",
   }
 }
 
-function toBookingStatusDTO(status: Map<BookingStatus, number>): BookingStatusDTO {
+function toBookingStatusDTO(
+  status: Map<BookingStatus, number>
+): BookingStatusDTO {
   return {
     inuse: status.get(BookingStatus.DELIVERED) ?? 0,
     booked: status.get(BookingStatus.BOOKED) ?? 0,
     canceled: status.get(BookingStatus.CANCELED) ?? 0,
-    returned: status.get(BookingStatus.RETURNED) ?? 0
+    returned: status.get(BookingStatus.RETURNED) ?? 0,
   }
 }
 
-export default function bookingController(bookingService: IBookingService, routerOptions?: RouterOptions) {
-
+export default function bookingController(
+  bookingService: IBookingService,
+  routerOptions?: RouterOptions
+) {
   const router: Router = Router(routerOptions)
-  const logger = getLogger('BookingController')
+  const logger = getLogger("BookingController")
 
   router.get("/secure/booking/status", async (req, res) => {
     logger.info("GET /status")
-    bookingService.countBookingsByStatus()
-      .then(statusResult => toBookingStatusDTO(statusResult))
-      .then(statusResult => {
-        res.status(200)
-          .send({ status: statusResult })
+    bookingService
+      .countBookingsByStatus()
+      .then((statusResult) => toBookingStatusDTO(statusResult))
+      .then((statusResult) => {
+        res.status(200).send({ status: statusResult })
       })
   })
-
 
   router.post("/booking/create/single", async (req, res) => {
     logger.info("POST /create/single")
@@ -79,21 +86,24 @@ export default function bookingController(bookingService: IBookingService, route
       validateUserName(userName)
       validateRoom(room)
       validateBikeNumbering(bikeNumbering)
-      bookingService.createSingleBooking(accountId, userName, room, bikeNumbering)
-        .then(async booking => {
-          const publicBookingToken = await generatePublicAsyncToken({userId: booking.User.ID})
+      bookingService
+        .createSingleBooking(accountId, userName, room, bikeNumbering)
+        .then(async (booking) => {
+          const publicBookingToken = await generatePublicAsyncToken({
+            userId: booking.User.ID,
+          })
           logger.debug("createSingleBooking for user", booking.User.ID)
-          res.status(200)
+          res
+            .status(200)
             .send({ booking: toBookingDTO(booking), publicBookingToken })
-        }).catch(error => {
+        })
+        .catch((error) => {
           logger.error(error)
-          res.status(401)
-            .send({ error: error.message })
+          res.status(401).send({ error: error.message })
         })
     } catch (error: any) {
       logger.error(error)
-      res.status(401)
-        .send({ error: error.message })
+      res.status(401).send({ error: error.message })
     }
   })
 
@@ -180,30 +190,34 @@ export default function bookingController(bookingService: IBookingService, route
   router.get("/secure/booking/all", (req, res) => {
     logger.info("GET /all")
     let showInactive: boolean = false
-    if (req.query.show_inactive && req.query.show_inactive === 'true') {
+    if (req.query.show_inactive && req.query.show_inactive === "true") {
       showInactive = true
     }
 
-    bookingService.findAll(showInactive)
-      .then(bookings =>
-        bookings.map(booking => toBookingDTO(booking))
-      )
-      .then(bookings => {
+    bookingService
+      .findAll(showInactive)
+      .then((bookings) => bookings.map((booking) => toBookingDTO(booking)))
+      .then((bookings) => {
         logger.debug(`findAll successfully`)
-        res.status(200)
-          .send({ bookings: bookings })
-      }).catch(error => {
+        res.status(200).send({ bookings: bookings })
+      })
+      .catch((error) => {
         logger.error(error)
-        res.status(401)
-          .send({ error: error.message })
+        res.status(401).send({ error: error.message })
       })
   })
 
   router.get("/booking/previous/:publicToken", async (req, res) => {
     logger.info("GET /booking/previous/:publicToken/", req.params.publicToken)
-    let hideInactive: boolean = true
-    if (req.query.hide_inactive && req.query.hide_inactive === "false") {
-      hideInactive = false
+    const publicJwtKey = process.env.PUBLIC_JWT_KEY
+    let showInactive: boolean = false
+
+    if (!publicJwtKey) {
+      throw new Error("Public JWT key is not defined.")
+    }
+
+    if (req.query.show_inactive && req.query.show_inactive === "true") {
+      showInactive = true
     }
 
     const publicToken = req.params.publicToken
@@ -212,7 +226,7 @@ export default function bookingController(bookingService: IBookingService, route
 
     try {
       bookingService
-        .findByUserId(parseInt(userId), hideInactive)
+        .findByUserId(parseInt(userId), showInactive)
         .then((bookings) => bookings.map((booking) => toBookingDTO(booking)))
         .then((bookings) => {
           logger.debug("findByUserId successfully")

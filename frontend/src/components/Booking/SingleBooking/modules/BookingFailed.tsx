@@ -32,7 +32,7 @@ function BookingFailed(props: { errorMessage?: string }) {
       </div>
       <div className="link-primary w-full">
         <Link href={isSecure ? NavigationPaths.homeAppSecure : NavigationPaths.homeAppPublic}>
-          <span className="block px-4 py-2">Go to Main Page</span>
+          <span className="block px-4 py-2">Go to Home Page</span>
         </Link>
       </div>
     </>

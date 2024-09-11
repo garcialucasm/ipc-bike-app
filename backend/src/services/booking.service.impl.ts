@@ -223,12 +223,12 @@ export default class BookingService implements IBookingService {
 
   async findByUserId(
     userId: number,
-    hideInactive: boolean
+    showInactive: boolean
   ): Promise<Booking[]> {
     logger.debug("findByUserId")
 
     let allBookings = await this.bookingRepository.findByUser(userId)
-    if (hideInactive) {
+    if (showInactive) {
       const filteredBookings = allBookings.filter(
         (booking) =>
           booking.Status === BookingStatus.BOOKED ||

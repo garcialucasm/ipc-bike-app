@@ -53,5 +53,5 @@ export default interface IBookingService {
   /**
     * List opened booking by Id and CreatedAt
     */
-  findByUserId(userId: number, hideInactive: boolean): Promise<Booking[]>;
+  findByUserId(userId: number, showInactive: boolean): Promise<Booking[]>;
 }
