@@ -278,4 +278,19 @@ export default class BookingRepository implements IBookingRepository {
 
         return ans
     }
+
+    async findExpiredBookings(): Promise<Booking[]> {
+        logger.silly("findExpiredBookings");
+        const timeToExpire = new Date(Date.now() - 2 * 60 * 60 * 1000);
+        let query = {
+            text: `SELECT ${this.findSelectFields.join(', ')}
+                   FROM booking bk
+                   WHERE bk.status = $1 AND bk.created_at < $2`,
+            values: [BookingStatus.BOOKED, timeToExpire],
+            rowMode: 'array'
+        };
+        let result = await this.client.query(query);
+        let objectRows = result.rows.map(row => toObj(this.findSelectFields, row));
+        return toBookingArray(objectRows);
+    }
 }

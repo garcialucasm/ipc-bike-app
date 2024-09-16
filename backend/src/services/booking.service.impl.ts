@@ -1,4 +1,3 @@
-
 import { getLogger } from "../logger";
 import { Bike, BikeStatus } from "../models/bike.model";
 import { Booking, BookingStatus, BookingType } from "../models/booking.model";
@@ -226,4 +225,16 @@ export default class BookingService implements IBookingService {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+  async cancelExpiredBookings(): Promise<void> {
+    logger.debug("cancelExpiredBookings");
+    const expiredBookings = await this.bookingRepository.findExpiredBookings();
+    for (const booking of expiredBookings) {
+        try {
+            await this.cancel(booking.CreatedByAccount ?? 0, booking.ID!);
+            logger.info(`Canceled expired booking with ID: ${booking.ID}`);
+        } catch (error) {
+            logger.error(`Failed to cancel expired booking with ID: ${booking.ID}, error: ${error}`);
+        }
+    }
+  }
 }

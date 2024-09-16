@@ -73,4 +73,12 @@ const server = app.listen(3000, () => {
   logger.info("Express server started on port 3000")
 })
 
+setInterval(async () => {
+  try {
+      await bookingService.cancelExpiredBookings();
+  } catch (error) {
+      console.error("Error running cancelExpiredBookings:", error);
+  }
+}, 5 * 60 * 1000);
+
 export { app, server, db }

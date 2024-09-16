@@ -49,4 +49,9 @@ export default interface IBookingService {
     * Count all booking group by status
     */
   countBookingsByStatus(): Promise<Map<BookingStatus, number>>;
+
+  /**
+    * Cancel expired bookings with the set deadline
+    */
+  cancelExpiredBookings(): Promise<void>;
 }
