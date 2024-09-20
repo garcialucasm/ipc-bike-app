@@ -56,6 +56,10 @@ export default class MockBookingRepository implements IBookingRepository {
     throw new Error()
   }
 
+  findExpiredBookings(): Promise<Booking[]> {
+    throw new Error()
+  }
+
   async findAll(): Promise<Booking[]> {
 
     let result = Array.from(this.bookings.values())

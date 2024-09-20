@@ -79,6 +79,6 @@ setInterval(async () => {
   } catch (error) {
       console.error("Error running cancelExpiredBookings:", error);
   }
-}, 5 * 60 * 1000);
+}, process.env.EXPIRE_TIME ? parseInt(process.env.EXPIRE_TIME) : 5 * 60 * 1000);
 
 export { app, server, db }
