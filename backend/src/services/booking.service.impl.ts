@@ -1,4 +1,3 @@
-
 import { getLogger } from "../logger";
 import { Bike, BikeStatus } from "../models/bike.model";
 import { Booking, BookingStatus, BookingType } from "../models/booking.model";
@@ -196,6 +195,19 @@ export default class BookingService implements IBookingService {
 
     return updatedBooking
   }
+  
+  async autoCancel(bookingId: number): Promise<Booking> {
+    logger.debug("cancel")
+    
+    let booking: Booking = await this.bookingRepository.findById(bookingId)
+    booking.Status = BookingStatus.CANCELED
+    booking.CanceledAt = new Date()
+    booking.User = await this.userService.changeStatus(booking.User, UserStatus.FREE)
+    booking.Bike[0] = await this.bikeService.changeStatus(booking.Bike[0], BikeStatus.FREE)
+    let updatedBooking = await this.bookingRepository.update(booking)
+
+    return updatedBooking
+  }
 
   async findAll(showInactive: boolean): Promise<Booking[]> {
     logger.debug("findAll")
@@ -244,4 +256,16 @@ export default class BookingService implements IBookingService {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+  async cancelExpiredBookings(): Promise<void> {
+    logger.debug("cancelExpiredBookings");
+    const expiredBookings = await this.bookingRepository.findExpiredBookings();
+    for (const booking of expiredBookings) {
+        try {
+            await this.autoCancel(booking.ID!);
+            logger.info(`Canceled expired booking with ID: ${booking.ID}`);
+        } catch (error) {
+            logger.error(`Failed to cancel expired booking with ID: ${booking.ID}, error: ${error}`);
+        }
+    }
+  }
 }

@@ -117,9 +117,18 @@ export default class BookingRepository implements IBookingRepository {
                 inner join bike b on b.id = bb.bike_id
                 order by bk.id`
 
-
     countBookingsByStatusStmt: string = `select bk.status, count(bk.status)
                 from booking bk group by bk.status`
+       
+    findBookingsByStatusAndTimeStmt: string = `
+                SELECT ${this.findSelectFields.join(', ')}
+                FROM booking bk
+                INNER JOIN "user" u ON bk.user_id = u.id 
+                INNER JOIN booking_bike bb ON bk.id = bb.booking_id 
+                INNER JOIN bike b ON b.id = bb.bike_id
+                WHERE bk.status = $1 AND bk.created_at < $2
+                ORDER BY bk.id
+            `
 
     constructor(client: Client) {
         this.client = client
@@ -284,5 +293,43 @@ export default class BookingRepository implements IBookingRepository {
         })
 
         return ans
+    }
+
+    async findExpiredBookings(): Promise<Booking[]> {
+        logger.silly("findExpiredBookings");
+    
+        const bookingExpirationTime = new Date(
+          Date.now() -
+            (process.env.BOOKING_EXPIRATION_TIME
+              ? parseInt(process.env.BOOKING_EXPIRATION_TIME)
+              : 2 * 60 * 60 * 1000)
+        )
+    
+        logger.debug(`Checking for bookings created before: ${bookingExpirationTime.toISOString()}`);
+    
+        let query = {
+            text: this.findBookingsByStatusAndTimeStmt,
+            values: [BookingStatus.BOOKED, bookingExpirationTime],
+            rowMode: 'array'
+        };
+    
+        try {
+            let result = await this.client.query(query);
+    
+            logger.debug(`Found ${result.rowCount} expired bookings.`);
+    
+            if (!result.rowCount) {
+                return [];
+            }
+    
+            let objectRows = result.rows.map(row => toObj(this.findSelectFields, row));
+    
+            logger.silly("Booking objects:", objectRows);
+    
+            return toBookingArray(objectRows);
+        } catch (error) {
+            logger.error("Error in findExpiredBookings:", error);
+            throw new Error("Failed to retrieve expired bookings");
+        }
     }
 }

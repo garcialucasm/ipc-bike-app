@@ -54,6 +54,9 @@ export default class UserService implements IUserService {
 
   async changeStatus(user: User, status: UserStatus): Promise<User> {
     logger.debug("changeStatus")
+    if (user.Status === status){
+      return user
+    }
     const transitions = this.userStatusTransitions.get(user.Status)
     if (transitions?.includes(status)) {
       user.Status = status;

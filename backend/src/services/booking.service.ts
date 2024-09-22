@@ -32,12 +32,20 @@ export default interface IBookingService {
   returnBike(accountId: number, bookingId: number): Promise<Booking>;
 
   /**
-   * Given a bookingId, if it's in BOOKED state, move it to CANCELED state,
+   * Given a bookingId, if it's in BOOKED or INUSE state, move it to CANCELED state,
    * update both user and bike to FREE state
    * returns the updated Booking object 
    * @param booking 
    */
   cancel(accountId: number, bookingId: number): Promise<Booking>;
+
+  /**
+   * Given a bookingId, if it's in BOOKED state and time is expired, move it to CANCELED state,
+   * update both user and bike to FREE state
+   * returns the updated Booking object 
+   * @param booking 
+   */
+  autoCancel(bookingId: number): Promise<Booking>;
 
   /**
    * List all bookings in BOOKED state
@@ -54,4 +62,9 @@ export default interface IBookingService {
     * List opened booking by Id and CreatedAt
     */
   findByUserId(userId: number, showInactive: boolean): Promise<Booking[]>;
+
+  /**
+    * Cancel expired bookings with the set deadline
+    */
+  cancelExpiredBookings(): Promise<void>;
 }
