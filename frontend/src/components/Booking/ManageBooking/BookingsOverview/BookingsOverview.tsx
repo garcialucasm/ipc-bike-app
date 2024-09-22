@@ -46,7 +46,6 @@ function BookingsOverview() {
   const isAuth = accountData?.isAuthenticated || false
   const [reloadData, setReloadData] = useState(false)
   const [isMaintenanceChecked, setIsMaintenanceChecked] = useState(false)
-  const [timeRemaining, setTimeRemaining] = useState<string | null>(null)
   const [bookingData, setBookingData] = useState<{
     allBookings: any
     error: string | null
@@ -96,6 +95,7 @@ function BookingsOverview() {
 
   const { allBookings: allBookings, error } = bookingData
 
+  /* ---------------- Handle info button to redirect to modal --------------- */
   async function handleClickInfo(booking: Booking) {
     setModalAction((prev) => ({
       ...prev,
@@ -106,6 +106,7 @@ function BookingsOverview() {
     }))
   }
 
+  /* ---------------- Handle cancel button to redirect to modal --------------- */
   async function handleClickCancellation(booking: Booking) {
     const bookingStatus = booking.status && booking.status
     setModalAction((prev) => ({
@@ -127,6 +128,7 @@ function BookingsOverview() {
     }
   }
 
+  /* ---------------- Handle confirm button to redirect to modal --------------- */
   async function handleClickConfirmation(booking: Booking) {
     const bookingStatus = booking.status && booking.status
     setModalAction((prev) => ({
@@ -148,6 +150,7 @@ function BookingsOverview() {
     }
   }
 
+  /* ------------------------ Handle confirm action modal ------------------------ */
   async function handleConfirmAction(confirm: boolean) {
     if (confirm && modalAction.booking.id && modalAction.booking.status) {
       const { id, status } = modalAction.booking
@@ -187,6 +190,7 @@ function BookingsOverview() {
 
   async function handleServerResponse(response: any) {
     if (response.data) {
+      // If the request is successful, proceed with the desired actions
       let actionMessage: string = "Action confirmed"
       const bookingStatus =
         modalAction.booking.status &&
@@ -218,6 +222,7 @@ function BookingsOverview() {
         resultMessage: response.error,
       }))
     } else {
+      // Handle unexpected errors or errors when trying to fetch data
       setModalAction((prev) => ({
         ...prev,
         isConfirmed: false,
@@ -265,31 +270,6 @@ function BookingsOverview() {
       fetchPublicPreviousBookings()
     }
   }, [reloadData, isAuth])
-
-  useEffect(() => {
-    const calculateTimeRemaining = (createdAt: string) => {
-      const expirationTime = new Date(createdAt).getTime() + 2 * 60 * 60 * 1000; // 2 hours from createdAt
-      const now = new Date().getTime();
-      const timeDiff = expirationTime - now;
-
-      if (timeDiff > 0) {
-        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-        return `${hours}h ${minutes}m`;
-      } else {
-        return null;
-      }
-    };
-
-    const interval = setInterval(() => {
-      if (modalAction.booking.status === BookingStatus.BOOKED && modalAction.booking.createdAt) {
-        const remainingTime = calculateTimeRemaining(modalAction.booking.createdAt);
-        setTimeRemaining(remainingTime);
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [modalAction.booking]);
 
   if (!allBookings || allBookings.length === 0) {
     return <EmptyBookingsOverview />
@@ -358,12 +338,7 @@ function BookingsOverview() {
           </table>
         </div>
 
-        {modalAction.booking.status === BookingStatus.BOOKED && timeRemaining && (
-          <div className="flex justify-center text-red-500">
-            Reservation expires in: {timeRemaining}
-          </div>
-        )}
-
+        {/* -------------------------- Modal: Confirm action -------------------------- */}
         {modalAction.isOpen &&
           modalAction.actionToConfirm !== BookingModalActions.RESPONSE && (
             <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50 backdrop-blur">
@@ -417,6 +392,7 @@ function BookingsOverview() {
             </div>
           )}
 
+        {/* -------------------------- Modal: Server response -------------------------- */}
         {modalAction.isOpen &&
           modalAction.actionToConfirm == BookingModalActions.RESPONSE && (
             <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50 backdrop-blur">
