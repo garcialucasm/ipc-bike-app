@@ -59,6 +59,11 @@ export default interface IBookingService {
   countBookingsByStatus(): Promise<Map<BookingStatus, number>>;
 
   /**
+    * List opened booking by Id and CreatedAt
+    */
+  findByUserId(userId: number, showInactive: boolean): Promise<Booking[]>;
+
+  /**
     * Cancel expired bookings with the set deadline
     */
   cancelExpiredBookings(): Promise<void>;

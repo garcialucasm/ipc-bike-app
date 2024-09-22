@@ -101,6 +101,29 @@ export function generateAsyncToken(payload: { accountId: string, accountName: st
   });
 }
 
+export function generatePublicAsyncToken(payload: { userId?: number }): Promise<string> {
+  logger.debug("generatePublicAsyncToken")
+  return new Promise((resolve, reject) => {
+
+    if (!privateJwtKey) {
+      logger.debug("JWT PRIVATE KEY rejected")
+      reject(new Error("JWT PRIVATE KEY rejected."));
+      return;
+    }
+
+    jwt.sign(payload, privateJwtKey, { algorithm: 'RS256', expiresIn: '180d' }, (err, token) => {
+      if (err) {
+        reject(err);
+        logger.debug("Error generating token", err)
+      } else {
+        if (token) {
+          resolve(token);
+        }
+      }
+    });
+  });
+}
+
 export async function validateAccountPermission(req: Request, expectedAccountTypes: AccountType[]): Promise<boolean> {
   logger.debug("validateAccountPermission")
   

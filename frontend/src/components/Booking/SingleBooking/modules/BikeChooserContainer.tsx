@@ -71,7 +71,7 @@ function BikeChooserContainer(props: {
       </div>
       <div
         className={`min-h-36 transform transition-transform duration-500 ease-in-out sm:min-h-48 ${
-          isImageSliding ? "translate-x-[450px]" : "translate-x-0"
+          isImageSliding ? "translate-x-[500px]" : "translate-x-0"
         }`}
       >
         <Image

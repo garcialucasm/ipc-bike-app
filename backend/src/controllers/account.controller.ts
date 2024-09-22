@@ -99,7 +99,7 @@ export default function accountController(
         .then((allAccounts) => {
           logger.debug(`findAll successfully`)
           allAccounts.map((account) => toAccountDTO(account))
-          res.status(200).send({ allAccounts: allAccounts })
+          res.status(200).send({ allAccounts })
         })
         .catch((error) => {
           logger.error(error)

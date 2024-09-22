@@ -33,14 +33,14 @@ export default function bikeController(
   const router: Router = Router(routerOptions)
   const logger = getLogger("bikeController")
 
-  router.get("/status", (req, res) => {
+  router.get("/bike/status", (req, res) => {
     logger.info("GET /status")
     bikeService.countBikesByStatus().then((bikeStatus) => {
       res.status(200).send({ status: toStatusDTO(bikeStatus) })
     })
   })
 
-  router.get("/all", (req, res) => {
+  router.get("/bike/all", (req, res) => {
     logger.info("GET /all")
     bikeService
       .findAll()
@@ -54,7 +54,7 @@ export default function bikeController(
       })
   })
 
-  router.put("/maintenance/:id", async (req, res) => {
+  router.put("/secure/bike/maintenance/:id", async (req, res) => {
     try {
       await validateAccountPermission(req, [
         AccountType.KEYKEEPER,

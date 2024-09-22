@@ -22,7 +22,7 @@ export default function NotFound() {
             }
           </p>
           <Link
-            href={NavigationPaths.homeApp}
+            href={NavigationPaths.home}
             className="flex items-center space-x-2 rounded-full bg-blue-600 px-4 py-2 text-gray-100 transition duration-150 hover:bg-blue-700"
             title="Return Home"
           >

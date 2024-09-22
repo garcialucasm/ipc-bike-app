@@ -89,11 +89,13 @@ export default class BookingRepository implements IBookingRepository {
                 order by bk.id`
 
     findAllByUserStmt: string = `select ${this.findSelectFields.join(', ')} 
-                from booking bk inner join "user" u on bk.user_id = u.id 
+                from booking bk 
+                inner join "user" u on bk.user_id = u.id 
                 inner join booking_bike bb on bk.id = bb.booking_id 
                 inner join bike b on b.id = bb.bike_id
-                where u.id = $1
+                where u.id = $1 AND bk.status = ANY($2)
                 order by bk.id`
+
 
     findByStatusStmt: string = `select ${this.findSelectFields.join(', ')} 
                 from booking bk inner join "user" u on bk.user_id = u.id 
@@ -210,11 +212,16 @@ export default class BookingRepository implements IBookingRepository {
         return populateBookingFromRows(objectRows, 0)
     }
 
-    async findByUser(userId: number): Promise<Booking[]> {
+    async findByUser(userId: number, showInactive: boolean): Promise<Booking[]> {
         logger.silly("findByUser")
+    
+        const statuses = showInactive 
+            ? [BookingStatus.RETURNED, BookingStatus.CANCELED] 
+            : [BookingStatus.BOOKED, BookingStatus.DELIVERED];
+    
         let query = {
             text: this.findAllByUserStmt,
-            values: [userId],
+            values: [userId, statuses],
             rowMode: 'array'
         }
 

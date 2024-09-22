@@ -11,7 +11,6 @@ export type AuthContextProps = {
     settingIsAuthenticated: (isAuth: boolean | null) => void;
 };
 
-
 export type SingleBookingContextProps = {
     bookingData: SingleBookingProps;
     settingCurrentSection: (currentSection: SingleBookingSections) => void;

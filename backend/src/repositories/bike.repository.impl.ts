@@ -103,6 +103,7 @@ export default class BikeRepository implements IBikeRepository {
     let query: string = this.findAllStmt
 
     query += createWhereClausule(searchCriteria)
+    query += "ORDER BY numbering"
     let result = await this.client.query(query, Object.values(searchCriteria))
     return result.rows.map(row => this.bikeFromRow(row))
   }

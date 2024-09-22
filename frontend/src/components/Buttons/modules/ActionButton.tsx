@@ -7,7 +7,7 @@ export default function ActionButton({ children, ...attributes }: Props) {
     <button
       type="button"
       {...attributes}
-      className="rounded-full text-slate-500 transition-all duration-200"
+      className="rounded-full text-slate-500"
     >
       {children}
     </button>

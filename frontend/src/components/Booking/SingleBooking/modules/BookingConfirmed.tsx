@@ -1,5 +1,6 @@
 import { useState } from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 import { IconSvgProcessConfirmed } from "@/components/Others/IconsSvg"
 import InfoboxSingleBookingDetails from "./InfoboxSingleBookingDetails"
@@ -7,8 +8,12 @@ import { NavigationPaths } from "@/types/NavigationPaths"
 import PrimaryButton from "@/components/Buttons/PrimaryButton"
 import NextSteps from "./NextSteps"
 
+
 function BookingConfirmed() {
   const [showNextSteps, setShowNextSteps] = useState(false)
+  const pathname = usePathname()
+  const isSecure = pathname.includes("/secure/")
+
 
   return (
     <>
@@ -40,8 +45,8 @@ function BookingConfirmed() {
         </Link>
       </div>
       <div className="link-secondary w-full">
-        <Link href={NavigationPaths.homeApp}>
-          <span className="block px-4 py-2">Go to Main Page</span>
+        <Link href={isSecure ? NavigationPaths.homeAppSecure : NavigationPaths.homeAppPublic}>
+          <span className="block px-4 py-2">Go to Home Page</span>
         </Link>
       </div>
     </>
