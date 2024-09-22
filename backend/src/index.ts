@@ -75,10 +75,11 @@ const server = app.listen(3000, () => {
 
 setInterval(async () => {
   try {
-      await bookingService.cancelExpiredBookings();
+    logger.debug("running cancelExpiredBookings service")
+    await bookingService.cancelExpiredBookings();
   } catch (error) {
-      console.error("Error running cancelExpiredBookings:", error);
+    logger.error("Error running cancelExpiredBookings")
   }
-}, process.env.EXPIRE_TIME ? parseInt(process.env.EXPIRE_TIME) : 5 * 60 * 1000);
+}, process.env.BOOKING_EXPIRATION_CHECK_INTERVAL ? parseInt(process.env.BOOKING_EXPIRATION_CHECK_INTERVAL) : 5 * 60 * 1000);
 
 export { app, server, db }

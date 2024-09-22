@@ -291,13 +291,18 @@ export default class BookingRepository implements IBookingRepository {
     async findExpiredBookings(): Promise<Booking[]> {
         logger.silly("findExpiredBookings");
     
-        const timeToExpire = new Date(Date.now() - 2 * 60 * 60 * 1000);
+        const bookingExpirationTime = new Date(
+          Date.now() -
+            (process.env.BOOKING_EXPIRATION_TIME
+              ? parseInt(process.env.BOOKING_EXPIRATION_TIME)
+              : 2 * 60 * 60 * 1000)
+        )
     
-        logger.debug(`Checking for bookings created before: ${timeToExpire.toISOString()}`);
+        logger.debug(`Checking for bookings created before: ${bookingExpirationTime.toISOString()}`);
     
         let query = {
             text: this.findBookingsByStatusAndTimeStmt,
-            values: [BookingStatus.BOOKED, timeToExpire],
+            values: [BookingStatus.BOOKED, bookingExpirationTime],
             rowMode: 'array'
         };
     
