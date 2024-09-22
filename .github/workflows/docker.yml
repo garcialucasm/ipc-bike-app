@@ -1,0 +1,29 @@
+name: "Build and Pull docker file "
+
+on: 
+  push:
+    tags:
+      - '*'
+
+jobs:
+
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Install doctl'
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      
+      - name: 'Checkout '
+        uses: actions/checkout@main
+      
+      - name: Build container image
+        working-directory: ./backend
+        run: docker build --platform='linux/amd64 '-t ${{ secrets.REGISTRY_NAME }}/backend:${GITHUB_REF_NAME} .
+
+      - name: Log in to DigitalOcean Container Registry with short-lived credentials
+        run: doctl registry login --expiry-seconds 1200
+
+      - name: Push image to DigitalOcean Container Registry
+        run: docker push ${{ secrets.REGISTRY_NAME }}/backend:${GITHUB_REF_NAME}
