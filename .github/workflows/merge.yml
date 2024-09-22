@@ -1,7 +1,7 @@
 name: "Minor change"
 
 on: 
-  pull_request:
+  push:
     branches:
       - main
 
@@ -12,11 +12,11 @@ jobs:
   increase-minor:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v4
       - name: "Bump backend minor"
         working-directory: ./backend 
-        run: npm version minor 
+        run: npm version patch
       - name: Commit changes
         working-directory: ./backend
         run: |
