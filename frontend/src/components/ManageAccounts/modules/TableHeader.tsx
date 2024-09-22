@@ -1,8 +1,4 @@
-interface Props {
-  shouldHideActions?: boolean
-}
-
-function TableHeader({ shouldHideActions }: Props) {
+function TableHeader() {
   return (
     <>
       <thead className="bg-blue-800 text-xs uppercase text-slate-100">
@@ -11,19 +7,17 @@ function TableHeader({ shouldHideActions }: Props) {
             <span className="hidden md:block">Status</span>
           </th>
           <th scope="col" className="px-2 py-3">
-            Bike
+            Name
+          </th>
+          <th scope="col" className="px-2 py-3">
+            Email
           </th>
           <th scope="col" className="px-2 py-3">
             Type
           </th>
-          <th scope="col" className="px-2 py-3">
-            Size
+          <th scope="col" className="px-2 py-3 text-center">
+            Actions
           </th>
-          {shouldHideActions && (
-            <th scope="col" className="px-2 py-3 text-center">
-              Actions
-            </th>
-          )}
         </tr>
       </thead>
     </>

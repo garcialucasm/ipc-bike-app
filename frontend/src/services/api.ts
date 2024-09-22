@@ -22,18 +22,21 @@ export const apiUrls = {
   /* ------------------------------ Account Service ------------------------------ */
   registerAccountUrl: "/auth/secure/register",
   firstRegisterAccountUrl: "/auth/register",
+  allAccountsUrl: "/auth/secure/account/all",
+  toggleAccountActivationUrl: "/auth/secure/account/activation",
 
   /* ----------------------------- Booking Service ---------------------------- */
   activeBookingsUrl: "/secure/booking/all",
   allBookingsUrl: "/secure/booking/all?show_inactive=true",
-  createSingleBookingUrl: "/secure/booking/create/single",
+  previousBookingUrl: "/booking/previous/",
+  createSingleBookingUrl: "/booking/create/single",
   cancelBookingUrl: "/secure/booking/cancel/",
   approveBookingUrl: "/secure/booking/approve/",
   returnBookingUrl: "/secure/booking/return/",
 
   /* ------------------------------ Bike Service ------------------------------ */
-  bikeStatusCounterUrl: "/secure/bike/status",
-  allBikesUrl: "/secure/bike/all",
+  bikeStatusCounterUrl: "/bike/status",
+  allBikesUrl: "/bike/all",
   maintenance: "/secure/bike/maintenance/"
 }
 

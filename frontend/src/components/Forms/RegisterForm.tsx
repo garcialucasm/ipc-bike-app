@@ -12,7 +12,7 @@ import {
 import PrimaryButton from "@/components/Buttons/PrimaryButton"
 import { NavigationPaths } from "@/types/NavigationPaths"
 import InputText from "@/components/Forms/Inputs/InputText"
-import { AccountDTO } from "@/types/AccountType"
+import { AccountRegisterType } from "@/types/AccountType"
 import ActionResult from "../ActionResult/ActionResult"
 import { registerAccountFetchApi } from "@/services/accountApi"
 import InstructionLabel from "../Others/InstructionLabel"
@@ -25,7 +25,7 @@ import { InputErrorMessageInvalidPassword } from "./Inputs/InputErrorMessage"
 import ContainerSingleComponent from "../Containers/ContainerSingleComponent"
 import { ServerResult, initialServerResult } from "@/types/ServerResult"
 
-const initialAccountData: AccountDTO = {
+const initialAccountData: AccountRegisterType = {
   accountName: "",
   email: "",
   password: "",
@@ -42,7 +42,7 @@ function RegisterForm() {
   const [serverResult, setServerResult] =
     useState<ServerResult>(initialServerResult)
   const [formRegisterAccount, setFormRegisterAccount] =
-    useState<AccountDTO>(initialAccountData)
+    useState<AccountRegisterType>(initialAccountData)
   const [errorMessages, setErrorMessages] = useState(initialErrorMessages)
 
   async function handleSubmitForm(event: React.FormEvent<HTMLFormElement>) {
@@ -204,7 +204,7 @@ function RegisterForm() {
           </>
         )}
         <div className="link-secondary w-full">
-          <Link href={NavigationPaths.homeApp}>
+          <Link href={NavigationPaths.homeAppSecure}>
             <span className="block px-4 py-2">Return</span>
           </Link>
         </div>

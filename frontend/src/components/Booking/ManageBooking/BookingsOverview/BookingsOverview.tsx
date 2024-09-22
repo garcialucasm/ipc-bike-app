@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { UserCircle } from "@phosphor-icons/react/dist/ssr/UserCircle"
+import { usePathname } from "next/navigation"
 
 import {
   Booking,
@@ -12,6 +13,7 @@ import {
   returnBookingFetchApi,
   approveBookingFetchApi,
   allBookingsFetchApi,
+  previousBookingsFetchApi,
   cancelBookingFetchApi,
 } from "@/services/bookingApi"
 import StatusIndicator from "@/components/Others/StatusIndicator"
@@ -29,6 +31,7 @@ import ActionButtonInfo from "@/components/Buttons/ActionButtonInfo"
 import { useAuth } from "@/context/auth"
 import { formatDateString } from "@/utils/strings"
 import { toggleMaintenanceFetchApi } from "@/services/bikeApi"
+import { getTokenFromCookies } from "@/app/auth/authUtils"
 
 const messageInitial = "Confirm Action"
 const messageCancelBooking = "Are you sure to cancel this booking?"
@@ -39,6 +42,7 @@ const messageInfoBooking = "Current booking selected"
 
 function BookingsOverview() {
   const { accountData } = useAuth()
+  const pathname = usePathname()
   const isAuth = accountData?.isAuthenticated || false
   const [reloadData, setReloadData] = useState(false)
   const [isMaintenanceChecked, setIsMaintenanceChecked] = useState(false)
@@ -49,6 +53,7 @@ function BookingsOverview() {
     allBookings: null,
     error: null,
   })
+  const isSecure = pathname.includes("/secure/")
   const emptyBooking = {
     user: "",
     term: "",
@@ -61,6 +66,9 @@ function BookingsOverview() {
     createdAt: "",
     confirmedAt: "",
     returnedAt: "",
+    createdByAccount: "",
+    confirmedByAccount: "",
+    returnedByAccount: "",
     returnedCondition: "",
     notes: "",
   }
@@ -247,8 +255,19 @@ function BookingsOverview() {
       setBookingData(result)
     }
 
+    const fetchPublicPreviousBookings = async () => {
+      const token = getTokenFromCookies("ipcBikeApp_previousBookings")
+
+      if (token) {
+        const result = await previousBookingsFetchApi(token)
+        setBookingData(result)
+      }
+    }
+
     if (isAuth) {
       fetchData()
+    } else {
+      fetchPublicPreviousBookings()
     }
   }, [reloadData, isAuth])
 
@@ -294,20 +313,24 @@ function BookingsOverview() {
                         name="info-booking"
                       ></ActionButtonInfo>
                     </div>
-                    <div className="flex" title="Cancel">
-                      <ActionButtonCancel
-                        onClick={() => handleClickCancellation(booking)}
-                        name="cancel-booking"
-                      ></ActionButtonCancel>
-                    </div>
-                    <div className="flex" title="Confirm">
-                      <ActionButtonConfirm
-                        onClick={() => {
-                          handleClickConfirmation(booking)
-                        }}
-                        name="approve-booking"
-                      ></ActionButtonConfirm>
-                    </div>
+                    {isSecure && (
+                      <div className="flex" title="Cancel">
+                        <ActionButtonCancel
+                          onClick={() => handleClickCancellation(booking)}
+                          name="cancel-booking"
+                        ></ActionButtonCancel>
+                      </div>
+                    )}
+                    {isSecure && (
+                      <div className="flex" title="Confirm">
+                        <ActionButtonConfirm
+                          onClick={() => {
+                            handleClickConfirmation(booking)
+                          }}
+                          name="approve-booking"
+                        ></ActionButtonConfirm>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -328,24 +351,25 @@ function BookingsOverview() {
                   dialogMessage={modalAction.dialogMessage}
                   actionToConfirm={modalAction.actionToConfirm}
                 />
-                {modalAction.actionToConfirm ===
-                  BookingModalActions.CONFIRM && (
-                  <div className="flex w-full items-center justify-center px-4 sm:justify-start">
-                    <input
-                      id="default-checkbox"
-                      type="checkbox"
-                      checked={isMaintenanceChecked}
-                      onChange={handleCheckboxChange}
-                      className={`h-4 w-4 rounded-2xl border-gray-300 bg-gray-100 text-blue-600`}
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ms-2 text-sm text-gray-700"
-                    >
-                      This bike needs repairs. Send for maintenance.
-                    </label>
-                  </div>
-                )}
+                {modalAction.actionToConfirm === BookingModalActions.CONFIRM &&
+                  modalAction?.booking?.status?.toUpperCase() ===
+                    BookingStatus.DELIVERED && (
+                    <div className="flex w-full items-center justify-center px-4 sm:justify-start">
+                      <input
+                        id="default-checkbox"
+                        type="checkbox"
+                        checked={isMaintenanceChecked}
+                        onChange={handleCheckboxChange}
+                        className={`h-4 w-4 rounded-2xl border-gray-300 bg-gray-100 text-blue-600`}
+                      />
+                      <label
+                        htmlFor="default-checkbox"
+                        className="ms-2 text-sm text-gray-700"
+                      >
+                        This bike needs repairs. Send for maintenance.
+                      </label>
+                    </div>
+                  )}
                 <div className="flex justify-end gap-x-3">
                   <SecondaryButton
                     onClick={() => handleConfirmAction(false)}

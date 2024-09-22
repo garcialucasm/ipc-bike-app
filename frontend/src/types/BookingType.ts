@@ -1,21 +1,24 @@
-import { ServerResult } from "./ServerResult";
-import { UserData } from "./UserType";
+import { ServerResult } from "./ServerResult"
+import { UserData } from "./UserType"
 
 export interface Booking {
-  id?: number;
-  user: string;
-  term: string;
-  room: string;
-  bike: string;
-  bikeType: string;
-  bikeCount?: string;
-  status: BookingStatus | null;
-  type: BookingType | null;
-  createdAt?: string;
-  confirmedAt?: string;
-  returnedAt?: string;
-  returnedCondition: string;
-  notes?: string;
+  id?: number
+  user: string
+  term: string
+  room: string
+  bike: string
+  bikeType: string
+  bikeCount?: string
+  status: BookingStatus | null
+  type: BookingType | null
+  createdAt?: string
+  confirmedAt?: string
+  returnedAt?: string
+  createdByAccount?: string
+  confirmedByAccount?: string
+  returnedByAccount?: string
+  returnedCondition: string
+  notes?: string
 }
 
 export enum BookingStatus {
@@ -47,13 +50,13 @@ export enum SingleBookingSections {
 }
 
 export interface SingleBookingProps {
-  currentSection: SingleBookingSections | null;
-  bikeNumbering: string;
-  bikeSize: string | null;
-  bikeType: string | null;
-  userData: UserData;
-  bookingStatus: BookingStatus | null;
-  serverResult: ServerResult | null;
+  currentSection: SingleBookingSections | null
+  bikeNumbering: string
+  bikeSize: string | null
+  bikeType: string | null
+  userData: UserData
+  bookingStatus: BookingStatus | null
+  serverResult: ServerResult | null
 }
 
 export interface SingleBookingDTO {

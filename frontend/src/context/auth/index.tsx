@@ -8,8 +8,9 @@ import { AuthContextProps } from "@/types/ContextType"
 
 export const initialAccountState = {
   id: null,
-  accountName: '',
+  accountName: "",
   isAuthenticated: false,
+  accountType: "",
 }
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps)
 

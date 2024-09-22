@@ -5,9 +5,12 @@ import SecondaryButton from "@/components/Buttons/SecondaryButton"
 import { NavigationPaths } from "@/types/NavigationPaths"
 import { IconSvgLoader } from "@/components/Others/IconsSvg"
 import ContainerSingleComponent from "@/components/Containers/ContainerSingleComponent"
+import { useAuth } from "@/context/auth"
 
 export function EmptyBookingsOverview() {
   const [loading, setLoading] = useState(true)
+  const { accountData } = useAuth()
+  const isAuth = accountData?.isAuthenticated || false
 
   useEffect(() => {
     const loaderTimeout = setTimeout(() => {
@@ -32,17 +35,14 @@ export function EmptyBookingsOverview() {
             To create a new one, please go to the{" "}
             <Link
               className="font-medium text-blue-800"
-              href={NavigationPaths.singleBooking}
+              href={
+                isAuth
+                  ? NavigationPaths.singleBookingSecure
+                  : NavigationPaths.singleBookingPublic
+              }
               prefetch={false}
             >
               Single Booking
-            </Link>{" "}
-            or{" "}
-            <Link
-              className="font-medium text-blue-800"
-              href={NavigationPaths.groupBooking}
-            >
-              Group Booking
             </Link>{" "}
             section.
           </p>{" "}

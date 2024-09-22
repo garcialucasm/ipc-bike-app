@@ -221,6 +221,24 @@ export default class BookingService implements IBookingService {
     return this.bookingRepository.countBookingsByStatus()
   }
 
+  async findByUserId(
+    userId: number,
+    showInactive: boolean
+  ): Promise<Booking[]> {
+    logger.debug("findByUserId")
+
+    let allBookings = await this.bookingRepository.findByUser(userId)
+    if (showInactive) {
+      const filteredBookings = allBookings.filter(
+        (booking) =>
+          booking.Status === BookingStatus.BOOKED ||
+          booking.Status === BookingStatus.DELIVERED
+      )
+      allBookings = filteredBookings
+    }
+    return allBookings
+  }
+  
   /* ---------------------- Function to introduce a delay --------------------- */
   private async delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));

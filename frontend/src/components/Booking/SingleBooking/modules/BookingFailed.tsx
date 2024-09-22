@@ -1,10 +1,13 @@
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 import { IconSvgFeedbackError } from "@/components/Others/IconsSvg"
 import InfoboxSingleBookingDetails from "./InfoboxSingleBookingDetails"
 import { NavigationPaths } from "@/types/NavigationPaths"
 
 function BookingFailed(props: { errorMessage?: string }) {
+  const pathname = usePathname()
+  const isSecure = pathname.includes("/secure/")
   const errorMessage = props.errorMessage
   return (
     <>
@@ -28,8 +31,8 @@ function BookingFailed(props: { errorMessage?: string }) {
         </div>
       </div>
       <div className="link-primary w-full">
-        <Link href={NavigationPaths.homeApp}>
-          <span className="block px-4 py-2">Go to Main Page</span>
+        <Link href={isSecure ? NavigationPaths.homeAppSecure : NavigationPaths.homeAppPublic}>
+          <span className="block px-4 py-2">Go to Home Page</span>
         </Link>
       </div>
     </>

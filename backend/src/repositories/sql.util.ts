@@ -49,7 +49,7 @@ function createWhereClausule(searchCriteria: {}, prefix: string[] = []): string 
             whereArguments.push(`${sanitized} = $${idx + 1}`)
         });
 
-        where += whereArguments.reduce((l, r) => l + " AND " + r)
+        where += whereArguments.reduce((l, r) => l + " AND " + r) + " "
     }
 
     return where

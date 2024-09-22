@@ -9,6 +9,9 @@ export function cleanUpSpaces(s: string): string {
 }
 
 export function toPascalCase(input: string): string {
+  if (!input) {
+    return input
+  }
     return input.replace(/(\w)(\w*)/g, (_, firstChar, rest) => firstChar.toUpperCase() + rest.toLowerCase());
 }
 

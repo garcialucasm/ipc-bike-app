@@ -14,6 +14,7 @@ import { UserCirclePlus } from "@phosphor-icons/react/dist/ssr/UserCirclePlus"
 import { Bicycle } from "@phosphor-icons/react/dist/ssr/Bicycle"
 import { SignOut } from "@phosphor-icons/react/dist/ssr/SignOut"
 import { Info } from "@phosphor-icons/react/dist/ssr/Info"
+import { UserCircleGear } from "@phosphor-icons/react/dist/ssr/UserCircleGear"
 
 import { NavigationPaths } from "@/types/NavigationPaths"
 import Button from "@/components/Buttons/Button"
@@ -22,9 +23,10 @@ import { getDecodedToken, logout } from "@/app/auth/authUtils"
 import { toPascalCase } from "@/utils/strings"
 import { FileText } from "@phosphor-icons/react/dist/ssr/FileText"
 import { useSession } from "next-auth/react"
+import { AccountTypePermission } from "@/types/AccountType"
 
 export default function HeaderNavbarApp() {
-  const { accountData, settingAccountData: settingAccountData } = useAuth()
+  const { accountData, settingAccountData } = useAuth()
   const { data: session } = useSession()
   const [isOpenedAccountMenu, setIsOpenedAccountMenu] = useState(false)
   const [isOpenedSideBar, setIsOpenedSideBar] = useState(false)
@@ -35,6 +37,9 @@ export default function HeaderNavbarApp() {
   const router = useRouter()
   const accountName = accountData?.accountName
   const pathname = usePathname()
+  const isSecure = pathname.includes("/secure")
+  const isCurrentUserAdmin =
+    accountData?.accountType === AccountTypePermission.ADMIN && true
 
   function toggleAlertClosed() {
     setClosedAlert(true)
@@ -53,7 +58,9 @@ export default function HeaderNavbarApp() {
       case NavigationPaths.logout:
         await logout()
         window.location.replace(NavigationPaths.login)
-        return NavigationPaths.homeAppAdmin
+        return NavigationPaths.home
+      case NavigationPaths.home:
+        router.push(NavigationPaths.home)
       default:
         console.error(`Unknown section: ${buttonClicked}`)
         return NavigationPaths.homeWeb
@@ -61,14 +68,16 @@ export default function HeaderNavbarApp() {
   }
 
   function setAccountInfo() {
-    const decodedToken = getDecodedToken()
+    const decodedToken = getDecodedToken("ipcBikeApp_authToken")
     if (decodedToken && !accountData?.isAuthenticated) {
       const accountId = decodedToken.id
       const accountName = toPascalCase(decodedToken.accountName)
+      const accountType = decodedToken.accountType
       settingAccountData({
         id: accountId,
         accountName: accountName,
         isAuthenticated: true,
+        accountType: accountType,
       })
     }
   }
@@ -212,41 +221,47 @@ export default function HeaderNavbarApp() {
                             </p>
                           </div>
                         </div>
-                        {/* <Link
-                          href={NavigationPaths.profile}
-                          className="text-slate-400"
-                          onClick={() => setIsOpenedAccountMenu(false)}
-                        >
-                          <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
-                            <div className="flex w-fit items-center">
-                              <User size={20} />
-                              <div className="px-2">Profile</div>
-                            </div>
-                          </div>
-                        </Link> */}
-                        <Link
-                          href={NavigationPaths.register}
-                          className="text-slate-700"
-                          onClick={() => setIsOpenedAccountMenu(false)}
-                        >
-                          <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
-                            <div className="flex w-fit items-center">
-                              <UserCirclePlus size={20} />
-                              <div className="px-2">Register</div>
-                            </div>
-                          </div>
-                        </Link>
-                        <Link
-                          href={NavigationPaths.inventory}
-                          onClick={() => setIsOpenedAccountMenu(false)}
-                        >
-                          <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
-                            <div className="flex w-fit items-center">
-                              <Bicycle size={20} />
-                              <div className="px-2">Inventory</div>
-                            </div>
-                          </div>
-                        </Link>
+                        {isSecure && (
+                          <>
+                            {/* <Link
+                              href={NavigationPaths.register}
+                              className="text-slate-700"
+                              onClick={() => setIsOpenedAccountMenu(false)}
+                            >
+                              <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
+                                <div className="flex w-fit items-center">
+                                  <UserCirclePlus size={20} />
+                                  <div className="px-2">Register</div>
+                                </div>
+                              </div>
+                            </Link> */}
+                            {isCurrentUserAdmin && (
+                              <Link
+                                href={NavigationPaths.accountManager}
+                                className="text-slate-700"
+                                onClick={() => setIsOpenedAccountMenu(false)}
+                              >
+                                <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
+                                  <div className="flex w-fit items-center">
+                                    <UserCircleGear size={20} />
+                                    <div className="px-2">Manage Accounts</div>
+                                  </div>
+                                </div>
+                              </Link>
+                            )}
+                            <Link
+                              href={NavigationPaths.inventory}
+                              onClick={() => setIsOpenedAccountMenu(false)}
+                            >
+                              <div className="block px-10 py-2 hover:bg-slate-100 hover:text-blue-700">
+                                <div className="flex w-fit items-center">
+                                  <Bicycle size={20} />
+                                  <div className="px-2">Inventory</div>
+                                </div>
+                              </div>
+                            </Link>
+                          </>
+                        )}
                         {/* <Link
                           href={NavigationPaths.statistics}
                           className="text-slate-400"
@@ -283,18 +298,33 @@ export default function HeaderNavbarApp() {
                             </div>
                           </div>
                         </a>
-                        <Button
-                          onClick={() => handleClick(NavigationPaths.logout)}
-                          name={NavigationPaths.logout}
-                          className="w-full text-left text-rose-600"
-                        >
-                          <div className="block rounded-b-2xl bg-rose-50 px-10 py-2 hover:rounded-b-2xl hover:bg-slate-200 hover:text-blue-700">
-                            <div className="flex w-fit items-center">
-                              <SignOut size={20} weight="fill" />
-                              <div className="px-2">Log out</div>
+                        {isSecure ? (
+                          <Button
+                            onClick={() => handleClick(NavigationPaths.logout)}
+                            name={NavigationPaths.logout}
+                            className="w-full text-left text-rose-600"
+                          >
+                            <div className="block rounded-b-2xl bg-rose-50 px-10 py-2 hover:rounded-b-2xl hover:bg-slate-200 hover:text-blue-700">
+                              <div className="flex w-fit items-center">
+                                <SignOut size={20} weight="fill" />
+                                <div className="px-2">Log out</div>
+                              </div>
                             </div>
-                          </div>
-                        </Button>
+                          </Button>
+                        ) : (
+                          <Button
+                            onClick={() => handleClick(NavigationPaths.home)}
+                            name={NavigationPaths.home}
+                            className="w-full text-left text-rose-600"
+                          >
+                            <div className="block rounded-b-2xl bg-rose-50 px-10 py-2 hover:rounded-b-2xl hover:bg-slate-200 hover:text-blue-700">
+                              <div className="flex w-fit items-center">
+                                <SignOut size={20} weight="fill" />
+                                <div className="px-2">Home Page</div>
+                              </div>
+                            </div>
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -307,14 +337,18 @@ export default function HeaderNavbarApp() {
       <aside
         ref={sidebarMenuRef}
         id="logo-sidebar"
-        className={`${isOpenedSideBar ? "" : "-translate-x-full"} fixed left-0 top-0 z-40 mt-[64px] h-screen w-80 border-r border-slate-200 bg-slate-50 pb-24 pt-8 text-left text-slate-600 transition-transform xl:translate-x-0`}
+        className={`${isOpenedSideBar ? "" : "-translate-x-full"} fixed left-0 top-0 z-40 mt-[64px] h-screen w-[17rem] border-r border-slate-200 bg-slate-50 pb-20 pt-8 text-left text-slate-600 transition-transform xl:translate-x-0`}
         aria-label="Sidebar"
       >
         <div className="flex h-full flex-col justify-between overflow-y-auto px-3 pb-4">
           <ul className="space-y-2 font-medium">
             <li>
               <Link
-                href={NavigationPaths.homeAppAdmin}
+                href={
+                  isSecure
+                    ? NavigationPaths.homeAppAdmin
+                    : NavigationPaths.homeAppPublic
+                }
                 className={`group flex items-center rounded-2xl p-2 ${
                   pathname.includes("/home")
                     ? "header-menu-item-current-page"
@@ -328,9 +362,13 @@ export default function HeaderNavbarApp() {
             </li>
             <li>
               <Link
-                href={NavigationPaths.singleBooking}
+                href={
+                  isSecure
+                    ? NavigationPaths.singleBookingSecure
+                    : NavigationPaths.singleBookingPublic
+                }
                 className={`group flex items-center rounded-2xl p-2 ${
-                  pathname === NavigationPaths.singleBooking
+                  (pathname === NavigationPaths.singleBookingSecure || pathname === NavigationPaths.singleBookingPublic)
                     ? "header-menu-item-current-page"
                     : "hover:bg-slate-200 hover:text-blue-700"
                 }`}
@@ -343,22 +381,41 @@ export default function HeaderNavbarApp() {
                 </span>
               </Link>
             </li>
-            <li className="text-slate-400">
-              <Link
-                href={NavigationPaths.groupBooking}
-                className={`group flex items-center rounded-2xl p-2 ${
-                  pathname === NavigationPaths.groupBooking
-                    ? "header-menu-item-current-page"
-                    : "hover:bg-slate-200 hover:text-blue-700"
-                }`}
-                onClick={toggleSideBarOpened}
-              >
-                <Users size={28} weight="fill" />
-                <span className="ms-3 flex-1 whitespace-nowrap">
-                  Group Booking
-                </span>
-              </Link>
-            </li>
+            {isSecure ? (
+              <li className="text-slate-400">
+                <Link
+                  href={NavigationPaths.groupBookingSecure}
+                  className={`group flex items-center rounded-2xl p-2 ${
+                    pathname === NavigationPaths.groupBookingSecure
+                      ? "header-menu-item-current-page"
+                      : "hover:bg-slate-200 hover:text-blue-700"
+                  }`}
+                  onClick={toggleSideBarOpened}
+                >
+                  <Users size={28} weight="fill" />
+                  <span className="ms-3 flex-1 whitespace-nowrap">
+                    Group Booking
+                  </span>
+                </Link>
+              </li>
+            ) : (
+              <li className="text-slate-400">
+                <Link
+                  href={NavigationPaths.termsOfService}
+                  className={`group flex items-center rounded-2xl p-2 ${
+                    pathname === NavigationPaths.termsOfService
+                      ? "header-menu-item-current-page"
+                      : "hover:bg-slate-200 hover:text-blue-700"
+                  }`}
+                  onClick={toggleSideBarOpened}
+                >
+                  <Info size={28} weight="fill" />
+                  <span className="ms-3 flex-1 whitespace-nowrap">
+                    Rules & Terms
+                  </span>
+                </Link>
+              </li>
+            )}
             <li className="text-slate-400">
               <Link
                 href={NavigationPaths.becomeMember}
@@ -376,11 +433,11 @@ export default function HeaderNavbarApp() {
             {!closedAlert && (
               <div
                 id="dropdown-cta"
-                className="mt-6 hidden w-full rounded-2xl border border-blue-300 bg-slate-100 p-4 xl:inline-block"
+                className="mt-6 hidden w-full rounded-2xl border border-blue-300 bg-slate-100 p-4 text-xs xl:inline-block"
                 role="alert"
               >
                 <div className="mb-3 flex items-center">
-                  <span className="me-2 rounded bg-orange-100 px-2.5 py-0.5 text-sm font-semibold text-orange-800">
+                  <span className="me-2 rounded bg-orange-100 px-2.5 py-0.5 font-semibold text-orange-800">
                     Beta
                   </span>
                   <button
@@ -408,12 +465,12 @@ export default function HeaderNavbarApp() {
                     </svg>
                   </button>
                 </div>
-                <p className="mb-3 text-balance text-sm text-blue-800">
+                <p className="mb-3 text-pretty text-blue-800">
                   If you have any suggestions, feedback, or encounter any
                   difficulties, please feel free to use the form below. 😊
                 </p>
                 <a
-                  className="text-sm font-medium text-blue-800 underline hover:text-blue-900"
+                  className="font-medium text-blue-800 underline hover:text-blue-900"
                   href={NavigationPaths.homeWeb}
                   target="_blank"
                 >
@@ -425,7 +482,7 @@ export default function HeaderNavbarApp() {
           <div className="i static flex flex-col items-center justify-center">
             <Image
               src="/logo-ipc-bike-blue.png"
-              className="min-h-full w-48 p-4"
+              className="min-h-full w-44 p-4 2xl:w-48"
               width={300}
               height={399}
               alt=""

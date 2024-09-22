@@ -50,7 +50,6 @@ function isEmail(s: string): boolean {
 
 function cleanUpSpaces(s: string): string {
   if (!s) {
-    console.error("🚀 ~ cleanUpSpaces ~ s:", s)
     return ""
   }
 
@@ -64,7 +63,6 @@ function cleanUpSpaces(s: string): string {
 
 function sanitizeInput(s: string): string {
   if (!s) {
-    console.error("🚀 ~ sanitizeInput ~ s:", s)
     return ""
   }
   // Remove double or more spaces
