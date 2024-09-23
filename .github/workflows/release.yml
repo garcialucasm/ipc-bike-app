@@ -1,0 +1,25 @@
+name: "Release workflow"
+
+on: 
+  push:
+    branches:
+      - 'release'
+
+permissions:
+  contents: write
+
+jobs:
+  increase-minor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get package json to env variable 
+        run: echo "PACKAGE_JSON=$(jq -c . < package.json)" >> $GITHUB_ENV
+      
+      - name: "Tag release version" 
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a v'${{ fromJson(env.PACKAGE_JSON).version }}' -m "Release Version ${VERSION}"
+          git push
