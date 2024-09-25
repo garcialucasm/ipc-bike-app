@@ -1,6 +1,5 @@
 import Image from "next/image"
 import { useState } from "react"
-import Cookies from "js-cookie"
 
 import { useSingleBookingContext } from "@/context/singleBooking"
 import { SingleBookingSections } from "@/types/BookingType"
@@ -14,6 +13,7 @@ import {
 import { NavigationOptions } from "@/types/NavigationPaths"
 import InstructionLabel from "@/components/Others/InstructionLabel"
 import InputText from "@/components/Forms/Inputs/InputText"
+import { setCookie } from "@/utils/cookies"
 
 function InputStudentData() {
   const { bookingData, settingCurrentSection, settingUserData } =
@@ -46,9 +46,7 @@ function InputStudentData() {
 
     if (isFormValid()) {
       settingCurrentSection(SingleBookingSections.preBookingConfirmation)
-      Cookies.set("ipcBikeApp_singleBookingData", JSON.stringify(userData), {
-        expires: 180,
-      })
+      setCookie("ipcBikeApp_singleBookingData", JSON.stringify(userData), 180)
     }
   }
 

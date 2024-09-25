@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import Cookies from "js-cookie"
 import { usePathname, useRouter } from "next/navigation"
 import { NextPage } from "next"
 
@@ -18,6 +17,7 @@ import { previousBookingsFetchApi } from "@/services/bookingApi"
 import { getTokenFromCookies } from "@/app/auth/authUtils"
 import SecondaryButton from "@/components/Buttons/SecondaryButton"
 import { NavigationPaths } from "@/types/NavigationPaths"
+import { deleteCookie, getCookie } from "@/utils/cookies"
 
 const HomeSingleBooking: NextPage = () => {
   const pathname = usePathname()
@@ -35,17 +35,22 @@ const HomeSingleBooking: NextPage = () => {
   const [hasOpenedBooking, setHasOpenedBoking] = useState(false)
 
   function checkSingleBookingDataCookie() {
-    const cookieValue = Cookies.get("ipcBikeApp_singleBookingData")
+    const cookieValue = getCookie("ipcBikeApp_singleBookingData")
 
     if (cookieValue) {
-      const parsedData = JSON.parse(cookieValue)
+      try {
+        const parsedData = JSON.parse(cookieValue)
 
-      if (parsedData.firstName && parsedData.lastName && parsedData.room) {
-        settingUserData({
-          firstName: parsedData.firstName,
-          lastName: parsedData.lastName,
-          roomNumber: parsedData.room,
-        })
+        if (parsedData.firstName && parsedData.lastName && parsedData.room) {
+          settingUserData({
+            firstName: parsedData.firstName,
+            lastName: parsedData.lastName,
+            roomNumber: parsedData.room,
+          })
+        }
+      } catch (error) {
+        console.error("Error parsing cookie data:", error)
+        deleteCookie("ipcBikeApp_singleBookingData")
       }
     } else {
       settingUserData({ firstName: "", lastName: "", roomNumber: "" })
@@ -62,7 +67,9 @@ const HomeSingleBooking: NextPage = () => {
             result.allBookings.length === 0 ? false : true
           setHasOpenedBoking(userHasOpenedBookings)
         }
-      } catch { console.log("No previous Bookings were found")}
+      } catch {
+        console.log("No previous Bookings were found")
+      }
     }
   }
 
@@ -77,27 +84,25 @@ const HomeSingleBooking: NextPage = () => {
 
   return !isSecure && hasOpenedBooking ? (
     <>
-      {
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50 backdrop-blur">
-          <div className="grid min-w-72 max-w-md gap-y-4 rounded-2xl bg-white p-8 sm:min-w-96">
-            <h2 className="text-lg font-semibold text-gray-800">
-              Booking Limit Reached
-            </h2>
-            <p className="mt-4 text-gray-600">
-              You already have an open booking. Only one booking per user is
-              allowed.
-            </p>
-            <div className="mt-6 flex justify-end gap-x-3">
-              <SecondaryButton
-                onClick={() => router.replace(NavigationPaths.homeAppPublic)}
-                className="btn-secondary w-full max-w-16"
-              >
-                OK
-              </SecondaryButton>
-            </div>
+      <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50 backdrop-blur">
+        <div className="grid min-w-72 max-w-md gap-y-4 rounded-2xl bg-white p-8 sm:min-w-96">
+          <h2 className="text-lg font-semibold text-gray-800">
+            Booking Limit Reached
+          </h2>
+          <p className="mt-4 text-gray-600">
+            You already have an open booking. Only one booking per user is
+            allowed.
+          </p>
+          <div className="mt-6 flex justify-end gap-x-3">
+            <SecondaryButton
+              onClick={() => router.replace(NavigationPaths.homeAppPublic)}
+              className="btn-secondary w-full max-w-16"
+            >
+              OK
+            </SecondaryButton>
           </div>
         </div>
-      }
+      </div>
     </>
   ) : (
     <>
@@ -126,4 +131,5 @@ const HomeSingleBooking: NextPage = () => {
     </>
   )
 }
+
 export default HomeSingleBooking

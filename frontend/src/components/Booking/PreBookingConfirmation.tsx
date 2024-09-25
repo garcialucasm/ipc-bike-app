@@ -1,5 +1,4 @@
 import { useState } from "react"
-import Cookies from "js-cookie"
 
 import { SingleBookingDTO, SingleBookingSections } from "@/types/BookingType"
 import PrimaryButton from "../Buttons/PrimaryButton"
@@ -11,6 +10,7 @@ import InstructionLabel from "../Others/InstructionLabel"
 import { createSingleBookingFetchApi } from "@/services/bookingApi"
 import { joinFirstLastName } from "@/utils/validators"
 import { UserData } from "@/types/UserType"
+import { setCookie } from "@/utils/cookies"
 
 function singleBookingDTO(userData: UserData, bikeNumbering: string) {
   const userName: string = joinFirstLastName(
@@ -69,19 +69,18 @@ const PreBookingConfirmation = () => {
     try {
       settingCurrentSection(SingleBookingSections.isLoading)
       const response = await createSingleBookingFetchApi(bookingFormData)
-
+  
       handleServerResponse(response)
-
+  
       const publicBookingToken = response.data.publicBookingToken
-      Cookies.set("ipcBikeApp_previousBookings", publicBookingToken, {
-        expires: 180,
-      })
+      setCookie("ipcBikeApp_previousBookings", publicBookingToken, 180)
     } catch (error) {
       console.error("Error fetching data:", error)
     } finally {
       settingCurrentSection(SingleBookingSections.bookingConfirmation)
     }
   }
+  
 
   function handleServerResponse(response: any) {
     if (response.data) {
