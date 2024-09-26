@@ -48,6 +48,7 @@ function InputStudentData() {
       settingCurrentSection(SingleBookingSections.preBookingConfirmation)
       Cookies.set("ipcBikeApp_singleBookingData", JSON.stringify(userData), {
         expires: 180,
+        secure: true,
       })
     }
   }
@@ -94,7 +95,7 @@ function InputStudentData() {
   return (
     <>
       <InstructionLabel>Please, enter cyclist information:</InstructionLabel>
-      <div className="flex w-full items-center justify-center gap-y-4 rounded-2xl min-h-[290px] bg-white p-2 text-start">
+      <div className="flex min-h-[290px] w-full items-center justify-center gap-y-4 rounded-2xl bg-white p-2 text-start">
         <Image
           src="/flat-illustration-people-cycling.jpg"
           className="rouded-2xl w-auto"

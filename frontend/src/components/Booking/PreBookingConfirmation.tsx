@@ -75,6 +75,7 @@ const PreBookingConfirmation = () => {
       const publicBookingToken = response.data.publicBookingToken
       Cookies.set("ipcBikeApp_previousBookings", publicBookingToken, {
         expires: 180,
+        secure: true,
       })
     } catch (error) {
       console.error("Error fetching data:", error)
