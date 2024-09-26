@@ -17,7 +17,7 @@ import { previousBookingsFetchApi } from "@/services/bookingApi"
 import { getTokenFromCookies } from "@/app/auth/authUtils"
 import SecondaryButton from "@/components/Buttons/SecondaryButton"
 import { NavigationPaths } from "@/types/NavigationPaths"
-import { deleteCookie, getCookie } from "@/utils/cookies"
+import { getLocalStorage, deleteLocalStorage } from "@/utils/localStorage"
 
 const HomeSingleBooking: NextPage = () => {
   const pathname = usePathname()
@@ -34,12 +34,12 @@ const HomeSingleBooking: NextPage = () => {
   const currentSection = bookingData.currentSection
   const [hasOpenedBooking, setHasOpenedBoking] = useState(false)
 
-  function checkSingleBookingDataCookie() {
-    const cookieValue = getCookie("ipcBikeApp_singleBookingData")
+  function checkSingleBookingDataLocalStorage() {
+    const storageValue = getLocalStorage("ipcBikeApp_singleBookingData")
 
-    if (cookieValue) {
+    if (storageValue) {
       try {
-        const parsedData = JSON.parse(cookieValue)
+        const parsedData = JSON.parse(storageValue)
 
         if (parsedData.firstName && parsedData.lastName && parsedData.room) {
           settingUserData({
@@ -49,8 +49,8 @@ const HomeSingleBooking: NextPage = () => {
           })
         }
       } catch (error) {
-        console.error("Error parsing cookie data:", error)
-        deleteCookie("ipcBikeApp_singleBookingData")
+        console.error("Error parsing local storage data:", error)
+        deleteLocalStorage("ipcBikeApp_singleBookingData")
       }
     } else {
       settingUserData({ firstName: "", lastName: "", roomNumber: "" })
@@ -74,7 +74,7 @@ const HomeSingleBooking: NextPage = () => {
   }
 
   useEffect(() => {
-    checkSingleBookingDataCookie()
+    checkSingleBookingDataLocalStorage()
     settingBikeNumbering("")
     settingBikeType("")
     settingServerResult({ isConfirmed: null, resultMessage: "" })

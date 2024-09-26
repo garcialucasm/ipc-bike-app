@@ -10,7 +10,7 @@ import InstructionLabel from "../Others/InstructionLabel"
 import { createSingleBookingFetchApi } from "@/services/bookingApi"
 import { joinFirstLastName } from "@/utils/validators"
 import { UserData } from "@/types/UserType"
-import { setCookie } from "@/utils/cookies"
+import { setLocalStorage } from "@/utils/localStorage"
 
 function singleBookingDTO(userData: UserData, bikeNumbering: string) {
   const userName: string = joinFirstLastName(
@@ -73,14 +73,13 @@ const PreBookingConfirmation = () => {
       handleServerResponse(response)
   
       const publicBookingToken = response.data.publicBookingToken
-      setCookie("ipcBikeApp_previousBookings", publicBookingToken, 180)
+      setLocalStorage("ipcBikeApp_previousBookings", publicBookingToken)
     } catch (error) {
       console.error("Error fetching data:", error)
     } finally {
       settingCurrentSection(SingleBookingSections.bookingConfirmation)
     }
   }
-  
 
   function handleServerResponse(response: any) {
     if (response.data) {

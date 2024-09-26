@@ -13,7 +13,7 @@ import {
 import { NavigationOptions } from "@/types/NavigationPaths"
 import InstructionLabel from "@/components/Others/InstructionLabel"
 import InputText from "@/components/Forms/Inputs/InputText"
-import { setCookie } from "@/utils/cookies"
+import { setLocalStorage } from "@/utils/localStorage"
 
 function InputStudentData() {
   const { bookingData, settingCurrentSection, settingUserData } =
@@ -46,7 +46,7 @@ function InputStudentData() {
 
     if (isFormValid()) {
       settingCurrentSection(SingleBookingSections.preBookingConfirmation)
-      setCookie("ipcBikeApp_singleBookingData", JSON.stringify(userData), 180)
+      setLocalStorage("ipcBikeApp_singleBookingData", JSON.stringify(userData))
     }
   }
 
@@ -92,7 +92,7 @@ function InputStudentData() {
   return (
     <>
       <InstructionLabel>Please, enter cyclist information:</InstructionLabel>
-      <div className="flex w-full items-center justify-center gap-y-4 rounded-2xl min-h-[290px] bg-white p-2 text-start">
+      <div className="flex min-h-[290px] w-full items-center justify-center gap-y-4 rounded-2xl bg-white p-2 text-start">
         <Image
           src="/flat-illustration-people-cycling.jpg"
           className="rouded-2xl w-auto"
