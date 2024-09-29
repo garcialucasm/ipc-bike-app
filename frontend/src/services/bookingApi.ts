@@ -33,7 +33,9 @@ export async function allBookingsFetchApi(showInactive: boolean = true) {
 /* ------------------------- Show last booking ------------------------- */
 export async function previousBookingsFetchApi(publicBookingToken: string) {
   try {
-    const response = await ApiHeader.get(apiUrls.previousBookingUrl + publicBookingToken);
+    const response = await ApiHeader.get(apiUrls.previousBookingUrl, {
+      headers: { Authorization: `Bearer ${publicBookingToken}` },
+    });
     const allBookings = response.data.bookings;
     return { allBookings, error: null };
   } catch (error: any) {
