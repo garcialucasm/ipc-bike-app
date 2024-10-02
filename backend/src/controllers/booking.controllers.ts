@@ -207,41 +207,32 @@ export default function bookingController(
       })
   })
 
-router.get("/booking/previous", async (req, res) => {
-  logger.info("GET /booking/previous/", req.headers.authorization)
-  const publicJwtKey = process.env.PUBLIC_JWT_KEY
-  let showInactive: boolean = false
+  router.get("/booking/previous/:userId", async (req, res) => {
+    logger.info("GET /booking/previous/:userId/", req.params.userId)
+    let showInactive: boolean = false
 
-  if (!publicJwtKey) {
-    throw new Error("Public JWT key is not defined.")
-  }
+    if (req.query.show_inactive && req.query.show_inactive === "true") {
+      showInactive = true
+    }
 
-  const authHeader = req.headers.authorization
+    const userId = req.params.userId
 
-  if (!authHeader) {
-    return res.status(401).send({ error: "Authorization header is missing." })
-  }
-
-  const publicToken = authHeader.split(' ')[1];
-  const decoded = jwt.verify(publicToken, publicJwtKey) as JwtPayload
-  const userId = decoded.userId
-
-  try {
-    bookingService
-      .findByUserId(parseInt(userId), showInactive)
-      .then((bookings) => bookings.map((booking) => toBookingDTO(booking)))
-      .then((bookings) => {
-        logger.debug("findByUserId successfully")
-        res.status(200).send({ bookings: bookings })
-      })
-      .catch((error) => {
-        logger.error(error)
-        res.status(401).send({ error: error.message })
-      })
-  } catch (error: any) {
-    logger.error(error)
-    res.status(401).send({ error: error.message })
-  }
-})
-return router
+    try {
+      bookingService
+        .findByUserId(parseInt(userId), showInactive)
+        .then((bookings) => bookings.map((booking) => toBookingDTO(booking)))
+        .then((bookings) => {
+          logger.debug("findByUserId successfully")
+          res.status(200).send({ bookings: bookings })
+        })
+        .catch((error) => {
+          logger.error(error)
+          res.status(401).send({ error: error.message })
+        })
+    } catch (error: any) {
+      logger.error(error)
+      res.status(401).send({ error: error.message })
+    }
+  })
+  return router
 }

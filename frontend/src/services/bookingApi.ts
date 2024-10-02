@@ -1,5 +1,9 @@
+import jwt, { JwtPayload } from "jsonwebtoken"
+
 import { ApiHeader, apiUrls } from "./api";
 import { SingleBookingDTO } from "@/types/BookingType";
+
+const jwtPublicKey = process.env.NEXT_PUBLIC_JWT_KEY?.trim()
 
 // Flag to track whether an action is in progress
 let isProcessing = false;
@@ -33,9 +37,20 @@ export async function allBookingsFetchApi(showInactive: boolean = true) {
 /* ------------------------- Show last booking ------------------------- */
 export async function previousBookingsFetchApi(publicBookingToken: string) {
   try {
-    const response = await ApiHeader.get(apiUrls.previousBookingUrl, {
-      headers: { Authorization: `Bearer ${publicBookingToken}` },
-    });
+    if (!jwtPublicKey) {
+      throw new Error("Authentication error: JWT_SECRET_KEY is not set.")
+    }
+    
+    if (!publicBookingToken) {
+      return false
+    }
+    
+    /* --------------------- Decode and verify the JWT token -------------------- */
+    const decoded = jwt.verify(publicBookingToken, jwtPublicKey) as JwtPayload
+    const userId = decoded.userId
+
+    const response = await ApiHeader.get(apiUrls.previousBookingUrl + userId);
+
     const allBookings = response.data.bookings;
     return { allBookings, error: null };
   } catch (error: any) {
