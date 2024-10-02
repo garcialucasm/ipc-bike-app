@@ -37,12 +37,8 @@ export async function allBookingsFetchApi(showInactive: boolean = true) {
 /* ------------------------- Show last booking ------------------------- */
 export async function previousBookingsFetchApi(publicBookingToken: string) {
   try {
-    if (!jwtPublicKey) {
-      throw new Error("Authentication error: JWT_SECRET_KEY is not set.")
-    }
-    
-    if (!publicBookingToken) {
-      return false
+    if (!jwtPublicKey || !publicBookingToken) {
+      return { allBookings: null, error: `jwtPublicKey or publicBookingToken not found` };
     }
     
     /* --------------------- Decode and verify the JWT token -------------------- */
