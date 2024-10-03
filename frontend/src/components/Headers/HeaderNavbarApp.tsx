@@ -377,7 +377,7 @@ export default function HeaderNavbarApp() {
               >
                 <PersonSimpleBike size={28} weight="fill" />
                 <span className="ms-3 flex-1 whitespace-nowrap">
-                  Single Booking
+                  Booking
                 </span>
               </Link>
             </li>
@@ -418,7 +418,8 @@ export default function HeaderNavbarApp() {
             )}
             <li>
               <Link
-                href={NavigationPaths.becomeMember}
+                href="https://ipcalumni.dk/memberships/"
+                target="_blank"
                 className="group flex items-center rounded-2xl p-2 hover:bg-emerald-700 hover:text-slate-100"
                 onClick={toggleSideBarOpened}
               >

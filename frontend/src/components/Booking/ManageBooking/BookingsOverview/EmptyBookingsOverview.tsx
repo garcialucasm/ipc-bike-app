@@ -6,6 +6,8 @@ import { NavigationPaths } from "@/types/NavigationPaths"
 import { IconSvgLoader } from "@/components/Others/IconsSvg"
 import ContainerSingleComponent from "@/components/Containers/ContainerSingleComponent"
 import { useAuth } from "@/context/auth"
+import { ArrowsClockwise } from "@phosphor-icons/react/dist/ssr/ArrowsClockwise"
+import { PersonSimpleBike } from "@phosphor-icons/react/dist/ssr/PersonSimpleBike"
 
 export function EmptyBookingsOverview() {
   const [loading, setLoading] = useState(true)
@@ -42,18 +44,34 @@ export function EmptyBookingsOverview() {
               }
               prefetch={false}
             >
-              Single Booking
+              Booking
             </Link>{" "}
             section.
           </p>{" "}
-          <span className="pt-8">
+          <div className="flex gap-x-4 pt-8">
+            <Link
+              className="btn-primary"
+              href={
+                isAuth
+                  ? NavigationPaths.singleBookingSecure
+                  : NavigationPaths.singleBookingPublic
+              }
+            >
+              <span className="flex items-center gap-x-2 px-2">
+                <PersonSimpleBike size={24} />
+                <span>Booking</span>
+              </span>
+            </Link>
             <SecondaryButton
-              className="btn-secondary w-fit"
+              className="btn-secondary w-fit rounded-full"
               onClick={() => window.location.reload()}
             >
-              Refresh
+              <span className="flex items-center gap-x-2 px-2">
+                <ArrowsClockwise size={24} />
+                <span>Refresh</span>
+              </span>
             </SecondaryButton>
-          </span>
+          </div>
         </>
       )}
     </ContainerSingleComponent>

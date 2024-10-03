@@ -46,7 +46,7 @@ function InfoboxSingleBookingModal(BookingData: InfoboxSingleBookingProps) {
         )}
         {`${actionToConfirm}`}{" "}
         {actionToConfirm !== BookingModalActions.INFO &&
-          (booking.status === BookingStatus.BOOKED ? "Booking?" : "Return?")}
+          (booking.status?.toUpperCase() == BookingStatus.BOOKED ? "Booking?" : "Return?")}
       </p>
       {/* -------------------------------------------------------------------------- */}
 

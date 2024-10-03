@@ -302,7 +302,7 @@ export default class BookingRepository implements IBookingRepository {
           Date.now() -
             (process.env.BOOKING_EXPIRATION_TIME
               ? parseInt(process.env.BOOKING_EXPIRATION_TIME)
-              : 2 * 60 * 60 * 1000)
+              : 24 * 60 * 60 * 1000)
         )
     
         logger.debug(`Checking for bookings created before: ${bookingExpirationTime.toISOString()}`);

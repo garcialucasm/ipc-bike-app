@@ -25,10 +25,10 @@ function BookingConfirmed() {
         />
       </div>
       <InfoboxSingleBookingDetails />
-      <div className="bg-white rounded-xl px-32 py-4 grid gap-y-2">
+      <div className="grid gap-y-2 rounded-xl border bg-white px-32 py-4 -mt-4">
         <div className="text-sm">
           Time remaining for your booking to be approved. Otherwise, your
-          reservation will be automatically cancelled.
+          reservation will be automatically cancelled in:
         </div>
         <Countdown />
       </div>

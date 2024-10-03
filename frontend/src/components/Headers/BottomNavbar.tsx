@@ -43,7 +43,7 @@ const BottomNavbar = () => {
               className={`flex h-14 w-full flex-col items-center justify-center border-t-4 sm:h-16 ${pathname === NavigationPaths.singleBookingSecure || pathname === NavigationPaths.singleBookingPublic ? "border-blue-700 text-blue-700" : "border-slate-100"}`}
             >
               <PersonSimpleBike size={28} />
-              <span className="block text-xxs">Single Booking</span>
+              <span className="block text-xxs">Booking</span>
             </li>
           </Link>
           {isSecure ? (
@@ -65,7 +65,7 @@ const BottomNavbar = () => {
               </li>
             </Link>
           )}
-          <Link href={NavigationPaths.becomeMember}>
+          <Link href="https://ipcalumni.dk/memberships/" target="_blank">
             <li
               className={`flex h-14 w-full flex-col items-center justify-center border-t-4 sm:h-16 ${pathname === NavigationPaths.becomeMember ? "border-blue-700 text-blue-700" : "border-slate-100"}`}
             >
