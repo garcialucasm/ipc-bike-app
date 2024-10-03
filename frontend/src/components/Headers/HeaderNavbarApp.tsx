@@ -399,7 +399,7 @@ export default function HeaderNavbarApp() {
                 </Link>
               </li>
             ) : (
-              <li className="text-slate-400">
+              <li>
                 <Link
                   href={NavigationPaths.termsOfService}
                   className={`group flex items-center rounded-2xl p-2 ${
@@ -416,7 +416,7 @@ export default function HeaderNavbarApp() {
                 </Link>
               </li>
             )}
-            <li className="text-slate-400">
+            <li>
               <Link
                 href={NavigationPaths.becomeMember}
                 className="group flex items-center rounded-2xl p-2 hover:bg-emerald-700 hover:text-slate-100"

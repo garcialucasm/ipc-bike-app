@@ -7,13 +7,12 @@ import InfoboxSingleBookingDetails from "./InfoboxSingleBookingDetails"
 import { NavigationPaths } from "@/types/NavigationPaths"
 import PrimaryButton from "@/components/Buttons/PrimaryButton"
 import NextSteps from "./NextSteps"
-
+import Countdown from "@/components/Countdown/Countdown"
 
 function BookingConfirmed() {
-  const [showNextSteps, setShowNextSteps] = useState(false)
+  const [showNextSteps, setShowNextSteps] = useState(true)
   const pathname = usePathname()
   const isSecure = pathname.includes("/secure/")
-
 
   return (
     <>
@@ -26,6 +25,13 @@ function BookingConfirmed() {
         />
       </div>
       <InfoboxSingleBookingDetails />
+      <div className="bg-white rounded-xl px-32 py-4 grid gap-y-2">
+        <div className="text-sm">
+          Time remaining for your booking to be approved. Otherwise, your
+          reservation will be automatically cancelled.
+        </div>
+        <Countdown />
+      </div>
       <PrimaryButton
         className={
           showNextSteps
@@ -45,7 +51,13 @@ function BookingConfirmed() {
         </Link>
       </div>
       <div className="link-secondary w-full">
-        <Link href={isSecure ? NavigationPaths.homeAppSecure : NavigationPaths.homeAppPublic}>
+        <Link
+          href={
+            isSecure
+              ? NavigationPaths.homeAppSecure
+              : NavigationPaths.homeAppPublic
+          }
+        >
           <span className="block px-4 py-2">Go to Home Page</span>
         </Link>
       </div>

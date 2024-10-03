@@ -95,7 +95,7 @@ function InputStudentData() {
   return (
     <>
       <InstructionLabel>Please, enter cyclist information:</InstructionLabel>
-      <div className="flex min-h-[290px] w-full items-center justify-center gap-y-4 rounded-2xl bg-white p-2 text-start">
+      {/* <div className="flex min-h-[290px] w-full items-center justify-center gap-y-4 rounded-2xl bg-white p-2 text-start">
         <Image
           src="/flat-illustration-people-cycling.jpg"
           className="rouded-2xl w-auto"
@@ -103,7 +103,7 @@ function InputStudentData() {
           height={423}
           alt=""
         />
-      </div>
+      </div> */}
       <div className="flex w-full flex-col gap-y-4 sm:flex-row sm:gap-2">
         <InputText
           placeholder={"First name"}
