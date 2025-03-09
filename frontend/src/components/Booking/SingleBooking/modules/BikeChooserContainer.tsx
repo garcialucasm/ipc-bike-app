@@ -20,25 +20,25 @@ function BikeChooserContainer(props: {
     const timeoutId = setTimeout(() => {
       switch (bikeType) {
         case BikeType.ALL:
-          setCurrentImage("/bike-type-all.jpg")
+          setCurrentImage("/bike-type-all-compressed.jpg")
           setBikeSelectedRecomendation(
             "Recommended for people 5'4\" | 163 cm or taller."
           )
           break
         case BikeType.CITY:
-          setCurrentImage("/bike-type-standard.jpg")
+          setCurrentImage("/bike-type-standard-compressed.jpg")
           setBikeSelectedRecomendation(
             "Recommended for people 5'4\" | 163 cm or taller."
           )
           break
         case BikeType.CLASSIC:
-          setCurrentImage("/bike-type-classic.jpg")
+          setCurrentImage("/bike-type-classic-compressed.jpg")
           setBikeSelectedRecomendation(
             "Recommended for people 5'4\" | 163 cm or taller."
           )
           break
         case BikeType.FOLDING:
-          setCurrentImage("/bike-type-folding.jpg")
+          setCurrentImage("/bike-type-folding-compressed.jpg")
           setBikeSelectedRecomendation(
             "Recommended for people 5'4\" | 163 cm or taller."
           )
@@ -80,7 +80,7 @@ function BikeChooserContainer(props: {
           width={720}
           height={432}
           alt=""
-          priority
+          priority={true}
         />
       </div>
       {/* <div className="w-full pb-4 text-xs text-slate-500">
