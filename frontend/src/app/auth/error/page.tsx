@@ -21,7 +21,13 @@ export default function AuthErrorPage({ searchParams }: Props) {
     <>
       {isErrorVisible && (
         <div className="fixed z-40 mb-4 flex w-full items-center justify-center rounded-sm bg-rose-700 p-4 text-white">
-          <span className="mx-8">Auth Error: {searchParams.error}</span>
+          <div className="mx-8 text-center">
+            <p className="font-bold">Auth Error: {searchParams.error}.</p>
+            <p>
+              If this is your first login, your account must be approved by the
+              admin first.{" "}
+            </p>
+          </div>
           <button onClick={handleClick} className="fixed right-2 p-2">
             <X size={24} />
           </button>
