@@ -10,7 +10,7 @@ function BikeChooserContainer(props: {
 }) {
   const { bikeType: bikeType, isImageSliding, bikeCount } = props
 
-  const [currentImage, setCurrentImage] = useState<string>("")
+  const [currentImage, setCurrentImage] = useState<string>("/bike-type-all-compressed.jpg")
   const [bikeSelectedRecomendation, setBikeSelectedRecomendation] =
     useState<string>("")
   const [bikeSelectedStatusIndicator, setBikeSelectedStatusIndicator] =
