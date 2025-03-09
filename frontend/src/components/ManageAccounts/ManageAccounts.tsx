@@ -55,7 +55,7 @@ function Inventory() {
               {allAccounts.map((account: AccountType) => (
                 <tr
                   key={account.ID}
-                  className={`whitespace-nowrap border-b-2 border-white bg-slate-100 py-4 ${account.IsActive ? "text-slate-900" : "text-slate-400"}`}
+                  className={`whitespace-nowrap border-b-2 border-white py-4 odd:bg-slate-50 even:bg-slate-100 ${account.IsActive ? "text-slate-900" : "text-slate-400"}`}
                 >
                   <th scope="row" className="p-2">
                     <div

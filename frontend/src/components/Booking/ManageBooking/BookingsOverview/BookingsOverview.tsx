@@ -283,7 +283,7 @@ function BookingsOverview() {
               {allBookings.map((booking: any) => (
                 <tr
                   key={booking.id}
-                  className="whitespace-nowrap border-b-2 border-white bg-slate-100 py-4 text-slate-900"
+                  className="whitespace-nowrap border-b-2 border-white odd:bg-slate-50 even:bg-slate-100 py-4 text-slate-900"
                 >
                   <th scope="row" className="p-2">
                     <div className="flex justify-center" title={booking.status}>

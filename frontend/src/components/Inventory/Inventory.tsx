@@ -157,7 +157,7 @@ function Inventory() {
               {allBikes.map((bike: BikeDTO) => (
                 <tr
                   key={bike.ID}
-                  className="whitespace-nowrap border-b-2 border-white bg-slate-100 py-4 text-slate-900"
+                  className="whitespace-nowrap border-b-2 border-white py-4 text-slate-900 odd:bg-slate-50 even:bg-slate-100"
                 >
                   <th scope="row" className="p-2">
                     <div
