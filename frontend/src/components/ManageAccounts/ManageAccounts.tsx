@@ -2,16 +2,19 @@
 
 import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
-import TableHeader from "./modules/TableHeader"
-import StatusIndicator from "../Others/StatusIndicator"
-import { toPascalCase } from "@/utils/strings"
-import ActionButtonConfirm from "../Buttons/ActionButtonConfirm"
-import ActionButtonCancel from "../Buttons/ActionButtonCancel"
+
 import { AccountStatus, AccountType } from "@/types/AccountType"
+import { toPascalCase } from "@/utils/strings"
 import {
   getAllAccountsFetchApi,
   toggleAccountActivationFetchApi,
 } from "@/services/accountApi"
+
+import ActionButtonCancel from "../Buttons/ActionButtonCancel"
+import ActionButtonConfirm from "../Buttons/ActionButtonConfirm"
+import StatusIndicator from "../Others/StatusIndicator"
+import TableHeader from "./modules/TableHeader"
+import ComponentTitle from "../Others/ComponentTitle"
 
 function Inventory() {
   const { data: session } = useSession()
@@ -26,7 +29,7 @@ function Inventory() {
       setReloadData(!reloadData)
     } catch (error) {
       console.error(
-        "🚀 ~ handleClick ~ toggleAccountActivationFetchApi ~ error:",
+        "handleClick ~ toggleAccountActivationFetchApi ~ error:",
         error
       )
     }
@@ -44,6 +47,7 @@ function Inventory() {
   if (allAccounts && allAccounts.length > 0) {
     return (
       <>
+        <ComponentTitle>Manage Accounts</ComponentTitle>
         <div className="w-full overflow-x-auto rounded-2xl">
           <table className="w-full text-left text-sm rtl:text-right">
             <TableHeader />
