@@ -10,7 +10,7 @@ function BikeChooserContainer(props: {
 }) {
   const { bikeType: bikeType, isImageSliding, bikeCount } = props
 
-  const [currentImage, setCurrentImage] = useState<string>("/bike-type-all-compressed.jpg")
+  const [currentImage, setCurrentImage] = useState<string>("")
   const [bikeSelectedRecomendation, setBikeSelectedRecomendation] =
     useState<string>("")
   const [bikeSelectedStatusIndicator, setBikeSelectedStatusIndicator] =
@@ -20,25 +20,25 @@ function BikeChooserContainer(props: {
     const timeoutId = setTimeout(() => {
       switch (bikeType) {
         case BikeType.ALL:
-          setCurrentImage("/bike-type-all-compressed.jpg")
+          setCurrentImage("/bike-type-all.jpg")
           setBikeSelectedRecomendation(
             "Recommended for people 5'4\" | 163 cm or taller."
           )
           break
         case BikeType.CITY:
-          setCurrentImage("/bike-type-standard-compressed.jpg")
+          setCurrentImage("/bike-type-standard.jpg")
           setBikeSelectedRecomendation(
             "Recommended for people 5'4\" | 163 cm or taller."
           )
           break
         case BikeType.CLASSIC:
-          setCurrentImage("/bike-type-classic-compressed.jpg")
+          setCurrentImage("/bike-type-classic.jpg")
           setBikeSelectedRecomendation(
             "Recommended for people 5'4\" | 163 cm or taller."
           )
           break
         case BikeType.FOLDING:
-          setCurrentImage("/bike-type-folding-compressed.jpg")
+          setCurrentImage("/bike-type-folding.jpg")
           setBikeSelectedRecomendation(
             "Recommended for people 5'4\" | 163 cm or taller."
           )
@@ -80,7 +80,7 @@ function BikeChooserContainer(props: {
           width={720}
           height={432}
           alt=""
-          priority={true}
+          priority
         />
       </div>
       {/* <div className="w-full pb-4 text-xs text-slate-500">
