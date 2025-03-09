@@ -1,21 +1,24 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import TableHeader from "./modules/TableHeader"
-import { useBikeContext } from "@/context/bikeAvailability"
-import StatusIndicator from "../Others/StatusIndicator"
+import { Wrench } from "@phosphor-icons/react/dist/ssr/Wrench"
+
+import { AccountTypePermission } from "@/types/AccountType"
 import { BikeDTO, BikeModalActions, BikeStatus } from "@/types/BikeType"
+import { toggleMaintenanceFetchApi } from "@/services/bikeApi"
 import { toPascalCase } from "@/utils/strings"
+import { useAuth } from "@/context/auth"
+import { useBikeContext } from "@/context/bikeAvailability"
+
 import ActionButtonReturnMaintenance from "../Buttons/ActionButtonReturnMaintenance"
 import ActionButtonSendMaintenance from "../Buttons/ActionButtonSendMaintenance"
-import SecondaryButton from "../Buttons/SecondaryButton"
-import { toggleMaintenanceFetchApi } from "@/services/bikeApi"
-import PrimaryButton from "../Buttons/PrimaryButton"
 import ActionResult from "../ActionResult/ActionResult"
-import { Wrench } from "@phosphor-icons/react/dist/ssr/Wrench"
 import BikeDetails from "../Booking/SingleBooking/modules/BikeDetails"
-import { useAuth } from "@/context/auth"
-import { AccountTypePermission } from "@/types/AccountType"
+import PrimaryButton from "../Buttons/PrimaryButton"
+import StatusIndicator from "../Others/StatusIndicator"
+import SecondaryButton from "../Buttons/SecondaryButton"
+import TableHeader from "./modules/TableHeader"
+import ComponentTitle from "../Others/ComponentTitle"
 
 const messageInitial = "Confirm Action"
 const messageReturnMaintenance =
@@ -145,6 +148,8 @@ function Inventory() {
   if (allBikes && allBikes.length > 0) {
     return (
       <>
+        <ComponentTitle>Bike Inventory</ComponentTitle>
+
         <div className="w-full overflow-x-auto rounded-2xl">
           <table className="w-full text-left text-sm text-slate-500 rtl:text-right">
             <TableHeader shouldHideActions={isCurrentUserAdmin} />
