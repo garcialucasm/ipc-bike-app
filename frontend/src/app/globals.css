@@ -16,10 +16,10 @@
 
   /* ---------------------------- Buttons and links --------------------------- */
   .btn-primary {
-    @apply w-full shadow-lg rounded-full bg-blue-600 p-2 font-semibold text-white transition-all hover:bg-blue-700 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 focus:shadow-inner;
+    @apply w-full rounded-full bg-blue-600 p-2 font-semibold text-white shadow-lg transition-all hover:bg-blue-700 hover:shadow-xl focus:shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
   }
   .btn-secondary {
-    @apply w-full rounded-full shadow-lg border border-slate-300 bg-white px-4 py-2 font-semibold text-slate-700 transition-all hover:bg-slate-100 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+    @apply w-full rounded-full border border-slate-300 bg-white px-4 py-2 font-semibold text-slate-700 shadow-lg transition-all hover:bg-slate-100 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
   }
   .link-primary {
     @apply btn-primary px-0 py-0;
@@ -81,7 +81,8 @@ body {
 
 .background-mash-noise-light {
   background-color: hsla(263, 80%, 20%, 1);
-  background-image: radial-gradient(
+  background-image:
+    radial-gradient(
       at 40% 20%,
       hsla(238, 100%, 64%, 0.77) 0px,
       transparent 50%
@@ -108,11 +109,8 @@ body {
 
 .background-mash-noise-dark {
   background-color: hsla(263, 80%, 5%, 1);
-  background-image: radial-gradient(
-      at 40% 20%,
-      hsla(244, 70%, 10%, 0.77) 0px,
-      transparent 50%
-    ),
+  background-image:
+    radial-gradient(at 40% 20%, hsla(244, 70%, 10%, 0.77) 0px, transparent 50%),
     radial-gradient(at 0% 0%, hsla(189, 100%, 10%, 1) 0px, transparent 50%),
     radial-gradient(at 0% 50%, hsla(260, 100%, 15%, 1) 0px, transparent 50%),
     radial-gradient(at 60% 50%, hsla(240, 100%, 15%, 1) 0px, transparent 50%),
@@ -120,7 +118,6 @@ body {
     radial-gradient(at 0% 100%, hsla(240, 50%, 8%, 0.62) 0px, transparent 50%),
     radial-gradient(at 85% 94%, hsla(239, 100%, 10%, 1) 0px, transparent 50%);
 }
-
 
 .background-solid-noise {
   background-image: url("/noise-bg-05.png");

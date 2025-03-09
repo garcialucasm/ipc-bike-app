@@ -187,22 +187,24 @@ function PreviousBookingsOverview() {
               {currentBookings.map((booking: any) => (
                 <tr
                   key={booking.id}
-                  className="whitespace-nowrap border-b-2 border-white bg-slate-100 py-4 text-slate-900"
+                  className="whitespace-nowrap border-b-2 border-white py-4 text-slate-900 odd:bg-slate-50 even:bg-slate-100"
                 >
-                  <th scope="row" className="py-4">
+                  <td scope="row" className="py-4">
                     <div className="flex justify-center" title={booking.status}>
                       <StatusIndicator currentStatus={booking.status} />
                     </div>
-                  </th>
+                  </td>
                   <td
-                    className="flex items-center p-2 font-medium"
+                    className="p-2 font-medium"
                     onClick={() => handleClickInfo(booking)}
                   >
-                    <UserCircle
-                      size={28}
-                      className="me-2 min-w-7 text-slate-500"
-                    />
-                    <p className="line-clamp-1 text-wrap">{booking.user}</p>
+                    <div className="flex items-center">
+                      <UserCircle
+                        size={28}
+                        className="me-2 min-w-7 text-slate-500"
+                      />
+                      <p className="line-clamp-1 text-wrap">{booking.user}</p>
+                    </div>
                   </td>
                   <td className="p-2 text-slate-500">{booking.bike}</td>
                   <td className="p-2 text-slate-500">
@@ -210,8 +212,8 @@ function PreviousBookingsOverview() {
                       {booking.createdAt && formatDateString(booking.createdAt)}
                     </span>
                   </td>
-                  <td className="flex w-full flex-row items-center justify-center p-2">
-                    <div>
+                  <td className="p-2">
+                    <div className="flex justify-center">
                       <ActionButtonInfo
                         onClick={() => handleClickInfo(booking)}
                         name="info-booking"

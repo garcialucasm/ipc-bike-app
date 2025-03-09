@@ -2,16 +2,19 @@
 
 import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
-import TableHeader from "./modules/TableHeader"
-import StatusIndicator from "../Others/StatusIndicator"
-import { toPascalCase } from "@/utils/strings"
-import ActionButtonConfirm from "../Buttons/ActionButtonConfirm"
-import ActionButtonCancel from "../Buttons/ActionButtonCancel"
+
 import { AccountStatus, AccountType } from "@/types/AccountType"
+import { toPascalCase } from "@/utils/strings"
 import {
   getAllAccountsFetchApi,
   toggleAccountActivationFetchApi,
 } from "@/services/accountApi"
+
+import ActionButtonCancel from "../Buttons/ActionButtonCancel"
+import ActionButtonConfirm from "../Buttons/ActionButtonConfirm"
+import StatusIndicator from "../Others/StatusIndicator"
+import TableHeader from "./modules/TableHeader"
+import ComponentTitle from "../Others/ComponentTitle"
 
 function Inventory() {
   const { data: session } = useSession()
@@ -26,7 +29,7 @@ function Inventory() {
       setReloadData(!reloadData)
     } catch (error) {
       console.error(
-        "🚀 ~ handleClick ~ toggleAccountActivationFetchApi ~ error:",
+        "handleClick ~ toggleAccountActivationFetchApi ~ error:",
         error
       )
     }
@@ -44,6 +47,7 @@ function Inventory() {
   if (allAccounts && allAccounts.length > 0) {
     return (
       <>
+        <ComponentTitle>Manage Accounts</ComponentTitle>
         <div className="w-full overflow-x-auto rounded-2xl">
           <table className="w-full text-left text-sm rtl:text-right">
             <TableHeader />
@@ -51,7 +55,7 @@ function Inventory() {
               {allAccounts.map((account: AccountType) => (
                 <tr
                   key={account.ID}
-                  className={`whitespace-nowrap border-b-2 border-white bg-slate-100 py-4 ${account.IsActive ? "text-slate-900" : "text-slate-400"}`}
+                  className={`whitespace-nowrap border-b-2 border-white py-4 odd:bg-slate-50 even:bg-slate-100 ${account.IsActive ? "text-slate-900" : "text-slate-400"}`}
                 >
                   <th scope="row" className="p-2">
                     <div

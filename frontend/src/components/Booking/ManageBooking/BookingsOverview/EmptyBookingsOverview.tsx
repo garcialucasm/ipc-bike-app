@@ -17,7 +17,7 @@ export function EmptyBookingsOverview() {
   useEffect(() => {
     const loaderTimeout = setTimeout(() => {
       setLoading(false)
-    }, 2000) // 2 seconds timeout
+    }, 500)
 
     return () => {
       clearTimeout(loaderTimeout)
