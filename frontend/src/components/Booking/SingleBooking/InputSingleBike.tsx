@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
 
 import { BikeDTO, BikeType, BikeSize, BikeStatus } from "@/types/BikeType"
 import PrimaryButton from "../../Buttons/PrimaryButton"
@@ -13,6 +14,7 @@ import Button from "@/components/Buttons/Button"
 import { useBikeContext } from "@/context/bikeAvailability"
 
 function InputSingleBike() {
+  const pathname = usePathname()
   const {
     bookingData,
     settingCurrentSection,
@@ -41,6 +43,7 @@ function InputSingleBike() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(true)
   const [reloadData, setReloadData] = useState(false)
   const [isLoad, setIsLoad] = useState(false)
+  const isSecure = pathname.includes("/secure/")
 
   function handleDropdownToggle() {
     setIsDropdownOpen(!isDropdownOpen)
@@ -309,7 +312,13 @@ function InputSingleBike() {
         </>
       </div>
       <div className="link-secondary w-full">
-        <Link href={NavigationPaths.homeAppSecure}>
+        <Link
+          href={
+            isSecure
+              ? NavigationPaths.homeAppSecure
+              : NavigationPaths.homeAppPublic
+          }
+        >
           <span className="block px-4 py-2">Return</span>
         </Link>
       </div>

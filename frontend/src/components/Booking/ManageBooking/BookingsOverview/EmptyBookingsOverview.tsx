@@ -46,7 +46,7 @@ export function EmptyBookingsOverview() {
             >
               Booking
             </Link>{" "}
-            section.
+            section or click the button below.
           </p>{" "}
           <div className="flex gap-x-4 pt-8">
             <Link
@@ -59,7 +59,7 @@ export function EmptyBookingsOverview() {
             >
               <span className="flex items-center gap-x-2 px-2">
                 <PersonSimpleBike size={24} />
-                <span>Booking</span>
+                <span>New Booking</span>
               </span>
             </Link>
             <SecondaryButton
