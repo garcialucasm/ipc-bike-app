@@ -15,14 +15,15 @@ import { Bicycle } from "@phosphor-icons/react/dist/ssr/Bicycle"
 import { SignOut } from "@phosphor-icons/react/dist/ssr/SignOut"
 import { Info } from "@phosphor-icons/react/dist/ssr/Info"
 import { UserCircleGear } from "@phosphor-icons/react/dist/ssr/UserCircleGear"
+import { FileText } from "@phosphor-icons/react/dist/ssr/FileText"
+import { useSession } from "next-auth/react"
+import { Question } from "@phosphor-icons/react/dist/ssr/Question"
 
 import { NavigationPaths } from "@/types/NavigationPaths"
 import Button from "@/components/Buttons/Button"
 import { useAuth } from "@/context/auth"
 import { getDecodedToken, logout } from "@/app/auth/authUtils"
 import { toPascalCase } from "@/utils/strings"
-import { FileText } from "@phosphor-icons/react/dist/ssr/FileText"
-import { useSession } from "next-auth/react"
 import { AccountTypePermission } from "@/types/AccountType"
 
 export default function HeaderNavbarApp() {
@@ -57,7 +58,7 @@ export default function HeaderNavbarApp() {
     switch (buttonClicked) {
       case NavigationPaths.logout:
         await logout()
-        window.location.replace(NavigationPaths.login)
+        window.location.replace(NavigationPaths.home)
         return NavigationPaths.home
       case NavigationPaths.home:
         router.push(NavigationPaths.home)
@@ -298,6 +299,20 @@ export default function HeaderNavbarApp() {
                             </div>
                           </div>
                         </a>
+                        <a
+                          href={
+                            "https://branch-capacity-c75.notion.site/IPC-Bike-Manual-1b5b7f25ee94807a8d0ef50ed6b841f0"
+                          }
+                          target="_blank"
+                          onClick={() => setIsOpenedAccountMenu(false)}
+                        >
+                          <div className="block px-10 py-2 hover:bg-slate-200 hover:text-blue-700">
+                            <div className="flex w-fit items-center">
+                              <Question size={20} />
+                              <div className="px-2">Help</div>
+                            </div>
+                          </div>
+                        </a>
                         {isSecure ? (
                           <Button
                             onClick={() => handleClick(NavigationPaths.logout)}
@@ -368,7 +383,8 @@ export default function HeaderNavbarApp() {
                     : NavigationPaths.singleBookingPublic
                 }
                 className={`group flex items-center rounded-2xl p-2 ${
-                  (pathname === NavigationPaths.singleBookingSecure || pathname === NavigationPaths.singleBookingPublic)
+                  pathname === NavigationPaths.singleBookingSecure ||
+                  pathname === NavigationPaths.singleBookingPublic
                     ? "header-menu-item-current-page"
                     : "hover:bg-slate-200 hover:text-blue-700"
                 }`}
@@ -376,9 +392,7 @@ export default function HeaderNavbarApp() {
                 prefetch={false}
               >
                 <PersonSimpleBike size={28} weight="fill" />
-                <span className="ms-3 flex-1 whitespace-nowrap">
-                  Booking
-                </span>
+                <span className="ms-3 flex-1 whitespace-nowrap">Booking</span>
               </Link>
             </li>
             {isSecure ? (
