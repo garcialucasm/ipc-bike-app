@@ -92,7 +92,7 @@ function HomeWeb() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <h2 className={`mb-3 flex items-center text-2xl font-semibold`}>
+            <h2 className={`text-2xl font-semibold`}>
               Feedback Form{" "}
               <span className="inline-block ps-2 transition-transform group-hover:-translate-y-2 group-hover:translate-x-2 motion-reduce:transform-none">
                 🚀

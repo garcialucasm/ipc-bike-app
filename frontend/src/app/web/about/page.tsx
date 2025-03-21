@@ -8,7 +8,7 @@ import { Heart } from "@phosphor-icons/react/dist/ssr/Heart"
 import { Stack } from "@phosphor-icons/react/dist/ssr/Stack"
 
 import ContainerWebpage from "@/components/Containers/ContainerWebpage"
-import TitleLabelWeb from "@/components/Others/TitleLabelWeb"
+import TitleLabel from "@/components/Others/TitleLabel"
 import VersionInformation from "@/components/Web/VersionInformation"
 import { NavigationPaths } from "@/types/NavigationPaths"
 import Link from "next/link"
@@ -111,7 +111,7 @@ const About = async () => {
   return (
     <ContainerWebpage>
       <div className="flex flex-col gap-y-8">
-        <TitleLabelWeb>About</TitleLabelWeb>
+        <TitleLabel>About</TitleLabel>
         <div className="flex-1 rounded-xl border border-gray-600 p-4 bg-slate-900">
           <p className="mb-2">Welcome to IPC Bike! <span className="text-2xl">👋</span></p>
           <p>
@@ -132,9 +132,9 @@ const About = async () => {
           </p>
           <p className="mt-2">Dive in and discover how we're revolutionizing campus mobility! <span className="tracking-tightest text-2xl">🚵‍♀️🚵</span></p>
         </div>
-        <TitleLabelWeb>Release Notes and Feature Overview</TitleLabelWeb>
+        <TitleLabel>Release Notes and Feature Overview</TitleLabel>
         <VersionInformation />
-        <TitleLabelWeb>Development Overview and Issues Tracker</TitleLabelWeb>
+        <TitleLabel>Development Overview and Issues Tracker</TitleLabel>
         <div className="flex flex-wrap gap-x-4 gap-y-8 text-sm">
           <div className="flex-1 rounded-xl border border-gray-600 p-4">
             <span className="mb-4 flex items-center justify-between">
