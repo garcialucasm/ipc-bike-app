@@ -128,3 +128,8 @@ body {
   background-image: url("/noise-bg-05.png");
   background-color: gray;
 }
+
+.modal-blur::backdrop {
+  background: hsl(0 0% 0% / 50%);
+  backdrop-filter: blur(4px);
+}
