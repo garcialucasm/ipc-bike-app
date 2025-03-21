@@ -8,11 +8,24 @@ import { NavigationPaths } from "@/types/NavigationPaths"
 import PrimaryButton from "@/components/Buttons/PrimaryButton"
 import NextSteps from "./NextSteps"
 import Countdown from "@/components/Countdown/Countdown"
+import Button from "@/components/Buttons/Button"
+import InformativeModal from "@/components/Modal/InformativeModal"
+import TermsOfServiceContent from "@/components/TermsOfServiceContent/TermsOfServiceContent"
 
 function BookingConfirmed() {
   const [showNextSteps, setShowNextSteps] = useState(true)
   const pathname = usePathname()
   const isSecure = pathname.includes("/secure/")
+  const [isModalTermsOfServiceOpen, setIsModalTermsOfServiceOpen] =
+    useState<boolean>(false)
+
+  const handleOpenTermsOfServiceModal = () => {
+    setIsModalTermsOfServiceOpen(true!)
+  }
+
+  const handleCloseTermsOfServiceModal = () => {
+    setIsModalTermsOfServiceOpen(false!)
+  }
 
   return (
     <>
@@ -25,7 +38,7 @@ function BookingConfirmed() {
         />
       </div>
       <InfoboxSingleBookingDetails />
-      <div className="grid gap-y-2 rounded-xl border bg-white px-32 py-4 -mt-4">
+      <div className="grid gap-y-2 rounded-xl border bg-white px-8 py-4">
         <div className="text-sm">
           Time remaining for your booking to be approved. Otherwise, your
           reservation will be automatically cancelled in:
@@ -46,9 +59,12 @@ function BookingConfirmed() {
         </div>
       </PrimaryButton>
       <div className="link-primary w-full">
-        <Link href={NavigationPaths.termsOfService} target="_blank">
+        <Button
+          onClick={handleOpenTermsOfServiceModal}
+          name="modalTermsOfService"
+        >
           <span className="block px-4 py-2">See the Rules</span>
-        </Link>
+        </Button>
       </div>
       <div className="link-secondary w-full">
         <Link
@@ -61,6 +77,13 @@ function BookingConfirmed() {
           <span className="block px-4 py-2">Go to Home Page</span>
         </Link>
       </div>
+      <InformativeModal
+        modalTitle="Terms of Service"
+        isOpen={isModalTermsOfServiceOpen}
+        onClose={handleCloseTermsOfServiceModal}
+      >
+        <TermsOfServiceContent />
+      </InformativeModal>
     </>
   )
 }

@@ -11,6 +11,9 @@ import InstructionLabel from "../Others/InstructionLabel"
 import { createSingleBookingFetchApi } from "@/services/bookingApi"
 import { joinFirstLastName } from "@/utils/validators"
 import { UserData } from "@/types/UserType"
+import InformativeModal from "../Modal/InformativeModal"
+import TermsOfServiceContent from "../TermsOfServiceContent/TermsOfServiceContent"
+import Button from "../Buttons/Button"
 
 function singleBookingDTO(userData: UserData, bikeNumbering: string) {
   const userName: string = joinFirstLastName(
@@ -30,13 +33,22 @@ const PreBookingConfirmation = () => {
   const { bookingData, settingCurrentSection, settingServerResult } =
     useSingleBookingContext()
   const { userData, bikeNumbering } = bookingData
-  const [isTermsAndConditionsChecked, setIsTermsAndConditionsChecked] =
-    useState(false)
+  const [isTermsOfServiceChecked, setIsTermsOfServiceChecked] = useState(false)
   const [itemNeedsAttention, setItemNeedsAttention] = useState(false)
+  const [isModalTermsOfServiceOpen, setIsModalTermsOfServiceOpen] =
+    useState<boolean>(false)
 
   function handleCheckboxChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setIsTermsAndConditionsChecked(event.target.checked)
+    setIsTermsOfServiceChecked(event.target.checked)
     setItemNeedsAttention(false)
+  }
+
+  const handleOpenTermsOfServiceModal = () => {
+    setIsModalTermsOfServiceOpen(true!)
+  }
+
+  const handleCloseTermsOfServiceModal = () => {
+    setIsModalTermsOfServiceOpen(false!)
   }
 
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
@@ -48,7 +60,7 @@ const PreBookingConfirmation = () => {
     }
 
     if (buttonClicked === NavigationOptions.next) {
-      if (isTermsAndConditionsChecked) {
+      if (isTermsOfServiceChecked) {
         handleSubmitForm()
       } else {
         setItemNeedsAttention(true) // Trigger attention when Confirm Booking is clicked without checking the checkbox
@@ -113,7 +125,7 @@ const PreBookingConfirmation = () => {
         <input
           id="default-checkbox"
           type="checkbox"
-          checked={isTermsAndConditionsChecked}
+          checked={isTermsOfServiceChecked}
           onChange={handleCheckboxChange}
           className={`h-4 w-4 rounded-2xl border-gray-300 bg-gray-100 text-blue-600 ${
             itemNeedsAttention ? "ring-1 ring-red-400" : ""
@@ -124,9 +136,12 @@ const PreBookingConfirmation = () => {
           className="ms-2 text-sm text-gray-700"
         >
           I agree to the{" "}
-          <a href={NavigationPaths.termsOfService} target="_blank">
-            <span className="text-blue-700">terms and conditions</span>.
-          </a>
+          <Button
+            onClick={handleOpenTermsOfServiceModal}
+            name="modalTermsOfService"
+          >
+            <span className="text-blue-700">terms of service</span>.
+          </Button>
         </label>
       </div>
       <PrimaryButton onClick={handleClick} name={NavigationOptions.next}>
@@ -135,6 +150,13 @@ const PreBookingConfirmation = () => {
       <SecondaryButton onClick={handleClick} name={NavigationOptions.return}>
         <span>Return</span>
       </SecondaryButton>
+      <InformativeModal
+        modalTitle="Terms of Service"
+        isOpen={isModalTermsOfServiceOpen}
+        onClose={handleCloseTermsOfServiceModal}
+      >
+        <TermsOfServiceContent />
+      </InformativeModal>
     </>
   )
 }
