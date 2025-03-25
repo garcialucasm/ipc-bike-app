@@ -1,7 +1,7 @@
 import ContainerWebpage from "@/components/Containers/ContainerWebpage"
 import SubtitleLabelWeb from "@/components/Others/SubtitleLabelWeb"
 import TextWithBgLabelWeb from "@/components/Others/TextWithBgLabelWeb"
-import TitleLabelWeb from "@/components/Others/TitleLabelWeb"
+import TitleLabel from "@/components/Others/TitleLabel"
 import { NavigationPaths } from "@/types/NavigationPaths"
 import Link from "next/link"
 
@@ -10,7 +10,7 @@ const PrivacyPolicy = () => {
     <>
       <ContainerWebpage>
         <div className="flex flex-col gap-y-8">
-          <TitleLabelWeb>Privacy Policy</TitleLabelWeb>
+          <TitleLabel>Privacy Policy</TitleLabel>
           <div className="flex flex-col gap-y-4">
             <div>
               <SubtitleLabelWeb>

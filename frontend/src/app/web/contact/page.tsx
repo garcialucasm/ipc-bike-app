@@ -1,6 +1,6 @@
 import ContainerWebpage from "@/components/Containers/ContainerWebpage"
 import SubtitleLabelWeb from "@/components/Others/SubtitleLabelWeb"
-import TitleLabelWeb from "@/components/Others/TitleLabelWeb"
+import TitleLabel from "@/components/Others/TitleLabel"
 import { GithubLogo } from "@phosphor-icons/react/dist/ssr/GithubLogo"
 import { Globe } from "@phosphor-icons/react/dist/ssr/Globe"
 import { LinkedinLogo } from "@phosphor-icons/react/dist/ssr/LinkedinLogo"
@@ -11,9 +11,9 @@ const Contact = () => {
     <>
       <ContainerWebpage>
         <div className="flex flex-col">
-          <TitleLabelWeb>
+          <TitleLabel>
             <div className="mb-4 text-3xl font-semibold">Contact Us</div>
-          </TitleLabelWeb>
+          </TitleLabel>
 
           <div className="mb-8 flex flex-col gap-y-8">
             <div>
