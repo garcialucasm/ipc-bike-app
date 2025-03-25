@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 
-function Countdown() {
+function Countdown({ duration }: { duration: number }) {
   const [timeLeft, setTimeLeft] = useState(0)
 
   useEffect(() => {
-    const countdownDuration = 1000 * 60 * 60 * 24
-    setTimeLeft(countdownDuration)
+    setTimeLeft(duration)
 
     const intervalId = setInterval(() => {
       setTimeLeft((prevTime) => {
@@ -18,7 +17,7 @@ function Countdown() {
     }, 1000)
 
     return () => clearInterval(intervalId)
-  }, [])
+  }, [duration])
 
   // Calculate hours, minutes, and seconds
   const hours = String(Math.floor((timeLeft / (1000 * 60 * 60)) % 24)).padStart(

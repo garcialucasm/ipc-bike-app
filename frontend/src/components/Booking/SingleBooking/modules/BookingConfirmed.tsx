@@ -16,6 +16,9 @@ function BookingConfirmed() {
   const [showNextSteps, setShowNextSteps] = useState(true)
   const pathname = usePathname()
   const isSecure = pathname.includes("/secure/")
+  const expirationTime =
+    process.env.NEXT_PUBLIC_BOOKING_EXPIRATION_TIME &&
+    parseInt(process.env.NEXT_PUBLIC_BOOKING_EXPIRATION_TIME)
   const [isModalTermsOfServiceOpen, setIsModalTermsOfServiceOpen] =
     useState<boolean>(false)
 
@@ -43,7 +46,7 @@ function BookingConfirmed() {
           Time remaining for your booking to be approved. Otherwise, your
           reservation will be automatically cancelled in:
         </div>
-        <Countdown />
+        {expirationTime && <Countdown duration={expirationTime} />}
       </div>
       <PrimaryButton
         className={
