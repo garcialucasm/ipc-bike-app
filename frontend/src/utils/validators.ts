@@ -59,7 +59,7 @@ export function validateFormName(s: string): string {
 export function validateFormRoomNumber(s: string): string {
   if (!s) {
     return "Room number is required"
-  } else if (s.length < 2 || s.length > 20) {
+  } else if (s.length < 1 || s.length > 20) {
     return "Please enter a valid room number"
   } else {
     return ""

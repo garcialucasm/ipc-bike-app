@@ -59,7 +59,7 @@ export function EmptyBookingsOverview() {
             >
               <span className="flex items-center gap-x-2 px-2">
                 <PersonSimpleBike size={24} />
-                <span>New Booking</span>
+                <span>Booking</span>
               </span>
             </Link>
             <SecondaryButton
