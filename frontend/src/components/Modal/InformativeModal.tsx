@@ -1,3 +1,4 @@
+import PrimaryButton from "../Buttons/PrimaryButton"
 import Modal from "../Modal/Modal"
 
 interface InformativeModalProps {
@@ -25,6 +26,11 @@ const InformativeModal = ({
       onClose={handleClose}
     >
       <div className="text-start">{children}</div>
+      <div className="flex justify-end text-right">
+        <div className="w-20 min-w-fit pt-8">
+          <PrimaryButton onClick={handleClose}>Ok</PrimaryButton>
+        </div>
+      </div>
     </Modal>
   )
 }

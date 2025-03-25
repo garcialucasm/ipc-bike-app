@@ -46,7 +46,7 @@ const Modal = ({
   return (
     <dialog
       ref={modalRef}
-      className="modal-blur fixed left-1/2 top-1/2 z-50 m-2 h-full w-full max-w-2xl -translate-x-1/2 -translate-y-1/2 transform space-y-8 divide-y divide-solid divide-slate-300 overflow-hidden rounded-lg border-0 bg-white p-8 pb-12"
+      className="modal-blur fixed left-1/2 top-1/2 z-50 m-1 h-full w-full max-w-2xl -translate-x-1/2 -translate-y-1/2 transform space-y-8 divide-y divide-solid divide-slate-300 overflow-hidden rounded-lg border-0 bg-white p-8 pb-12"
       onKeyDown={handleKeyDown}
     >
       {hasCloseBtn && (
