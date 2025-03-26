@@ -1,33 +1,38 @@
-import { Bike, BikeStatus } from "../models/bike.model";
-import IBikeRepository from "../repositories/bike.repository";
-import IBikeService from "./bike.service";
-import { getLogger } from '../logger'
+import { Bike, BikeStatus } from "../models/bike.model"
+import { getLogger } from "../logger"
+import IBikeRepository from "../repositories/bike.repository"
+import IBikeService from "./bike.service"
+import NotificationService from "./notification.service.impl"
 
-const logger = getLogger('BikeService')
+const logger = getLogger("BikeService")
 
 export default class BikeService implements IBikeService {
-  bikeRepository: IBikeRepository;
+  bikeRepository: IBikeRepository
 
-  validBikeStatusTransitions: Map<BikeStatus, BikeStatus[]>;
+  validBikeStatusTransitions: Map<BikeStatus, BikeStatus[]>
 
   constructor(bikeRepository: IBikeRepository) {
-    this.bikeRepository = bikeRepository;
+    this.bikeRepository = bikeRepository
 
     this.validBikeStatusTransitions = new Map([
       [BikeStatus.FREE, [BikeStatus.BOOKED, BikeStatus.DISABLED]],
       [BikeStatus.BOOKED, [BikeStatus.FREE, BikeStatus.INUSE]],
       [BikeStatus.INUSE, [BikeStatus.FREE, BikeStatus.DISABLED]],
       [BikeStatus.DISABLED, [BikeStatus.FREE]],
-    ]);
+    ])
   }
 
-  async createBike(numbering: number, bikeType: string, size: string): Promise<Bike> {
+  async createBike(
+    numbering: number,
+    bikeType: string,
+    size: string
+  ): Promise<Bike> {
     logger.debug("createBike")
-    
+
     let bikes = await this.bikeRepository.findAll({ numbering: numbering })
 
     if (bikes.length) {
-      throw new Error("Numbering already exist");
+      throw new Error("Numbering already exist")
     }
 
     let bike: Bike = {
@@ -37,9 +42,9 @@ export default class BikeService implements IBikeService {
       CreatedAt: new Date(),
       IsActive: true,
       CurrentStatus: BikeStatus.FREE,
-    };
+    }
 
-    return await this.bikeRepository.save(bike);
+    return await this.bikeRepository.save(bike)
   }
 
   async changeStatus(bike: Bike, status: BikeStatus): Promise<Bike> {
@@ -55,9 +60,9 @@ export default class BikeService implements IBikeService {
       throw new Error()
     }
 
-    bike.CurrentStatus = status;
+    bike.CurrentStatus = status
 
-    return await this.bikeRepository.update(bike);
+    return await this.bikeRepository.update(bike)
   }
 
   findAll(
@@ -67,23 +72,23 @@ export default class BikeService implements IBikeService {
   ): Promise<Bike[]> {
     logger.debug("findAllAvailable")
     const searchCriteria: {
-      numbering?: number;
-      currentStatus?: BikeStatus;
-      size?: string;
-    } = {};
+      numbering?: number
+      currentStatus?: BikeStatus
+      size?: string
+    } = {}
 
     /* -- without this statement, findAllAvailable doesnt work with empty size -- */
     if (size) {
-      searchCriteria.size = size;
+      searchCriteria.size = size
     }
     if (numbering) {
-      searchCriteria.numbering = numbering;
+      searchCriteria.numbering = numbering
     }
     if (currentStatus) {
-      searchCriteria.currentStatus = currentStatus;
+      searchCriteria.currentStatus = currentStatus
     }
     /* -------------------------------------------------------------------------- */
-    return this.bikeRepository.findAll(searchCriteria);
+    return this.bikeRepository.findAll(searchCriteria)
   }
 
   countBikesByStatus(): Promise<Map<BikeStatus, number>> {
@@ -92,18 +97,26 @@ export default class BikeService implements IBikeService {
   }
 
   async maintenance(numbering: number) {
-    const bikes: Bike[] = await this.findAll(undefined, numbering);
+    const bikes: Bike[] = await this.findAll(undefined, numbering)
 
-    if (bikes[0] === undefined)
-      throw new Error(`Bike number ${numbering} not found`);
+    if (!bikes[0]) {
+      throw new Error(`Bike number ${numbering} not found`)
+    }
 
-    const bike: Bike = bikes[0];
-    let updatedBike: Bike = bikes[0];
+    const bike = bikes[0]
+    let updatedBike = bike
 
     if (bike.CurrentStatus === BikeStatus.FREE) {
-      updatedBike = await this.changeStatus(bike, BikeStatus.DISABLED);
+      updatedBike = await this.changeStatus(bike, BikeStatus.DISABLED)
+
+      try {
+        await NotificationService.sendMaintenanceEmail(numbering)
+      } catch (error) {
+        console.error("Failed to send maintenance email", error)
+        throw new Error("Failed to notify admin about bike maintenance")
+      }
     } else if (bike.CurrentStatus === BikeStatus.DISABLED) {
-      updatedBike = await this.changeStatus(bike, BikeStatus.FREE);
+      updatedBike = await this.changeStatus(bike, BikeStatus.FREE)
     } else if (
       bike.CurrentStatus === BikeStatus.BOOKED ||
       bike.CurrentStatus === BikeStatus.INUSE
@@ -114,6 +127,7 @@ export default class BikeService implements IBikeService {
     } else {
       throw new Error("Error when trying to toggle maintenance status");
     }
-    return updatedBike;
+
+    return updatedBike
   }
 }
