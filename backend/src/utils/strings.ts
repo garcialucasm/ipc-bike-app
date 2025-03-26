@@ -43,6 +43,36 @@ function toSnakeCase(s: string): string {
   return result
 }
 
+function toPascalCase(s: string): string {
+  // Clean up the string by removing spaces and converting to lower case
+  const cleanedString = sanitizeInput(s)
+
+  // Split the string into words (split by spaces, underscores, or any non-alphanumeric characters)
+  const words = cleanedString.split(/[^a-zA-Z0-9]+/)
+
+  // Capitalize the first letter of each word and combine them together
+  const pascalCased = words
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join("")
+
+  return pascalCased
+}
+
+function toTitleCase(s: string): string {
+  // Clean up the string by removing extra spaces and converting to lowercase
+  const cleanedString = sanitizeInput(s)
+
+  // Split the string into words (split by spaces, underscores, or any non-alphanumeric characters)
+  const words = cleanedString.split(/[^a-zA-Z0-9]+/)
+
+  // Capitalize the first letter of each word and combine them together
+  const titleCased = words
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ")
+
+  return titleCased
+}
+
 function isEmail(s: string): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   return emailRegex.test(s)
@@ -76,6 +106,8 @@ export {
   isAlpha,
   isAlphaNumerical,
   toSnakeCase,
+  toPascalCase,
+  toTitleCase,
   isEmail,
   cleanUpSpaces,
   sanitizeInput,
