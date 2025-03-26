@@ -109,12 +109,7 @@ export default class BikeService implements IBikeService {
     if (bike.CurrentStatus === BikeStatus.FREE) {
       updatedBike = await this.changeStatus(bike, BikeStatus.DISABLED)
 
-      try {
-        await NotificationService.sendMaintenanceEmail(numbering)
-      } catch (error) {
-        console.error("Failed to send maintenance email", error)
-        throw new Error("Failed to notify admin about bike maintenance")
-      }
+      await NotificationService.sendMaintenanceEmail(numbering)
     } else if (bike.CurrentStatus === BikeStatus.DISABLED) {
       updatedBike = await this.changeStatus(bike, BikeStatus.FREE)
     } else if (
@@ -123,9 +118,9 @@ export default class BikeService implements IBikeService {
     ) {
       throw new Error(
         `Cannot toggle the maintenance status of a bike with ${bike.CurrentStatus} as the current status`
-      );
+      )
     } else {
-      throw new Error("Error when trying to toggle maintenance status");
+      throw new Error("Error when trying to toggle maintenance status")
     }
 
     return updatedBike
