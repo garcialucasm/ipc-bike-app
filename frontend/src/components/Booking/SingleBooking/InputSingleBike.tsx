@@ -303,13 +303,11 @@ function InputSingleBike() {
                   </div>
                 </li>
               ))}
-              {listOfAvailableBikes.length === 0 && (
-                <div className="flex items-center justify-center rounded-lg p-2 text-sm text-gray-700">
-                  <p className="text-sm font-bold text-slate-900">
-                    No bikes available for this type.
-                  </p>
-                </div>
-              )}
+            {listOfAvailableBikes.length === 0 && (
+              <div className="flex items-center justify-center rounded-lg p-2 text-sm font-bold">
+                <p>No bikes available for this type.</p>
+              </div>
+            )}
           </ul>
         </div>
       )}
